@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+  color: #281d1d;
+}
+
+main {
+  padding: 32px;
+}
+
+.headline-s {
+  font-family: Inter;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 0.01em;
+  text-align: left;
+}
+
+.headline-m {
+  font-family: Inter;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 48px;
+  letter-spacing: 0.01em;
+}
+
+.headline-l {
+  font-family: Inter;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 56px;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.subheadline-s {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
+}
+
+.subheadline-m {
+  font-family: Inter;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+}
+
+.subheadline-l {
+  font-family: Inter;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 32px;
+  text-align: left;
+}
+
+.body-s-r,
+.body-s-b {
+  font-family: Inter;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: left;
+}
+.body-s-r {
+  font-weight: 400;
+}
+.body-s-b {
+  font-weight: 500;
+}
+
+.body-m-r,
+.body-m-b {
+  font-family: Inter;
+  font-size: 15px;
+  line-height: 24px;
+}
+.body-m-r {
+  font-weight: 400;
+}
+.body-m-b {
+  font-weight: 500;
+}
+
+.body-l-r,
+.body-l-b {
+  font-family: Inter;
+  font-size: 17px;
+  line-height: 28px;
+  text-align: left;
+}
+
+.body-l-r {
+  font-weight: 400;
+}
+.body-l-b {
+  font-weight: 500;
+}
+
+.tag-m {
+  font-family: Inter;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+.tag-l {
+  font-family: Inter;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+.button-l {
+  font-family: Inter;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  text-align: center;
+}
+
+.button-m {
+  font-family: Inter;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.005em;
+  text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='date'] {
+  position: relative;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  font-size: 20px;
+  border-left: 0.5px solid #e0d6d6;
+  height: 100%;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px 10px 10px;
+  filter: brightness(0) saturate(100%) invert(38%) sepia(2%) saturate(2724%)
+    hue-rotate(315deg) brightness(88%) contrast(70%);
+}
+
+select:focus,
+.custom-input {
+  outline: none !important;
+}
+
+table thead tr th,
+table tbody tr td {
+  /* padding: 8px 0 !important; */
+}
+
+table tbody tr:hover {
+  background-color: #F6F6F6 !important;
+}
+
+.btn-ghost:hover {
+  @apply border-primary-3 bg-transparent;
+}
+/*  */
