@@ -1,15 +1,40 @@
+import { useEffect } from 'react';
+import { useForm } from '@tanstack/react-form';
+
 import { IoMdClose } from 'react-icons/io';
+
+import { usePost, usePut } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 
-const DrawerAddEditVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
-  const handleSelect = () => {
-    const drawerElement = document.getElementById(idDrawer);
-    drawerElement.checked = false;
-    closeDrawer();
-  };
+const DrawerFormFactory = ({
+  isEdit = false,
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  refetch,
+  data = null,
+}) => {
+  const { handlePost, loadingPost } = usePost('/v1/factory', () => {
+    handleClose();
+    refetch();
+  });
+
+  const { handlePut, loadingPut } = usePut(`/v1/factory/${data?._id}`, () => {
+    handleClose();
+    refetch();
+  });
+
+  const form = useForm({
+    defaultValues: {
+      name: '',
+    },
+    onSubmit: async ({ value }) => {
+      isEdit ? handlePut(value) : handlePost(value);
+    },
+  });
 
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
@@ -17,11 +42,17 @@ const DrawerAddEditVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
     closeDrawer();
   };
 
+  useEffect(() => {
+    if (data) form.setFieldValue('name', data?.name);
+  }, [data]);
+
   return (
     <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
-        <h3 className='subheadline-m text-color-1'>Tambah/Edit Vendor</h3>
+        <h3 className='subheadline-m text-color-1'>
+          {isEdit ? 'Edit' : 'Tambah'} Pabrik
+        </h3>
         <Button
           variant='primary-outline'
           className='border-none'
@@ -39,10 +70,22 @@ const DrawerAddEditVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
         <div className='card-body'>
           <div className='flex gap-4'>
             <label className='basis-1/4 body-m-b my-auto text-color-2'>
-              Vendor
+              Pabrik
             </label>
             <div className='basis-3/4'>
-              <Input placeholder='Nama Vendor' size='lg' full />
+              <form.Field
+                name='name'
+                children={(field) => (
+                  <Input
+                    placeholder='Nama Pabrik'
+                    full
+                    size='lg'
+                    name={field.name}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                )}
+              />
             </div>
           </div>
         </div>
@@ -57,7 +100,7 @@ const DrawerAddEditVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
         >
           Cancel
         </Button>
-        <Button size='lg' className='!w-[120px]'>
+        <Button size='lg' className='!w-[120px]' onClick={form.handleSubmit}>
           Simpan
         </Button>
       </div>
@@ -65,4 +108,4 @@ const DrawerAddEditVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
   );
 };
 
-export default DrawerAddEditVendor;
+export default DrawerFormFactory;

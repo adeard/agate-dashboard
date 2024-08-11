@@ -1,13 +1,16 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdKeyboardArrowRight, MdFileDownload } from 'react-icons/md';
 
+import { useGet } from '@/services/use-services';
+
 import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
 import ModalPreviewImage from '../components/ModalPreviewImage';
+import dayjs from 'dayjs';
 
 const dataDiterima = [
   {
@@ -174,11 +177,18 @@ const totalRowDitolak = {
 };
 
 const DetailRiwayatPemeriksaanPage = () => {
-  const dialogPreviewImageRef = useRef(null);
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const factoryId = searchParams.get('factory');
 
+  const { data, loading, refetch } = useGet(`/v1/inspection-history/${id}`);
+
+  const dialogPreviewImageRef = useRef(null);
   const openModalPreviewImage = () => {
     dialogPreviewImageRef.current.showModal();
   };
+
+  console.log(data);
 
   return (
     <div>
@@ -186,11 +196,11 @@ const DetailRiwayatPemeriksaanPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik A
+              Pabrik {data && data[0]?.factory.name}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <Link
-              to='/factory/riwayat-pemeriksaan'
+              to={`/factory/riwayat-pemeriksaan?factory=${factoryId}`}
               className='font-semibold text-2xl text-color-3'
             >
               Riwayat Pemeriksaan
@@ -211,7 +221,7 @@ const DetailRiwayatPemeriksaanPage = () => {
         <div className='flex gap-5 w-full max-w-[1280px] min-h-[calc(100vh-64px)] m-auto'>
           <div className='basis-1/3 pl-16'>
             <div
-              className='card w-full bg-base-100 p-6'
+              className='card w-full bg-white p-6'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <h3 className='subheadline-s text-color-1'>Detail Grading</h3>
@@ -223,7 +233,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       NAMA VENDOR
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>Supplier</p>
+                  <p className='body-m-b text-color-1'>{data?.vendor.name}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -231,7 +241,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       NOMOR SURAT JALAN
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>AXX235</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.waybill_number}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -239,7 +251,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       NOMOR PLAT KENDARAAN
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>B 1253 ADA</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.vehicle_number}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -247,7 +261,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       WAKTU MULAI
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>yyyy-mm-dd; hh:mm:ss</p>
+                  <p className='body-m-b text-color-1'>
+                    {dayjs(data?.createdAt).format('YYYY-MM-DD; HH:MM:ss')}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -255,12 +271,14 @@ const DetailRiwayatPemeriksaanPage = () => {
                       WAKTU SELESAI
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>yyyy-mm-dd; hh:mm:ss</p>
+                  <p className='body-m-b text-color-1'>
+                    {dayjs(data?.updatedAt).format('YYYY-MM-DD; HH:MM:ss')}
+                  </p>
                 </div>
               </div>
             </div>
             <div
-              className='card w-full bg-base-100 p-6 mt-5'
+              className='card w-full bg-white p-6 mt-5'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <h3 className='subheadline-s text-color-1'>Hasil Grading</h3>
@@ -272,7 +290,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL TANDAN
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>12</p>
+                  <p className='body-m-b text-color-1'>{data?.total_tandon}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -280,7 +298,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DITERIMA
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>10 (80%)</p>
+                  <p className='body-m-b text-color-1'>{data?.total_received}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -288,7 +306,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DIREJECT
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>2 (20%)</p>
+                  <p className='body-m-b text-color-1'>{data?.total_rejected}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -296,7 +314,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DIDENDA
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>5 (50%)</p>
+                  <p className='body-m-b text-color-1'>?</p>
                 </div>
               </div>
             </div>
@@ -304,7 +322,7 @@ const DetailRiwayatPemeriksaanPage = () => {
 
           <div className='basis-2/3'>
             <div
-              className='card w-full bg-base-100 p-4'
+              className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <div>
@@ -318,7 +336,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
 
             <div
-              className='card w-full bg-base-100 p-4 mt-5'
+              className='card w-full bg-white p-4 mt-5'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <div>
@@ -332,7 +350,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
 
             <div
-              className='card w-full bg-base-100 p-4 mt-5'
+              className='card w-full bg-white p-4 mt-5'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <div>

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '@/assets/images/logo.png';
 import Account from '@/assets/images/account.png';
@@ -11,6 +11,8 @@ import {
   MdOutlinePassword,
   MdOutlineLogout,
 } from 'react-icons/md';
+import Button from './Button';
+import { logoutUser } from '@/services/auth';
 
 const navbarItems = [
   {
@@ -33,6 +35,8 @@ const navbarItems = [
 const Navbar = () => {
   const location = useLocation();
   const isActive = (path) => location.pathname.includes(path);
+
+  const navigate = useNavigate();
 
   return (
     <div className='navbar max-h-16 p-4'>
@@ -75,35 +79,31 @@ const Navbar = () => {
             className='dropdown-content menu bg-white rounded-box z-[1] w-52 p-2 shadow'
           >
             <li>
-              <Link to='/change-password'>
-                <MdOutlinePassword className='text-xl text-color-2' />{' '}
+              <Button
+                variant='primary-outline'
+                size='lg'
+                full
+                className='border-none flex items-center justify-start'
+                onClick={() => navigate('/profile')}
+              >
+                <MdOutlinePassword className='text-xl text-color-2' />
                 <span>Change Password</span>
-              </Link>
+              </Button>
             </li>
             <li>
-              <Link>
-                <MdOutlineLogout className='text-xl text-color-2' />{' '}
+              <Button
+                variant='primary-outline'
+                size='lg'
+                full
+                className='border-none flex items-center justify-start'
+                onClick={logoutUser}
+              >
+                <MdOutlineLogout className='text-xl text-color-2' />
                 <span>Logout</span>
-              </Link>
+              </Button>
             </li>
           </ul>
         </div>
-        {/* <img src={Account} alt='profile account' width={32} height={32} />
-        <ul className='menu menu-horizontal px-1'>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className='bg-white rounded-t-none p-2'>
-                <li>
-                  <a>Link 1</a>
-                </li>
-                <li>
-                  <a>Link 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-        </ul> */}
       </div>
     </div>
   );

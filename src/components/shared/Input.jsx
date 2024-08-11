@@ -1,5 +1,6 @@
 import React from 'react';
-import { joinClassnames } from '@/utils/global';
+import { joinClassnames } from '@/utils/common';
+
 
 const inputSizes = {
   md: 'body-s-r h-8',

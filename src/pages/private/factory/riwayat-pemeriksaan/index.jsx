@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -11,83 +11,24 @@ import {
   MdOutlineVisibility,
 } from 'react-icons/md';
 
+import { useGetWithPost } from '@/services/use-services';
+
 import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
 import CustomTable from '@/components/shared/CustomTable';
 
-const data = Array.from({ length: 50 }).map((_, index) => ({
-  no: index + 1,
-  waktu: '05/09/2024, 13:08:01',
-  vendor: 'PT Abadi Jaya',
-  suratJalan: 'AXX235',
-  platKendaraan: 'B 1253 XXX',
-  totalTandan: 600,
-  ditolak: '15%',
-  diterima: '15%',
-  didenda: '15%',
-}));
-
-const columnHelper = createColumnHelper();
-
-const columns = [
-  columnHelper.accessor('no', {
-    header: 'NO',
-    cell: (info) => <div>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor('waktu', {
-    header: 'WAKTU',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('vendor', {
-    header: 'VENDOR',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('suratJalan', {
-    header: 'SURAT JALAN',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('platKendaraan', {
-    header: 'PLAT KENDARAAN',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('totalTandan', {
-    header: 'TOTAL TANDAN',
-    cell: (info) => <div className=''>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor('ditolak', {
-    header: 'DITOLAK',
-    cell: (info) => <div className=''>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor('diterima', {
-    header: 'DITERIMA',
-    cell: (info) => <div className=''>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor('didenda', {
-    header: 'DIDENDA',
-    cell: (info) => <div className=''>{info.getValue()}</div>,
-  }),
-  columnHelper.display({
-    id: 'actions',
-    cell: () => {
-      const navigate = useNavigate();
-
-      return (
-        <div className='flex justify-end gap-4'>
-          <Button
-            className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-            size='lg'
-            onClick={() => navigate('1')}
-          >
-            <MdOutlineVisibility className='text-lg' />
-            Detail
-          </Button>
-        </div>
-      );
-    },
-  }),
-];
+import dayjs from 'dayjs';
 
 const RiwayatPemeriksaanPage = () => {
+  const [searchParams] = useSearchParams();
+  const factoryId = searchParams.get('factory');
+
+  const { data, loading, refetch } = useGetWithPost(
+    '/v1/inspection-history',
+    {},
+    false
+  );
+
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
 
@@ -97,17 +38,84 @@ const RiwayatPemeriksaanPage = () => {
     setIsDrawerFilterOpen(!isDrawerFilterOpen);
   };
 
+  // table column
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.accessor('no', {
+      header: <div className='text-center'>NO</div>,
+      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+      size: 20,
+    }),
+    columnHelper.accessor('updatedAt', {
+      header: 'WAKTU',
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:MM:ss'),
+    }),
+    columnHelper.accessor('vendor', {
+      header: 'VENDOR',
+      cell: (info) => info.getValue().name,
+    }),
+    columnHelper.accessor('waybill_number', {
+      header: 'SURAT JALAN',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('vehicle_number', {
+      header: 'PLAT KENDARAAN',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('total_tandon', {
+      header: 'TOTAL TANDAN',
+      cell: (info) => <div className=''>{info.getValue()}</div>,
+    }),
+    columnHelper.accessor('total_rejected', {
+      header: 'DITOLAK',
+      cell: (info) => <div className=''>{info.getValue()}</div>,
+    }),
+    columnHelper.accessor('diterima', {
+      header: 'DITERIMA',
+      cell: (info) => <div className=''>{info.getValue() || '-'}</div>,
+    }),
+    columnHelper.accessor('didenda', {
+      header: 'DIDENDA',
+      cell: (info) => <div className=''>{info.getValue() || '-'}</div>,
+    }),
+    columnHelper.display({
+      id: 'actions',
+      cell: (info) => {
+        const navigate = useNavigate();
+
+        return (
+          <div className='flex justify-end gap-4'>
+            <Button
+              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
+              size='lg'
+              onClick={() =>
+                navigate(`${info.row.original._id}?factory=${factoryId}`)
+              }
+            >
+              <MdOutlineVisibility className='text-lg' />
+              Detail
+            </Button>
+          </div>
+        );
+      },
+    }),
+  ];
+
+  useEffect(() => {
+    refetch({ factory: [factoryId] });
+  }, []);
+
   return (
     <div>
       <header>
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik A
+              Pabrik {data && data[0]?.factory.name}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='font-semibold text-3xl text-color-1'>
-              Riwayat Pemeriksaan A
+              Riwayat Pemeriksaan
             </h2>
           </div>
           <div className='flex gap-4'>
@@ -147,11 +155,13 @@ const RiwayatPemeriksaanPage = () => {
           </div>
         </div>
         <div className='bg-white rounded-2xl p-4 overflow-x-auto h-full'>
-          <CustomTable
-            dataTable={data}
-            columns={columns}
-            showPagination={true}
-          />
+          {data && (
+            <CustomTable
+              dataTable={data}
+              columns={columns}
+              showPagination={true}
+            />
+          )}
         </div>
 
         <DrawerFilterRiwayat

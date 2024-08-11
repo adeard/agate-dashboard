@@ -1,26 +1,7 @@
 import axios from 'axios';
+import { getToken } from '@/utils/storages';
 
-import { getToken, removeToken } from '@/utils/storages';
-
-const mode = process.env.NODE_ENV;
-
-function generateHost(withSuffix = false) {
-  if (window) {
-    return (
-      (window.location.host.includes('ngrok') ? 'https://' : 'http://') +
-      window.location.host +
-      (withSuffix ? '/api/v1' : '')
-    );
-  } else {
-    return window.location.host;
-  }
-}
-
-export let BASE_URL =
-  mode === 'development'
-    ? import.meta.env.VITE_REACT_APP_API_URL
-    : generateHost(true);
-// export let BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
+export let BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 const instance = axios.create({
   baseURL: BASE_URL,
@@ -44,10 +25,7 @@ instance.interceptors.request.use(function (config) {
 const defaultError = {
   code: 500,
   status: 'error',
-  message: {
-    title: 'Error Fetching',
-    m: 'Failed to fetch data. Please contact developer.',
-  },
+  message: 'Failed to fetch data. Please contact developer.',
 };
 
 instance.interceptors.response.use(
@@ -59,17 +37,16 @@ instance.interceptors.response.use(
       return Promise.reject('request canceled');
     }
 
-    if (err.response.status === 401) {
-      console.log({ err });
-      localStorage.clear();
-      window.location.replace('/app/auth/login');
-    }
     if (err.response && err.response.data) {
+      if (err.response.status === 401) {
+        clearStorages();
+        location.reload();
+      }
       return Promise.reject(err.response.data);
     } else {
       return Promise.reject(defaultError);
     }
-  },
+  }
 );
 
 export const formDataInstance = axios.create({
@@ -110,7 +87,7 @@ formDataInstance.interceptors.response.use(
     } else {
       return Promise.reject(defaultError);
     }
-  },
+  }
 );
 
 export default instance;

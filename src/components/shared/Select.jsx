@@ -1,7 +1,8 @@
 import React from 'react';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 
-import { joinClassnames } from '@/utils/global';
+import { joinClassnames } from '@/utils/common';
+
 
 const selectSizes = {
   md: 'body-s-r h-8',
@@ -28,7 +29,7 @@ const Select = ({
         className={joinClassnames([
           selectSizes[size],
           'w-full rounded-md border border-primary-3 bg-transparent pl-3 pr-14 appearance-none',
-          value ? 'text-black' : 'text-color-3',
+          (value || value === 0) ? 'text-black' : 'text-color-3',
           full ? 'w-full' : 'w-[fit]',
           className,
           disabled && 'cursor-not-allowed !bg-primary-5',

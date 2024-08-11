@@ -7,20 +7,45 @@ import InputWithIcon from '@/components/shared/InputWithIcon';
 
 import { useForm } from '@tanstack/react-form';
 
+import { showNotification } from '@/utils/common';
+import { setToken } from '@/utils/storages';
+import { postLogin } from '@/services/auth';
+
 import Logo from '@/assets/images/logo.png';
 
 const LoginPage = () => {
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm({
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      handleLogin(value);
     },
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const handleLogin = async (payload) => {
+    setLoadingSubmit(true);
+    try {
+      const res = await postLogin(payload);
+      const token = res?.data?.access_token?.replace('Bearer ', '');
+
+      if (token) {
+        setToken(token);
+        window.location.replace('/');
+        showNotification('success', 'Berhasil login');
+      }
+    } catch (err) {
+      console.log(err.message.m);
+      showNotification('error', err.message.title);
+      setLoadingSubmit(false);
+    } finally {
+      setLoadingSubmit(false);
+    }
+  };
 
   return (
     <div className='flex min-h-screen justify-end login-bg'>
@@ -39,16 +64,16 @@ const LoginPage = () => {
               </div>
               <div className='w-full max-w-sm space-y-2'>
                 <form.Field
-                  name='username'
+                  name='email'
                   children={(field) => (
                     <div>
                       <label className='label !pl-0' htmlFor={field.name}>
                         <span className='label-text body-s-b text-color-1'>
-                          Username
+                          Email
                         </span>
                       </label>
                       <Input
-                        placeholder='@username'
+                        placeholder='Enter email'
                         full
                         size='lg'
                         name={field.name}
@@ -90,6 +115,7 @@ const LoginPage = () => {
                     className='button-l mt-4'
                     full
                     onClick={form.handleSubmit}
+                    loading={loadingSubmit}
                   >
                     Login
                   </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import {
   flexRender,
@@ -91,10 +91,10 @@ const renderPageButtons = (table) => {
 const CustomTable = ({
   dataTable,
   columns,
-  footerData,
+  footerData = null,
   showPagination = false,
 }) => {
-  const [data] = useState(() => [...dataTable]);
+  const [data] = useMemo(() => [dataTable]);
 
   const table = useReactTable({
     data,

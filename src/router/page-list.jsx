@@ -30,6 +30,10 @@ const pageList = {
       path: '/user-access',
       component: lazy(() => import('@/pages/private/user-access')),
     },
+    {
+      path: '/profile',
+      component: lazy(() => import('@/pages/private/profile')),
+    },
   ],
   auth: [
     {

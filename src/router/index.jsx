@@ -40,8 +40,7 @@ const PrivateLayout = () => {
   };
 
   return token ? (
-    // <Outlet context={{ userData }} />
-    <Outlet context={{}} />
+    <Outlet context={{ userData }} />
   ) : (
     <Navigate to='login' replace={true} />
   );

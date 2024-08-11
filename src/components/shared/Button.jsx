@@ -1,5 +1,6 @@
 import React from 'react';
-import { joinClassnames } from '@/utils/global';
+import { joinClassnames } from '@/utils/common';
+
 
 const buttonVariants = {
   primary: 'bg-primary-1 text-color-4 hover:bg-primary-2 px-3',

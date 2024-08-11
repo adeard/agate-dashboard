@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from './utils/storages';
 
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   const navigate = useNavigate();
   const token = getToken();
@@ -16,6 +19,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <ToastContainer />
       <MainRouter />
     </AuthProvider>
   );

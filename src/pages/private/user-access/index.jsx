@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
@@ -6,97 +6,116 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { MdOutlineFilterAlt, MdOutlineEdit } from 'react-icons/md';
 import { IoMdAdd } from 'react-icons/io';
 
+import { useGet } from '@/services/use-services';
+
 import Button from '@/components/shared/Button';
-import DrawerAddEditFactory from './components/DrawerAddEditFactory';
-import DrawerFilterFactory from './components/DrawerFilterFactory';
+import DrawerFilterUser from './components/DrawerFilterUser';
+import DrawerFormUser from './components/DrawerFormUser';
 import CustomTable from '@/components/shared/CustomTable';
+import ModalFactoryAccess from './components/ModalFactoryAccess';
 
-const data = Array.from({ length: 50 }).map((_, index) => ({
-  no: index + 1,
-  name: 'Aditya Ferry',
-  email: 'Adityaferry@gmail.com',
-  status: index,
-  factoryAccess: <p className='underline hover:cursor-pointer'>Akses Pabrik</p>,
-}));
+const UserAccessPage = () => {
+  const navigate = useNavigate();
 
-const columnHelper = createColumnHelper();
+  const { data, loading, refetch } = useGet('/v1/user');
 
-const columns = [
-  columnHelper.accessor('no', {
-    header: <div className='text-center'>NO</div>,
-    cell: (info) => <div className='text-center'>{info.getValue()}</div>,
-    size: 20,
-  }),
-  columnHelper.accessor('name', {
-    header: 'NAMA',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('email', {
-    header: 'EMAIL',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('status', {
-    header: 'STATUS',
-    cell: (info) => (
-      <div>
-        {info.getValue() % 2 === 0 ? (
-          <span className='badge bg-[#E8F8E4] text-[#299300] rounded-md'>
-            AKTIF
-          </span>
-        ) : (
-          <span className='badge bg-[#FEECEA] text-[#C93532] rounded-md'>
-            TIDAK AKTIF
-          </span>
-        )}
-      </div>
-    ),
-  }),
-  columnHelper.accessor('factoryAccess', {
-    header: 'AKSES PABRIK',
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.display({
-    id: 'actions',
-    cell: () => {
-      const navigate = useNavigate();
+  const idDrawerFilterUserAccess = 'DrawerFilterUserAccess';
+  const [isDrawerFilterUserAccessOpen, setIsDrawerFilterUserAccessOpen] =
+    useState(false);
 
-      return (
+  const idDrawerAddUserAccess = 'DrawerAddUserAccess';
+  const [isDrawerAddUserAccessOpen, setIsDrawerAddUserAccessOpen] =
+    useState(false);
+
+  const [selectedData, setSelectedData] = useState(null);
+
+  const idDrawerEditUserAccess = 'DrawerEditAccess';
+  const [isDrawerEditAccessOpen, setIsDrawerEditAccessOpen] = useState(false);
+
+  const toggleDrawerFilter = () => {
+    const drawerElement = document.getElementById(idDrawerFilterUserAccess);
+    drawerElement.checked = true;
+    setIsDrawerFilterUserAccessOpen(!isDrawerFilterUserAccessOpen);
+  };
+
+  const toggleDrawerAdd = () => {
+    const drawerElement = document.getElementById(idDrawerAddUserAccess);
+    drawerElement.checked = true;
+    setIsDrawerAddUserAccessOpen(!isDrawerAddUserAccessOpen);
+  };
+
+  const toggleDrawerEdit = (data) => {
+    setSelectedData(data);
+    const drawerElement = document.getElementById(idDrawerEditUserAccess);
+    drawerElement.checked = true;
+    setIsDrawerEditAccessOpen(!isDrawerEditAccessOpen);
+  };
+
+  const dialogFactoryAccessRef = useRef(null);
+  const handleOpenModalFactoryAccess = (data) => {
+    setSelectedData(data);
+    dialogFactoryAccessRef.current.showModal();
+  };
+
+  // table column
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.accessor('no', {
+      header: <div className='text-center'>NO</div>,
+      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+      size: 20,
+    }),
+    columnHelper.accessor('full_name', {
+      header: 'NAMA',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('email', {
+      header: 'EMAIL',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('status', {
+      header: 'STATUS',
+      cell: (info) => (
+        <>
+          {info.getValue() === 0 ? (
+            <div className='badge bg-[#FEECEA] text-[#C93532] rounded-md'>
+              TIDAK AKTIF
+            </div>
+          ) : (
+            <div className='badge bg-[#E8F8E4] text-[#299300] rounded-md'>
+              AKTIF
+            </div>
+          )}
+        </>
+      ),
+    }),
+    columnHelper.accessor('factoryAccess', {
+      header: 'AKSES PABRIK',
+      cell: (info) => (
+        <p
+          className='underline hover:cursor-pointer'
+          onClick={() => handleOpenModalFactoryAccess(info.row.original)}
+        >
+          Akses Pabrik
+        </p>
+      ),
+    }),
+    columnHelper.display({
+      id: 'actions',
+      cell: (info) => (
         <div className='flex justify-end gap-4'>
           <Button
             className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
             size='lg'
-            onClick={() => navigate('1')}
+            onClick={() => toggleDrawerEdit(info.row.original)}
           >
             <MdOutlineEdit className='text-lg' />
             Edit
           </Button>
         </div>
-      );
-    },
-  }),
-];
-
-const UserAccessPage = () => {
-  const navigate = useNavigate();
-
-  const idDrawerFilterFactory = 'DrawerFilterFactory';
-  const [isDrawerFilterFactoryOpen, setIsDrawerFilterFactoryOpen] =
-    useState(false);
-  const idDrawerAddEditFactory = 'DrawerAddEditFactory';
-  const [isDrawerAddEditFactoryOpen, setIsDrawerAddEditFactoryOpen] =
-    useState(false);
-
-  const toggleDrawerFilter = () => {
-    const drawerElement = document.getElementById(idDrawerFilterFactory);
-    drawerElement.checked = true;
-    setIsDrawerFilterFactoryOpen(!isDrawerFilterFactoryOpen);
-  };
-
-  const toggleDrawerAddEdit = () => {
-    const drawerElement = document.getElementById(idDrawerAddEditFactory);
-    drawerElement.checked = true;
-    setIsDrawerAddEditFactoryOpen(!isDrawerAddEditFactoryOpen);
-  };
+      ),
+    }),
+  ];
 
   return (
     <div>
@@ -116,7 +135,7 @@ const UserAccessPage = () => {
             <Button
               size='lg'
               className='flex items-center '
-              onClick={toggleDrawerAddEdit}
+              onClick={toggleDrawerAdd}
             >
               <IoMdAdd className='text-2xl mr-2' />
               Add
@@ -126,23 +145,40 @@ const UserAccessPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 overflow-x-auto h-full'>
-          <CustomTable
-            dataTable={data}
-            columns={columns}
-            showPagination={true}
-          />
+          {data && (
+            <CustomTable
+              dataTable={data}
+              columns={columns}
+              showPagination={true}
+            />
+          )}
         </div>
 
-        <DrawerFilterFactory
-          idDrawer={idDrawerFilterFactory}
-          isDrawerOpen={isDrawerFilterFactoryOpen}
-          closeDrawer={() => setIsDrawerFilterFactoryOpen(false)}
+        <DrawerFilterUser
+          idDrawer={idDrawerFilterUserAccess}
+          isDrawerOpen={isDrawerFilterUserAccessOpen}
+          closeDrawer={() => setIsDrawerFilterUserAccessOpen(false)}
         />
 
-        <DrawerAddEditFactory
-          idDrawer={idDrawerAddEditFactory}
-          isDrawerOpen={isDrawerAddEditFactoryOpen}
-          closeDrawer={() => setIsDrawerAddEditFactoryOpen(false)}
+        <DrawerFormUser
+          idDrawer={idDrawerAddUserAccess}
+          isDrawerOpen={isDrawerAddUserAccessOpen}
+          closeDrawer={() => setIsDrawerAddUserAccessOpen(false)}
+          refetch={refetch}
+        />
+
+        <DrawerFormUser
+          isEdit={true}
+          idDrawer={idDrawerEditUserAccess}
+          isDrawerOpen={isDrawerEditAccessOpen}
+          closeDrawer={() => setIsDrawerEditAccessOpen(false)}
+          refetch={refetch}
+          data={selectedData}
+        />
+
+        <ModalFactoryAccess
+          modalRef={dialogFactoryAccessRef}
+          data={selectedData}
         />
       </main>
     </div>
