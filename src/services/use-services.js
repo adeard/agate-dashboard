@@ -23,8 +23,8 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
         return;
       }
 
-      setSearch({ page: 0, limit: 10, ...payload });
-      _fetchData({ page: 0, limit: 10, ...payload });
+      setSearch({ ...payload });
+      _fetchData({ ...payload });
     }
   }, [shouldFetch, pagination]);
 
@@ -176,12 +176,11 @@ export const useGetWithPost = (
         return;
       }
 
-      saveQuery &&
-        setSearch({ page: 0, limit: 10, ...payload }, { replace: true });
+      saveQuery && setSearch({ ...payload }, { replace: true });
       if (refetch) {
-        _fetchData({}, { page: 0, limit: 10, ...payload });
+        _fetchData({}, { ...payload });
       } else {
-        _fetchData({}, { page: 0, limit: 10, ...payload });
+        _fetchData({}, { ...payload });
       }
     }
   }, [shouldFetch, pagination, saveQuery, refetch]);

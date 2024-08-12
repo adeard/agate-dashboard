@@ -8,6 +8,7 @@ import {
   MdOutlineFactory,
   MdOutlineSupervisorAccount,
   MdKeyboardArrowDown,
+  MdOutlinePerson2,
   MdOutlinePassword,
   MdOutlineLogout,
 } from 'react-icons/md';
@@ -85,6 +86,18 @@ const Navbar = () => {
                 full
                 className='border-none flex items-center justify-start'
                 onClick={() => navigate('/profile')}
+              >
+                <MdOutlinePerson2 className='text-xl text-color-2' />
+                <span>Profile</span>
+              </Button>
+            </li>
+            <li>
+              <Button
+                variant='primary-outline'
+                size='lg'
+                full
+                className='border-none flex items-center justify-start'
+                onClick={() => navigate('/profile/change-password')}
               >
                 <MdOutlinePassword className='text-xl text-color-2' />
                 <span>Change Password</span>

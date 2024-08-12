@@ -47,7 +47,7 @@ const ProfilePage = () => {
       <header>
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <h1 className='headline-s'>Profile</h1>
-          <div className='flex gap-4'>
+          {/* <div className='flex gap-4'>
             <Button
               variant='primary-outline'
               size='lg'
@@ -59,7 +59,7 @@ const ProfilePage = () => {
             <Button size='lg' onClick={handleSave}>
               Simpan
             </Button>
-          </div>
+          </div> */}
         </div>
       </header>
       <main>
@@ -69,7 +69,11 @@ const ProfilePage = () => {
         >
           <div className='flex items-center justify-between border-2 border-transparent border-b-primary-4 p-5'>
             <h2 className='subheadline-s text-color-1'>User Account</h2>
-            <Button size='lg' className='flex items-center gap-2'>
+            <Button
+              size='lg'
+              className='flex items-center gap-2'
+              onClick={() => navigate('change-password')}
+            >
               <IoMdLock className='text-xl' /> Change Password
             </Button>
           </div>
@@ -90,6 +94,7 @@ const ProfilePage = () => {
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
+                    readOnly
                   />
                 </div>
               )}
@@ -104,12 +109,14 @@ const ProfilePage = () => {
                     </span>
                   </label>
                   <Input
+                    type='email'
                     placeholder='Email'
                     size='lg'
                     full
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
+                    readOnly
                   />
                 </div>
               )}

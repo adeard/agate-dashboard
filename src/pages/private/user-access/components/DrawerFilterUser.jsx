@@ -4,9 +4,9 @@ import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-import Select from '@/components/shared/Select';
 
 import { useForm } from '@tanstack/react-form';
+import CustomSelect from '@/components/shared/CustomSelect';
 
 const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
   const form = useForm({
@@ -144,15 +144,17 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
               <form.Field
                 name='status'
                 children={(field) => (
-                  <Select
+                  <CustomSelect
                     placeholder='Status'
                     className='body-m-r'
                     name={field.name}
                     value={field.state.value}
                     options={[]}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                      form.handleSubmit();
+                    onChange={(selectedOption) => {
+                      const selectedValue = selectedOption
+                        ? selectedOption.value
+                        : null;
+                      field.handleChange(selectedValue);
                     }}
                     size='lg'
                     full

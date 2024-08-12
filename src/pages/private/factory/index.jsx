@@ -76,7 +76,7 @@ const FactoryPage = () => {
               className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
               size='lg'
               onClick={() =>
-                navigate(`riwayat-pemeriksaan?factory=${info.row.original._id}`)
+                navigate(`${info.row.original._id}/riwayat-pemeriksaan`)
               }
             >
               Riwayat Pemeriksaan
@@ -84,9 +84,7 @@ const FactoryPage = () => {
             <Button
               className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
               size='lg'
-              onClick={() =>
-                navigate(`vendor?factory=${info.row.original._id}`)
-              }
+              onClick={() => navigate(`${info.row.original._id}/vendor`)}
             >
               Daftar Vendor
             </Button>
@@ -132,7 +130,13 @@ const FactoryPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 overflow-x-auto h-[calc(100vh-218px)]'>
-          {data && <CustomTable dataTable={data} columns={columns} />}
+          {data && (
+            <CustomTable
+              dataTable={data}
+              columns={columns}
+              showPagination={true}
+            />
+          )}
         </div>
 
         <DrawerFilterFactory

@@ -7,7 +7,7 @@ const MainLayout = () => {
     <div className='!min-h-screen'>
       <Suspense
         fallback={
-          <div className='h-semiFull flex w-full items-center justify-center'>
+          <div className='h-screen flex w-full items-center justify-center'>
             <span className='loading loading-spinner loading-lg' />
           </div>
         }

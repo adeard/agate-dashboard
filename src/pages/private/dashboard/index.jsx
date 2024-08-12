@@ -1,9 +1,18 @@
-import React from 'react'
+import { useEffect, useRef } from 'react';
 
-const index = () => {
-  return (
-    <div>index</div>
-  )
-}
+import ModalChoiceDashboard from './components/ModalChoiceDashboard';
 
-export default index
+const DashboardPage = () => {
+  const dialogChoiceDashboardRef = useRef(null);
+  const handleOpenModalChoiceDashboard = () => {
+    dialogChoiceDashboardRef.current.showModal();
+  };
+
+  useEffect(() => {
+    handleOpenModalChoiceDashboard();
+  }, []);
+
+  return <ModalChoiceDashboard modalRef={dialogChoiceDashboardRef} />;
+};
+
+export default DashboardPage;

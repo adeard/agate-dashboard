@@ -9,7 +9,7 @@ import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-import Select from '@/components/shared/Select';
+import CustomSelect from '@/components/shared/CustomSelect';
 import ModalResponseSave from './ModalResponseSave';
 
 const DrawerFormUser = ({
@@ -63,7 +63,7 @@ const DrawerFormUser = ({
             email: value.email,
             full_name: value.full_name,
             status: value.status,
-            access_factory: [value.access_factory],
+            access_factory: value.access_factory,
           });
       // openModalResponseSave();
     },
@@ -207,18 +207,21 @@ const DrawerFormUser = ({
                 <form.Field
                   name='access_factory'
                   children={(field) => (
-                    <Select
+                    <CustomSelect
                       placeholder='Pabrik'
-                      className='body-m-r'
+                      className='body-m-r !h-full'
                       name={field.name}
-                      value={field.state.value}
                       options={optionsFactory || []}
-                      onChange={(e) => {
-                        field.handleChange(e.target.value);
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions
+                          ? selectedOptions.map((option) => option.value)
+                          : [];
+                        field.handleChange(selectedValues);
                       }}
                       size='lg'
                       full
                       disabled={!form.state.values.factoryCheckbox}
+                      multiple
                     />
                   )}
                 />
@@ -246,7 +249,7 @@ const DrawerFormUser = ({
               <form.Field
                 name='status'
                 children={(field) => (
-                  <Select
+                  <CustomSelect
                     placeholder='Status'
                     className='body-m-r'
                     name={field.name}
@@ -261,8 +264,11 @@ const DrawerFormUser = ({
                         value: 1,
                       },
                     ]}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
+                    onChange={(selectedOption) => {
+                      const selectedValue = selectedOption
+                        ? selectedOption.value
+                        : null;
+                      field.handleChange(selectedValue);
                     }}
                     size='lg'
                     full

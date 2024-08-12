@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -11,7 +16,7 @@ import {
   MdOutlineVisibility,
 } from 'react-icons/md';
 
-import { useGetWithPost } from '@/services/use-services';
+import { useGet, useGetWithPost } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
@@ -20,14 +25,11 @@ import CustomTable from '@/components/shared/CustomTable';
 import dayjs from 'dayjs';
 
 const RiwayatPemeriksaanPage = () => {
-  const [searchParams] = useSearchParams();
-  const factoryId = searchParams.get('factory');
+  const { factoryId } = useParams();
 
-  const { data, loading, refetch } = useGetWithPost(
-    '/v1/inspection-history',
-    {},
-    false
-  );
+  const { data, loading, refetch } = useGet('/v1/inspection-data', {
+    factory: factoryId,
+  });
 
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
@@ -50,11 +52,11 @@ const RiwayatPemeriksaanPage = () => {
       header: 'WAKTU',
       cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:MM:ss'),
     }),
-    columnHelper.accessor('vendor', {
+    columnHelper.accessor('vendor_name', {
       header: 'VENDOR',
-      cell: (info) => info.getValue().name,
+      cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('waybill_number', {
+    columnHelper.accessor('delivery_number', {
       header: 'SURAT JALAN',
       cell: (info) => info.getValue(),
     }),
@@ -62,21 +64,21 @@ const RiwayatPemeriksaanPage = () => {
       header: 'PLAT KENDARAAN',
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('total_tandon', {
+    columnHelper.accessor('grading_result.total_tandan', {
       header: 'TOTAL TANDAN',
       cell: (info) => <div className=''>{info.getValue()}</div>,
     }),
-    columnHelper.accessor('total_rejected', {
+    columnHelper.accessor('grading_result.total_rejected', {
       header: 'DITOLAK',
       cell: (info) => <div className=''>{info.getValue()}</div>,
     }),
-    columnHelper.accessor('diterima', {
+    columnHelper.accessor('grading_result.total_accepted', {
       header: 'DITERIMA',
-      cell: (info) => <div className=''>{info.getValue() || '-'}</div>,
+      cell: (info) => <div className=''>{info.getValue()}</div>,
     }),
-    columnHelper.accessor('didenda', {
+    columnHelper.accessor('grading_result.total_fined', {
       header: 'DIDENDA',
-      cell: (info) => <div className=''>{info.getValue() || '-'}</div>,
+      cell: (info) => <div className=''>{info.getValue()}</div>,
     }),
     columnHelper.display({
       id: 'actions',
@@ -88,9 +90,7 @@ const RiwayatPemeriksaanPage = () => {
             <Button
               className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
               size='lg'
-              onClick={() =>
-                navigate(`${info.row.original._id}?factory=${factoryId}`)
-              }
+              onClick={() => navigate(`${info.row.original._id}`)}
             >
               <MdOutlineVisibility className='text-lg' />
               Detail
@@ -101,9 +101,7 @@ const RiwayatPemeriksaanPage = () => {
     }),
   ];
 
-  useEffect(() => {
-    refetch({ factory: [factoryId] });
-  }, []);
+  console.log(data)
 
   return (
     <div>
@@ -111,7 +109,8 @@ const RiwayatPemeriksaanPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik {data && data[0]?.factory.name}
+              Pabrik
+              {/* {factoryName} */}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='font-semibold text-3xl text-color-1'>

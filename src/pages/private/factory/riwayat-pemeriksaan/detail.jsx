@@ -12,60 +12,6 @@ import CustomTable from '@/components/shared/CustomTable';
 import ModalPreviewImage from '../components/ModalPreviewImage';
 import dayjs from 'dayjs';
 
-const dataDiterima = [
-  {
-    id: 1,
-    title: 'Kurang Matang',
-    total: 1,
-    normal: 5,
-    pest: 5,
-    longStash: 5,
-    '3-5kg': 5,
-  },
-  {
-    id: 2,
-    title: 'Matang',
-    total: 1,
-    normal: 5,
-    pest: 5,
-    longStash: 5,
-    '3-5kg': 5,
-  },
-  {
-    id: 3,
-    title: 'Lewat Matang',
-    total: 1,
-    normal: 5,
-    pest: 5,
-    longStash: 5,
-    '3-5kg': 5,
-  },
-];
-
-const dataDitolak = [
-  {
-    id: 1,
-    title: 'Mentah',
-    total: 1,
-    normal: 5,
-    '<3kg': 5,
-  },
-  {
-    id: 2,
-    title: 'Janjang Kosong',
-    total: 1,
-    normal: 5,
-    '<3kg': 5,
-  },
-  {
-    id: 3,
-    title: 'Buah < 3kg',
-    total: 1,
-    normal: 5,
-    '<3kg': 5,
-  },
-];
-
 const columnHelper = createColumnHelper();
 
 const columnsDiterima = [
@@ -160,35 +106,98 @@ const columnsDitolak = [
   }),
 ];
 
-const totalRowDiterima = {
-  title: <div className='text-left'>Total</div>,
-  total: dataDiterima.reduce((acc, row) => acc + row.total, 0),
-  normal: dataDiterima.reduce((acc, row) => acc + row.normal, 0),
-  pest: dataDiterima.reduce((acc, row) => acc + row.pest, 0),
-  longStash: dataDiterima.reduce((acc, row) => acc + row.longStash, 0),
-  '3-5kg': dataDiterima.reduce((acc, row) => acc + row['3-5kg'], 0),
-};
-
-const totalRowDitolak = {
-  title: <div className='text-left'>Total</div>,
-  total: dataDitolak.reduce((acc, row) => acc + row.total, 0),
-  normal: dataDitolak.reduce((acc, row) => acc + row.normal, 0),
-  '<3kg': dataDitolak.reduce((acc, row) => acc + row['<3kg'], 0),
-};
+const columnsDidenda = [
+  columnHelper.accessor('title', {
+    header: () => <div className='font-bold text-color-1'>Tandan Ditolak</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE]'>{info.getValue()}</div>
+    ),
+    size: 400,
+  }),
+  columnHelper.accessor('fined', {
+    header: () => <div className='text-center'>DENDA</div>,
+    cell: (info) => (
+      <div className='body-m-r text-[#000000DE] !text-center'>
+        {info.getValue()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL KG</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue()}
+      </div>
+    ),
+    size: 20,
+  }),
+];
 
 const DetailRiwayatPemeriksaanPage = () => {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const factoryId = searchParams.get('factory');
+  const { factoryId, historyId } = useParams();
 
-  const { data, loading, refetch } = useGet(`/v1/inspection-history/${id}`);
+  const { data, loading, refetch } = useGet(`/v1/inspection-data/${historyId}`);
 
-  const dialogPreviewImageRef = useRef(null);
-  const openModalPreviewImage = () => {
-    dialogPreviewImageRef.current.showModal();
+  // const dialogPreviewImageRef = useRef(null);
+  // const openModalPreviewImage = () => {
+  //   dialogPreviewImageRef.current.showModal();
+  // };
+
+  const dataDiterima =
+    data &&
+    Object.keys(data?.grading_result.accepted_summary).map((key, index) => ({
+      id: index + 1,
+      title: key,
+      total: data?.grading_result.accepted_summary[key].TOTAL,
+      normal: data?.grading_result.accepted_summary[key].NORMAL,
+      pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
+      longStash: data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
+      '3-5kg':
+        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
+    }));
+
+  const dataDitolak =
+    data &&
+    Object.keys(data?.grading_result.rejected_summary).map((key, index) => ({
+      id: index + 1,
+      title: key,
+      total: data?.grading_result.rejected_summary[key].TOTAL,
+      normal: data?.grading_result.rejected_summary[key].NORMAL,
+      '<3kg':
+        data?.grading_result.rejected_summary[key]['BUAH KECIL DIBAWAH 3KG'],
+    }));
+
+  const dataDidenda =
+    data &&
+    Object.keys(data?.grading_result.fined_summary).map((key, index) => ({
+      id: index + 1,
+      title: key,
+      fined: data?.grading_result.fined_summary[key].DENDA,
+      total: data?.grading_result.fined_summary[key].TOTAL,
+    }));
+
+  const totalRowDiterima = {
+    title: <div className='text-left'>Total</div>,
+    total: dataDiterima?.reduce((acc, row) => acc + row.total, 0),
+    normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
+    pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
+    longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
+    '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
   };
 
-  console.log(data);
+  const totalRowDitolak = {
+    title: <div className='text-left'>Total</div>,
+    total: dataDitolak?.reduce((acc, row) => acc + row.total, 0),
+    normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
+    '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
+  };
+
+  const totalRowDidenda = {
+    title: <div className='text-left'>Total</div>,
+    fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
+    total: dataDidenda?.reduce((acc, row) => acc + row.total, 0),
+  };
 
   return (
     <div>
@@ -196,11 +205,12 @@ const DetailRiwayatPemeriksaanPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik {data && data[0]?.factory.name}
+              Pabrik
+              {/* Pabrik {data && data[0]?.factory.name} */}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <Link
-              to={`/factory/riwayat-pemeriksaan?factory=${factoryId}`}
+              to={`/factory/${factoryId}/riwayat-pemeriksaan`}
               className='font-semibold text-2xl text-color-3'
             >
               Riwayat Pemeriksaan
@@ -233,7 +243,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                       NAMA VENDOR
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>{data?.vendor.name}</p>
+                  <p className='body-m-b text-color-1'>{data?.vendor_name}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -242,7 +252,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.waybill_number}
+                    {data?.delivery_number}
                   </p>
                 </div>
                 <div>
@@ -290,7 +300,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL TANDAN
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>{data?.total_tandon}</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.grading_result.total_tandan}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -298,7 +310,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DITERIMA
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>{data?.total_received}</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.grading_result.total_accepted}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -306,7 +320,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DIREJECT
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>{data?.total_rejected}</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.grading_result.total_rejected}
+                  </p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -314,42 +330,55 @@ const DetailRiwayatPemeriksaanPage = () => {
                       TOTAL DIDENDA
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>?</p>
+                  <p className='body-m-b text-color-1'>
+                    {data?.grading_result.total_fined}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className='basis-2/3'>
-            <div
-              className='card w-full bg-white p-4'
-              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-            >
-              <div>
+            {dataDiterima?.length > 0 && (
+              <div
+                className='card w-full bg-white p-4'
+                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+              >
                 <CustomTable
                   dataTable={dataDiterima}
                   columns={columnsDiterima}
                   footerData={totalRowDiterima}
-                  showPagination={false}
                 />
               </div>
-            </div>
+            )}
 
-            <div
-              className='card w-full bg-white p-4 mt-5'
-              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-            >
-              <div>
+            {dataDitolak?.length > 0 && (
+              <div
+                className='card w-full bg-white p-4 mt-5'
+                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+              >
                 <CustomTable
                   dataTable={dataDitolak}
                   columns={columnsDitolak}
                   footerData={totalRowDitolak}
-                  showPagination={false}
                 />
               </div>
-            </div>
+            )}
 
-            <div
+            {dataDidenda?.length > 0 && (
+              <div
+                className='card w-full bg-white p-4 mt-5'
+                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+              >
+                <CustomTable
+                  dataTable={dataDidenda}
+                  columns={columnsDidenda}
+                  footerData={totalRowDidenda}
+                />
+              </div>
+            )}
+
+            {/* <div
               className='card w-full bg-white p-4 mt-5'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
@@ -391,11 +420,11 @@ const DetailRiwayatPemeriksaanPage = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        <ModalPreviewImage modalRef={dialogPreviewImageRef} />
+        {/* <ModalPreviewImage modalRef={dialogPreviewImageRef} /> */}
       </main>
     </div>
   );
