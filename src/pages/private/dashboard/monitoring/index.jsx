@@ -62,7 +62,7 @@ const DashboardMonitoringPage = () => {
       case 'buah kecil dibawah 5kg':
         return 'Buah 3-5kg';
       default:
-        return label.charAt(0).toUpperCase() + label.slice(1);
+        return label;
     }
   };
 
@@ -130,7 +130,7 @@ const DashboardMonitoringPage = () => {
               <span className='subheadline-l text-color-2'>Truk</span>
             </p>
             <p className='subheadline-m text-color-2'>
-              - <span className='subheadline-s text-color-3'>%</span>
+              100 <span className='subheadline-s text-color-3'>%</span>
             </p>
           </div>
           <div className='bg-white p-5 rounded-xl border border-primary-3 space-y-2'>
@@ -143,7 +143,7 @@ const DashboardMonitoringPage = () => {
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
-              - <span className='subheadline-s text-color-3'>%</span>
+              100 <span className='subheadline-s text-color-3'>%</span>
             </p>
           </div>
           <div className='bg-white p-5 rounded-xl border border-primary-3 space-y-2'>
@@ -156,7 +156,8 @@ const DashboardMonitoringPage = () => {
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
-              - <span className='subheadline-s text-color-3'>%</span>
+              {Number(data?.percent_passed).toFixed(2)}{' '}
+              <span className='subheadline-s text-color-3'>%</span>
             </p>
           </div>
           <div className='bg-white p-5 rounded-xl border border-primary-3 space-y-2'>
@@ -169,7 +170,8 @@ const DashboardMonitoringPage = () => {
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
-              - <span className='subheadline-s text-color-3'>%</span>
+              {Number(data?.percent_rejected).toFixed(2)}{' '}
+              <span className='subheadline-s text-color-3'>%</span>
             </p>
           </div>
           <div className='bg-white p-5 rounded-xl border border-primary-3 space-y-2'>
@@ -182,7 +184,8 @@ const DashboardMonitoringPage = () => {
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
-              - <span className='subheadline-s text-color-3'>%</span>
+              {Number(data?.percent_fined).toFixed(2)}{' '}
+              <span className='subheadline-s text-color-3'>%</span>
             </p>
           </div>
         </div>
@@ -240,7 +243,7 @@ const DashboardMonitoringPage = () => {
                           className='body-m-r group hover text-color-2'
                         >
                           <td width={20}>{index + 1}.</td>
-                          <td className='text-color-1'>
+                          <td className='text-color-1 capitalize'>
                             {getDisplayLabel(item.label)}
                           </td>
                           <td width={150}>
@@ -281,7 +284,7 @@ const DashboardMonitoringPage = () => {
                           className='body-m-r group hover text-color-2'
                         >
                           <td width={20}>{index + 1}.</td>
-                          <td className='text-color-1'>
+                          <td className='text-color-1 capitalize'>
                             {getDisplayLabel(item.label)}
                           </td>
                           <td>
@@ -326,7 +329,7 @@ const DashboardMonitoringPage = () => {
                             onClick={toogleDrawerSender}
                           >
                             <td width={20}>{index + 1}.</td>
-                            <td className='text-color-1'>
+                            <td className='text-color-1 capitalize'>
                               {getDisplayLabel(item.label)}
                             </td>
                             <td width={150}>
@@ -368,7 +371,7 @@ const DashboardMonitoringPage = () => {
                           onClick={toogleDrawerSender}
                         >
                           <td width={20}>{index + 1}.</td>
-                          <td className='text-color-1'>
+                          <td className='text-color-1 capitalize'>
                             {getDisplayLabel(item.label)}
                           </td>
                           <td width={150}>
@@ -410,7 +413,7 @@ const DashboardMonitoringPage = () => {
                             onClick={toogleDrawerSender}
                           >
                             <td width={20}>{index + 1}.</td>
-                            <td className='text-color-1'>
+                            <td className='text-color-1 capitalize'>
                               {getDisplayLabel(item.label)}
                             </td>
                             <td width={150}>

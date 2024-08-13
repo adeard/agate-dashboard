@@ -24,6 +24,49 @@ import Charts from '../components/Charts';
 import { fixingCapitalizeWord } from '@/utils/common';
 import ChartsTemp from '../components/ChartsTemp';
 
+const listMenuType = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'main',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'tp',
+  },
+];
+const listMenuTypeInti = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'by_inti_fruits',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'by_inti_fruits_size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'by_inti_fruits_tp',
+  },
+];
+const listMenuTypePlasma = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'by_plasma_fruits',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'by_plasma_fruits_size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'by_plasma_fruits_tp',
+  },
+];
+
 const DashboardDemografiPage = () => {
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
@@ -48,25 +91,11 @@ const DashboardDemografiPage = () => {
     // handleOpenModalFilter();
   }, []);
 
-  const listMenuType = [
-    {
-      label: 'Klasifikasi Utama',
-      value: 'main',
-    },
-    {
-      label: 'Ukuran Buah',
-      value: 'size',
-    },
-    {
-      label: 'Tangkai Panjang',
-      value: 'tp',
-    },
-  ];
-
-  const [selectedClassification, setSelectedClassification] = useState({
-    label: 'Klasifikasi Utama',
-    value: 'main',
-  });
+  const [selectedClassification, setSelectedClassification] = useState(
+    listMenuTypeInti[0]
+  );
+  const [selectedClassificationPlasma, setSelectedClassificationPlasma] =
+    useState(listMenuTypePlasma[0]);
 
   const [selectedRangeCharts, setSelectedRangeCharts] = useState('monthly');
   const listRangeCharts = ['monthly', 'weekly', 'daily'];
@@ -166,7 +195,7 @@ const DashboardDemografiPage = () => {
             <Dropdown
               selected={selectedClassification}
               setSelected={setSelectedClassification}
-              options={listMenuType}
+              options={listMenuTypeInti}
               buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
               arrowPosition='right'
               full
@@ -175,7 +204,7 @@ const DashboardDemografiPage = () => {
           <table className='table'>
             <tbody>
               {data &&
-                data?.by_inti_fruits.map((item, index) => (
+                data?.[selectedClassification['value']].map((item, index) => (
                   <tr key={index} className='body-m-r group hover text-color-2'>
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>
@@ -231,9 +260,9 @@ const DashboardDemografiPage = () => {
               </span>
             </label>
             <Dropdown
-              selected={selectedClassification}
-              setSelected={setSelectedClassification}
-              options={listMenuType}
+              selected={selectedClassificationPlasma}
+              setSelected={setSelectedClassificationPlasma}
+              options={listMenuTypePlasma}
               buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
               arrowPosition='right'
               full
@@ -242,7 +271,7 @@ const DashboardDemografiPage = () => {
           <table className='table'>
             <tbody>
               {data &&
-                data?.by_plasma_fruits.map((item, index) => (
+                data?.[selectedClassificationPlasma["value"]].map((item, index) => (
                   <tr key={index} className='body-m-r group hover text-color-2'>
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>

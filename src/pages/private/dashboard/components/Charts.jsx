@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { Column } from '@ant-design/plots';
 
+const classificationColor = {
+  MENTAH: '#D2E73E', // Warna untuk 'Mentah'
+  'KURANG MATANG': '#A8D140', // Warna untuk 'Kurang Matang'
+  MATANG: '#6FAA3C', // Warna untuk 'Matang'
+  'LEWAT MATANG': '#D0D0D0', // Warna untuk 'Lewat Matang'
+  'JANJANG KOSONG': '#E0E0E0', // Warna untuk 'Janjang Kosong'
+};
+
 const Charts = ({ data, range }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
@@ -17,26 +25,25 @@ const Charts = ({ data, range }) => {
     }));
   };
 
-  const filteredData = data[range]
-    .map((item) => ({
-      ...item,
-      data: item.data.filter((item) => legendStatus[item.name]),
-    }))
-    .filter((item) => item.data.length > 0);
+  const filteredData = data[range].reduce((curr, item) => {
+    return [
+      ...curr,
+      ...item['data'].map((dt) => ({
+        xField: item.title,
+        yField: dt['total'],
+        type: dt['name'],
+      })),
+    ];
+  }, []);
 
-  const result = filteredData.reduce((acc, item) => {
-    acc[item.title] = item.data;
-    return acc;
-  }, {});
-
-  console.log(result);
+  console.log({ filteredData });
 
   const config = {
     data: filteredData,
-    xField: 'title',
-    yField: 'total',
+    xField: 'xField',
+    yField: 'yField',
     legend: false, // Menonaktifkan legend bawaan
-    colorField: 'name',
+    colorField: 'type',
     color: [
       '#D2E73E', // Warna untuk 'Mentah'
       '#A8D140', // Warna untuk 'Kurang Matang'
@@ -44,7 +51,7 @@ const Charts = ({ data, range }) => {
       '#D0D0D0', // Warna untuk 'Lewat Matang'
       '#E0E0E0', // Warna untuk 'Janjang Kosong'
     ],
-    columnWidthRatio: 0.7, // Mengatur lebar kolom
+    columnWidthRatio: 0.2, // Mengatur lebar kolom
     barStyle: {
       radius: [4, 4, 0, 0], // Membulatkan sudut kolom atas
     },
@@ -94,24 +101,31 @@ const Charts = ({ data, range }) => {
     //     },
     //   },
     // },
-    // yAxis: {
-    //   label: {
-    //     style: {
-    //       fontSize: 12,
-    //       fill: '#888888',
-    //     },
-    //     formatter: (val) => `${val}%`, // Format sumbu y menjadi persen
-    //   },
-    //   min: 0,
-    //   max: 100, // Asumsikan sumbu y berdasarkan persentase
-    // },
+    yAxis: {
+      label: {
+        style: {
+          fontSize: 12,
+          fill: '#888888',
+        },
+        formatter: (val) => `${val}%`, // Format sumbu y menjadi persen
+      },
+      min: 0,
+      max: 100, // Asumsikan sumbu y berdasarkan persentase
+    },
   };
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {/* Chart */}
       <div style={{ flex: 4 }}>
-        <Column {...config} />
+        <Column
+          {...config}
+          style={{
+            fill: ({ type }) => {
+              return classificationColor[type];
+            },
+          }}
+        />
       </div>
       {/* Custom Legend */}
       <div style={{ flex: 1, marginLeft: '20px' }}>
