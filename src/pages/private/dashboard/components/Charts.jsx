@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Column } from '@ant-design/plots';
 
 const classificationColor = {
@@ -7,9 +7,12 @@ const classificationColor = {
   MATANG: '#6FAA3C', // Warna untuk 'Matang'
   'LEWAT MATANG': '#D0D0D0', // Warna untuk 'Lewat Matang'
   'JANJANG KOSONG': '#E0E0E0', // Warna untuk 'Janjang Kosong'
+  'BUAH KECIL DIBAWAH 3KG': '#D2E73E', // Warna untuk 'Mentah'
+  'BUAH KECIL DIBAWAH 5KG': '#A8D140', // Warna untuk 'Kurang Matang'
+  'TANGKAI PANJANG': '#6FAA3C', // Warna untuk 'Matang'
 };
 
-const Charts = ({ data, range }) => {
+const Charts = ({ data, range, type, variant = 'inti' }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
     'KURANG MATANG': true,
@@ -17,6 +20,36 @@ const Charts = ({ data, range }) => {
     'LEWAT MATANG': true,
     'JANJANG KOSONG': true,
   });
+
+  useEffect(() => {
+    if (type === 'main') {
+      if (variant === 'inti') {
+        setLegendStatus({
+          MENTAH: true,
+          'KURANG MATANG': true,
+          MATANG: true,
+          'LEWAT MATANG': true,
+          'JANJANG KOSONG': true,
+        });
+      } else {
+        setLegendStatus({
+          MENTAH: true,
+          MATANG: true,
+          'LEWAT MATANG': true,
+          'JANJANG KOSONG': true,
+        });
+      }
+    } else if (type === 'size') {
+      setLegendStatus({
+        'BUAH KECIL DIBAWAH 3KG': true,
+        'BUAH KECIL DIBAWAH 5KG': true,
+      });
+    } else {
+      setLegendStatus({
+        'TANGKAI PANJANG': true,
+      });
+    }
+  }, [type]);
 
   const handleLegendClick = (key) => {
     setLegendStatus((prev) => ({

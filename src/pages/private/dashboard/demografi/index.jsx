@@ -98,9 +98,15 @@ const DashboardDemografiPage = () => {
     useState(listMenuTypePlasma[0]);
 
   const [selectedRangeCharts, setSelectedRangeCharts] = useState('monthly');
+  const [selectedRangeChartsPlasma, setSelectedRangeChartsPlasma] =
+    useState('monthly');
   const listRangeCharts = ['monthly', 'weekly', 'daily'];
 
   const [demographyIntiChartType, setDemographyIntiChartType] = useState({
+    label: 'Klasifikasi Utama',
+    value: 'main',
+  });
+  const [demographyPlasmaChartType, setDemographyPlasmaChartType] = useState({
     label: 'Klasifikasi Utama',
     value: 'main',
   });
@@ -271,22 +277,27 @@ const DashboardDemografiPage = () => {
           <table className='table'>
             <tbody>
               {data &&
-                data?.[selectedClassificationPlasma["value"]].map((item, index) => (
-                  <tr key={index} className='body-m-r group hover text-color-2'>
-                    <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>
-                      {fixingCapitalizeWord(item.label)}
-                    </td>
-                    <td width={70}>
-                      <p className='inline-flex'>
-                        <span className='text-color-1'>
-                          {item.percent.toFixed(2)}
-                        </span>{' '}
-                        <span className='body-s-r'>%</span>
-                      </p>
-                    </td>
-                  </tr>
-                ))}
+                data?.[selectedClassificationPlasma['value']].map(
+                  (item, index) => (
+                    <tr
+                      key={index}
+                      className='body-m-r group hover text-color-2'
+                    >
+                      <td width={20}>{index + 1}.</td>
+                      <td className='text-color-1'>
+                        {fixingCapitalizeWord(item.label)}
+                      </td>
+                      <td width={70}>
+                        <p className='inline-flex'>
+                          <span className='text-color-1'>
+                            {item.percent.toFixed(2)}
+                          </span>{' '}
+                          <span className='body-s-r'>%</span>
+                        </p>
+                      </td>
+                    </tr>
+                  )
+                )}
             </tbody>
           </table>
         </div>
@@ -335,6 +346,58 @@ const DashboardDemografiPage = () => {
             <Charts
               data={data?.by_demography_inti[demographyIntiChartType.value]}
               range={selectedRangeCharts}
+              type={demographyIntiChartType.value}
+              variant='inti'
+            />
+          )}
+
+          {/* <ChartsTemp /> */}
+        </div>
+        <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-16'>
+              <label>
+                <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                  CHART DEMOGRAFI BUAH PLASMA
+                </span>
+              </label>
+              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                {listRangeCharts.map((item, index) => (
+                  <li
+                    key={index}
+                    className={`${
+                      selectedRangeCharts === item
+                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                        : 'text-color-2 font-medium'
+                    } `}
+                    onClick={() => setSelectedRangeChartsPlasma(item)}
+                  >
+                    <button>{fixingCapitalizeWord(item)}</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className='flex items-center body-m-r text-neutrals-5 '>
+              <Dropdown
+                selected={demographyPlasmaChartType}
+                setSelected={setDemographyPlasmaChartType}
+                options={listMenuType}
+                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                arrowPosition='right'
+                full
+              />
+              <div className='divider divider-horizontal my-2 mx-0' />
+              <MdOutlineViewModule className='text-lg' />
+              Table
+            </div>
+          </div>
+
+          {data && (
+            <Charts
+              data={data?.by_demography_plasma[demographyPlasmaChartType.value]}
+              range={selectedRangeChartsPlasma}
+              type={demographyPlasmaChartType.value}
+              variant='plasma'
             />
           )}
 
