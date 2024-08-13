@@ -54,3 +54,11 @@ export const getValueKey = (obj, key) => {
 export const changeToBase64Format = (data) => {
   return `data:image/jpg;base64,${data}`;
 };
+
+export const fixingCapitalizeWord = (string) => {
+  return string
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
