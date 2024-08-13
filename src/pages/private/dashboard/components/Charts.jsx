@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Column } from '@ant-design/plots';
 
 const classificationColor = {
@@ -13,9 +13,9 @@ const Charts = ({ data, range }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
     'KURANG MATANG': true,
-    MATANG: false,
-    'LEWAT MATANG': false,
-    'JANJANG KOSONG': false,
+    MATANG: true,
+    'LEWAT MATANG': true,
+    'JANJANG KOSONG': true,
   });
 
   const handleLegendClick = (key) => {
@@ -25,18 +25,29 @@ const Charts = ({ data, range }) => {
     }));
   };
 
-  const filteredData = data[range].reduce((curr, item) => {
-    return [
-      ...curr,
-      ...item['data'].map((dt) => ({
-        xField: item.title,
-        yField: dt['total'],
-        type: dt['name'],
-      })),
-    ];
-  }, []);
+  const filteredData = useMemo(() => {
+    return data[range].reduce((curr, item) => {
+      let availData = [
+        ...item['data'].map((dt) => {
+          const isLegendActive = legendStatus[dt.name] === true;
+          if (isLegendActive) {
+            return {
+              xField: item.title,
+              yField: dt['total'],
+              type: dt['name'],
+              data: dt,
+            };
+          }
+        }),
+      ];
 
-  console.log({ filteredData });
+      return [
+        ...curr,
+        // item['data'].length === 0 ? { xField: item.title, yField: 0 } : null,
+        ...availData,
+      ].filter(Boolean);
+    }, []);
+  }, [data, range, legendStatus]);
 
   const config = {
     data: filteredData,
@@ -44,6 +55,7 @@ const Charts = ({ data, range }) => {
     yField: 'yField',
     legend: false, // Menonaktifkan legend bawaan
     colorField: 'type',
+    // seriesField: 'type',
     color: [
       '#D2E73E', // Warna untuk 'Mentah'
       '#A8D140', // Warna untuk 'Kurang Matang'
@@ -55,63 +67,7 @@ const Charts = ({ data, range }) => {
     barStyle: {
       radius: [4, 4, 0, 0], // Membulatkan sudut kolom atas
     },
-    // tooltip: {
-    //   customContent: (title, items) => {
-    //     return (
-    //       <div>
-    //         <h4>{title}</h4>
-    //         {items.map((item, index) => {
-    //           const { name, color, data } = item;
-    //           return (
-    //             <div key={index}>
-    //               <div
-    //                 style={{
-    //                   margin: 0,
-    //                   display: 'flex',
-    //                   justifyContent: 'space-between',
-    //                 }}
-    //               >
-    //                 <div>
-    //                   <span
-    //                     style={{
-    //                       display: 'inline-block',
-    //                       width: 6,
-    //                       height: 6,
-    //                       borderRadius: '50%',
-    //                       backgroundColor: color,
-    //                       marginRight: 6,
-    //                     }}
-    //                   ></span>
-    //                   <span>{name}</span>
-    //                 </div>
-    //                 <b>{data['total']}%</b>
-    //               </div>
-    //             </div>
-    //           );
-    //         })}
-    //       </div>
-    //     );
-    //   },
-    // },
-    // xAxis: {
-    //   label: {
-    //     style: {
-    //       fontSize: 12,
-    //       fill: '#888888',
-    //     },
-    //   },
-    // },
-    yAxis: {
-      label: {
-        style: {
-          fontSize: 12,
-          fill: '#888888',
-        },
-        formatter: (val) => `${val}%`, // Format sumbu y menjadi persen
-      },
-      min: 0,
-      max: 100, // Asumsikan sumbu y berdasarkan persentase
-    },
+    stack: true,
   };
 
   return (
@@ -123,6 +79,55 @@ const Charts = ({ data, range }) => {
           style={{
             fill: ({ type }) => {
               return classificationColor[type];
+            },
+          }}
+          axis={{
+            x: {},
+            y: {
+              labelFormatter: (value) => `${value}%`,
+            },
+          }}
+          interaction={{
+            tooltip: {
+              render: (e, v) => {
+                return (
+                  <div key={v.title}>
+                    <h4 className='font-semibold text-md'>{v.title}</h4>
+                    {v.items.map((item) => {
+                      const { name, value, color } = item;
+                      return (
+                        <div>
+                          <div
+                            style={{
+                              margin: 0,
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              gap: '8px',
+                            }}
+                          >
+                            <div>
+                              <span
+                                style={{
+                                  display: 'inline-block',
+                                  width: 6,
+                                  height: 6,
+                                  borderRadius: '50%',
+                                  backgroundColor: classificationColor[name],
+                                  marginRight: 6,
+                                }}
+                              ></span>
+                              <span className='capitalize'>
+                                {name.toLowerCase()}
+                              </span>
+                            </div>
+                            <b>{Number(value).toFixed(2)}%</b>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              },
             },
           }}
         />
