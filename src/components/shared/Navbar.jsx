@@ -43,7 +43,7 @@ const navbarItems = [
 
 const Navbar = () => {
   const location = useLocation();
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.includes(path);
 
   const navigate = useNavigate();
 

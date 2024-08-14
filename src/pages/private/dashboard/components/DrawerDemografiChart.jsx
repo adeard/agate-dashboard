@@ -8,7 +8,6 @@ import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import { convertLabel } from '@/utils/common';
-import DrawerDemografiVendor from './DrawerDemografiVendor';
 
 const DrawerDemografiChart = ({
   idDrawer,
@@ -24,8 +23,6 @@ const DrawerDemografiChart = ({
   };
 
   const [selectedDataVendor, setSelectedDataVendor] = useState('');
-
-  console.log(selectedDataVendor);
 
   // table
   const columnHelper = createColumnHelper();
@@ -125,7 +122,8 @@ const DrawerDemografiChart = ({
           <>
             <div className='flex items-center justify-between'>
               <h3 className='subheadline-m text-color-1'>
-                Vendor Pengirim Buah {range === 'weekly' ? 'Week ' : ''}
+                Vendor Pengirim Buah {data && convertLabel(data?.variant)}{' '}
+                {range === 'weekly' ? 'Week ' : ''}
                 {data && convertLabel(data?.label)}
               </h3>
               <Button

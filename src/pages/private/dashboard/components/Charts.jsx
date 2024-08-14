@@ -111,7 +111,11 @@ const Charts = ({
           .filter((i) => i.xField === data.data.xField)
           .map((e) => e.data);
         setSelectedData(allData);
-        toogleDrawer({ label: data.data.xField, demography: allData });
+        toogleDrawer({
+          variant: variant,
+          label: data.data.xField,
+          demography: allData,
+        });
       });
     },
   };
