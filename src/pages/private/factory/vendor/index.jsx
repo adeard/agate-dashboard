@@ -19,7 +19,7 @@ import CustomTable from '@/components/shared/CustomTable';
 const VendorPage = () => {
   const { factoryId } = useParams();
 
-  const { data, loading, refetch } = useGet('/v1/vendor');
+  const { data, loading, refetch, setQueryParams } = useGet('/v1/vendor');
 
   const idDrawerFilterVendor = 'DrawerFilterVendor';
   const [isDrawerFilterVendorOpen, setIsDrawerFilterVendorOpen] =
@@ -111,6 +111,8 @@ const VendorPage = () => {
           idDrawer={idDrawerFilterVendor}
           isDrawerOpen={isDrawerFilterVendorOpen}
           closeDrawer={() => setIsDrawerFilterVendorOpen(false)}
+          setQueryParams={setQueryParams}
+          refetch={refetch}
         />
       </main>
     </div>

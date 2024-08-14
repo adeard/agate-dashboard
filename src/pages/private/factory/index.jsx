@@ -16,7 +16,7 @@ import CustomTable from '@/components/shared/CustomTable';
 const FactoryPage = () => {
   const navigate = useNavigate();
 
-  const { data, loading, refetch } = useGet('/v1/factory');
+  const { data, loading, refetch, setQueryParams } = useGet('/v1/factory');
 
   const idDrawerFilterFactory = 'DrawerFilterFactory';
   const [isDrawerFilterFactoryOpen, setIsDrawerFilterFactoryOpen] =
@@ -143,6 +143,8 @@ const FactoryPage = () => {
           idDrawer={idDrawerFilterFactory}
           isDrawerOpen={isDrawerFilterFactoryOpen}
           closeDrawer={() => setIsDrawerFilterFactoryOpen(false)}
+          setQueryParams={setQueryParams}
+          refetch={refetch}
         />
 
         <DrawerFormFactory

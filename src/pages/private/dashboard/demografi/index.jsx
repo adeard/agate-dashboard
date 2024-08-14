@@ -2,27 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useForm } from '@tanstack/react-form';
 
-import {
-  MdOutlineLocalShipping,
-  MdOutlineTableChart,
-  MdNotInterested,
-  MdPlaylistAddCheck,
-  MdOutlineFeedback,
-  MdInfoOutline,
-} from 'react-icons/md';
 import { MdOutlineViewModule } from 'react-icons/md';
 
 import { useGet, useGetWithPost } from '@/services/use-services';
 
+import { convertLabel } from '@/utils/common';
+
 import ModalFilter from '../components/ModalFilter';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
-import CustomSelect from '@/components/shared/CustomSelect';
-import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Dropdown from '@/components/shared/Dropdown';
+import DrawerDemografi from '../components/DrawerDemografi';
+import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Charts from '../components/Charts';
-import { fixingCapitalizeWord } from '@/utils/common';
-import ChartsTemp from '../components/ChartsTemp';
 
 const listMenuType = [
   {
@@ -72,6 +64,8 @@ const DashboardDemografiPage = () => {
 
   const { data, loading } = useGetWithPost('/v2/dashboard');
 
+  const [selectedFactory, setSelectedFactory] = useState('');
+
   const form = useForm({
     defaultValues: {
       date: '',
@@ -91,15 +85,16 @@ const DashboardDemografiPage = () => {
     // handleOpenModalFilter();
   }, []);
 
+  // dropdown & menu
   const [selectedClassification, setSelectedClassification] = useState(
     listMenuTypeInti[0]
   );
   const [selectedClassificationPlasma, setSelectedClassificationPlasma] =
     useState(listMenuTypePlasma[0]);
 
-  const [selectedRangeCharts, setSelectedRangeCharts] = useState('monthly');
+  const [selectedRangeCharts, setSelectedRangeCharts] = useState('weekly');
   const [selectedRangeChartsPlasma, setSelectedRangeChartsPlasma] =
-    useState('monthly');
+    useState('weekly');
   const listRangeCharts = ['monthly', 'weekly', 'daily'];
 
   const [demographyIntiChartType, setDemographyIntiChartType] = useState({
@@ -110,6 +105,28 @@ const DashboardDemografiPage = () => {
     label: 'Klasifikasi Utama',
     value: 'main',
   });
+
+  // drawer
+  const idDrawerSenderVendor = 'DrawerSenderVendor';
+  const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
+    useState(false);
+  const idDrawerDemografi = 'DrawerDemografi';
+  const [isDrawerDemografiOpen, setIsDrawerDemografiOpen] = useState(false);
+
+  const [selectedData, setSelectedData] = useState('');
+  const toogleDrawerSender = (data) => {
+    setSelectedData(data);
+    const drawerElement = document.getElementById(idDrawerSenderVendor);
+    drawerElement.checked = true;
+    setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
+  };
+
+  const toogleDrawerDemografi = (data) => {
+    setSelectedData(data);
+    const drawerElement = document.getElementById(idDrawerDemografi);
+    drawerElement.checked = true;
+    setIsDrawerDemografiOpen(!isDrawerDemografiOpen);
+  };
 
   return (
     <div>
@@ -135,25 +152,13 @@ const DashboardDemografiPage = () => {
                 />
               )}
             />
-            <form.Field
-              name='access_factory'
-              children={(field) => (
-                <CustomSelect
-                  placeholder='Pabrik'
-                  className='body-m-r !h-full'
-                  name={field.name}
-                  options={optionsFactory || []}
-                  onChange={(selectedOptions) => {
-                    const selectedValues = selectedOptions
-                      ? selectedOptions.map((option) => option.value)
-                      : [];
-                    field.handleChange(selectedValues);
-                  }}
-                  size='lg'
-                  full
-                  multiple
-                />
-              )}
+            <Dropdown
+              selected={selectedFactory}
+              setSelected={setSelectedFactory}
+              options={optionsFactory}
+              buttonClassname='body-s-r border-primary-3 border-2 !h-10 w-max min-w-[170px]'
+              arrowPosition='right'
+              full
             />
             <Button size='lg' onClick={form.handleSubmit}>
               Apply
@@ -162,6 +167,7 @@ const DashboardDemografiPage = () => {
         </div>
       </header>
       <main className='grid grid-cols-4 gap-4'>
+        {/* card vendor inti */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
           <label>
             <span className='label-text tag-l text-color-3 flex items-center gap-2'>
@@ -171,11 +177,15 @@ const DashboardDemografiPage = () => {
               </span>
             </span>
           </label>
-          <table className='table'>
+          <table className='table mt-4'>
             <tbody>
               {data &&
                 data?.by_inti_accepted.map((item, index) => (
-                  <tr key={index} className='body-m-r group hover text-color-2'>
+                  <tr
+                    key={index}
+                    className='body-m-r group hover text-color-2'
+                    onClick={() => toogleDrawerDemografi(item)}
+                  >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
                     <td width={70}>
@@ -191,6 +201,8 @@ const DashboardDemografiPage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* card buah inti */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
           <div className='flex items-center justify-between'>
             <label>
@@ -207,14 +219,18 @@ const DashboardDemografiPage = () => {
               full
             />
           </div>
-          <table className='table'>
+          <table className='table mt-4'>
             <tbody>
               {data &&
                 data?.[selectedClassification['value']].map((item, index) => (
-                  <tr key={index} className='body-m-r group hover text-color-2'>
+                  <tr
+                    key={index}
+                    className='body-m-r group hover text-color-2'
+                    onClick={() => toogleDrawerSender(item)}
+                  >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>
-                      {fixingCapitalizeWord(item.label)}
+                      {convertLabel(item.label)}
                     </td>
                     <td width={70}>
                       <p className='inline-flex'>
@@ -229,6 +245,8 @@ const DashboardDemografiPage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* card vendor plasma */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
           <label>
             <span className='label-text tag-l text-color-3 flex items-center gap-2'>
@@ -238,11 +256,15 @@ const DashboardDemografiPage = () => {
               </span>
             </span>
           </label>
-          <table className='table'>
+          <table className='table mt-4'>
             <tbody>
               {data &&
                 data?.by_plasma_accepted.map((item, index) => (
-                  <tr key={index} className='body-m-r group hover text-color-2'>
+                  <tr
+                    key={index}
+                    className='body-m-r group hover text-color-2'
+                    onClick={() => toogleDrawerDemografi(item)}
+                  >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
                     <td width={70}>
@@ -258,6 +280,8 @@ const DashboardDemografiPage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* card buah plasma */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
           <div className='flex items-center justify-between'>
             <label>
@@ -274,7 +298,7 @@ const DashboardDemografiPage = () => {
               full
             />
           </div>
-          <table className='table'>
+          <table className='table mt-4'>
             <tbody>
               {data &&
                 data?.[selectedClassificationPlasma['value']].map(
@@ -282,10 +306,11 @@ const DashboardDemografiPage = () => {
                     <tr
                       key={index}
                       className='body-m-r group hover text-color-2'
+                      onClick={() => toogleDrawerSender(item)}
                     >
                       <td width={20}>{index + 1}.</td>
                       <td className='text-color-1'>
-                        {fixingCapitalizeWord(item.label)}
+                        {convertLabel(item.label)}
                       </td>
                       <td width={70}>
                         <p className='inline-flex'>
@@ -302,7 +327,7 @@ const DashboardDemografiPage = () => {
           </table>
         </div>
 
-        {/* charts */}
+        {/* charts inti */}
         <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-16'>
@@ -322,7 +347,7 @@ const DashboardDemografiPage = () => {
                     } `}
                     onClick={() => setSelectedRangeCharts(item)}
                   >
-                    <button>{fixingCapitalizeWord(item)}</button>
+                    <button>{convertLabel(item)}</button>
                   </li>
                 ))}
               </ul>
@@ -350,9 +375,9 @@ const DashboardDemografiPage = () => {
               variant='inti'
             />
           )}
-
-          {/* <ChartsTemp /> */}
         </div>
+
+        {/* charts plasma */}
         <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-16'>
@@ -372,7 +397,7 @@ const DashboardDemografiPage = () => {
                     } `}
                     onClick={() => setSelectedRangeChartsPlasma(item)}
                   >
-                    <button>{fixingCapitalizeWord(item)}</button>
+                    <button>{convertLabel(item)}</button>
                   </li>
                 ))}
               </ul>
@@ -400,10 +425,23 @@ const DashboardDemografiPage = () => {
               variant='plasma'
             />
           )}
-
-          {/* <ChartsTemp /> */}
         </div>
       </main>
+
+      <DrawerDemografi
+        idDrawer={idDrawerDemografi}
+        isDrawerOpen={isDrawerDemografiOpen}
+        closeDrawer={() => setIsDrawerDemografiOpen(false)}
+        data={selectedData}
+      />
+
+      <DrawerSenderVendor
+        idDrawer={idDrawerSenderVendor}
+        isDrawerOpen={isDrawerSenderVendorOpen}
+        closeDrawer={() => setIsDrawerSenderVendorOpen(false)}
+        data={selectedData}
+      />
+
       <ModalFilter modalRef={dialogFilterRef} />
     </div>
   );

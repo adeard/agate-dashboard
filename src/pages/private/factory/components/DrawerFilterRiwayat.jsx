@@ -1,14 +1,25 @@
+import { useForm } from '@tanstack/react-form';
+
 import { IoMdClose } from 'react-icons/io';
+
+import { useGet } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
 
-import { useForm } from '@tanstack/react-form';
 import CustomSelect from '@/components/shared/CustomSelect';
 
-const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
+const DrawerFilterRiwayat = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  setQueryParams,
+  refetch,
+}) => {
+  const { data: optionsVendor } = useGet('/v1/options/vendor');
+
   const form = useForm({
     defaultValues: {
       dateFromCheckBox: false,
@@ -23,9 +34,25 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
       vehicle: '',
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      // setQueryParams(value);
+      // refetch(value);
+      // handleClose();
+      console.log(value)
     },
   });
+
+  const handleCancel = () => {
+    form.reset();
+    setQueryParams({});
+    refetch({});
+    handleClose();
+  };
+
+  const handleClose = () => {
+    const drawerElement = document.getElementById(idDrawer);
+    drawerElement.checked = false;
+    closeDrawer();
+  };
 
   return (
     <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
@@ -64,7 +91,7 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.handleSubmit();
+                      form.validateField('dateFrom', null);
                     }}
                   />
                 )}
@@ -81,7 +108,6 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                       value={field.state.value}
                       onChange={(e) => {
                         field.handleChange(e.target.value);
-                        form.handleSubmit();
                       }}
                       disabled={!form.state.values.dateFromCheckBox}
                     />
@@ -101,7 +127,7 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.handleSubmit();
+                      form.validateField('dateEnd', null);
                     }}
                   />
                 )}
@@ -118,7 +144,6 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                       value={field.state.value}
                       onChange={(e) => {
                         field.handleChange(e.target.value);
-                        form.handleSubmit();
                       }}
                       disabled={!form.state.values.dateEndCheckBox}
                     />
@@ -138,7 +163,7 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.handleSubmit();
+                      form.validateField('vendor', null);
                     }}
                   />
                 )}
@@ -152,7 +177,7 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                       className='body-m-r'
                       name={field.name}
                       value={field.state.value}
-                      options={[]}
+                      options={optionsVendor}
                       onChange={(selectedOption) => {
                         const selectedValue = selectedOption
                           ? selectedOption.value
@@ -179,7 +204,7 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.handleSubmit();
+                      form.validateField('deliverNumber', null);
                     }}
                   />
                 )}
@@ -196,7 +221,6 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                       value={field.state.value}
                       onChange={(e) => {
                         field.handleChange(e.target.value);
-                        form.handleSubmit();
                       }}
                       disabled={!form.state.values.deliverNumberCheckbox}
                     />
@@ -209,14 +233,14 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                 name='vehicleCheckbox'
                 children={(field) => (
                   <Checkbox
-                    label='Nomor Surat Jalan'
+                    label='Nomor Plat Kendaraan'
                     classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
                     classNameLabel='ml-2'
                     name={field.name}
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.handleSubmit();
+                      form.validateField('vehicle', null);
                     }}
                   />
                 )}
@@ -226,14 +250,13 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                   name='vehicle'
                   children={(field) => (
                     <Input
-                      placeholder='Customer'
+                      placeholder='Nomor Plat Kendaraan'
                       size='lg'
                       full
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => {
                         field.handleChange(e.target.value);
-                        form.handleSubmit();
                       }}
                       disabled={!form.state.values.vehicleCheckbox}
                     />
@@ -243,6 +266,20 @@ const DrawerFilterRiwayat = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className='flex justify-end gap-2 mt-4'>
+        <Button
+          variant='primary-outline'
+          size='lg'
+          className='!w[79px] button-shadow'
+          onClick={handleCancel}
+        >
+          Cancel
+        </Button>
+        <Button size='lg' className='!w-[120px]' onClick={form.handleSubmit}>
+          Cari
+        </Button>
       </div>
     </Drawer>
   );

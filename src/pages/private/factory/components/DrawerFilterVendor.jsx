@@ -1,14 +1,34 @@
+import { useForm } from '@tanstack/react-form';
+
 import { IoMdClose } from 'react-icons/io';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 
-const DrawerFilterVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
-  const handleSelect = () => {
-    const drawerElement = document.getElementById(idDrawer);
-    drawerElement.checked = false;
-    closeDrawer();
+const DrawerFilterVendor = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  setQueryParams,
+  refetch,
+}) => {
+  const form = useForm({
+    defaultValues: {
+      name: '',
+    },
+    onSubmit: async ({ value }) => {
+      setQueryParams(value);
+      refetch(value);
+      handleClose();
+    },
+  });
+
+  const handleCancel = () => {
+    form.reset();
+    setQueryParams({});
+    refetch({});
+    handleClose();
   };
 
   const handleClose = () => {
@@ -42,7 +62,19 @@ const DrawerFilterVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
               Vendor
             </label>
             <div className='basis-3/4'>
-              <Input placeholder='Nama Vendor' size='lg' full />
+              <form.Field
+                name='name'
+                children={(field) => (
+                  <Input
+                    placeholder='Nama Vendor'
+                    full
+                    size='lg'
+                    name={field.name}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                )}
+              />
             </div>
           </div>
         </div>
@@ -53,11 +85,11 @@ const DrawerFilterVendor = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
           variant='primary-outline'
           size='lg'
           className='!w[79px] button-shadow'
-          onClick={handleClose}
+          onClick={handleCancel}
         >
           Cancel
         </Button>
-        <Button size='lg' className='!w-[120px]'>
+        <Button size='lg' className='!w-[120px]' onClick={form.handleSubmit}>
           Cari
         </Button>
       </div>

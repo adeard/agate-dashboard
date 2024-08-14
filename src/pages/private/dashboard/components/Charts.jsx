@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Column } from '@ant-design/plots';
+import { convertLabel } from '@/utils/common';
 
 const classificationColor = {
-  MENTAH: '#D2E73E', // Warna untuk 'Mentah'
-  'KURANG MATANG': '#A8D140', // Warna untuk 'Kurang Matang'
-  MATANG: '#6FAA3C', // Warna untuk 'Matang'
-  'LEWAT MATANG': '#D0D0D0', // Warna untuk 'Lewat Matang'
-  'JANJANG KOSONG': '#E0E0E0', // Warna untuk 'Janjang Kosong'
-  'BUAH KECIL DIBAWAH 3KG': '#D2E73E', // Warna untuk 'Mentah'
-  'BUAH KECIL DIBAWAH 5KG': '#A8D140', // Warna untuk 'Kurang Matang'
-  'TANGKAI PANJANG': '#6FAA3C', // Warna untuk 'Matang'
+  MENTAH: '#CDE441',
+  'KURANG MATANG': '#78C52A',
+  MATANG: '#4BA92A',
+  'LEWAT MATANG': '#617E46',
+  'JANJANG KOSONG': '#436840',
+  'BUAH KECIL DIBAWAH 3KG': '#CDE441',
+  'BUAH KECIL DIBAWAH 5KG': '#78C52A',
+  'TANGKAI PANJANG': '#CDE441',
 };
 
 const Charts = ({ data, range, type, variant = 'inti' }) => {
@@ -90,11 +91,11 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
     colorField: 'type',
     // seriesField: 'type',
     color: [
-      '#D2E73E', // Warna untuk 'Mentah'
-      '#A8D140', // Warna untuk 'Kurang Matang'
-      '#6FAA3C', // Warna untuk 'Matang'
-      '#D0D0D0', // Warna untuk 'Lewat Matang'
-      '#E0E0E0', // Warna untuk 'Janjang Kosong'
+      '#CDE441', // Warna untuk 'Mentah'
+      '#78C52A', // Warna untuk 'Kurang Matang'
+      '#4BA92A', // Warna untuk 'Matang'
+      '#617E46', // Warna untuk 'Lewat Matang'
+      '#436840', // Warna untuk 'Janjang Kosong'
     ],
     columnWidthRatio: 0.2, // Mengatur lebar kolom
     barStyle: {
@@ -177,7 +178,8 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
                 marginBottom: '12px',
                 cursor: 'pointer',
                 fontSize: '14px',
-                fontWeight: 'bold',
+                fontWeight: '400',
+                color: '#6D6060',
                 opacity: legendStatus[key] ? 1 : 0.5,
               }}
               onClick={() => handleLegendClick(key)}
@@ -187,14 +189,14 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
                   display: 'inline-block',
                   width: 14,
                   height: 14,
-                  borderRadius: '50%',
+                  borderRadius: '25%',
                   backgroundColor: legendStatus[key]
                     ? config.color[index]
                     : '#ccc',
                   marginRight: 12,
                 }}
               ></span>
-              <span>{key}</span>
+              <span>{convertLabel(key)}</span>
             </div>
           ))}
         </div>

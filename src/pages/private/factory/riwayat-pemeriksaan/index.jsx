@@ -27,9 +27,9 @@ import dayjs from 'dayjs';
 const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
 
-  const { data, loading, refetch } = useGet('/v1/inspection-data', {
-    factory: factoryId,
-  });
+  const { data, loading, refetch, setQueryParams } = useGet(
+    '/v1/inspection-data'
+  );
 
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
@@ -101,8 +101,6 @@ const RiwayatPemeriksaanPage = () => {
     }),
   ];
 
-  console.log(data)
-
   return (
     <div>
       <header>
@@ -167,6 +165,8 @@ const RiwayatPemeriksaanPage = () => {
           idDrawer={idDrawerFilter}
           isDrawerOpen={isDrawerFilterOpen}
           closeDrawer={() => setIsDrawerFilterOpen(false)}
+          setQueryParams={setQueryParams}
+          refetch={refetch}
         />
 
         <DrawerFilterRiwayat />

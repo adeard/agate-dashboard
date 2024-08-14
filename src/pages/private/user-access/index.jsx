@@ -17,7 +17,7 @@ import ModalFactoryAccess from './components/ModalFactoryAccess';
 const UserAccessPage = () => {
   const navigate = useNavigate();
 
-  const { data, loading, refetch } = useGet('/v1/user');
+  const { data, loading, refetch, setQueryParams } = useGet('/v1/user');
 
   const idDrawerFilterUserAccess = 'DrawerFilterUserAccess';
   const [isDrawerFilterUserAccessOpen, setIsDrawerFilterUserAccessOpen] =
@@ -158,6 +158,8 @@ const UserAccessPage = () => {
           idDrawer={idDrawerFilterUserAccess}
           isDrawerOpen={isDrawerFilterUserAccessOpen}
           closeDrawer={() => setIsDrawerFilterUserAccessOpen(false)}
+          setQueryParams={setQueryParams}
+          refetch={refetch}
         />
 
         <DrawerFormUser

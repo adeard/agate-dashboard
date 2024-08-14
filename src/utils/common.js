@@ -62,3 +62,20 @@ export const fixingCapitalizeWord = (string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+
+export const convertLabel = (data) => {
+  const label = data
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  switch (label.toLowerCase()) {
+    case 'buah kecil dibawah 3kg':
+      return 'Buah <3kg';
+    case 'buah kecil dibawah 5kg':
+      return 'Buah 3-5kg';
+    default:
+      return label;
+  }
+};

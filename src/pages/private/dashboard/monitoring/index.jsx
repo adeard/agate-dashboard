@@ -13,10 +13,12 @@ import {
 
 import { useGet, useGetWithPost } from '@/services/use-services';
 
+import { convertLabel } from '@/utils/common';
+
 import ModalFilter from '../components/ModalFilter';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Dropdown from '@/components/shared/Dropdown';
 import DrawerSenderVendor from '../components/DrawerSenderVendor';
 
 const DashboardMonitoringPage = () => {
@@ -25,6 +27,7 @@ const DashboardMonitoringPage = () => {
   const { data, loading } = useGetWithPost('/v2/dashboard/monitoring');
 
   const [isBuahInti, setIsBuahInti] = useState(true);
+  const [selectedFactory, setSelectedFactory] = useState('');
 
   const form = useForm({
     defaultValues: {
@@ -55,19 +58,6 @@ const DashboardMonitoringPage = () => {
     // handleOpenModalFilter();
   }, []);
 
-  const getDisplayLabel = (label) => {
-    switch (label.toLowerCase()) {
-      case 'buah kecil dibawah 3kg':
-        return 'Buah <3kg';
-      case 'buah kecil dibawah 5kg':
-        return 'Buah 3-5kg';
-      default:
-        return label;
-    }
-  };
-
-  console.log(data?.classification);
-
   return (
     <div>
       <header>
@@ -92,25 +82,13 @@ const DashboardMonitoringPage = () => {
                 />
               )}
             />
-            <form.Field
-              name='access_factory'
-              children={(field) => (
-                <CustomSelect
-                  placeholder='Pabrik'
-                  className='body-m-r !h-full'
-                  name={field.name}
-                  options={optionsFactory || []}
-                  onChange={(selectedOptions) => {
-                    const selectedValues = selectedOptions
-                      ? selectedOptions.map((option) => option.value)
-                      : [];
-                    field.handleChange(selectedValues);
-                  }}
-                  size='lg'
-                  full
-                  multiple
-                />
-              )}
+            <Dropdown
+              selected={selectedFactory}
+              setSelected={setSelectedFactory}
+              options={optionsFactory}
+              buttonClassname='body-s-r border-primary-3 border-2 !h-10 w-max min-w-[170px]'
+              arrowPosition='right'
+              full
             />
             <Button size='lg' onClick={form.handleSubmit}>
               Apply
@@ -244,7 +222,7 @@ const DashboardMonitoringPage = () => {
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
-                            {getDisplayLabel(item.label)}
+                            {convertLabel(item.label)}
                           </td>
                           <td width={150}>
                             <span className='text-color-1'>
@@ -285,7 +263,7 @@ const DashboardMonitoringPage = () => {
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
-                            {getDisplayLabel(item.label)}
+                            {convertLabel(item.label)}
                           </td>
                           <td>
                             <span className='text-color-1'>
@@ -330,7 +308,7 @@ const DashboardMonitoringPage = () => {
                           >
                             <td width={20}>{index + 1}.</td>
                             <td className='text-color-1 capitalize'>
-                              {getDisplayLabel(item.label)}
+                              {convertLabel(item.label)}
                             </td>
                             <td width={150}>
                               <span className='text-color-1'>
@@ -372,7 +350,7 @@ const DashboardMonitoringPage = () => {
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
-                            {getDisplayLabel(item.label)}
+                            {convertLabel(item.label)}
                           </td>
                           <td width={150}>
                             <span className='text-color-1'>
@@ -414,7 +392,7 @@ const DashboardMonitoringPage = () => {
                           >
                             <td width={20}>{index + 1}.</td>
                             <td className='text-color-1 capitalize'>
-                              {getDisplayLabel(item.label)}
+                              {convertLabel(item.label)}
                             </td>
                             <td width={150}>
                               <span className='text-color-1'>

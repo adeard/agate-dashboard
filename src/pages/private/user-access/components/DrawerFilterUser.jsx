@@ -1,3 +1,6 @@
+import { useSearchParams } from 'react-router-dom';
+import { useForm } from '@tanstack/react-form';
+
 import { IoMdClose } from 'react-icons/io';
 
 import Button from '@/components/shared/Button';
@@ -5,23 +8,47 @@ import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
 
-import { useForm } from '@tanstack/react-form';
 import CustomSelect from '@/components/shared/CustomSelect';
 
-const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
+const DrawerFilterUser = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  setQueryParams,
+  refetch,
+}) => {
+  const { full_name, email, status } = useSearchParams();
+
   const form = useForm({
     defaultValues: {
       nameCheckbox: false,
-      name: '',
+      full_name: full_name || '',
       emailCheckbox: false,
-      email: '',
+      email: email || '',
       statusCheckbox: false,
-      status: '',
+      status: status || null,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      setQueryParams({
+        full_name: value.full_name,
+        email: value.email,
+        status: value.status,
+      });
+      refetch({
+        full_name: value.full_name,
+        email: value.email,
+        status: value.status,
+      });
+      handleClose();
     },
   });
+
+  const handleCancel = () => {
+    form.reset();
+    setQueryParams({});
+    refetch({});
+    handleClose();
+  };
 
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
@@ -61,14 +88,14 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                   isChecked={field.state.value}
                   onChange={() => {
                     field.handleChange(!field.state.value);
-                    form.handleSubmit();
+                    form.validateField('full_name', null);
                   }}
                 />
               )}
             />
             <div className='basis-3/5'>
               <form.Field
-                name='name'
+                name='full_name'
                 children={(field) => (
                   <Input
                     placeholder='Cari Nama'
@@ -78,7 +105,6 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     value={field.state.value}
                     onChange={(e) => {
                       field.handleChange(e.target.value);
-                      form.handleSubmit();
                     }}
                     disabled={!form.state.values.nameCheckbox}
                   />
@@ -98,7 +124,7 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                   isChecked={field.state.value}
                   onChange={() => {
                     field.handleChange(!field.state.value);
-                    form.handleSubmit();
+                    form.validateField('email', null);
                   }}
                 />
               )}
@@ -115,7 +141,6 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     value={field.state.value}
                     onChange={(e) => {
                       field.handleChange(e.target.value);
-                      form.handleSubmit();
                     }}
                     disabled={!form.state.values.emailCheckbox}
                   />
@@ -135,7 +160,7 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                   isChecked={field.state.value}
                   onChange={() => {
                     field.handleChange(!field.state.value);
-                    form.handleSubmit();
+                    form.validateField('status', null);
                   }}
                 />
               )}
@@ -149,7 +174,16 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
                     className='body-m-r'
                     name={field.name}
                     value={field.state.value}
-                    options={[]}
+                    options={[
+                      {
+                        label: 'Tidak Aktif',
+                        value: 0,
+                      },
+                      {
+                        label: 'Aktif',
+                        value: 1,
+                      },
+                    ]}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value
@@ -172,11 +206,11 @@ const DrawerFilterUser = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
           variant='primary-outline'
           size='lg'
           className='!w[79px] button-shadow'
-          onClick={handleClose}
+          onClick={handleCancel}
         >
           Cancel
         </Button>
-        <Button size='lg' className='!w-[120px]'>
+        <Button size='lg' className='!w-[120px]' onClick={form.handleSubmit}>
           Cari
         </Button>
       </div>

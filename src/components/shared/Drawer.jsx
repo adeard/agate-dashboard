@@ -13,9 +13,9 @@ const Drawer = ({ idDrawer, isOpen, closeDrawer, children, widthDrawer }) => {
           onClick={closeDrawer}
         ></label>
         <div
-          className={`${isOpen && 'mr-4'} my-auto h-[calc(100vh-30px)] ${
-            widthDrawer ? `w-[${widthDrawer}]` : 'w-[685px]'
-          } overflow-auto rounded-xl bg-primary-6 p-8 text-base-content`}
+          className={`my-auto h-[calc(100vh-30px)] overflow-auto rounded-xl bg-primary-6 p-8 text-base-content
+            ${isOpen && 'mr-4'} `}
+          style={{ width: widthDrawer || '685px' }}
         >
           {children}
         </div>
