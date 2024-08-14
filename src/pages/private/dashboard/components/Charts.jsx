@@ -177,7 +177,7 @@ const Charts = ({
                                 }}
                               ></span>
                               <span className='capitalize'>
-                                {name.toLowerCase()}
+                                {convertLabel(name)}
                               </span>
                             </div>
                             <b>{Number(value).toFixed(2)}%</b>

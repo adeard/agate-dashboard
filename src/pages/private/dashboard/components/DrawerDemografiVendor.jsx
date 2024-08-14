@@ -13,7 +13,7 @@ const columns = [
   columnHelper.accessor('label', {
     header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
     cell: (info) => (
-      <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+      <div className='!body-m-b !text-color-1'>{convertLabel(info.getValue())}</div>
     ),
   }),
   columnHelper.accessor('percent', {

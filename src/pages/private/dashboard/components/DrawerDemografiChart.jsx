@@ -30,7 +30,7 @@ const DrawerDemografiChart = ({
     columnHelper.accessor('name', {
       header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-b !text-color-1'>{convertLabel(info.getValue())}</div>
       ),
     }),
     columnHelper.accessor('total', {
@@ -95,7 +95,9 @@ const DrawerDemografiChart = ({
             <div className='flex items-center justify-between'>
               <h3 className='subheadline-m text-color-1'>
                 Vendor Pengirim Buah{' '}
-                {selectedDataVendor && convertLabel(selectedDataVendor?.label)}
+                {selectedDataVendor && convertLabel(selectedDataVendor?.label)}{' '}
+                {range === 'weekly' ? 'Week ' : ''}
+                {data && convertLabel(data?.label)}
               </h3>
               <Button
                 variant='primary-outline'
