@@ -114,7 +114,7 @@ const DashboardDemografiPage = () => {
   return (
     <div>
       <header>
-        <div className='flex items-center justify-between  px-12 py-6'>
+        <div className='flex items-center justify-between  px-12 pt-6 py-0'>
           <h1 className='headline-s'>Dashboard Demografi Kualitas Buah</h1>
           <div className='flex gap-2'>
             <label className='tag-l my-auto text-color-2'>FILTER</label>
