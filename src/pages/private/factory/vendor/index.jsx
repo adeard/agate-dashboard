@@ -18,6 +18,7 @@ import CustomTable from '@/components/shared/CustomTable';
 
 const VendorPage = () => {
   const { factoryId } = useParams();
+  const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, refetch, setQueryParams } = useGet('/v1/vendor');
 
@@ -75,11 +76,10 @@ const VendorPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik
-              {/* {factoryName} */}
+              {factoryName}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
-            <h2 className='font-semibold text-3xl text-color-1'>Vendor</h2>
+            <h2 className='headline-s'>Vendor</h2>
           </div>
           <div className='flex gap-4'>
             <Button

@@ -26,6 +26,7 @@ import dayjs from 'dayjs';
 
 const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
+  const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, refetch, setQueryParams } = useGet(
     '/v1/inspection-data'
@@ -107,13 +108,10 @@ const RiwayatPemeriksaanPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              Pabrik
-              {/* {factoryName} */}
+              {factoryName}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
-            <h2 className='font-semibold text-3xl text-color-1'>
-              Riwayat Pemeriksaan
-            </h2>
+            <h2 className='headline-s'>Riwayat Pemeriksaan</h2>
           </div>
           <div className='flex gap-4'>
             <Button size='lg' className='flex items-center'>

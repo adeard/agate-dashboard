@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/logo.png';
 import Account from '@/assets/images/account.png';
 
-import { RiTableLine } from 'react-icons/ri';
 import {
+  MdOutlineDashboard,
   MdOutlineFactory,
   MdOutlineSupervisorAccount,
   MdKeyboardArrowDown,
@@ -12,14 +12,22 @@ import {
   MdOutlinePassword,
   MdOutlineLogout,
 } from 'react-icons/md';
+import { FaChartBar } from 'react-icons/fa';
+
 import Button from './Button';
+
 import { logoutUser } from '@/services/auth';
 
 const navbarItems = [
   {
-    path: '/dashboard',
-    label: 'Dashboard',
-    icon: <RiTableLine className='text-xl' />,
+    path: '/dashboard/monitoring',
+    label: 'Dashboard Monitoring',
+    icon: <MdOutlineDashboard className='text-xl' />,
+  },
+  {
+    path: '/dashboard/demografi',
+    label: 'Dashboard Demografi',
+    icon: <FaChartBar className='text-xl' />,
   },
   {
     path: '/factory',

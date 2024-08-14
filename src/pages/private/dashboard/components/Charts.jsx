@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Column } from '@ant-design/plots';
+import { Column, G2 } from '@ant-design/plots';
 import { convertLabel } from '@/utils/common';
 
 const classificationColor = {
@@ -13,7 +13,15 @@ const classificationColor = {
   'TANGKAI PANJANG': '#CDE441',
 };
 
-const Charts = ({ data, range, type, variant = 'inti' }) => {
+const Charts = ({
+  data,
+  range,
+  type,
+  variant = 'inti',
+  height,
+  width,
+  toogleDrawer,
+}) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
     'KURANG MATANG': true,
@@ -21,6 +29,7 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
     'LEWAT MATANG': true,
     'JANJANG KOSONG': true,
   });
+  const [selectedData, setSelectedData] = useState(null);
 
   useEffect(() => {
     if (type === 'main') {
@@ -75,11 +84,7 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
         }),
       ];
 
-      return [
-        ...curr,
-        // item['data'].length === 0 ? { xField: item.title, yField: 0 } : null,
-        ...availData,
-      ].filter(Boolean);
+      return [...curr, ...availData].filter(Boolean);
     }, []);
   }, [data, range, legendStatus]);
 
@@ -97,11 +102,22 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
       '#617E46', // Warna untuk 'Lewat Matang'
       '#436840', // Warna untuk 'Janjang Kosong'
     ],
-    columnWidthRatio: 0.2, // Mengatur lebar kolom
-    barStyle: {
-      radius: [4, 4, 0, 0], // Membulatkan sudut kolom atas
-    },
     stack: true,
+
+    onReady: ({ chart }) => {
+      console.log({ chart });
+      chart.on('element:click', ({ data }) => {
+        const allData = chart.value.data
+          .filter((i) => i.xField === data.data.xField)
+          .map((e) => e.data);
+        setSelectedData(allData);
+        toogleDrawer({
+          variant: variant,
+          label: data.data.xField,
+          demography: allData,
+        });
+      });
+    },
   };
 
   return (
@@ -110,13 +126,20 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
       <div style={{ flex: 4 }}>
         <Column
           {...config}
+          height={height}
+          width={width}
           style={{
             fill: ({ type }) => {
               return classificationColor[type];
             },
+            radiusTopLeft: 32,
+            radiusTopRight: 32,
           }}
           axis={{
-            x: {},
+            x: {
+              labelFormatter: (value) =>
+                range === 'weekly' ? `Week ${value}` : value,
+            },
             y: {
               labelFormatter: (value) => `${value}%`,
             },
@@ -126,7 +149,10 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
               render: (e, v) => {
                 return (
                   <div key={v.title}>
-                    <h4 className='font-semibold text-md'>{v.title}</h4>
+                    <h4 className='font-semibold text-md'>
+                      {range === 'weekly' ? 'Week ' : ''}
+                      {v.title}
+                    </h4>
                     {v.items.map((item) => {
                       const { name, value, color } = item;
                       return (
@@ -151,7 +177,7 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
                                 }}
                               ></span>
                               <span className='capitalize'>
-                                {name.toLowerCase()}
+                                {convertLabel(name)}
                               </span>
                             </div>
                             <b>{Number(value).toFixed(2)}%</b>

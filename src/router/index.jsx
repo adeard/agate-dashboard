@@ -49,7 +49,7 @@ const PrivateLayout = () => {
 const AuthLayout = () => {
   const token = getToken();
 
-  return !token ? <Outlet /> : <Navigate to='/dashboard' replace={true} />;
+  return !token ? <Outlet /> : <Navigate to='/' replace={true} />;
 };
 
 const MainRouter = () => {

@@ -12,9 +12,10 @@ import ModalFilter from '../components/ModalFilter';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
-import DrawerDemografi from '../components/DrawerDemografi';
+import DrawerDemografiVendor from '../components/DrawerDemografiVendor';
 import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Charts from '../components/Charts';
+import DrawerDemografiChart from '../components/DrawerDemografiChart';
 
 const listMenuType = [
   {
@@ -110,22 +111,34 @@ const DashboardDemografiPage = () => {
   const idDrawerSenderVendor = 'DrawerSenderVendor';
   const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
     useState(false);
-  const idDrawerDemografi = 'DrawerDemografi';
-  const [isDrawerDemografiOpen, setIsDrawerDemografiOpen] = useState(false);
+  const idDrawerDemografiVendor = 'DrawerDemografiVendor';
+  const [isDrawerDemografiVendorOpen, setIsDrawerDemografiVendorOpen] = useState(false);
+  const idDrawerDemografiChart = 'DrawerDemografiChart';
+  const [isDrawerDemografiChartOpen, setIsDrawerDemografiChartOpen] =
+    useState(false);
 
-  const [selectedData, setSelectedData] = useState('');
+  const [selectedDataSender, setSelectedDataSender] = useState('');
+  const [selectedDataVendor, setSelectedDataVendor] = useState('');
+  const [selectedDataChart, setSelectedDataChart] = useState('');
   const toogleDrawerSender = (data) => {
-    setSelectedData(data);
+    setSelectedDataSender(data);
     const drawerElement = document.getElementById(idDrawerSenderVendor);
     drawerElement.checked = true;
     setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
   };
 
-  const toogleDrawerDemografi = (data) => {
-    setSelectedData(data);
-    const drawerElement = document.getElementById(idDrawerDemografi);
+  const toogleDrawerDemografiVendor = (data) => {
+    setSelectedDataVendor(data);
+    const drawerElement = document.getElementById(idDrawerDemografiVendor);
     drawerElement.checked = true;
-    setIsDrawerDemografiOpen(!isDrawerDemografiOpen);
+    setIsDrawerDemografiVendorOpen(!isDrawerDemografiVendorOpen);
+  };
+
+  const toogleDrawerDemografiChart = (data) => {
+    setSelectedDataChart(data);
+    const drawerElement = document.getElementById(idDrawerDemografiChart);
+    drawerElement.checked = true;
+    setIsDrawerDemografiChartOpen(!isDrawerDemografiChartOpen);
   };
 
   return (
@@ -184,7 +197,7 @@ const DashboardDemografiPage = () => {
                   <tr
                     key={index}
                     className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografi(item)}
+                    onClick={() => toogleDrawerDemografiVendor(item)}
                   >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
@@ -229,9 +242,7 @@ const DashboardDemografiPage = () => {
                     onClick={() => toogleDrawerSender(item)}
                   >
                     <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>
-                      {convertLabel(item.label)}
-                    </td>
+                    <td className='text-color-1'>{convertLabel(item.label)}</td>
                     <td width={70}>
                       <p className='inline-flex'>
                         <span className='text-color-1'>
@@ -263,7 +274,7 @@ const DashboardDemografiPage = () => {
                   <tr
                     key={index}
                     className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografi(item)}
+                    onClick={() => toogleDrawerDemografiVendor(item)}
                   >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
@@ -327,119 +338,135 @@ const DashboardDemografiPage = () => {
           </table>
         </div>
 
-        {/* charts inti */}
-        <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-16'>
-              <label>
-                <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                  CHART DEMOGRAFI BUAH INTI
-                </span>
-              </label>
-              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                {listRangeCharts.map((item, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      selectedRangeCharts === item
-                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                        : 'text-color-2 font-medium'
-                    } `}
-                    onClick={() => setSelectedRangeCharts(item)}
-                  >
-                    <button>{convertLabel(item)}</button>
-                  </li>
-                ))}
-              </ul>
+        <section className='col-span-4 grid grid-cols-2 gap-4'>
+          {/* charts inti */}
+          <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <div className='flex items-center gap-16'>
+                <div className='flex items-center gap-4'>
+                  <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                    CHART DEMOGRAFI BUAH INTI
+                  </span>
+                  <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                    {listRangeCharts.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`${
+                          selectedRangeCharts === item
+                            ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                            : 'text-color-2 font-medium'
+                        } `}
+                        onClick={() => setSelectedRangeCharts(item)}
+                      >
+                        <button>{convertLabel(item)}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <Dropdown
+                  selected={demographyIntiChartType}
+                  setSelected={setDemographyIntiChartType}
+                  options={listMenuType}
+                  buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                  arrowPosition='right'
+                  full
+                />
+                <div className='divider divider-horizontal my-2 mx-0' />
+                <MdOutlineViewModule className='text-lg' />
+                Table
+              </div>
             </div>
-            <div className='flex items-center body-m-r text-neutrals-5 '>
-              <Dropdown
-                selected={demographyIntiChartType}
-                setSelected={setDemographyIntiChartType}
-                options={listMenuType}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
-                arrowPosition='right'
-                full
+
+            {data && (
+              <Charts
+                data={data?.by_demography_inti[demographyIntiChartType.value]}
+                range={selectedRangeCharts}
+                type={demographyIntiChartType.value}
+                variant='inti'
+                height={320}
+                toogleDrawer={toogleDrawerDemografiChart}
               />
-              <div className='divider divider-horizontal my-2 mx-0' />
-              <MdOutlineViewModule className='text-lg' />
-              Table
-            </div>
+            )}
           </div>
 
-          {data && (
-            <Charts
-              data={data?.by_demography_inti[demographyIntiChartType.value]}
-              range={selectedRangeCharts}
-              type={demographyIntiChartType.value}
-              variant='inti'
-            />
-          )}
-        </div>
-
-        {/* charts plasma */}
-        <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-16'>
-              <label>
-                <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                  CHART DEMOGRAFI BUAH PLASMA
-                </span>
-              </label>
-              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                {listRangeCharts.map((item, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      selectedRangeCharts === item
-                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                        : 'text-color-2 font-medium'
-                    } `}
-                    onClick={() => setSelectedRangeChartsPlasma(item)}
-                  >
-                    <button>{convertLabel(item)}</button>
-                  </li>
-                ))}
-              </ul>
+          {/* charts plasma */}
+          <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <div className='flex items-center gap-16'>
+                <div className='flex items-center gap-4'>
+                  <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                    CHART DEMOGRAFI BUAH PLASMA
+                  </span>
+                  <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                    {listRangeCharts.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`${
+                          selectedRangeChartsPlasma === item
+                            ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                            : 'text-color-2 font-medium'
+                        } `}
+                        onClick={() => setSelectedRangeChartsPlasma(item)}
+                      >
+                        <button>{convertLabel(item)}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <Dropdown
+                  selected={demographyPlasmaChartType}
+                  setSelected={setDemographyPlasmaChartType}
+                  options={listMenuType}
+                  buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                  arrowPosition='right'
+                  full
+                />
+                <div className='divider divider-horizontal my-2 mx-0' />
+                <MdOutlineViewModule className='text-lg' />
+                Table
+              </div>
             </div>
-            <div className='flex items-center body-m-r text-neutrals-5 '>
-              <Dropdown
-                selected={demographyPlasmaChartType}
-                setSelected={setDemographyPlasmaChartType}
-                options={listMenuType}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
-                arrowPosition='right'
-                full
+
+            {data && (
+              <Charts
+                data={
+                  data?.by_demography_plasma[demographyPlasmaChartType.value]
+                }
+                range={selectedRangeChartsPlasma}
+                type={demographyPlasmaChartType.value}
+                variant='plasma'
+                height={320}
+                toogleDrawer={toogleDrawerDemografiChart}
               />
-              <div className='divider divider-horizontal my-2 mx-0' />
-              <MdOutlineViewModule className='text-lg' />
-              Table
-            </div>
+            )}
           </div>
-
-          {data && (
-            <Charts
-              data={data?.by_demography_plasma[demographyPlasmaChartType.value]}
-              range={selectedRangeChartsPlasma}
-              type={demographyPlasmaChartType.value}
-              variant='plasma'
-            />
-          )}
-        </div>
+        </section>
       </main>
-
-      <DrawerDemografi
-        idDrawer={idDrawerDemografi}
-        isDrawerOpen={isDrawerDemografiOpen}
-        closeDrawer={() => setIsDrawerDemografiOpen(false)}
-        data={selectedData}
-      />
 
       <DrawerSenderVendor
         idDrawer={idDrawerSenderVendor}
         isDrawerOpen={isDrawerSenderVendorOpen}
         closeDrawer={() => setIsDrawerSenderVendorOpen(false)}
-        data={selectedData}
+        data={selectedDataSender}
+      />
+
+      <DrawerDemografiVendor
+        idDrawer={idDrawerDemografiVendor}
+        isDrawerOpen={isDrawerDemografiVendorOpen}
+        closeDrawer={() => setIsDrawerDemografiVendorOpen(false)}
+        data={selectedDataVendor}
+      />
+
+      <DrawerDemografiChart
+        idDrawer={idDrawerDemografiChart}
+        isDrawerOpen={isDrawerDemografiChartOpen}
+        closeDrawer={() => setIsDrawerDemografiChartOpen(false)}
+        data={selectedDataChart}
+        range={selectedRangeCharts}
       />
 
       <ModalFilter modalRef={dialogFilterRef} />

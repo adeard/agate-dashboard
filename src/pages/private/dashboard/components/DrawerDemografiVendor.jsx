@@ -13,7 +13,7 @@ const columns = [
   columnHelper.accessor('label', {
     header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
     cell: (info) => (
-      <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+      <div className='!body-m-b !text-color-1'>{convertLabel(info.getValue())}</div>
     ),
   }),
   columnHelper.accessor('percent', {
@@ -26,14 +26,14 @@ const columns = [
   }),
 ];
 
-const DrawerDemografi = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+const DrawerDemografiVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
   };
 
-  console.log(data.demography);
+  console.log(data)
 
   return (
     <Drawer
@@ -67,4 +67,4 @@ const DrawerDemografi = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   );
 };
 
-export default DrawerDemografi;
+export default DrawerDemografiVendor;
