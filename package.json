@@ -11,10 +11,6 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.1.2",
-    "@emotion/react": "^11.13.0",
-    "@emotion/styled": "^11.13.0",
-    "@mui/material": "^5.16.7",
-    "@mui/x-charts": "^7.12.1",
     "@tanstack/react-form": "^0.28.0",
     "@tanstack/react-table": "^8.20.1",
     "axios": "^1.7.3",
