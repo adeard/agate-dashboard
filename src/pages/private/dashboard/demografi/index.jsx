@@ -229,9 +229,7 @@ const DashboardDemografiPage = () => {
                     onClick={() => toogleDrawerSender(item)}
                   >
                     <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>
-                      {convertLabel(item.label)}
-                    </td>
+                    <td className='text-color-1'>{convertLabel(item.label)}</td>
                     <td width={70}>
                       <p className='inline-flex'>
                         <span className='text-color-1'>
@@ -327,105 +325,111 @@ const DashboardDemografiPage = () => {
           </table>
         </div>
 
-        {/* charts inti */}
-        <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-16'>
-              <label>
-                <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                  CHART DEMOGRAFI BUAH INTI
-                </span>
-              </label>
-              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                {listRangeCharts.map((item, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      selectedRangeCharts === item
-                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                        : 'text-color-2 font-medium'
-                    } `}
-                    onClick={() => setSelectedRangeCharts(item)}
-                  >
-                    <button>{convertLabel(item)}</button>
-                  </li>
-                ))}
-              </ul>
+        <section className='col-span-4 grid grid-cols-2 gap-4'>
+          {/* charts inti */}
+          <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <div className='flex items-center gap-16'>
+                <div className='flex items-center gap-4'>
+                  <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                    CHART DEMOGRAFI BUAH INTI
+                  </span>
+                  <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                    {listRangeCharts.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`${
+                          selectedRangeCharts === item
+                            ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                            : 'text-color-2 font-medium'
+                        } `}
+                        onClick={() => setSelectedRangeCharts(item)}
+                      >
+                        <button>{convertLabel(item)}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <Dropdown
+                  selected={demographyIntiChartType}
+                  setSelected={setDemographyIntiChartType}
+                  options={listMenuType}
+                  buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                  arrowPosition='right'
+                  full
+                />
+                <div className='divider divider-horizontal my-2 mx-0' />
+                <MdOutlineViewModule className='text-lg' />
+                Table
+              </div>
             </div>
-            <div className='flex items-center body-m-r text-neutrals-5 '>
-              <Dropdown
-                selected={demographyIntiChartType}
-                setSelected={setDemographyIntiChartType}
-                options={listMenuType}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
-                arrowPosition='right'
-                full
+
+            {data && (
+              <Charts
+                data={data?.by_demography_inti[demographyIntiChartType.value]}
+                range={selectedRangeCharts}
+                type={demographyIntiChartType.value}
+                variant='inti'
+                height={320}
               />
-              <div className='divider divider-horizontal my-2 mx-0' />
-              <MdOutlineViewModule className='text-lg' />
-              Table
-            </div>
+            )}
           </div>
 
-          {data && (
-            <Charts
-              data={data?.by_demography_inti[demographyIntiChartType.value]}
-              range={selectedRangeCharts}
-              type={demographyIntiChartType.value}
-              variant='inti'
-            />
-          )}
-        </div>
-
-        {/* charts plasma */}
-        <div className='col-span-4 bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-16'>
-              <label>
-                <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                  CHART DEMOGRAFI BUAH PLASMA
-                </span>
-              </label>
-              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                {listRangeCharts.map((item, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      selectedRangeCharts === item
-                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                        : 'text-color-2 font-medium'
-                    } `}
-                    onClick={() => setSelectedRangeChartsPlasma(item)}
-                  >
-                    <button>{convertLabel(item)}</button>
-                  </li>
-                ))}
-              </ul>
+          {/* charts plasma */}
+          <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <div className='flex items-center gap-16'>
+                <div className='flex items-center gap-4'>
+                  <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                    CHART DEMOGRAFI BUAH PLASMA
+                  </span>
+                  <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                    {listRangeCharts.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`${
+                          selectedRangeChartsPlasma === item
+                            ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                            : 'text-color-2 font-medium'
+                        } `}
+                        onClick={() => setSelectedRangeChartsPlasma(item)}
+                      >
+                        <button>{convertLabel(item)}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <Dropdown
+                  selected={demographyPlasmaChartType}
+                  setSelected={setDemographyPlasmaChartType}
+                  options={listMenuType}
+                  buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                  arrowPosition='right'
+                  full
+                />
+                <div className='divider divider-horizontal my-2 mx-0' />
+                <MdOutlineViewModule className='text-lg' />
+                Table
+              </div>
             </div>
-            <div className='flex items-center body-m-r text-neutrals-5 '>
-              <Dropdown
-                selected={demographyPlasmaChartType}
-                setSelected={setDemographyPlasmaChartType}
-                options={listMenuType}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
-                arrowPosition='right'
-                full
+
+            {data && (
+              <Charts
+                data={
+                  data?.by_demography_plasma[demographyPlasmaChartType.value]
+                }
+                range={selectedRangeChartsPlasma}
+                type={demographyPlasmaChartType.value}
+                variant='plasma'
+                height={320}
               />
-              <div className='divider divider-horizontal my-2 mx-0' />
-              <MdOutlineViewModule className='text-lg' />
-              Table
-            </div>
+            )}
           </div>
-
-          {data && (
-            <Charts
-              data={data?.by_demography_plasma[demographyPlasmaChartType.value]}
-              range={selectedRangeChartsPlasma}
-              type={demographyPlasmaChartType.value}
-              variant='plasma'
-            />
-          )}
-        </div>
+        </section>
       </main>
 
       <DrawerDemografi

@@ -13,7 +13,7 @@ const classificationColor = {
   'TANGKAI PANJANG': '#CDE441',
 };
 
-const Charts = ({ data, range, type, variant = 'inti' }) => {
+const Charts = ({ data, range, type, variant = 'inti', height, width }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
     'KURANG MATANG': true,
@@ -21,6 +21,7 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
     'LEWAT MATANG': true,
     'JANJANG KOSONG': true,
   });
+  const [selectedData, setSelectedData] = useState(null);
 
   useEffect(() => {
     if (type === 'main') {
@@ -75,11 +76,7 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
         }),
       ];
 
-      return [
-        ...curr,
-        // item['data'].length === 0 ? { xField: item.title, yField: 0 } : null,
-        ...availData,
-      ].filter(Boolean);
+      return [...curr, ...availData].filter(Boolean);
     }, []);
   }, [data, range, legendStatus]);
 
@@ -102,6 +99,14 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
       radius: [4, 4, 0, 0], // Membulatkan sudut kolom atas
     },
     stack: true,
+    onReady: ({ chart }) => {
+      chart.on('element:click', ({ data }) => {
+        const allData = chart.value.data
+          .filter((i) => i.xField === data.data.xField)
+          .map((e) => e.data);
+        setSelectedData(allData);
+      });
+    },
   };
 
   return (
@@ -110,13 +115,18 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
       <div style={{ flex: 4 }}>
         <Column
           {...config}
+          height={height}
+          width={width}
           style={{
             fill: ({ type }) => {
               return classificationColor[type];
             },
           }}
           axis={{
-            x: {},
+            x: {
+              labelFormatter: (value) =>
+                range === 'weekly' ? `Week ${value}` : value,
+            },
             y: {
               labelFormatter: (value) => `${value}%`,
             },
@@ -126,7 +136,10 @@ const Charts = ({ data, range, type, variant = 'inti' }) => {
               render: (e, v) => {
                 return (
                   <div key={v.title}>
-                    <h4 className='font-semibold text-md'>{v.title}</h4>
+                    <h4 className='font-semibold text-md'>
+                      {range === 'weekly' ? 'Week ' : ''}
+                      {v.title}
+                    </h4>
                     {v.items.map((item) => {
                       const { name, value, color } = item;
                       return (
