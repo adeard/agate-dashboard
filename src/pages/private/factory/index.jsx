@@ -75,16 +75,20 @@ const FactoryPage = () => {
             <Button
               className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
               size='lg'
-              onClick={() =>
-                navigate(`${info.row.original._id}/riwayat-pemeriksaan`)
-              }
+              onClick={() => {
+                navigate(`${info.row.original._id}/riwayat-pemeriksaan`);
+                sessionStorage.setItem('factoryName', info.row.original.name);
+              }}
             >
               Riwayat Pemeriksaan
             </Button>
             <Button
               className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
               size='lg'
-              onClick={() => navigate(`${info.row.original._id}/vendor`)}
+              onClick={() => {
+                navigate(`${info.row.original._id}/vendor`);
+                sessionStorage.setItem('factoryName', info.row.original.name);
+              }}
             >
               Daftar Vendor
             </Button>

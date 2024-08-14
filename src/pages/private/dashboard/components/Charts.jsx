@@ -13,7 +13,15 @@ const classificationColor = {
   'TANGKAI PANJANG': '#CDE441',
 };
 
-const Charts = ({ data, range, type, variant = 'inti', height, width }) => {
+const Charts = ({
+  data,
+  range,
+  type,
+  variant = 'inti',
+  height,
+  width,
+  toogleDrawer,
+}) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
     'KURANG MATANG': true,
@@ -103,6 +111,7 @@ const Charts = ({ data, range, type, variant = 'inti', height, width }) => {
           .filter((i) => i.xField === data.data.xField)
           .map((e) => e.data);
         setSelectedData(allData);
+        toogleDrawer({ label: data.data.xField, demography: allData });
       });
     },
   };

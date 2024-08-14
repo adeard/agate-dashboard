@@ -26,14 +26,14 @@ const columns = [
   }),
 ];
 
-const DrawerDemografi = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+const DrawerDemografiVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
   };
 
-  console.log(data.demography);
+  console.log(data)
 
   return (
     <Drawer
@@ -67,4 +67,4 @@ const DrawerDemografi = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   );
 };
 
-export default DrawerDemografi;
+export default DrawerDemografiVendor;

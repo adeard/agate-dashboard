@@ -7,10 +7,6 @@ const pageList = {
       component: lazy(() => import('@/pages/private/dashboard')),
     },
     {
-      path: '/dashboard',
-      component: lazy(() => import('@/pages/private/dashboard')),
-    },
-    {
       path: '/dashboard/monitoring',
       component: lazy(() => import('@/pages/private/dashboard/monitoring')),
     },

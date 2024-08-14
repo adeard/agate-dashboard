@@ -177,7 +177,7 @@ select:focus,
 
 table thead tr th,
 table tbody tr td {
-  /* padding: 8px 0 !important; */
+  height: 65px;
 }
 
 table tbody tr:hover {

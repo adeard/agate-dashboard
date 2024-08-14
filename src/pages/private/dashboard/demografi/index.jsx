@@ -12,9 +12,10 @@ import ModalFilter from '../components/ModalFilter';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
-import DrawerDemografi from '../components/DrawerDemografi';
+import DrawerDemografiVendor from '../components/DrawerDemografiVendor';
 import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Charts from '../components/Charts';
+import DrawerDemografiChart from '../components/DrawerDemografiChart';
 
 const listMenuType = [
   {
@@ -110,22 +111,34 @@ const DashboardDemografiPage = () => {
   const idDrawerSenderVendor = 'DrawerSenderVendor';
   const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
     useState(false);
-  const idDrawerDemografi = 'DrawerDemografi';
-  const [isDrawerDemografiOpen, setIsDrawerDemografiOpen] = useState(false);
+  const idDrawerDemografiVendor = 'DrawerDemografiVendor';
+  const [isDrawerDemografiVendorOpen, setIsDrawerDemografiVendorOpen] = useState(false);
+  const idDrawerDemografiChart = 'DrawerDemografiChart';
+  const [isDrawerDemografiChartOpen, setIsDrawerDemografiChartOpen] =
+    useState(false);
 
-  const [selectedData, setSelectedData] = useState('');
+  const [selectedDataSender, setSelectedDataSender] = useState('');
+  const [selectedDataVendor, setSelectedDataVendor] = useState('');
+  const [selectedDataChart, setSelectedDataChart] = useState('');
   const toogleDrawerSender = (data) => {
-    setSelectedData(data);
+    setSelectedDataSender(data);
     const drawerElement = document.getElementById(idDrawerSenderVendor);
     drawerElement.checked = true;
     setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
   };
 
-  const toogleDrawerDemografi = (data) => {
-    setSelectedData(data);
-    const drawerElement = document.getElementById(idDrawerDemografi);
+  const toogleDrawerDemografiVendor = (data) => {
+    setSelectedDataVendor(data);
+    const drawerElement = document.getElementById(idDrawerDemografiVendor);
     drawerElement.checked = true;
-    setIsDrawerDemografiOpen(!isDrawerDemografiOpen);
+    setIsDrawerDemografiVendorOpen(!isDrawerDemografiVendorOpen);
+  };
+
+  const toogleDrawerDemografiChart = (data) => {
+    setSelectedDataChart(data);
+    const drawerElement = document.getElementById(idDrawerDemografiChart);
+    drawerElement.checked = true;
+    setIsDrawerDemografiChartOpen(!isDrawerDemografiChartOpen);
   };
 
   return (
@@ -184,7 +197,7 @@ const DashboardDemografiPage = () => {
                   <tr
                     key={index}
                     className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografi(item)}
+                    onClick={() => toogleDrawerDemografiVendor(item)}
                   >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
@@ -261,7 +274,7 @@ const DashboardDemografiPage = () => {
                   <tr
                     key={index}
                     className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografi(item)}
+                    onClick={() => toogleDrawerDemografiVendor(item)}
                   >
                     <td width={20}>{index + 1}.</td>
                     <td className='text-color-1'>{item.label}</td>
@@ -373,6 +386,7 @@ const DashboardDemografiPage = () => {
                 type={demographyIntiChartType.value}
                 variant='inti'
                 height={320}
+                toogleDrawer={toogleDrawerDemografiChart}
               />
             )}
           </div>
@@ -426,24 +440,33 @@ const DashboardDemografiPage = () => {
                 type={demographyPlasmaChartType.value}
                 variant='plasma'
                 height={320}
+                toogleDrawer={toogleDrawerDemografiChart}
               />
             )}
           </div>
         </section>
       </main>
 
-      <DrawerDemografi
-        idDrawer={idDrawerDemografi}
-        isDrawerOpen={isDrawerDemografiOpen}
-        closeDrawer={() => setIsDrawerDemografiOpen(false)}
-        data={selectedData}
-      />
-
       <DrawerSenderVendor
         idDrawer={idDrawerSenderVendor}
         isDrawerOpen={isDrawerSenderVendorOpen}
         closeDrawer={() => setIsDrawerSenderVendorOpen(false)}
-        data={selectedData}
+        data={selectedDataSender}
+      />
+
+      <DrawerDemografiVendor
+        idDrawer={idDrawerDemografiVendor}
+        isDrawerOpen={isDrawerDemografiVendorOpen}
+        closeDrawer={() => setIsDrawerDemografiVendorOpen(false)}
+        data={selectedDataVendor}
+      />
+
+      <DrawerDemografiChart
+        idDrawer={idDrawerDemografiChart}
+        isDrawerOpen={isDrawerDemografiChartOpen}
+        closeDrawer={() => setIsDrawerDemografiChartOpen(false)}
+        data={selectedDataChart}
+        range={selectedRangeCharts}
       />
 
       <ModalFilter modalRef={dialogFilterRef} />
