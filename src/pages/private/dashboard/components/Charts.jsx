@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Column } from '@ant-design/plots';
+import { Column, G2 } from '@ant-design/plots';
 import { convertLabel } from '@/utils/common';
 
 const classificationColor = {
@@ -94,12 +94,10 @@ const Charts = ({ data, range, type, variant = 'inti', height, width }) => {
       '#617E46', // Warna untuk 'Lewat Matang'
       '#436840', // Warna untuk 'Janjang Kosong'
     ],
-    columnWidthRatio: 0.2, // Mengatur lebar kolom
-    barStyle: {
-      radius: [4, 4, 0, 0], // Membulatkan sudut kolom atas
-    },
     stack: true,
+
     onReady: ({ chart }) => {
+      console.log({ chart });
       chart.on('element:click', ({ data }) => {
         const allData = chart.value.data
           .filter((i) => i.xField === data.data.xField)
@@ -121,6 +119,8 @@ const Charts = ({ data, range, type, variant = 'inti', height, width }) => {
             fill: ({ type }) => {
               return classificationColor[type];
             },
+            radiusTopLeft: 32,
+            radiusTopRight: 32,
           }}
           axis={{
             x: {
