@@ -64,7 +64,7 @@ const CustomTable = ({
           <table className='table h-full'>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className='text-color-3'>
+                <tr key={headerGroup.id} className='text-color-2'>
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}

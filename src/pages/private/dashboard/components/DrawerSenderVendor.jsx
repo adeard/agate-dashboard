@@ -8,25 +8,25 @@ import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import { convertLabel } from '@/utils/common';
 
-const columnHelper = createColumnHelper();
-const columns = [
-  columnHelper.accessor('label', {
-    header: <div className='text-color-2'>NAMA VENDOR</div>,
-    cell: (info) => (
-      <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
-    ),
-  }),
-  columnHelper.accessor('percent', {
-    header: <div className='text-color-2'>PERSENTASE</div>,
-    cell: (info) => (
-      <div className='!body-m-b !text-color-1'>
-        {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
-      </div>
-    ),
-  }),
-];
-
 const DrawerSenderVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.accessor('label', {
+      header: <div className='text-color-2'>NAMA VENDOR</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+      ),
+    }),
+    columnHelper.accessor('percent', {
+      header: <div className='text-color-2'>PERSENTASE</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
+        </div>
+      ),
+    }),
+  ];
+
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
@@ -42,7 +42,7 @@ const DrawerSenderVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
-          Vendor Pengirim Buah {data && convertLabel(data?.label)}
+          Vendor Pengirim Buah ({data && convertLabel(data?.label)})
         </h3>
         <Button
           variant='primary-outline'

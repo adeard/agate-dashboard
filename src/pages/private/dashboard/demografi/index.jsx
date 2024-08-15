@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useForm } from '@tanstack/react-form';
 
-import { MdOutlineViewModule } from 'react-icons/md';
+import { MdOutlineViewModule, MdBarChart } from 'react-icons/md';
 
 import { useGet, useGetWithPost } from '@/services/use-services';
 
@@ -17,6 +17,7 @@ import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Charts from '../components/Charts';
 import DrawerDemografiChart from '../components/DrawerDemografiChart';
 import SectionCard from '@/components/shared/SectionCard';
+import TableDemografi from '../components/TableDemografi';
 
 const listMenuType = [
   {
@@ -107,6 +108,9 @@ const DashboardDemografiPage = () => {
     label: 'Klasifikasi Utama',
     value: 'main',
   });
+
+  const [chartModeInti, setChartModeInti] = useState('chart');
+  const [chartModePlasma, setChartModePlasma] = useState('chart');
 
   // drawer
   const idDrawerSenderVendor = 'DrawerSenderVendor';
@@ -202,7 +206,7 @@ const DashboardDemografiPage = () => {
                   data?.by_inti_accepted.map((item, index) => (
                     <tr
                       key={index}
-                      className='body-m-r group hover text-color-2'
+                      className='body-m-r group hover text-color-2 hover:cursor-pointer'
                       onClick={() => toogleDrawerDemografiVendor(item)}
                     >
                       <td width={20}>{index + 1}.</td>
@@ -247,7 +251,7 @@ const DashboardDemografiPage = () => {
                   data?.[selectedClassification['value']].map((item, index) => (
                     <tr
                       key={index}
-                      className='body-m-r group hover text-color-2'
+                      className='body-m-r group hover text-color-2 hover:cursor-pointer'
                       onClick={() => toogleDrawerSender(item)}
                     >
                       <td width={20}>{index + 1}.</td>
@@ -290,7 +294,7 @@ const DashboardDemografiPage = () => {
                   data?.by_plasma_accepted.map((item, index) => (
                     <tr
                       key={index}
-                      className='body-m-r group hover text-color-2'
+                      className='body-m-r group hover text-color-2 hover:cursor-pointer'
                       onClick={() => toogleDrawerDemografiVendor(item)}
                     >
                       <td width={20}>{index + 1}.</td>
@@ -335,7 +339,7 @@ const DashboardDemografiPage = () => {
                     (item, index) => (
                       <tr
                         key={index}
-                        className='body-m-r group hover text-color-2'
+                        className='body-m-r group hover text-color-2 hover:cursor-pointer'
                         onClick={() => toogleDrawerSender(item)}
                       >
                         <td width={20}>{index + 1}.</td>
@@ -394,13 +398,39 @@ const DashboardDemografiPage = () => {
                   full
                 />
                 <div className='divider divider-horizontal my-2 mx-0' />
-                <MdOutlineViewModule className='text-lg' />
-                Table
+                {chartModeInti === 'table' ? (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModeInti('chart')}
+                  >
+                    <MdBarChart className='text-lg' />
+                    Chart
+                  </button>
+                ) : (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModeInti('table')}
+                  >
+                    <MdOutlineViewModule className='text-lg' />
+                    Table
+                  </button>
+                )}
               </div>
             </div>
 
-            {data && (
+            {data && chartModeInti === 'chart' && (
               <Charts
+                data={data?.by_demography_inti[demographyIntiChartType.value]}
+                range={selectedRangeCharts}
+                type={demographyIntiChartType.value}
+                variant='inti'
+                height={290}
+                toogleDrawer={toogleDrawerDemografiChart}
+              />
+            )}
+
+            {data && chartModeInti === 'table' && (
+              <TableDemografi
                 data={data?.by_demography_inti[demographyIntiChartType.value]}
                 range={selectedRangeCharts}
                 type={demographyIntiChartType.value}
@@ -446,13 +476,41 @@ const DashboardDemografiPage = () => {
                   full
                 />
                 <div className='divider divider-horizontal my-2 mx-0' />
-                <MdOutlineViewModule className='text-lg' />
-                Table
+                {chartModePlasma === 'table' ? (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModePlasma('chart')}
+                  >
+                    <MdBarChart className='text-lg' />
+                    Chart
+                  </button>
+                ) : (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModePlasma('table')}
+                  >
+                    <MdOutlineViewModule className='text-lg' />
+                    Table
+                  </button>
+                )}
               </div>
             </div>
 
-            {data && (
+            {data && chartModePlasma === 'chart' && (
               <Charts
+                data={
+                  data?.by_demography_plasma[demographyPlasmaChartType.value]
+                }
+                range={selectedRangeChartsPlasma}
+                type={demographyPlasmaChartType.value}
+                variant='plasma'
+                height={290}
+                toogleDrawer={toogleDrawerDemografiChart}
+              />
+            )}
+
+            {data && chartModePlasma === 'table' && (
+              <TableDemografi
                 data={
                   data?.by_demography_plasma[demographyPlasmaChartType.value]
                 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { IoMdClose } from 'react-icons/io';
@@ -16,13 +16,7 @@ const DrawerDemografiChart = ({
   data,
   range,
 }) => {
-  const handleClose = () => {
-    const drawerElement = document.getElementById(idDrawer);
-    drawerElement.checked = false;
-    closeDrawer();
-  };
-
-  const [selectedDataVendor, setSelectedDataVendor] = useState('');
+  const [selectedDataVendor, setSelectedDataVendor] = useState(null);
 
   // table
   const columnHelper = createColumnHelper();
@@ -30,15 +24,15 @@ const DrawerDemografiChart = ({
     columnHelper.accessor('name', {
       header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{convertLabel(info.getValue())}</div>
+        <div className='!body-m-b !text-color-1'>
+          {convertLabel(info.getValue())}
+        </div>
       ),
     }),
     columnHelper.accessor('total', {
-      header: <div className='text-color-2'>PERSENTASE</div>,
+      header: <div className='text-color-2'>TOTAL</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
-        </div>
+        <div className='!body-m-b !text-color-1'>{info.getValue().toLocaleString()}</div>
       ),
     }),
     columnHelper.display({
@@ -72,7 +66,7 @@ const DrawerDemografiChart = ({
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    columnHelper.accessor('total', {
+    columnHelper.accessor('percent', {
       header: <div className='text-color-2'>PERSENTASE</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
@@ -81,6 +75,16 @@ const DrawerDemografiChart = ({
       ),
     }),
   ];
+
+  useEffect(() => {
+    setSelectedDataVendor(null);
+  }, [data]);
+
+  const handleClose = () => {
+    const drawerElement = document.getElementById(idDrawer);
+    drawerElement.checked = false;
+    closeDrawer();
+  };
 
   return (
     <>

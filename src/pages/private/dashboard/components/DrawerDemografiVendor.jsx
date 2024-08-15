@@ -8,32 +8,37 @@ import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import { convertLabel } from '@/utils/common';
 
-const columnHelper = createColumnHelper();
-const columns = [
-  columnHelper.accessor('label', {
-    header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
-    cell: (info) => (
-      <div className='!body-m-b !text-color-1'>{convertLabel(info.getValue())}</div>
-    ),
-  }),
-  columnHelper.accessor('percent', {
-    header: <div className='text-color-2'>PERSENTASE</div>,
-    cell: (info) => (
-      <div className='!body-m-b !text-color-1'>
-        {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
-      </div>
-    ),
-  }),
-];
+const DrawerDemografiVendor = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  data,
+}) => {
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.accessor('label', {
+      header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {convertLabel(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('percent', {
+      header: <div className='text-color-2'>PERSENTASE</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
+        </div>
+      ),
+    }),
+  ];
 
-const DrawerDemografiVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
   };
-
-  console.log(data)
 
   return (
     <Drawer

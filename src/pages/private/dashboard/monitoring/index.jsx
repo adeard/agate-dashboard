@@ -44,11 +44,13 @@ const DashboardMonitoringPage = () => {
     dialogFilterRef.current.showModal();
   };
 
+  const [selectedData, setSelectedData] = useState('');
   const idDrawerSenderVendor = 'DrawerSenderVendor';
   const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
     useState(false);
 
-  const toogleDrawerSender = () => {
+  const toogleDrawerSender = (data) => {
+    setSelectedData(data);
     const drawerElement = document.getElementById(idDrawerSenderVendor);
     drawerElement.checked = true;
     setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
@@ -104,7 +106,7 @@ const DashboardMonitoringPage = () => {
             </div>
             <p className='tag-l text-color-2'>TOTAL TRUK</p>
             <p className='headline-s text-color-1'>
-              {data?.total_grading}{' '}
+              {data?.total_grading.toLocaleString()}{' '}
               <span className='subheadline-l text-color-2'>Truk</span>
             </p>
             <p className='subheadline-m text-color-2'>
@@ -117,7 +119,7 @@ const DashboardMonitoringPage = () => {
             </div>
             <p className='tag-l text-color-2'>TOTAL TBS</p>
             <p className='headline-s text-color-1'>
-              {data?.total_tandan}{' '}
+              {data?.total_tandan.toLocaleString()}{' '}
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
@@ -130,7 +132,7 @@ const DashboardMonitoringPage = () => {
             </div>
             <p className='tag-l text-color-2'>TOTAL DITERIMA</p>
             <p className='headline-s text-color-1'>
-              {data?.total_passed}{' '}
+              {data?.total_passed.toLocaleString()}{' '}
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
@@ -144,7 +146,7 @@ const DashboardMonitoringPage = () => {
             </div>
             <p className='tag-l text-color-2'>TOTAL DITOLAK</p>
             <p className='headline-s text-color-1'>
-              {data?.total_rejected}{' '}
+              {data?.total_rejected.toLocaleString()}{' '}
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
@@ -158,7 +160,7 @@ const DashboardMonitoringPage = () => {
             </div>
             <p className='tag-l text-color-2'>TOTAL DIDENDA</p>
             <p className='headline-s text-color-1'>
-              {data?.total_fined}{' '}
+              {data?.total_fined.toLocaleString()}{' '}
               <span className='subheadline-l text-color-2'>pcs</span>
             </p>
             <p className='subheadline-m text-color-2'>
@@ -209,7 +211,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    KLASIFIKASI UTAMA 
+                    KLASIFIKASI UTAMA
                   </span>
                 </label>
                 <table className='table'>
@@ -218,7 +220,13 @@ const DashboardMonitoringPage = () => {
                       data?.classification.inti.main.map((item, index) => (
                         <tr
                           key={index}
-                          className='body-m-r group hover text-color-2'
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() =>
+                            toogleDrawerSender({
+                              label: item.label,
+                              vendors: item.vendors,
+                            })
+                          }
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
@@ -250,7 +258,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    SUB KLASIFIKASI 
+                    SUB KLASIFIKASI
                   </span>
                 </label>
                 <table className='table'>
@@ -259,13 +267,19 @@ const DashboardMonitoringPage = () => {
                       data?.classification.inti.sub.map((item, index) => (
                         <tr
                           key={index}
-                          className='body-m-r group hover text-color-2'
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() =>
+                            toogleDrawerSender({
+                              label: item.label,
+                              vendors: item.vendors,
+                            })
+                          }
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
                             {convertLabel(item.label)}
                           </td>
-                          <td>
+                          <td width={150}>
                             <span className='text-color-1'>
                               {item.total.toLocaleString()}
                             </span>{' '}
@@ -293,7 +307,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DITERIMA 
+                    DITERIMA
                   </span>
                 </label>
                 <table className='table'>
@@ -303,8 +317,13 @@ const DashboardMonitoringPage = () => {
                         (item, index) => (
                           <tr
                             key={index}
-                            className='body-m-r group hover text-color-2'
-                            onClick={toogleDrawerSender}
+                            className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                            onClick={() =>
+                              toogleDrawerSender({
+                                label: item.label,
+                                vendors: item.vendors,
+                              })
+                            }
                           >
                             <td width={20}>{index + 1}.</td>
                             <td className='text-color-1 capitalize'>
@@ -336,7 +355,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DIDENDA 
+                    DIDENDA
                   </span>
                 </label>
                 <table className='table'>
@@ -345,8 +364,13 @@ const DashboardMonitoringPage = () => {
                       data?.classification.plasma.fined.map((item, index) => (
                         <tr
                           key={index}
-                          className='body-m-r group hover text-color-2'
-                          onClick={toogleDrawerSender}
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() =>
+                            toogleDrawerSender({
+                              label: item.label,
+                              vendors: item.vendors,
+                            })
+                          }
                         >
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1 capitalize'>
@@ -377,7 +401,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DITOLAK 
+                    DITOLAK
                   </span>
                 </label>
                 <table className='table'>
@@ -387,8 +411,13 @@ const DashboardMonitoringPage = () => {
                         (item, index) => (
                           <tr
                             key={index}
-                            className='body-m-r group hover text-color-2'
-                            onClick={toogleDrawerSender}
+                            className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                            onClick={() =>
+                              toogleDrawerSender({
+                                label: item.label,
+                                vendors: item.vendors,
+                              })
+                            }
                           >
                             <td width={20}>{index + 1}.</td>
                             <td className='text-color-1 capitalize'>
@@ -421,10 +450,12 @@ const DashboardMonitoringPage = () => {
           )}
         </div>
       </main>
+
       <DrawerSenderVendor
         idDrawer={idDrawerSenderVendor}
         isDrawerOpen={isDrawerSenderVendorOpen}
         closeDrawer={() => setIsDrawerSenderVendorOpen(false)}
+        data={selectedData}
       />
 
       <ModalFilter modalRef={dialogFilterRef} />
