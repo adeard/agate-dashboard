@@ -79,3 +79,14 @@ export const convertLabel = (data) => {
       return label;
   }
 };
+
+export function formatNumberWithK(number) {
+  if (number >= 1000) {
+    return `${(number / 1000).toLocaleString()}k`;
+  }
+  return number;
+}
+
+export const countPercentage = (number = 0, divider = 1) => {
+  return divider > 0 && number ? (Number(number) / Number(divider)) * 100 : 0;
+};

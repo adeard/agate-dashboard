@@ -1,10 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
-import { Spin } from 'antd';
-
 import { joinClassnames } from '@/utils/common';
-
-import CardHeader from './card-header';
+import CardHeader from './CardHeader';
 
 const SectionCard = ({
   classes = '',
@@ -25,7 +22,7 @@ const SectionCard = ({
       const cardPaddingGap = 12 * 2 + 4; // 12 = padding y from card
       const spaceY = 12;
       const contentHeight =
-        cardHeight - 28 - cardPaddingGap - spaceY - (header?.children ? 28 : 0); // 28 = height card-header
+        cardHeight - 28 - cardPaddingGap - spaceY - (header ? 28 : 0); // 28 = height card-header
 
       setContentHeight(contentHeight);
       setContainerWidth(cardWidth);
@@ -40,19 +37,17 @@ const SectionCard = ({
         classes,
       ])}
     >
-      <Spin spinning={loading}>
-        <CardHeader title={header.title}>{header.children}</CardHeader>
-        {children && (
-          <section
-            className={joinClassnames([!noOverflow && 'overflow-auto'])}
-            style={{ maxHeight: !noOverflow && `${contentHeight}px` }}
-          >
-            {typeof children === 'function'
-              ? children(contentHeight, containerWidth)
-              : children}
-          </section>
-        )}
-      </Spin>
+      {header && null}
+      {children && (
+        <section
+          className={joinClassnames([!noOverflow && 'overflow-auto'])}
+          style={{ maxHeight: !noOverflow && `${contentHeight}px` }}
+        >
+          {typeof children === 'function'
+            ? children(contentHeight, containerWidth)
+            : children}
+        </section>
+      )}
     </div>
   );
 };

@@ -61,7 +61,7 @@ const DashboardMonitoringPage = () => {
   return (
     <div>
       <header>
-        <div className='flex items-center justify-between  px-12 py-6'>
+        <div className='flex items-center justify-between  px-12 pt-6 pb-2'>
           <h1 className='headline-s'>Dashboard Monitoring Grading</h1>
           <div className='flex gap-2'>
             <label className='tag-l my-auto text-color-2'>FILTER</label>
@@ -209,7 +209,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    KLASIFIKASI UTAMA <MdInfoOutline className='text-xl' />
+                    KLASIFIKASI UTAMA 
                   </span>
                 </label>
                 <table className='table'>
@@ -250,7 +250,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    SUB KLASIFIKASI <MdInfoOutline className='text-xl' />
+                    SUB KLASIFIKASI 
                   </span>
                 </label>
                 <table className='table'>
@@ -293,7 +293,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DITERIMA <MdInfoOutline className='text-xl' />
+                    DITERIMA 
                   </span>
                 </label>
                 <table className='table'>
@@ -336,7 +336,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DIDENDA <MdInfoOutline className='text-xl' />
+                    DIDENDA 
                   </span>
                 </label>
                 <table className='table'>
@@ -377,7 +377,7 @@ const DashboardMonitoringPage = () => {
               <div className='border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                    DITOLAK <MdInfoOutline className='text-xl' />
+                    DITOLAK 
                   </span>
                 </label>
                 <table className='table'>

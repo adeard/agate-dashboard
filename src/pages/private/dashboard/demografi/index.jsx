@@ -16,6 +16,7 @@ import DrawerDemografiVendor from '../components/DrawerDemografiVendor';
 import DrawerSenderVendor from '../components/DrawerSenderVendor';
 import Charts from '../components/Charts';
 import DrawerDemografiChart from '../components/DrawerDemografiChart';
+import SectionCard from '@/components/shared/SectionCard';
 
 const listMenuType = [
   {
@@ -112,7 +113,8 @@ const DashboardDemografiPage = () => {
   const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
     useState(false);
   const idDrawerDemografiVendor = 'DrawerDemografiVendor';
-  const [isDrawerDemografiVendorOpen, setIsDrawerDemografiVendorOpen] = useState(false);
+  const [isDrawerDemografiVendorOpen, setIsDrawerDemografiVendorOpen] =
+    useState(false);
   const idDrawerDemografiChart = 'DrawerDemografiChart';
   const [isDrawerDemografiChartOpen, setIsDrawerDemografiChartOpen] =
     useState(false);
@@ -182,42 +184,47 @@ const DashboardDemografiPage = () => {
       <main className='grid grid-cols-4 gap-4'>
         {/* card vendor inti */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
-          <label>
-            <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-              %DITERIMA VENDOR INTI{' '}
-              <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
-                {data?.by_inti_accepted.length}
+          <div className='flex items-center justify-between pb-4'>
+            <label>
+              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                %DITERIMA VENDOR INTI{' '}
+                <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
+                  {data?.by_inti_accepted.length}
+                </span>
               </span>
-            </span>
-          </label>
-          <table className='table mt-4'>
-            <tbody>
-              {data &&
-                data?.by_inti_accepted.map((item, index) => (
-                  <tr
-                    key={index}
-                    className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografiVendor(item)}
-                  >
-                    <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>{item.label}</td>
-                    <td width={70}>
-                      <p className='inline-flex'>
-                        <span className='text-color-1'>
-                          {item.percent.toFixed(2)}
-                        </span>{' '}
-                        <span className='body-s-r'>%</span>
-                      </p>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+            </label>
+            <div className='h-10'></div>
+          </div>
+          <div className='max-h-[30vh] overflow-y-auto'>
+            <table className='table'>
+              <tbody>
+                {data &&
+                  data?.by_inti_accepted.map((item, index) => (
+                    <tr
+                      key={index}
+                      className='body-m-r group hover text-color-2'
+                      onClick={() => toogleDrawerDemografiVendor(item)}
+                    >
+                      <td width={20}>{index + 1}.</td>
+                      <td className='text-color-1'>{item.label}</td>
+                      <td width={70}>
+                        <p className='inline-flex'>
+                          <span className='text-color-1'>
+                            {item.percent.toFixed(2)}
+                          </span>{' '}
+                          <span className='body-s-r'>%</span>
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* card buah inti */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
+          <div className='flex items-center justify-between pb-4'>
             <label>
               <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                 BUAH INTI
@@ -232,88 +239,12 @@ const DashboardDemografiPage = () => {
               full
             />
           </div>
-          <table className='table mt-4'>
-            <tbody>
-              {data &&
-                data?.[selectedClassification['value']].map((item, index) => (
-                  <tr
-                    key={index}
-                    className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerSender(item)}
-                  >
-                    <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>{convertLabel(item.label)}</td>
-                    <td width={70}>
-                      <p className='inline-flex'>
-                        <span className='text-color-1'>
-                          {item.percent.toFixed(2)}
-                        </span>{' '}
-                        <span className='body-s-r'>%</span>
-                      </p>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
 
-        {/* card vendor plasma */}
-        <div className='bg-white border border-primary-4 rounded-xl p-4'>
-          <label>
-            <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-              %DITERIMA VENDOR PLASMA{' '}
-              <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
-                {data?.by_plasma_accepted.length}
-              </span>
-            </span>
-          </label>
-          <table className='table mt-4'>
-            <tbody>
-              {data &&
-                data?.by_plasma_accepted.map((item, index) => (
-                  <tr
-                    key={index}
-                    className='body-m-r group hover text-color-2'
-                    onClick={() => toogleDrawerDemografiVendor(item)}
-                  >
-                    <td width={20}>{index + 1}.</td>
-                    <td className='text-color-1'>{item.label}</td>
-                    <td width={70}>
-                      <p className='inline-flex'>
-                        <span className='text-color-1'>
-                          {item.percent.toFixed(2)}
-                        </span>{' '}
-                        <span className='body-s-r'>%</span>
-                      </p>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* card buah plasma */}
-        <div className='bg-white border border-primary-4 rounded-xl p-4'>
-          <div className='flex items-center justify-between'>
-            <label>
-              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                BUAH PLASMA
-              </span>
-            </label>
-            <Dropdown
-              selected={selectedClassificationPlasma}
-              setSelected={setSelectedClassificationPlasma}
-              options={listMenuTypePlasma}
-              buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
-              arrowPosition='right'
-              full
-            />
-          </div>
-          <table className='table mt-4'>
-            <tbody>
-              {data &&
-                data?.[selectedClassificationPlasma['value']].map(
-                  (item, index) => (
+          <div className='max-h-[30vh] overflow-y-auto'>
+            <table className='table'>
+              <tbody>
+                {data &&
+                  data?.[selectedClassification['value']].map((item, index) => (
                     <tr
                       key={index}
                       className='body-m-r group hover text-color-2'
@@ -332,10 +263,99 @@ const DashboardDemografiPage = () => {
                         </p>
                       </td>
                     </tr>
-                  )
-                )}
-            </tbody>
-          </table>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* card vendor plasma */}
+        <div className='bg-white border border-primary-4 rounded-xl p-4'>
+          <div className='flex items-center justify-between pb-4'>
+            <label>
+              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                %DITERIMA VENDOR PLASMA{' '}
+                <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
+                  {data?.by_plasma_accepted.length}
+                </span>
+              </span>
+            </label>
+            <div className='h-10'></div>
+          </div>
+
+          <div className='max-h-[30vh] overflow-y-auto'>
+            <table className='table'>
+              <tbody>
+                {data &&
+                  data?.by_plasma_accepted.map((item, index) => (
+                    <tr
+                      key={index}
+                      className='body-m-r group hover text-color-2'
+                      onClick={() => toogleDrawerDemografiVendor(item)}
+                    >
+                      <td width={20}>{index + 1}.</td>
+                      <td className='text-color-1'>{item.label}</td>
+                      <td width={70}>
+                        <p className='inline-flex'>
+                          <span className='text-color-1'>
+                            {item.percent.toFixed(2)}
+                          </span>{' '}
+                          <span className='body-s-r'>%</span>
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* card buah plasma */}
+        <div className='bg-white border border-primary-4 rounded-xl p-4'>
+          <div className='flex items-center justify-between pb-4'>
+            <label>
+              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                BUAH PLASMA
+              </span>
+            </label>
+            <Dropdown
+              selected={selectedClassificationPlasma}
+              setSelected={setSelectedClassificationPlasma}
+              options={listMenuTypePlasma}
+              buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+              arrowPosition='right'
+              full
+            />
+          </div>
+          <div className='max-h-[30vh] overflow-y-auto'>
+            <table className='table'>
+              <tbody>
+                {data &&
+                  data?.[selectedClassificationPlasma['value']].map(
+                    (item, index) => (
+                      <tr
+                        key={index}
+                        className='body-m-r group hover text-color-2'
+                        onClick={() => toogleDrawerSender(item)}
+                      >
+                        <td width={20}>{index + 1}.</td>
+                        <td className='text-color-1'>
+                          {convertLabel(item.label)}
+                        </td>
+                        <td width={70}>
+                          <p className='inline-flex'>
+                            <span className='text-color-1'>
+                              {item.percent.toFixed(2)}
+                            </span>{' '}
+                            <span className='body-s-r'>%</span>
+                          </p>
+                        </td>
+                      </tr>
+                    )
+                  )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <section className='col-span-4 grid grid-cols-2 gap-4'>
@@ -385,7 +405,7 @@ const DashboardDemografiPage = () => {
                 range={selectedRangeCharts}
                 type={demographyIntiChartType.value}
                 variant='inti'
-                height={320}
+                height={290}
                 toogleDrawer={toogleDrawerDemografiChart}
               />
             )}
@@ -439,7 +459,7 @@ const DashboardDemografiPage = () => {
                 range={selectedRangeChartsPlasma}
                 type={demographyPlasmaChartType.value}
                 variant='plasma'
-                height={320}
+                height={290}
                 toogleDrawer={toogleDrawerDemografiChart}
               />
             )}

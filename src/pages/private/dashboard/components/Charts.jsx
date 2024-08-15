@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Column, G2 } from '@ant-design/plots';
-import { convertLabel } from '@/utils/common';
+import {
+  convertLabel,
+  countPercentage,
+  formatNumberWithK,
+} from '@/utils/common';
 
 const classificationColor = {
   MENTAH: '#CDE441',
@@ -141,18 +145,24 @@ const Charts = ({
                 range === 'weekly' ? `Week ${value}` : value,
             },
             y: {
-              labelFormatter: (value) => `${value}%`,
+              labelFormatter: (value) => formatNumberWithK(value),
             },
           }}
           interaction={{
             tooltip: {
               render: (e, v) => {
+                console.log({ v });
+                const total = v.items.reduce(
+                  (acc, curr) => acc + Number(curr.value || 0),
+                  0
+                );
                 return (
                   <div key={v.title}>
                     <h4 className='font-semibold text-md'>
                       {range === 'weekly' ? 'Week ' : ''}
                       {v.title}
                     </h4>
+                    <h5 className='text-xs font-semibold italic'>Total: {total} tbs</h5>
                     {v.items.map((item) => {
                       const { name, value, color } = item;
                       return (
@@ -180,7 +190,7 @@ const Charts = ({
                                 {convertLabel(name)}
                               </span>
                             </div>
-                            <b>{Number(value).toFixed(2)}%</b>
+                            <b>{countPercentage(value, total).toFixed(2)}%</b>
                           </div>
                         </div>
                       );
