@@ -29,15 +29,21 @@ const DrawerFilterRiwayat = ({
       vendorCheckbox: false,
       vendor: '',
       deliverNumberCheckbox: false,
-      deliverNumber: '',
-      vehicleCheckbox: false,
-      vehicle: '',
+      delivery_number: '',
+      vehicleNumberCheckbox: false,
+      vehicle_number: '',
     },
     onSubmit: async ({ value }) => {
-      // setQueryParams(value);
-      // refetch(value);
-      // handleClose();
-      console.log(value)
+      setQueryParams({
+        delivery_number: value.delivery_number,
+        vehicle_number: value.vehicle_number,
+      });
+      refetch({
+        delivery_number: value.delivery_number,
+        vehicle_number: value.vehicle_number,
+      });
+      handleClose();
+      console.log(value);
     },
   });
 
@@ -79,7 +85,7 @@ const DrawerFilterRiwayat = ({
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <div className='space-y-4 my-5'>
-            <div className='px-5 flex'>
+            {/* <div className='px-5 flex'>
               <form.Field
                 name='dateFromCheckBox'
                 children={(field) => (
@@ -191,7 +197,7 @@ const DrawerFilterRiwayat = ({
                   )}
                 />
               </div>
-            </div>
+            </div> */}
             <div className='px-5 flex'>
               <form.Field
                 name='deliverNumberCheckbox'
@@ -204,14 +210,14 @@ const DrawerFilterRiwayat = ({
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.validateField('deliverNumber', null);
+                      form.validateField('delivery_number', null);
                     }}
                   />
                 )}
               />
               <div className='basis-3/5'>
                 <form.Field
-                  name='deliverNumber'
+                  name='delivery_number'
                   children={(field) => (
                     <Input
                       placeholder='Enter Ticket ID'
@@ -230,7 +236,7 @@ const DrawerFilterRiwayat = ({
             </div>
             <div className='px-5 flex'>
               <form.Field
-                name='vehicleCheckbox'
+                name='vehicleNumberCheckbox'
                 children={(field) => (
                   <Checkbox
                     label='Nomor Plat Kendaraan'
@@ -240,14 +246,14 @@ const DrawerFilterRiwayat = ({
                     isChecked={field.state.value}
                     onChange={() => {
                       field.handleChange(!field.state.value);
-                      form.validateField('vehicle', null);
+                      form.validateField('vehicle_number', null);
                     }}
                   />
                 )}
               />
               <div className='basis-3/5'>
                 <form.Field
-                  name='vehicle'
+                  name='vehicle_number'
                   children={(field) => (
                     <Input
                       placeholder='Nomor Plat Kendaraan'
@@ -258,7 +264,7 @@ const DrawerFilterRiwayat = ({
                       onChange={(e) => {
                         field.handleChange(e.target.value);
                       }}
-                      disabled={!form.state.values.vehicleCheckbox}
+                      disabled={!form.state.values.vehicleNumberCheckbox}
                     />
                   )}
                 />

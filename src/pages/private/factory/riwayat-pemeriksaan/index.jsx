@@ -102,6 +102,8 @@ const RiwayatPemeriksaanPage = () => {
     }),
   ];
 
+  console.log(data)
+
   return (
     <div>
       <header>
