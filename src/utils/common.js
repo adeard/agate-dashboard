@@ -5,10 +5,7 @@ export const joinClassnames = (classes) => {
 };
 
 export const showNotification = (type, message) => {
-  return toast[type]({
-    message: message,
-    // description: message,
-  });
+  return toast[type](message.title);
 };
 
 export const getObjectSearch = (search) => {
