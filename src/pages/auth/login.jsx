@@ -7,7 +7,7 @@ import InputWithIcon from '@/components/shared/InputWithIcon';
 
 import { useForm } from '@tanstack/react-form';
 
-import { showNotification } from '@/utils/common';
+import { toast } from 'react-toastify';
 import { setToken } from '@/utils/storages';
 import { postLogin } from '@/services/auth';
 
@@ -35,12 +35,14 @@ const LoginPage = () => {
 
       if (token) {
         setToken(token);
-        window.location.replace('/');
-        showNotification('success', 'Berhasil login');
+        toast.success('Berhasil login');
+        setTimeout(() => {
+          window.location.replace('/');
+        }, 1000);
       }
     } catch (err) {
       console.log(err.message.m);
-      showNotification('error', err.message.title);
+      toast.error(err.message.m);
       setLoadingSubmit(false);
     } finally {
       setLoadingSubmit(false);
