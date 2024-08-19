@@ -24,10 +24,10 @@ import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
 
-const countPercentage = (value = 0, divider = 1, fixed = null) => {
-  let percent = (value / divider) * 100;
+const countPercentage = (value = 0, divider = 0, fixed = null) => {
+  let percent = (value / divider || 1) * 100;
 
-  return fixed ? percent.toFixed(fixed) : percent;
+  return divider === 0 ? 0 : fixed ? percent.toFixed(fixed) : percent;
 };
 
 const RiwayatPemeriksaanPage = () => {
@@ -35,7 +35,7 @@ const RiwayatPemeriksaanPage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, meta, refetch, setQueryParams } = useGet(
-    '/v1/inspection-data'
+    '/v1/inspection-data/by-factory/' + factoryId
   );
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
