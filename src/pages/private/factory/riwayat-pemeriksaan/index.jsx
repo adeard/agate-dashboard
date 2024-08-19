@@ -24,14 +24,19 @@ import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
 
+const countPercentage = (value = 0, divider = 1, fixed = null) => {
+  let percent = (value / divider) * 100;
+
+  return fixed ? percent.toFixed(fixed) : percent;
+};
+
 const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const { data, loading, refetch, setQueryParams } = useGet(
+  const { data, loading, meta, refetch, setQueryParams } = useGet(
     '/v1/inspection-data'
   );
-
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
 
@@ -102,7 +107,7 @@ const RiwayatPemeriksaanPage = () => {
     }),
   ];
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div>
@@ -140,15 +145,35 @@ const RiwayatPemeriksaanPage = () => {
         <div className='grid grid-cols-3 gap-4 mb-8'>
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DITOLAK</label>
-            <p className='text-xl text-color-1'>1000 (80%)</p>
+            <p className='text-xl text-color-1'>
+              {(meta?.total_rejected || 0).toLocaleString()} (
+              {countPercentage(
+                meta?.total_rejected || 0,
+                meta?.total_tandan,
+                2
+              )}
+              % )
+            </p>
           </div>
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DITERIMA</label>
-            <p className='text-xl text-color-1'>1000 (80%)</p>
+            <p className='text-xl text-color-1'>
+              {(meta?.total_accepted || 0).toLocaleString()} (
+              {countPercentage(
+                meta?.total_accepted || 0,
+                meta?.total_tandan,
+                2
+              )}
+              % )
+            </p>
           </div>
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DIDENDA</label>
-            <p className='text-xl text-color-1'>1000 (80%)</p>
+            <p className='text-xl text-color-1'>
+              {(meta?.total_fined || 0).toLocaleString()}(
+              {countPercentage(meta?.total_fined || 0, meta?.total_tandan, 2)}%
+              )
+            </p>
           </div>
         </div>
         <div className='bg-white rounded-2xl p-4 overflow-x-auto h-full'>

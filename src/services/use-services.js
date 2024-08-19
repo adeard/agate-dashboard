@@ -9,6 +9,7 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [meta, setMeta] = useState(null);
 
   const [search, setSearch] = useSearchParams();
 
@@ -35,7 +36,9 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
 
       setData(response.data);
       setTotal(response.meta.total_data || 0);
+      setMeta(response?.meta || null);
     } catch (err) {
+      setMeta(null);
       setData(null);
       setError(err.message);
       showNotification('error', err.message);
@@ -50,6 +53,7 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
     error,
     total,
     objectSearch,
+    meta,
     refetch: (params = null) => _fetchData(params || objectSearch),
     setQueryParams: (object) => setSearch(object),
   };
