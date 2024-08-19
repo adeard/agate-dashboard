@@ -24,18 +24,33 @@ import DrawerSenderVendor from '../components/DrawerSenderVendor';
 const DashboardMonitoringPage = () => {
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
-  const { data, loading } = useGetWithPost('/v2/dashboard/monitoring');
+  const { data, loading, refetch, setQueryParams } = useGetWithPost(
+    '/v2/dashboard/monitoring'
+  );
 
   const [isBuahInti, setIsBuahInti] = useState(true);
-  const [selectedFactory, setSelectedFactory] = useState('');
+  const [selectedFactory, setSelectedFactory] = useState({
+    label: 'Pilih Pabrik',
+    value: 'tes',
+  });
 
   const form = useForm({
     defaultValues: {
-      date: '',
-      access_factory: '',
+      date_from: '',
+      date_to: '',
+      factory: selectedFactory.value,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      setQueryParams({
+        date_from: value.date_from,
+        date_to: value.date_to,
+        factory: selectedFactory.value,
+      });
+      refetch({
+        date_from: value.date_from,
+        date_to: value.date_to,
+        factory: selectedFactory.value,
+      });
     },
   });
 
@@ -68,7 +83,7 @@ const DashboardMonitoringPage = () => {
           <div className='flex gap-2'>
             <label className='tag-l my-auto text-color-2'>FILTER</label>
             <form.Field
-              name='date'
+              name='date_from'
               children={(field) => (
                 <Input
                   type='date'
@@ -76,10 +91,26 @@ const DashboardMonitoringPage = () => {
                   full
                   name={field.name}
                   value={field.state.value}
-                  className='pr-12 bg-white '
+                  className='pr-12 bg-white'
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    form.handleSubmit();
+                  }}
+                />
+              )}
+            />
+            <span className='m-auto'>-</span>
+            <form.Field
+              name='date_to'
+              children={(field) => (
+                <Input
+                  type='date'
+                  size='lg'
+                  full
+                  name={field.name}
+                  value={field.state.value}
+                  className='pr-12 bg-white'
+                  onChange={(e) => {
+                    field.handleChange(e.target.value);
                   }}
                 />
               )}
