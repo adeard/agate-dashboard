@@ -74,11 +74,7 @@ const DrawerFilterRiwayat = ({
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={() => {
-            const drawerElement = document.getElementById(idDrawer);
-            drawerElement.checked = false;
-            closeDrawer();
-          }}
+          onClick={handleCancel}
         >
           <IoMdClose className='text-2xl' />
         </Button>

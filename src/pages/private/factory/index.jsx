@@ -133,7 +133,7 @@ const FactoryPage = () => {
         </div>
       </header>
       <main>
-        <div className='bg-white rounded-2xl p-4 overflow-x-auto h-[calc(100vh-218px)]'>
+        <div className='bg-white rounded-2xl p-4 h-[calc(100vh-218px)]'>
           {data && (
             <CustomTable
               dataTable={data}

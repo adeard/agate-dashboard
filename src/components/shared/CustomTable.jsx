@@ -17,11 +17,9 @@ const renderPageButtons = (table) => {
   const currentPage = table.getState().pagination.pageIndex;
   const pageButtons = [];
 
-  // Determine the start and end page index for the pagination buttons
   const startPage = Math.max(0, currentPage - 1);
   const endPage = Math.min(pageCount - 1, currentPage + 1);
 
-  // Add the buttons for the current range of pages
   for (let i = startPage; i <= endPage; i++) {
     pageButtons.push(
       <button
@@ -61,74 +59,85 @@ const CustomTable = ({
     <div>
       {data?.length > 0 ? (
         <>
-          <table className='table h-full'>
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className='text-color-2'>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className='tag-l'
-                      style={{ width: `${header.getSize()}px` }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
-                  ))}
+          <div className='overflow-x-auto overflow-y-hidden'>
+            <table className='table h-full'>
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className='text-color-2'>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className='tag-l'
+                        style={{ width: `${header.getSize()}px` }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className='body-s-r group hover text-color-2'
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className='bg-primary-5'>
+                  {footerData &&
+                    columns.map((column, index) => (
+                      <td
+                        key={index}
+                        className='!body-m-b text-center text-[#000000DE]'
+                      >
+                        {footerData[column.accessorKey]}
+                      </td>
+                    ))}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className='body-s-r group hover text-color-2'>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className='bg-primary-5'>
-                {footerData &&
-                  columns.map((column, index) => (
-                    <td
-                      key={index}
-                      className='!body-m-b text-center text-[#000000DE]'
-                    >
-                      {footerData[column.accessorKey] || '-'}
-                    </td>
-                  ))}
-              </tr>
-            </tfoot>
-          </table>
+              </tfoot>
+            </table>
+          </div>
           {showPagination && data.length > 10 && (
-            <div className='flex justify-end items-center mt-4'>
-              <Button
-                variant='primary-outline'
-                className='!border-none'
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <IoIosArrowBack className='text-xl' />
-              </Button>
-              {renderPageButtons(table)}
-              <Button
-                variant='primary-outline'
-                className='!border-none'
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <IoIosArrowForward className='text-xl' />
-              </Button>
+            <div className='w-full mt-4'>
+              <div className='inline-block min-w-full'>
+                <div className='flex justify-end items-center'>
+                  <Button
+                    variant='primary-outline'
+                    className='!border-none'
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                  >
+                    <IoIosArrowBack className='text-xl' />
+                  </Button>
+                  <div className='flex justify-center'>
+                    {renderPageButtons(table)}
+                  </div>
+                  <Button
+                    variant='primary-outline'
+                    className='!border-none'
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                  >
+                    <IoIosArrowForward className='text-xl' />
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </>

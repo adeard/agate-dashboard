@@ -41,6 +41,11 @@ const DrawerFormVendor = ({
     },
   });
 
+  const handleCancel = () => {
+    form.reset();
+    handleClose();
+  };
+
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
@@ -61,7 +66,7 @@ const DrawerFormVendor = ({
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleClose}
+          onClick={handleCancel}
         >
           <IoMdClose className='text-2xl' />
         </Button>
@@ -101,7 +106,7 @@ const DrawerFormVendor = ({
           variant='primary-outline'
           size='lg'
           className='!w[79px] button-shadow'
-          onClick={handleClose}
+          onClick={handleCancel}
         >
           Cancel
         </Button>

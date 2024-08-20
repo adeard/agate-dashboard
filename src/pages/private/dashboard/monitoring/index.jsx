@@ -20,6 +20,7 @@ import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
 import DrawerSenderVendor from '../components/DrawerSenderVendor';
+import DrawerRiwayatPemeriksaan from '../components/DrawerRiwayatPemeriksaan';
 
 const DashboardMonitoringPage = () => {
   const { data: optionsFactory } = useGet('/v1/options/factory');
@@ -29,10 +30,13 @@ const DashboardMonitoringPage = () => {
   );
 
   const [isBuahInti, setIsBuahInti] = useState(true);
-  const [selectedFactory, setSelectedFactory] = useState({
-    label: 'Pilih Pabrik',
-    value: 'tes',
-  });
+  const [selectedFactory, setSelectedFactory] = useState({});
+
+  useEffect(() => {
+    if (optionsFactory) {
+      setSelectedFactory(optionsFactory[0]);
+    }
+  }, [optionsFactory]);
 
   const form = useForm({
     defaultValues: {
@@ -59,21 +63,31 @@ const DashboardMonitoringPage = () => {
     dialogFilterRef.current.showModal();
   };
 
+  const idDrawerRiwayatPemeriksaan = 'DrawerRiwayatPemeriksaan';
+  const [isDrawerRiwayatPemeriksaanOpen, setIsDrawerRiwayatPemeriksaanOpen] =
+    useState(false);
+
   const [selectedData, setSelectedData] = useState('');
   const idDrawerSenderVendor = 'DrawerSenderVendor';
   const [isDrawerSenderVendorOpen, setIsDrawerSenderVendorOpen] =
     useState(false);
 
-  const toogleDrawerSender = (data) => {
+  const toggleDrawerRiwayatPemeriksaan = () => {
+    const drawerElement = document.getElementById(idDrawerRiwayatPemeriksaan);
+    drawerElement.checked = true;
+    setIsDrawerRiwayatPemeriksaanOpen(!isDrawerRiwayatPemeriksaanOpen);
+  };
+
+  const toggleDrawerSender = (data) => {
     setSelectedData(data);
     const drawerElement = document.getElementById(idDrawerSenderVendor);
     drawerElement.checked = true;
     setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
   };
 
-  useEffect(() => {
-    // handleOpenModalFilter();
-  }, []);
+  // useEffect(() => {
+  //   handleOpenModalFilter();
+  // }, []);
 
   return (
     <div>
@@ -131,7 +145,10 @@ const DashboardMonitoringPage = () => {
       </header>
       <main className='grid grid-cols-5 gap-4'>
         <div className='col-span-3 grid grid-cols-2 gap-4'>
-          <div className='flex-1 col-span-2 bg-white p-5 rounded-xl border border-primary-3 space-y-2'>
+          <div
+            className='flex-1 col-span-2 bg-white p-5 rounded-xl border border-primary-3 space-y-2 hover:cursor-pointer hover:bg-primary-5'
+            onClick={toggleDrawerRiwayatPemeriksaan}
+          >
             <div className='bg-[#E8F8E4] p-2 w-max rounded-md'>
               <MdOutlineLocalShipping className='text-2xl text-primary-G600' />
             </div>
@@ -253,7 +270,7 @@ const DashboardMonitoringPage = () => {
                           key={index}
                           className='body-m-r group hover text-color-2 hover:cursor-pointer'
                           onClick={() =>
-                            toogleDrawerSender({
+                            toggleDrawerSender({
                               label: item.label,
                               vendors: item.vendors,
                             })
@@ -300,7 +317,7 @@ const DashboardMonitoringPage = () => {
                           key={index}
                           className='body-m-r group hover text-color-2 hover:cursor-pointer'
                           onClick={() =>
-                            toogleDrawerSender({
+                            toggleDrawerSender({
                               label: item.label,
                               vendors: item.vendors,
                             })
@@ -350,7 +367,7 @@ const DashboardMonitoringPage = () => {
                             key={index}
                             className='body-m-r group hover text-color-2 hover:cursor-pointer'
                             onClick={() =>
-                              toogleDrawerSender({
+                              toggleDrawerSender({
                                 label: item.label,
                                 vendors: item.vendors,
                               })
@@ -397,7 +414,7 @@ const DashboardMonitoringPage = () => {
                           key={index}
                           className='body-m-r group hover text-color-2 hover:cursor-pointer'
                           onClick={() =>
-                            toogleDrawerSender({
+                            toggleDrawerSender({
                               label: item.label,
                               vendors: item.vendors,
                             })
@@ -444,7 +461,7 @@ const DashboardMonitoringPage = () => {
                             key={index}
                             className='body-m-r group hover text-color-2 hover:cursor-pointer'
                             onClick={() =>
-                              toogleDrawerSender({
+                              toggleDrawerSender({
                                 label: item.label,
                                 vendors: item.vendors,
                               })
@@ -481,6 +498,13 @@ const DashboardMonitoringPage = () => {
           )}
         </div>
       </main>
+
+      <DrawerRiwayatPemeriksaan
+        idDrawer={idDrawerRiwayatPemeriksaan}
+        isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
+        closeDrawer={() => setIsDrawerRiwayatPemeriksaanOpen(false)}
+        factoryId={selectedFactory.value}
+      />
 
       <DrawerSenderVendor
         idDrawer={idDrawerSenderVendor}

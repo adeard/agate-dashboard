@@ -68,10 +68,13 @@ const DashboardDemografiPage = () => {
   const { data, loading, refetch, setQueryParams } =
     useGetWithPost('/v2/dashboard');
 
-  const [selectedFactory, setSelectedFactory] = useState({
-    label: 'Pilih Pabrik',
-    value: 'tes',
-  });
+  const [selectedFactory, setSelectedFactory] = useState({});
+
+  useEffect(() => {
+    if (optionsFactory) {
+      setSelectedFactory(optionsFactory[0]);
+    }
+  }, [optionsFactory]);
 
   const form = useForm({
     defaultValues: {
@@ -140,21 +143,21 @@ const DashboardDemografiPage = () => {
   const [selectedDataSender, setSelectedDataSender] = useState('');
   const [selectedDataVendor, setSelectedDataVendor] = useState('');
   const [selectedDataChart, setSelectedDataChart] = useState('');
-  const toogleDrawerSender = (data) => {
+  const toggleDrawerSender = (data) => {
     setSelectedDataSender(data);
     const drawerElement = document.getElementById(idDrawerSenderVendor);
     drawerElement.checked = true;
     setIsDrawerSenderVendorOpen(!isDrawerSenderVendorOpen);
   };
 
-  const toogleDrawerDemografiVendor = (data) => {
+  const toggleDrawerDemografiVendor = (data) => {
     setSelectedDataVendor(data);
     const drawerElement = document.getElementById(idDrawerDemografiVendor);
     drawerElement.checked = true;
     setIsDrawerDemografiVendorOpen(!isDrawerDemografiVendorOpen);
   };
 
-  const toogleDrawerDemografiChart = (data) => {
+  const toggleDrawerDemografiChart = (data) => {
     setSelectedDataChart(data);
     const drawerElement = document.getElementById(idDrawerDemografiChart);
     drawerElement.checked = true;
@@ -237,7 +240,7 @@ const DashboardDemografiPage = () => {
                     <tr
                       key={index}
                       className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                      onClick={() => toogleDrawerDemografiVendor(item)}
+                      onClick={() => toggleDrawerDemografiVendor(item)}
                     >
                       <td width={20}>{index + 1}.</td>
                       <td className='text-color-1'>{item.label}</td>
@@ -282,7 +285,7 @@ const DashboardDemografiPage = () => {
                     <tr
                       key={index}
                       className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                      onClick={() => toogleDrawerSender(item)}
+                      onClick={() => toggleDrawerSender(item)}
                     >
                       <td width={20}>{index + 1}.</td>
                       <td className='text-color-1'>
@@ -325,7 +328,7 @@ const DashboardDemografiPage = () => {
                     <tr
                       key={index}
                       className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                      onClick={() => toogleDrawerDemografiVendor(item)}
+                      onClick={() => toggleDrawerDemografiVendor(item)}
                     >
                       <td width={20}>{index + 1}.</td>
                       <td className='text-color-1'>{item.label}</td>
@@ -370,7 +373,7 @@ const DashboardDemografiPage = () => {
                       <tr
                         key={index}
                         className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                        onClick={() => toogleDrawerSender(item)}
+                        onClick={() => toggleDrawerSender(item)}
                       >
                         <td width={20}>{index + 1}.</td>
                         <td className='text-color-1'>
@@ -455,7 +458,7 @@ const DashboardDemografiPage = () => {
                 type={demographyIntiChartType.value}
                 variant='inti'
                 height={290}
-                toogleDrawer={toogleDrawerDemografiChart}
+                toggleDrawer={toggleDrawerDemografiChart}
               />
             )}
 
@@ -466,7 +469,7 @@ const DashboardDemografiPage = () => {
                 type={demographyIntiChartType.value}
                 variant='inti'
                 height={290}
-                toogleDrawer={toogleDrawerDemografiChart}
+                toggleDrawer={toggleDrawerDemografiChart}
               />
             )}
           </div>
@@ -535,7 +538,7 @@ const DashboardDemografiPage = () => {
                 type={demographyPlasmaChartType.value}
                 variant='plasma'
                 height={290}
-                toogleDrawer={toogleDrawerDemografiChart}
+                toggleDrawer={toggleDrawerDemografiChart}
               />
             )}
 
@@ -548,7 +551,7 @@ const DashboardDemografiPage = () => {
                 type={demographyPlasmaChartType.value}
                 variant='plasma'
                 height={290}
-                toogleDrawer={toogleDrawerDemografiChart}
+                toggleDrawer={toggleDrawerDemografiChart}
               />
             )}
           </div>

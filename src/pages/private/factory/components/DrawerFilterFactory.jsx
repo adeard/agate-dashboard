@@ -45,7 +45,7 @@ const DrawerFilterFactory = ({
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleClose}
+          onClick={handleCancel}
         >
           <IoMdClose className='text-2xl' />
         </Button>

@@ -24,7 +24,7 @@ const Charts = ({
   variant = 'inti',
   height,
   width,
-  toogleDrawer,
+  toggleDrawer,
 }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
@@ -115,7 +115,7 @@ const Charts = ({
           .filter((i) => i.xField === data.data.xField)
           .map((e) => e.data);
         setSelectedData(allData);
-        toogleDrawer({
+        toggleDrawer({
           variant: variant,
           label: data.data.xField,
           demography: allData,

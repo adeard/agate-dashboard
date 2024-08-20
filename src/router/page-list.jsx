@@ -11,6 +11,10 @@ const pageList = {
       component: lazy(() => import('@/pages/private/dashboard/monitoring')),
     },
     {
+      path: '/dashboard/monitoring/riwayat-pemeriksaan/:id',
+      component: lazy(() => import('@/pages/private/dashboard/monitoring/DetailRiwayatPemeriksaan')),
+    },
+    {
       path: '/dashboard/demografi',
       component: lazy(() => import('@/pages/private/dashboard/demografi')),
     },

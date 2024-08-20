@@ -176,7 +176,7 @@ const RiwayatPemeriksaanPage = () => {
             </p>
           </div>
         </div>
-        <div className='bg-white rounded-2xl p-4 overflow-x-auto h-full'>
+        <div className='bg-white rounded-2xl p-4 h-full'>
           {data && (
             <CustomTable
               dataTable={data}

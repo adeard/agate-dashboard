@@ -12,7 +12,7 @@ const TableDemografi = ({
   variant = 'inti',
   height,
   width,
-  toogleDrawer,
+  toggleDrawer,
 }) => {
   const categories = Array.from(
     new Set(data[range].flatMap((month) => month.data.map((item) => item.name)))
@@ -43,39 +43,43 @@ const TableDemografi = ({
             );
 
             return (
-              <tr key={data.title}>
-                <td
-                  className='body-m-r !text-sm text-color-1 hover:underline hover:cursor-pointer'
-                  onClick={() =>
-                    toogleDrawer({
-                      variant: variant,
-                      label: data.title,
-                      demography: data.data,
-                    })
-                  }
-                >
-                  {range === 'weekly' ? 'Week ' + data.title : data.title}
-                </td>
-                {categories.map((category) => {
-                  const item = data.data.find((d) => d.name === category);
-                  const percentage = item
-                    ? ((item.total / totalRow) * 100).toFixed(2)
-                    : '-';
-
-                  return (
-                    <td key={category}>
-                      {item && percentage != 'NaN' ? (
-                        <p className='inline-flex body-s-r'>
-                          <span className='text-color-1'>{percentage}</span>{' '}
-                          <span className='text-color-2'>%</span>
-                        </p>
-                      ) : (
-                        '-'
-                      )}
+              <>
+                {data.data.length > 0 ? (
+                  <tr key={data.title}>
+                    <td
+                      className='body-m-r !text-sm text-color-1 hover:underline hover:cursor-pointer'
+                      onClick={() =>
+                        toggleDrawer({
+                          variant: variant,
+                          label: data.title,
+                          demography: data.data,
+                        })
+                      }
+                    >
+                      {range === 'weekly' ? 'Week ' + data.title : data.title}
                     </td>
-                  );
-                })}
-              </tr>
+                    {categories.map((category) => {
+                      const item = data.data.find((d) => d.name === category);
+                      const percentage = item
+                        ? ((item.total / totalRow) * 100).toFixed(2)
+                        : '-';
+
+                      return (
+                        <td key={category}>
+                          {item && percentage != 'NaN' ? (
+                            <p className='inline-flex body-s-r'>
+                              <span className='text-color-1'>{percentage}</span>{' '}
+                              <span className='text-color-2'>%</span>
+                            </p>
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ) : null}
+              </>
             );
           })}
         </tbody>
