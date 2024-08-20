@@ -54,7 +54,7 @@ const RiwayatPemeriksaanPage = () => {
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
       size: 20,
     }),
-    columnHelper.accessor('updatedAt', {
+    columnHelper.accessor('date', {
       header: 'WAKTU',
       cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:MM:ss'),
     }),

@@ -272,7 +272,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.createdAt).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.date).format('YYYY-MM-DD; HH:MM:ss')}
                   </p>
                 </div>
                 <div>
@@ -282,7 +282,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.updatedAt).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.finish_date).format('YYYY-MM-DD; HH:MM:ss')}
                   </p>
                 </div>
               </div>
