@@ -100,6 +100,7 @@ const DrawerFilterRiwayat = ({
                     onChange={() => {
                       field.handleChange(!field.state.value);
                       form.validateField('date_from', null);
+                      form.setFieldValue('date_from', '');
                     }}
                   />
                 )}
@@ -136,6 +137,7 @@ const DrawerFilterRiwayat = ({
                     onChange={() => {
                       field.handleChange(!field.state.value);
                       form.validateField('date_to', null);
+                      form.setFieldValue('date_to', '');
                     }}
                   />
                 )}
@@ -172,6 +174,7 @@ const DrawerFilterRiwayat = ({
                     onChange={() => {
                       field.handleChange(!field.state.value);
                       form.validateField('vendor_id', null);
+                      form.setFieldValue('vendor_id', '');
                     }}
                   />
                 )}
@@ -185,7 +188,7 @@ const DrawerFilterRiwayat = ({
                       className='body-m-r'
                       name={field.name}
                       value={field.state.value}
-                      options={optionsVendor}
+                      options={optionsVendor || []}
                       onChange={(selectedOption) => {
                         const selectedValue = selectedOption
                           ? selectedOption.value
@@ -213,6 +216,7 @@ const DrawerFilterRiwayat = ({
                     onChange={() => {
                       field.handleChange(!field.state.value);
                       form.validateField('delivery_number', null);
+                      form.setFieldValue('delivery_number', '');
                     }}
                   />
                 )}
@@ -249,6 +253,7 @@ const DrawerFilterRiwayat = ({
                     onChange={() => {
                       field.handleChange(!field.state.value);
                       form.validateField('vehicle_number', null);
+                      form.setFieldValue('vehicle_number', '');
                     }}
                   />
                 )}

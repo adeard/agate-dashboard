@@ -10,6 +10,7 @@ const selectSizes = {
 
 const CustomSelect = ({
   name,
+  value,
   options,
   placeholder,
   className,
@@ -19,10 +20,15 @@ const CustomSelect = ({
   onChange,
   multiple = false,
 }) => {
+  const selectedValues = multiple
+    ? options.filter((option) => value.includes(option.value))
+    : options.filter((option) => option.value === value) || null;
+
   return (
     <Select
       id={name}
       name={name}
+      value={selectedValues}
       placeholder={placeholder}
       options={options}
       className={joinClassnames([

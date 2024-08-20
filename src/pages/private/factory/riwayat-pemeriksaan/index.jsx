@@ -193,8 +193,6 @@ const RiwayatPemeriksaanPage = () => {
           setQueryParams={setQueryParams}
           refetch={refetch}
         />
-
-        <DrawerFilterRiwayat />
       </main>
     </div>
   );

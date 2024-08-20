@@ -104,7 +104,7 @@ const CustomTable = ({
                     columns.map((column, index) => (
                       <td
                         key={index}
-                        className='!body-m-b text-center text-[#000000DE]'
+                        className='!body-m-b !text-center !font-bold text-[#000000DE] tag-l'
                       >
                         {footerData[column.accessorKey]}
                       </td>

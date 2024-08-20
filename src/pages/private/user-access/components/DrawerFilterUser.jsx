@@ -7,8 +7,9 @@ import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-
 import CustomSelect from '@/components/shared/CustomSelect';
+
+import { statusOptions } from '@/utils/optionsKey';
 
 const DrawerFilterUser = ({
   idDrawer,
@@ -89,6 +90,7 @@ const DrawerFilterUser = ({
                   onChange={() => {
                     field.handleChange(!field.state.value);
                     form.validateField('full_name', null);
+                    form.setFieldValue('full_name', '');
                   }}
                 />
               )}
@@ -125,6 +127,7 @@ const DrawerFilterUser = ({
                   onChange={() => {
                     field.handleChange(!field.state.value);
                     form.validateField('email', null);
+                    form.setFieldValue('email', '');
                   }}
                 />
               )}
@@ -161,6 +164,7 @@ const DrawerFilterUser = ({
                   onChange={() => {
                     field.handleChange(!field.state.value);
                     form.validateField('status', null);
+                    form.setFieldValue('status', '');
                   }}
                 />
               )}
@@ -174,16 +178,7 @@ const DrawerFilterUser = ({
                     className='body-m-r'
                     name={field.name}
                     value={field.state.value}
-                    options={[
-                      {
-                        label: 'Tidak Aktif',
-                        value: 0,
-                      },
-                      {
-                        label: 'Aktif',
-                        value: 1,
-                      },
-                    ]}
+                    options={statusOptions}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value

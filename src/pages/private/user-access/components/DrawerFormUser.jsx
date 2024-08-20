@@ -11,6 +11,9 @@ import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
 import CustomSelect from '@/components/shared/CustomSelect';
 import ModalResponseSave from './ModalResponseSave';
+import InputWithIcon from '@/components/shared/InputWithIcon';
+
+import { statusOptions } from '@/utils/optionsKey';
 
 const DrawerFormUser = ({
   isEdit = false,
@@ -42,30 +45,32 @@ const DrawerFormUser = ({
 
   const form = useForm({
     defaultValues: {
-      emailCheckbox: false,
       email: '',
-      nameCheckbox: false,
       full_name: '',
-      factoryCheckbox: false,
+      whatsapp_number: '',
       access_factory: [],
-      statusCheckbox: false,
       status: '',
+      subscribe_notification: '',
     },
     onSubmit: async ({ value }) => {
-      isEdit
-        ? handlePut({
-            email: value.email,
-            full_name: value.full_name,
-            status: value.status,
-            access_factory: data?.access_factory,
-          })
-        : handlePost({
-            email: value.email,
-            full_name: value.full_name,
-            status: value.status,
-            access_factory: value.access_factory,
-          });
+      // isEdit
+      //   ? handlePut({
+      //       email: value.email,
+      //       full_name: value.full_name,
+      //       status: value.status,
+      //       access_factory: data?.access_factory,
+      //     })
+      //   : handlePost({
+      //       email: value.email,
+      //       full_name: value.full_name,
+      //       status: value.status,
+      //       access_factory: value.access_factory,
+      //     });
       // openModalResponseSave();
+      console.log({
+        ...value,
+        subscribe_notification: value.subscribe_notification ? 1 : 0,
+      });
     },
   });
 
@@ -87,12 +92,15 @@ const DrawerFormUser = ({
 
   useEffect(() => {
     if (data) {
-      form.setFieldValue('emailCheckbox', true);
       form.setFieldValue('email', data?.email);
-      form.setFieldValue('nameCheckbox', true);
       form.setFieldValue('full_name', data?.full_name);
-      form.setFieldValue('statusCheckbox', true);
+      form.setFieldValue('whatsapp_number', data?.whatsapp_number);
+      form.setFieldValue('access_factory', [data?.access_factory]);
       form.setFieldValue('status', data?.status);
+      form.setFieldValue(
+        'subscribe_notification',
+        data?.subscribe_notification
+      );
     }
   }, [data]);
 
@@ -117,140 +125,101 @@ const DrawerFormUser = ({
         className='card mt-8 w-full bg-white'
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
-        <div className='space-y-4 my-5'>
-          <div className='px-5 flex'>
-            <form.Field
-              name='emailCheckbox'
-              children={(field) => (
-                <Checkbox
-                  label='Email'
-                  classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
-                  classNameLabel='ml-2'
-                  name={field.name}
-                  isChecked={field.state.value}
-                  onChange={() => {
-                    field.handleChange(!field.state.value);
-                    form.validateField('email', null);
-                  }}
-                />
-              )}
-            />
-            <div className='basis-3/5'>
+        <div className='card-body'>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'>
+              Email
+            </label>
+            <div className='basis-3/4'>
               <form.Field
                 name='email'
                 children={(field) => (
                   <Input
-                    placeholder='Cari Email'
-                    size='lg'
+                    placeholder='Email'
                     full
+                    size='lg'
                     name={field.name}
-                    value={field.state.value}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                    }}
-                    disabled={!form.state.values.emailCheckbox}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 )}
               />
             </div>
           </div>
-          <div className='px-5 flex'>
-            <form.Field
-              name='nameCheckbox'
-              children={(field) => (
-                <Checkbox
-                  label='Nama'
-                  classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
-                  classNameLabel='ml-2'
-                  name={field.name}
-                  isChecked={field.state.value}
-                  onChange={() => {
-                    field.handleChange(!field.state.value);
-                    form.validateField('full_name', null);
-                  }}
-                />
-              )}
-            />
-            <div className='basis-3/5'>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'>
+              Nama
+            </label>
+            <div className='basis-3/4'>
               <form.Field
                 name='full_name'
                 children={(field) => (
                   <Input
-                    placeholder='Cari Nama'
-                    size='lg'
+                    placeholder='Nama'
                     full
+                    size='lg'
                     name={field.name}
-                    value={field.state.value}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                    }}
-                    disabled={!form.state.values.nameCheckbox}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 )}
               />
             </div>
           </div>
-          {!isEdit && (
-            <div className='px-5 flex'>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'>
+              No Handphone
+            </label>
+            <div className='basis-3/4'>
               <form.Field
-                name='factoryCheckbox'
+                name='whatsapp_number'
                 children={(field) => (
-                  <Checkbox
-                    label='Pabrik'
-                    classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
-                    classNameLabel='ml-2'
+                  <InputWithIcon
+                    placeholder='Nomor'
+                    full
+                    size='lg'
                     name={field.name}
-                    isChecked={field.state.value}
-                    onChange={() => {
-                      field.handleChange(!field.state.value);
-                      form.validateField('access_factory', null);
-                    }}
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    iconLeft='+62'
                   />
                 )}
               />
-              <div className='basis-3/5'>
-                <form.Field
-                  name='access_factory'
-                  children={(field) => (
-                    <CustomSelect
-                      placeholder='Pabrik'
-                      className='body-m-r !h-full'
-                      name={field.name}
-                      options={optionsFactory || []}
-                      onChange={(selectedOptions) => {
-                        const selectedValues = selectedOptions
-                          ? selectedOptions.map((option) => option.value)
-                          : [];
-                        field.handleChange(selectedValues);
-                      }}
-                      size='lg'
-                      full
-                      disabled={!form.state.values.factoryCheckbox}
-                      multiple
-                    />
-                  )}
-                />
-              </div>
             </div>
-          )}
-          <div className='px-5 flex'>
-            <form.Field
-              name='statusCheckbox'
-              children={(field) => (
-                <Checkbox
-                  label='Status'
-                  classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
-                  classNameLabel='ml-2'
-                  name={field.name}
-                  isChecked={field.state.value}
-                  onChange={() => {
-                    field.handleChange(!field.state.value);
-                    form.validateField('status', null);
-                  }}
-                />
-              )}
-            />
-            <div className='basis-3/5'>
+          </div>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'>
+              Pabrik
+            </label>
+            <div className='basis-3/4'>
+              <form.Field
+                name='access_factory'
+                children={(field) => (
+                  <CustomSelect
+                    placeholder='Pabrik'
+                    className='body-m-r !h-full'
+                    name={field.name}
+                    value={field.state.value}
+                    options={optionsFactory || []}
+                    onChange={(selectedOptions) => {
+                      const selectedValues = selectedOptions
+                        ? selectedOptions.map((option) => option.value)
+                        : [];
+                      field.handleChange(selectedValues);
+                    }}
+                    size='lg'
+                    full
+                    multiple
+                  />
+                )}
+              />
+            </div>
+          </div>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'>
+              Status
+            </label>
+            <div className='basis-3/4'>
               <form.Field
                 name='status'
                 children={(field) => (
@@ -259,16 +228,7 @@ const DrawerFormUser = ({
                     className='body-m-r'
                     name={field.name}
                     value={field.state.value}
-                    options={[
-                      {
-                        label: 'Tidak Aktif',
-                        value: 0,
-                      },
-                      {
-                        label: 'Aktif',
-                        value: 1,
-                      },
-                    ]}
+                    options={statusOptions}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value
@@ -277,7 +237,26 @@ const DrawerFormUser = ({
                     }}
                     size='lg'
                     full
-                    disabled={!form.state.values.statusCheckbox}
+                  />
+                )}
+              />
+            </div>
+          </div>
+          <div className='flex gap-4'>
+            <label className='basis-1/4 body-m-b my-auto text-color-2'></label>
+            <div className='basis-3/4'>
+              <form.Field
+                name='subscribe_notification'
+                children={(field) => (
+                  <Checkbox
+                    label='Langganan Daily Report'
+                    classNameDiv='basis-2/5 body-m-b my-auto text-color-2'
+                    classNameLabel='ml-2'
+                    name={field.name}
+                    isChecked={field.state.value}
+                    onChange={() => {
+                      field.handleChange(!field.state.value);
+                    }}
                   />
                 )}
               />

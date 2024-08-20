@@ -11,6 +11,7 @@ import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
 import ModalPreviewImage from '../components/ModalPreviewImage';
 import dayjs from 'dayjs';
+import { convertLabel } from '@/utils/common';
 
 const columnHelper = createColumnHelper();
 
@@ -18,7 +19,9 @@ const columnsDiterima = [
   columnHelper.accessor('title', {
     header: () => <div className='font-bold text-color-1'>Tandan Diterima</div>,
     cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>{info.getValue()}</div>
+      <div className='!body-m-r text-[#000000DE]'>
+        {convertLabel(info.getValue())}
+      </div>
     ),
     size: 400,
   }),
@@ -26,7 +29,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -35,7 +38,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -44,7 +47,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>PEST</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -53,7 +56,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>LONG STASH</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -62,7 +65,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -73,15 +76,17 @@ const columnsDitolak = [
   columnHelper.accessor('title', {
     header: () => <div className='font-bold text-color-1'>Tandan Ditolak</div>,
     cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>{info.getValue()}</div>
+      <div className='!body-m-r text-[#000000DE]'>
+        {convertLabel(info.getValue())}
+      </div>
     ),
     size: 400,
   }),
   columnHelper.accessor('total', {
     header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
-      <div className='body-m-r text-[#000000DE] !text-center'>
-        {info.getValue()}
+      <div className='!body-m-r text-[#000000DE] !text-center'>
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -90,7 +95,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -99,7 +104,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>{`<3KG`}</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
       </div>
     ),
     size: 20,
@@ -110,15 +115,18 @@ const columnsDidenda = [
   columnHelper.accessor('title', {
     header: () => <div className='font-bold text-color-1'>Tandan Ditolak</div>,
     cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>{info.getValue()}</div>
+      <div className='!body-m-r text-[#000000DE]'>
+        {convertLabel(info.getValue())}
+      </div>
     ),
     size: 400,
   }),
   columnHelper.accessor('fined', {
     header: () => <div className='text-center'>DENDA</div>,
     cell: (info) => (
-      <div className='body-m-r text-[#000000DE] !text-center'>
-        {info.getValue()}
+      <div className='!body-m-r text-[#000000DE] !text-center'>
+        {info.getValue().toLocaleString()}
+        <span className='!body-s-r text-color-2'>kg</span>
       </div>
     ),
     size: 20,
@@ -127,7 +135,8 @@ const columnsDidenda = [
     header: () => <div className='text-center'>TOTAL KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
+        {info.getValue().toLocaleString()}
+        <span className='!body-s-r text-color-2'>kg</span>
       </div>
     ),
     size: 20,

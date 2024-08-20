@@ -1,12 +1,10 @@
 import React from 'react';
 import { joinClassnames } from '@/utils/common';
 
-
 const inputSizes = {
   md: 'body-s-r h-8',
   lg: 'body-m-r h-10',
 };
-
 
 const InputWithIcon = ({
   type = 'text',
@@ -35,7 +33,7 @@ const InputWithIcon = ({
       >
         {iconLeft && (
           <button
-            className='-ml-4 w-max rounded-none rounded-l-lg border border-transparent border-r-primary-3 px-[10px] hover:bg-primary-5'
+            className='-ml-4 w-max body-m-r rounded-none rounded-l-lg border border-transparent border-r-primary-3 px-[10px] bg-primary-6 hover:bg-primary-5 text-color-2'
             onClick={onClickIcon}
           >
             {iconLeft}
@@ -57,7 +55,7 @@ const InputWithIcon = ({
         {iconRight && (
           <label
             htmlFor={name}
-            className='-mr-4 w-max flex items-center rounded-none rounded-r-lg border border-transparent border-l-primary-3 px-[10px] hover:bg-primary-5'
+            className='-mr-4 w-max body-m-r flex items-center rounded-none rounded-r-lg border border-transparent border-l-primary-3 px-[10px] bg-primary-6 hover:bg-primary-5 text-color-2'
             onClick={onClickIcon}
           >
             {iconRight}
