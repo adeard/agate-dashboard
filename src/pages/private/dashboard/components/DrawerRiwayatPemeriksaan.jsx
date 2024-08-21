@@ -43,7 +43,7 @@ const DrawerRiwayatPemeriksaan = ({
     }),
     columnHelper.accessor('date', {
       header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('HH:MM:ss'),
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY HH:MM'),
     }),
     columnHelper.accessor('vendor_name', {
       header: 'VENDOR',
@@ -86,7 +86,7 @@ const DrawerRiwayatPemeriksaan = ({
               onClick={() =>
                 // navigate(`riwayat-pemeriksaan/${info.row.original._id}`, {})
                 window.open(
-                  `riwayat-pemeriksaan/${info.row.original._id}`,
+                  `/dashboard/monitoring/riwayat-pemeriksaan/${info.row.original._id}`,
                   '_blank'
                 )
               }
