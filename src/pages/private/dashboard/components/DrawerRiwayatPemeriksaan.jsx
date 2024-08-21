@@ -84,7 +84,11 @@ const DrawerRiwayatPemeriksaan = ({
               className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
               size='lg'
               onClick={() =>
-                navigate(`riwayat-pemeriksaan/${info.row.original._id}`)
+                // navigate(`riwayat-pemeriksaan/${info.row.original._id}`, {})
+                window.open(
+                  `riwayat-pemeriksaan/${info.row.original._id}`,
+                  '_blank'
+                )
               }
             >
               <MdOutlineVisibility className='text-lg' />
