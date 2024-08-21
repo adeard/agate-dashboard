@@ -37,6 +37,7 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
       setData(response.data);
       setTotal(response.meta.total_data || 0);
       setMeta(response?.meta || null);
+      return Promise.resolve(response.data);
     } catch (err) {
       setMeta(null);
       setData(null);

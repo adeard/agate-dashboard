@@ -23,6 +23,8 @@ import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
 import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
+import exportExcel from '@/utils/xlsx';
+import { BASE_URL } from '@/utils/axios';
 
 const countPercentage = (value = 0, divider = 0, fixed = null) => {
   let percent = (value / divider || 1) * 100;
@@ -36,6 +38,11 @@ const RiwayatPemeriksaanPage = () => {
 
   const { data, loading, meta, refetch, setQueryParams } = useGet(
     '/v1/inspection-data/by-factory/' + factoryId
+  );
+  const { data: dataExcel, refetch: refetchDownloadExcel } = useGet(
+    '/v1/inspection-data/download-excel/' + factoryId,
+    null,
+    false
   );
   const idDrawerFilter = 'DrawerFilter';
   const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
@@ -56,7 +63,7 @@ const RiwayatPemeriksaanPage = () => {
     }),
     columnHelper.accessor('date', {
       header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:MM:ss'),
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm:ss'),
     }),
     columnHelper.accessor('vendor_name', {
       header: 'VENDOR',
@@ -107,8 +114,6 @@ const RiwayatPemeriksaanPage = () => {
     }),
   ];
 
-  console.log(data);
-
   return (
     <div>
       <header>
@@ -121,11 +126,32 @@ const RiwayatPemeriksaanPage = () => {
             <h2 className='headline-s'>Riwayat Pemeriksaan</h2>
           </div>
           <div className='flex gap-4'>
-            <Button size='lg' className='flex items-center'>
+            <Button
+              size='lg'
+              className='flex items-center'
+              onClick={() => {
+                window.open(
+                  BASE_URL +
+                    '/v1/inspection-data/download-pdf/' +
+                    factoryId +
+                    '/summary',
+                  '_blank'
+                );
+              }}
+            >
               <MdOutlineTextSnippet className='text-xl mr-2' />
               Download PDF
             </Button>
-            <Button size='lg' className='flex items-center'>
+            <Button
+              size='lg'
+              className='flex items-center'
+              onClick={() => {
+                refetchDownloadExcel().then((res) => {
+                  console.log({ res });
+                  exportExcel(res, 'Laporan Excel Grading All');
+                });
+              }}
+            >
               <MdAddChart className='text-xl mr-2' />
               Download Excel
             </Button>

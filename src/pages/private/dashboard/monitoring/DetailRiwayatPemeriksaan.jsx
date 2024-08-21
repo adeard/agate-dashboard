@@ -10,6 +10,7 @@ import { useGet } from '@/services/use-services';
 import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
 import dayjs from 'dayjs';
+import { BASE_URL } from '@/utils/axios';
 
 const columnHelper = createColumnHelper();
 
@@ -208,7 +209,19 @@ const DetailRiwayatPemeriksaanPage = () => {
             <h2 className='headline-s'>Detail Riwayat Pemeriksaan</h2>
           </div>
           <div className='flex gap-4'>
-            <Button size='lg' className='flex items-center'>
+            <Button
+              size='lg'
+              className='flex items-center'
+              onClick={() => {
+                // refetchDownloadPdf().then((res) => {
+                //   console.log({ res });
+                // });
+                window.open(
+                  BASE_URL + '/v1/inspection-data/download-pdf/' + id,
+                  '_blank'
+                );
+              }}
+            >
               <MdFileDownload className='text-xl mr-2' />
               Unduh Laporan
             </Button>
@@ -260,7 +273,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.date).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.date).format('YYYY-MM-DD; HH:mm:ss')}
                   </p>
                 </div>
                 <div>
@@ -270,7 +283,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.finish_date).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.finish_date).format('YYYY-MM-DD; HH:mm:ss')}
                   </p>
                 </div>
               </div>

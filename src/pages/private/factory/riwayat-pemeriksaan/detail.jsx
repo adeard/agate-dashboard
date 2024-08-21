@@ -12,6 +12,7 @@ import CustomTable from '@/components/shared/CustomTable';
 import ModalPreviewImage from '../components/ModalPreviewImage';
 import dayjs from 'dayjs';
 import { convertLabel } from '@/utils/common';
+import { BASE_URL } from '@/utils/axios';
 
 const columnHelper = createColumnHelper();
 
@@ -149,6 +150,11 @@ const DetailRiwayatPemeriksaanPage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, refetch } = useGet(`/v1/inspection-data/${historyId}`);
+  const { refetch: refetchDownloadPdf } = useGet(
+    '/v1/inspection-data/download-pdf/' + historyId,
+    null,
+    false
+  );
 
   // const dialogPreviewImageRef = useRef(null);
   // const openModalPreviewImage = () => {
@@ -229,7 +235,19 @@ const DetailRiwayatPemeriksaanPage = () => {
             <h2 className='headline-s'>Detail</h2>
           </div>
           <div className='flex gap-4'>
-            <Button size='lg' className='flex items-center'>
+            <Button
+              size='lg'
+              className='flex items-center'
+              onClick={() => {
+                // refetchDownloadPdf().then((res) => {
+                //   console.log({ res });
+                // });
+                window.open(
+                  BASE_URL + '/v1/inspection-data/download-pdf/' + historyId,
+                  '_blank'
+                );
+              }}
+            >
               <MdFileDownload className='text-xl mr-2' />
               Unduh Laporan
             </Button>
@@ -281,7 +299,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.date).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.date).format('YYYY-MM-DD; HH:mm:ss')}
                   </p>
                 </div>
                 <div>
@@ -291,7 +309,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dayjs(data?.finish_date).format('YYYY-MM-DD; HH:MM:ss')}
+                    {dayjs(data?.finish_date).format('YYYY-MM-DD; HH:mm:ss')}
                   </p>
                 </div>
               </div>
