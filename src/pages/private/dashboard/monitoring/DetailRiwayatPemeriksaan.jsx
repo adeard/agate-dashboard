@@ -108,7 +108,7 @@ const columnsDitolak = [
 
 const columnsDidenda = [
   columnHelper.accessor('title', {
-    header: () => <div className='font-bold text-color-1'>Tandan Ditolak</div>,
+    header: () => <div className='font-bold text-color-1'>Tandan Didenda</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE]'>{info.getValue()}</div>
     ),
@@ -124,6 +124,15 @@ const columnsDidenda = [
     size: 20,
   }),
   columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total_kg', {
     header: () => <div className='text-center'>TOTAL KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
@@ -170,6 +179,9 @@ const DetailRiwayatPemeriksaanPage = () => {
       title: key,
       fined: data?.grading_result.fined_summary[key].DENDA,
       total: data?.grading_result.fined_summary[key].TOTAL,
+      total_kg:
+        (data?.grading_result.fined_summary[key].TOTAL || 0) *
+        (data?.grading_result.fined_summary[key].DENDA || 0),
     }));
 
   const totalRowDiterima = {
@@ -192,6 +204,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     title: <div className='text-left'>Total</div>,
     fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
     total: dataDidenda?.reduce((acc, row) => acc + row.total, 0),
+    total_kg: dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0),
   };
 
   return (
@@ -318,7 +331,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                 <div>
                   <label className='label !pl-0'>
                     <span className='label-text tag-m text-color-2'>
-                      TOTAL DIREJECT
+                      TOTAL DITOLAK
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
@@ -353,31 +366,31 @@ const DetailRiwayatPemeriksaanPage = () => {
               </div>
             )}
 
-            {dataDitolak?.length > 0 && (
+            {
               <div
                 className='card w-full bg-white p-4 mt-5'
                 style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
               >
                 <CustomTable
-                  dataTable={dataDitolak}
+                  dataTable={dataDitolak || []}
                   columns={columnsDitolak}
                   footerData={totalRowDitolak}
                 />
               </div>
-            )}
+            }
 
-            {dataDidenda?.length > 0 && (
+            {
               <div
                 className='card w-full bg-white p-4 mt-5'
                 style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
               >
                 <CustomTable
-                  dataTable={dataDidenda}
+                  dataTable={dataDidenda || []}
                   columns={columnsDidenda}
                   footerData={totalRowDidenda}
                 />
               </div>
-            )}
+            }
           </div>
         </div>
       </main>

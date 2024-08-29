@@ -57,7 +57,7 @@ const CustomTable = ({
 
   return (
     <div>
-      {data?.length > 0 ? (
+      {data?.length >= 0 ? (
         <>
           <div className='overflow-x-auto overflow-y-hidden'>
             <table className='table h-full'>

@@ -43,7 +43,7 @@ const DrawerRiwayatPemeriksaan = ({
     }),
     columnHelper.accessor('date', {
       header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY HH:MM'),
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY HH:mm'),
     }),
     columnHelper.accessor('vendor_name', {
       header: 'VENDOR',

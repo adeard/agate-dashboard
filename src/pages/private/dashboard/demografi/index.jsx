@@ -218,6 +218,14 @@ const DashboardDemografiPage = () => {
           </div>
         </div>
       </header>
+      {/* <section className='grid grid-cols-5 gap-8 px-8 pt-8'>
+        <div className='bg-white border border-primary-4 rounded-xl p-4 flex items-center justify-between gap-2'>
+          <h4 className=''>Total Truk</h4>
+          <div>
+            <p >{data?.monitoring.total_grading}</p>
+          </div>
+        </div>
+      </section> */}
       <main className='grid grid-cols-4 gap-4'>
         {/* card vendor inti */}
         <div className='bg-white border border-primary-4 rounded-xl p-4'>
