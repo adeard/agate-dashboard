@@ -29,30 +29,22 @@ const DrawerFormFactory = ({
 
   const form = useForm({
     defaultValues: {
-      name: '',
+      name: data?.name || '',
     },
     onSubmit: async ({ value }) => {
       isEdit ? handlePut(value) : handlePost(value);
     },
   });
 
-  const handleCancel = () => {
-    form.reset();
-    handleClose();
-  };
-
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
+    form.reset();
   };
 
-  useEffect(() => {
-    if (data) form.setFieldValue('name', data?.name);
-  }, [data]);
-
   return (
-    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
+    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
@@ -61,7 +53,7 @@ const DrawerFormFactory = ({
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           <IoMdClose className='text-2xl' />
         </Button>
@@ -101,7 +93,7 @@ const DrawerFormFactory = ({
           variant='primary-outline'
           size='lg'
           className='!w[79px] button-shadow'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           Cancel
         </Button>

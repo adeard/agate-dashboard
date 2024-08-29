@@ -213,10 +213,10 @@ const DetailRiwayatPemeriksaanPage = () => {
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
             <Link
-              to='/dashboard/monitoring'
+              to='/dashboard'
               className='font-semibold text-2xl text-color-3'
             >
-              Dashboard Monitoring
+              Dashboard
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='headline-s'>Detail Riwayat Pemeriksaan</h2>

@@ -7,16 +7,14 @@ const pageList = {
       component: lazy(() => import('@/pages/private/dashboard')),
     },
     {
-      path: '/dashboard/monitoring',
-      component: lazy(() => import('@/pages/private/dashboard/monitoring')),
+      path: '/dashboard',
+      component: lazy(() => import('@/pages/private/dashboard')),
     },
     {
-      path: '/dashboard/monitoring/riwayat-pemeriksaan/:id',
-      component: lazy(() => import('@/pages/private/dashboard/monitoring/DetailRiwayatPemeriksaan')),
-    },
-    {
-      path: '/dashboard/demografi',
-      component: lazy(() => import('@/pages/private/dashboard/demografi')),
+      path: '/dashboard/riwayat-pemeriksaan/:id',
+      component: lazy(() =>
+        import('@/pages/private/dashboard/DetailRiwayatPemeriksaan')
+      ),
     },
     {
       path: '/factory',

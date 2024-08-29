@@ -7,6 +7,7 @@ import { MdOutlineFilterAlt, MdOutlineEdit } from 'react-icons/md';
 import { IoMdAdd } from 'react-icons/io';
 
 import { useGet } from '@/services/use-services';
+import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterUser from './components/DrawerFilterUser';
@@ -19,37 +20,27 @@ const UserAccessPage = () => {
 
   const { data, loading, refetch, setQueryParams } = useGet('/v1/user');
 
-  const idDrawerFilterUserAccess = 'DrawerFilterUserAccess';
-  const [isDrawerFilterUserAccessOpen, setIsDrawerFilterUserAccessOpen] =
-    useState(false);
+  const {
+    idDrawer: idDrawerFilterUserAccess,
+    isDrawerOpen: isDrawerFilterUserAccessOpen,
+    toggleDrawer: toggleDrawerFilter,
+    closeDrawer: closeDrawerFilter,
+  } = useDrawer('DrawerFilterUserAccess');
 
-  const idDrawerAddUserAccess = 'DrawerAddUserAccess';
-  const [isDrawerAddUserAccessOpen, setIsDrawerAddUserAccessOpen] =
-    useState(false);
+  const {
+    idDrawer: idDrawerAddUserAccess,
+    isDrawerOpen: isDrawerAddUserAccessOpen,
+    toggleDrawer: toggleDrawerAdd,
+    closeDrawer: closeDrawerAdd,
+  } = useDrawer('DrawerAddUserAccess');
 
   const [selectedData, setSelectedData] = useState(null);
-
-  const idDrawerEditUserAccess = 'DrawerEditAccess';
-  const [isDrawerEditAccessOpen, setIsDrawerEditAccessOpen] = useState(false);
-
-  const toggleDrawerFilter = () => {
-    const drawerElement = document.getElementById(idDrawerFilterUserAccess);
-    drawerElement.checked = true;
-    setIsDrawerFilterUserAccessOpen(!isDrawerFilterUserAccessOpen);
-  };
-
-  const toggleDrawerAdd = () => {
-    const drawerElement = document.getElementById(idDrawerAddUserAccess);
-    drawerElement.checked = true;
-    setIsDrawerAddUserAccessOpen(!isDrawerAddUserAccessOpen);
-  };
-
-  const toggleDrawerEdit = (data) => {
-    setSelectedData(data);
-    const drawerElement = document.getElementById(idDrawerEditUserAccess);
-    drawerElement.checked = true;
-    setIsDrawerEditAccessOpen(!isDrawerEditAccessOpen);
-  };
+  const {
+    idDrawer: idDrawerEditUserAccess,
+    isDrawerOpen: isDrawerEditAccessOpen,
+    toggleDrawer: toggleDrawerEdit,
+    closeDrawer: closeDrawerEdit,
+  } = useDrawer('DrawerEditAccess');
 
   const dialogFactoryAccessRef = useRef(null);
   const handleOpenModalFactoryAccess = (data) => {
@@ -107,7 +98,10 @@ const UserAccessPage = () => {
           <Button
             className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
             size='lg'
-            onClick={() => toggleDrawerEdit(info.row.original)}
+            onClick={() => {
+              setSelectedData(info.row.original);
+              toggleDrawerEdit();
+            }}
           >
             <MdOutlineEdit className='text-lg' />
             Edit
@@ -157,7 +151,7 @@ const UserAccessPage = () => {
         <DrawerFilterUser
           idDrawer={idDrawerFilterUserAccess}
           isDrawerOpen={isDrawerFilterUserAccessOpen}
-          closeDrawer={() => setIsDrawerFilterUserAccessOpen(false)}
+          closeDrawer={closeDrawerFilter}
           setQueryParams={setQueryParams}
           refetch={refetch}
         />
@@ -165,7 +159,7 @@ const UserAccessPage = () => {
         <DrawerFormUser
           idDrawer={idDrawerAddUserAccess}
           isDrawerOpen={isDrawerAddUserAccessOpen}
-          closeDrawer={() => setIsDrawerAddUserAccessOpen(false)}
+          closeDrawer={closeDrawerAdd}
           refetch={refetch}
         />
 
@@ -173,7 +167,7 @@ const UserAccessPage = () => {
           isEdit={true}
           idDrawer={idDrawerEditUserAccess}
           isDrawerOpen={isDrawerEditAccessOpen}
-          closeDrawer={() => setIsDrawerEditAccessOpen(false)}
+          closeDrawer={closeDrawerEdit}
           refetch={refetch}
           data={selectedData}
         />

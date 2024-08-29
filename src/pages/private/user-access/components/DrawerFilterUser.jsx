@@ -18,16 +18,16 @@ const DrawerFilterUser = ({
   setQueryParams,
   refetch,
 }) => {
-  const { full_name, email, status } = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const form = useForm({
     defaultValues: {
-      nameCheckbox: false,
-      full_name: full_name || '',
-      emailCheckbox: false,
-      email: email || '',
-      statusCheckbox: false,
-      status: status || null,
+      nameCheckbox: searchParams.get('full_name') ? true : false,
+      full_name: searchParams.get('full_name') || '',
+      emailCheckbox: searchParams.get('email') ? true : false,
+      email: searchParams.get('email') || '',
+      statusCheckbox: searchParams.get('status') ? true : false,
+      status: searchParams.get('status') || '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
@@ -45,7 +45,6 @@ const DrawerFilterUser = ({
   });
 
   const handleCancel = () => {
-    form.reset();
     setQueryParams({});
     refetch({});
     handleClose();
@@ -55,17 +54,18 @@ const DrawerFilterUser = ({
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
+    form.reset();
   };
 
   return (
-    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
+    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>Filter</h3>
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           <IoMdClose className='text-2xl' />
         </Button>

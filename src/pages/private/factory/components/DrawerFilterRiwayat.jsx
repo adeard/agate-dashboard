@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useForm } from '@tanstack/react-form';
 
 import { IoMdClose } from 'react-icons/io';
@@ -18,20 +19,22 @@ const DrawerFilterRiwayat = ({
   setQueryParams,
   refetch,
 }) => {
+  const [searchParams] = useSearchParams();
+
   const { data: optionsVendor } = useGet('/v1/options/vendor');
 
   const form = useForm({
     defaultValues: {
-      dateFromCheckBox: false,
-      date_from: '',
-      dateEndCheckBox: false,
-      date_to: '',
-      vendorCheckbox: false,
-      vendor_id: '',
-      deliverNumberCheckbox: false,
-      delivery_number: '',
-      vehicleNumberCheckbox: false,
-      vehicle_number: '',
+      dateFromCheckBox: searchParams.get('date_from') ? true : false,
+      date_from: searchParams.get('date_from') || '',
+      dateEndCheckBox: searchParams.get('date_from') ? true : false,
+      date_to: searchParams.get('date_to') || '',
+      vendorCheckbox: searchParams.get('vendor_id') ? true : false,
+      vendor_id: searchParams.get('vendor_id') || '',
+      deliverNumberCheckbox: searchParams.get('delivery_number') ? true : false,
+      delivery_number: searchParams.get('delivery_number') || '',
+      vehicleNumberCheckbox: searchParams.get('vehicle_number') ? true : false,
+      vehicle_number: searchParams.get('vehicle_number') || '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
@@ -54,7 +57,6 @@ const DrawerFilterRiwayat = ({
   });
 
   const handleCancel = () => {
-    form.reset();
     setQueryParams({});
     refetch({});
     handleClose();
@@ -64,17 +66,18 @@ const DrawerFilterRiwayat = ({
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
+    form.reset();
   };
 
   return (
-    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
+    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>Filter</h3>
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           <IoMdClose className='text-2xl' />
         </Button>

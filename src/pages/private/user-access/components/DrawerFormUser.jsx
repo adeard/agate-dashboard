@@ -45,12 +45,12 @@ const DrawerFormUser = ({
 
   const form = useForm({
     defaultValues: {
-      email: '',
-      full_name: '',
-      whatsapp_number: '',
-      access_factory: [],
-      status: '',
-      subscribe_notification: '',
+      email: data?.email || '',
+      full_name: data?.full_name || '',
+      whatsapp_number: data?.whatsapp_number || '',
+      access_factory: [data?.access_factory] || [],
+      status: data?.status || '',
+      subscribe_notification: data?.subscribe_notification || '',
     },
     onSubmit: async ({ value }) => {
       // isEdit
@@ -79,33 +79,15 @@ const DrawerFormUser = ({
     dialogResponseSaveRef.current.showModal();
   };
 
-  const handleCancel = () => {
-    form.reset();
-    handleClose();
-  };
-
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
+    form.reset();
   };
 
-  useEffect(() => {
-    if (data) {
-      form.setFieldValue('email', data?.email);
-      form.setFieldValue('full_name', data?.full_name);
-      form.setFieldValue('whatsapp_number', data?.whatsapp_number);
-      form.setFieldValue('access_factory', [data?.access_factory]);
-      form.setFieldValue('status', data?.status);
-      form.setFieldValue(
-        'subscribe_notification',
-        data?.subscribe_notification
-      );
-    }
-  }, [data]);
-
   return (
-    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
+    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
@@ -114,7 +96,7 @@ const DrawerFormUser = ({
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           <IoMdClose className='text-2xl' />
         </Button>
@@ -270,7 +252,7 @@ const DrawerFormUser = ({
           variant='primary-outline'
           size='lg'
           className='!w[79px] button-shadow'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           Cancel
         </Button>

@@ -4,7 +4,7 @@ import Logo from '@/assets/images/logo.png';
 import Account from '@/assets/images/account.png';
 
 import {
-  MdOutlineDashboard,
+  MdOutlineTableChart,
   MdOutlineFactory,
   MdOutlineSupervisorAccount,
   MdKeyboardArrowDown,
@@ -20,14 +20,9 @@ import { logoutUser } from '@/services/auth';
 
 const navbarItems = [
   {
-    path: '/dashboard/monitoring',
-    label: 'Dashboard Monitoring',
-    icon: <MdOutlineDashboard className='text-xl' />,
-  },
-  {
-    path: '/dashboard/demografi',
-    label: 'Dashboard Demografi',
-    icon: <FaChartBar className='text-xl' />,
+    path: '/dashboard',
+    label: 'Dashboard',
+    icon: <MdOutlineTableChart className='text-xl' />,
   },
   {
     path: '/factory',

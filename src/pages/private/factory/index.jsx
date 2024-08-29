@@ -8,6 +8,8 @@ import { IoMdAdd } from 'react-icons/io';
 
 import { useGet } from '@/services/use-services';
 
+import useDrawer from '@/hooks/useDrawer';
+
 import Button from '@/components/shared/Button';
 import DrawerFormFactory from './components/DrawerFormFactory';
 import DrawerFilterFactory from './components/DrawerFilterFactory';
@@ -18,35 +20,27 @@ const FactoryPage = () => {
 
   const { data, loading, refetch, setQueryParams } = useGet('/v1/factory');
 
-  const idDrawerFilterFactory = 'DrawerFilterFactory';
-  const [isDrawerFilterFactoryOpen, setIsDrawerFilterFactoryOpen] =
-    useState(false);
+  const {
+    idDrawer: idDrawerFilterFactory,
+    isDrawerOpen: isDrawerFilterFactoryOpen,
+    toggleDrawer: toggleDrawerFilter,
+    closeDrawer: closeDrawerFilter,
+  } = useDrawer('DrawerFilterFactory');
 
-  const idDrawerAddFactory = 'DrawerAddFactory';
-  const [isDrawerAddFactoryOpen, setIsDrawerAddFactoryOpen] = useState(false);
+  const {
+    idDrawer: idDrawerAddFactory,
+    isDrawerOpen: isDrawerAddFactoryOpen,
+    toggleDrawer: toggleDrawerAdd,
+    closeDrawer: closeDrawerAdd,
+  } = useDrawer('DrawerAddFactory');
 
   const [selectedData, setSelectedData] = useState(null);
-  const idDrawerEditFactory = 'DrawerEditFactory';
-  const [isDrawerEditFactoryOpen, setIsDrawerEditFactoryOpen] = useState(false);
-
-  const toggleDrawerFilter = () => {
-    const drawerElement = document.getElementById(idDrawerFilterFactory);
-    drawerElement.checked = true;
-    setIsDrawerFilterFactoryOpen(!isDrawerFilterFactoryOpen);
-  };
-
-  const toggleDrawerAdd = () => {
-    const drawerElement = document.getElementById(idDrawerAddFactory);
-    drawerElement.checked = true;
-    setIsDrawerAddFactoryOpen(!isDrawerAddFactoryOpen);
-  };
-
-  const toggleDrawerEdit = (data) => {
-    setSelectedData(data);
-    const drawerElement = document.getElementById(idDrawerEditFactory);
-    drawerElement.checked = true;
-    setIsDrawerEditFactoryOpen(!isDrawerEditFactoryOpen);
-  };
+  const {
+    idDrawer: idDrawerEditFactory,
+    isDrawerOpen: isDrawerEditFactoryOpen,
+    toggleDrawer: toggleDrawerEdit,
+    closeDrawer: closeDrawerEdit,
+  } = useDrawer('DrawerEditFactory');
 
   // table column
   const columnHelper = createColumnHelper();
@@ -95,7 +89,10 @@ const FactoryPage = () => {
             <Button
               className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
               size='lg'
-              onClick={() => toggleDrawerEdit(info.row.original)}
+              onClick={() => {
+                setSelectedData(info.row.original);
+                toggleDrawerEdit();
+              }}
             >
               <MdOutlineEdit className='text-lg' />
               Edit
@@ -146,7 +143,7 @@ const FactoryPage = () => {
         <DrawerFilterFactory
           idDrawer={idDrawerFilterFactory}
           isDrawerOpen={isDrawerFilterFactoryOpen}
-          closeDrawer={() => setIsDrawerFilterFactoryOpen(false)}
+          closeDrawer={closeDrawerFilter}
           setQueryParams={setQueryParams}
           refetch={refetch}
         />
@@ -154,7 +151,7 @@ const FactoryPage = () => {
         <DrawerFormFactory
           idDrawer={idDrawerAddFactory}
           isDrawerOpen={isDrawerAddFactoryOpen}
-          closeDrawer={() => setIsDrawerAddFactoryOpen(false)}
+          closeDrawer={closeDrawerAdd}
           refetch={refetch}
         />
 
@@ -162,7 +159,7 @@ const FactoryPage = () => {
           isEdit={true}
           idDrawer={idDrawerEditFactory}
           isDrawerOpen={isDrawerEditFactoryOpen}
-          closeDrawer={() => setIsDrawerEditFactoryOpen(false)}
+          closeDrawer={closeDrawerEdit}
           refetch={refetch}
           data={selectedData}
         />

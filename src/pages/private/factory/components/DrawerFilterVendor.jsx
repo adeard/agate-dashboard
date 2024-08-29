@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useForm } from '@tanstack/react-form';
 
 import { IoMdClose } from 'react-icons/io';
@@ -13,9 +14,11 @@ const DrawerFilterVendor = ({
   setQueryParams,
   refetch,
 }) => {
+  const [searchParams] = useSearchParams();
+
   const form = useForm({
     defaultValues: {
-      name: '',
+      name: searchParams.get('name') || '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams(value);
@@ -25,7 +28,6 @@ const DrawerFilterVendor = ({
   });
 
   const handleCancel = () => {
-    form.reset();
     setQueryParams({});
     refetch({});
     handleClose();
@@ -35,17 +37,18 @@ const DrawerFilterVendor = ({
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
     closeDrawer();
+    form.reset();
   };
 
   return (
-    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={closeDrawer}>
+    <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
       {/* header drawer */}
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>Filter</h3>
         <Button
           variant='primary-outline'
           className='border-none'
-          onClick={handleCancel}
+          onClick={handleClose}
         >
           <IoMdClose className='text-2xl' />
         </Button>

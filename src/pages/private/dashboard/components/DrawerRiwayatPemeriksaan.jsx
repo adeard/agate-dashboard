@@ -86,7 +86,7 @@ const DrawerRiwayatPemeriksaan = ({
               onClick={() =>
                 // navigate(`riwayat-pemeriksaan/${info.row.original._id}`, {})
                 window.open(
-                  `/dashboard/monitoring/riwayat-pemeriksaan/${info.row.original._id}`,
+                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
                   '_blank'
                 )
               }
@@ -110,8 +110,8 @@ const DrawerRiwayatPemeriksaan = ({
     <Drawer
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
-      closeDrawer={closeDrawer}
-      widthDrawer='75vw'
+      closeDrawer={handleClose}
+      widthDrawer='80vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>

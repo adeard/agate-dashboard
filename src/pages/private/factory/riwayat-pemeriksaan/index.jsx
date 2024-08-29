@@ -17,6 +17,7 @@ import {
 } from 'react-icons/md';
 
 import { useGet, useGetWithPost } from '@/services/use-services';
+import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
@@ -44,14 +45,13 @@ const RiwayatPemeriksaanPage = () => {
     null,
     false
   );
-  const idDrawerFilter = 'DrawerFilter';
-  const [isDrawerFilterOpen, setIsDrawerFilterOpen] = useState(false);
 
-  const toggleDrawerFilter = () => {
-    const drawerElement = document.getElementById(idDrawerFilter);
-    drawerElement.checked = true;
-    setIsDrawerFilterOpen(!isDrawerFilterOpen);
-  };
+  const {
+    idDrawer: idDrawerFilter,
+    isDrawerOpen: isDrawerFilterOpen,
+    toggleDrawer: toggleDrawerFilter,
+    closeDrawer: closeDrawerFilter,
+  } = useDrawer('DrawerFilter');
 
   // table column
   const columnHelper = createColumnHelper();
@@ -215,7 +215,7 @@ const RiwayatPemeriksaanPage = () => {
         <DrawerFilterRiwayat
           idDrawer={idDrawerFilter}
           isDrawerOpen={isDrawerFilterOpen}
-          closeDrawer={() => setIsDrawerFilterOpen(false)}
+          closeDrawer={closeDrawerFilter}
           setQueryParams={setQueryParams}
           refetch={refetch}
         />

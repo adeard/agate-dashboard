@@ -8,20 +8,13 @@ import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import { convertLabel } from '@/utils/common';
 
-const DrawerDemografiVendor = ({
-  idDrawer,
-  isDrawerOpen,
-  closeDrawer,
-  data,
-}) => {
+const DrawerSenderBuah = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('label', {
-      header: <div className='text-color-2'>KLASIFIKASI BUAH</div>,
+      header: <div className='text-color-2'>NAMA VENDOR</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {convertLabel(info.getValue())}
-        </div>
+        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('percent', {
@@ -44,12 +37,12 @@ const DrawerDemografiVendor = ({
     <Drawer
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
-      closeDrawer={closeDrawer}
+      closeDrawer={handleClose}
       widthDrawer='494px'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
-          Vendor Pengirim Buah {data && convertLabel(data?.label)}
+          Vendor Pengirim Buah ({data && convertLabel(data?.label)})
         </h3>
         <Button
           variant='primary-outline'
@@ -65,11 +58,11 @@ const DrawerDemografiVendor = ({
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data?.demography || []} columns={columns} />
+          <CustomTable dataTable={data?.vendors || []} columns={columns} />
         </div>
       </div>
     </Drawer>
   );
 };
 
-export default DrawerDemografiVendor;
+export default DrawerSenderBuah;

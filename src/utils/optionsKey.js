@@ -1,10 +1,10 @@
 export const statusOptions = [
   {
     label: 'Tidak Aktif',
-    value: 0,
+    value: '0',
   },
   {
     label: 'Aktif',
-    value: 1,
+    value: '1',
   },
 ];

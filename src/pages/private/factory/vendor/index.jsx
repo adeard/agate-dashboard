@@ -11,6 +11,7 @@ import {
 import { IoMdAdd } from 'react-icons/io';
 
 import { useGet } from '@/services/use-services';
+import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterVendor from '../components/DrawerFilterVendor';
@@ -22,15 +23,12 @@ const VendorPage = () => {
 
   const { data, loading, refetch, setQueryParams } = useGet('/v1/vendor');
 
-  const idDrawerFilterVendor = 'DrawerFilterVendor';
-  const [isDrawerFilterVendorOpen, setIsDrawerFilterVendorOpen] =
-    useState(false);
-
-  const toggleDrawerFilter = () => {
-    const drawerElement = document.getElementById(idDrawerFilterVendor);
-    drawerElement.checked = true;
-    setIsDrawerFilterVendorOpen(!isDrawerFilterVendorOpen);
-  };
+  const {
+    idDrawer: idDrawerFilterVendor,
+    isDrawerOpen: isDrawerFilterVendorOpen,
+    toggleDrawer: toggleDrawerFilter,
+    closeDrawer: closeDrawerFilter,
+  } = useDrawer('DrawerFilterVendor');
 
   // table column
   const columnHelper = createColumnHelper();
@@ -110,7 +108,7 @@ const VendorPage = () => {
         <DrawerFilterVendor
           idDrawer={idDrawerFilterVendor}
           isDrawerOpen={isDrawerFilterVendorOpen}
-          closeDrawer={() => setIsDrawerFilterVendorOpen(false)}
+          closeDrawer={closeDrawerFilter}
           setQueryParams={setQueryParams}
           refetch={refetch}
         />
