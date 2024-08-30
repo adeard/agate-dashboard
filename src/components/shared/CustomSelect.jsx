@@ -8,6 +8,38 @@ const selectSizes = {
   lg: 'body-m-r h-10',
 };
 
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    borderColor: state.isFocused ? '#E0D6D6' : provided.borderColor,
+    boxShadow: state.isFocused ? '0 0 0 1px #E0D6D6' : provided.boxShadow,
+    '&:hover': {
+      borderColor: '#E0D6D6',
+    },
+    backgroundColor: state.isDisabled ? '#FBF8F8' : provided.backgroundColor,
+  }),
+  placeholder: (provided, state) => ({
+    ...provided,
+    color: state.isDisabled ? '#B9B2B2' : provided.color,
+    paddingLeft: '7px',
+  }),
+  menu: (provided) => ({
+    ...provided,
+    borderRadius: '4px',
+    overflow: 'hidden',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? '#FBF8F8' : 'white',
+    color: state.isFocused ? '#6D6060' : 'black',
+    padding: 10,
+    ':active': {
+      backgroundColor: '#FBF8F8',
+      color: '#6D6060',
+    },
+  }),
+};
+
 const CustomSelect = ({
   name,
   value,
@@ -35,9 +67,9 @@ const CustomSelect = ({
         selectSizes[size],
         full ? 'w-full' : 'w-[fit]',
         className,
-        disabled && 'cursor-not-allowed !bg-primary-5',
       ])}
-      classNamePrefix='select'
+      classNamePrefix='react-select'
+      styles={customStyles}
       onChange={onChange}
       isMulti={multiple}
       isDisabled={disabled}
