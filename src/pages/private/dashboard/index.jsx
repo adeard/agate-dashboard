@@ -167,7 +167,24 @@ const DashboardPage = () => {
     <div>
       <header>
         <div className='flex items-center justify-between  px-12 pt-6 py-0'>
-          <h1 className='headline-s'>Dashboard Monitoring</h1>
+          <div className='flex items-center gap-8 mr-8'>
+            <h1 className='headline-s'>Dashboard Monitoring</h1>{' '}
+            <div className='py-0 space-x-2'>
+              {listMenuTypeChart.map((menu, index) => (
+                <button
+                  key={index}
+                  className={`border rounded-full p-2 ${
+                    activeMenuType === index
+                      ? 'bg-[#f2f7f3] text-[#006D33] border-[#006D33] font-bold'
+                      : 'text-[#7E7E7E] border-primary-3'
+                  }`}
+                  onClick={() => handleClickMenuClassification(index)}
+                >
+                  {menu.label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className='flex gap-2'>
             <label className='tag-l my-auto text-color-2'>FILTER</label>
             <form.Field
@@ -212,21 +229,6 @@ const DashboardPage = () => {
               Apply
             </Button>
           </div>
-        </div>
-        <div className='px-12 pt-6 py-0 space-x-2'>
-          {listMenuTypeChart.map((menu, index) => (
-            <button
-              key={index}
-              className={`border rounded-full p-2 ${
-                activeMenuType === index
-                  ? 'bg-[#f2f7f3] text-[#006D33] border-[#006D33] font-bold'
-                  : 'text-[#7E7E7E] border-primary-3'
-              }`}
-              onClick={() => handleClickMenuClassification(index)}
-            >
-              {menu.label}
-            </button>
-          ))}
         </div>
       </header>
 
@@ -327,7 +329,7 @@ const DashboardPage = () => {
                 </span>
               </span>
             </label>
-            <div className='max-h-[30vh] overflow-y-auto'>
+            <div className='h-[25vh] overflow-y-auto'>
               <table className='table'>
                 <tbody>
                   {data &&
@@ -365,7 +367,7 @@ const DashboardPage = () => {
               </span>
             </label>
 
-            <div className='max-h-[30vh] overflow-y-auto'>
+            <div className='h-[25vh] overflow-y-auto'>
               <table className='table'>
                 <tbody>
                   {data &&
@@ -410,7 +412,7 @@ const DashboardPage = () => {
               </span>
             </label>
 
-            <div className='max-h-[30vh] overflow-y-auto'>
+            <div className='h-[25vh] overflow-y-auto'>
               <table className='table'>
                 <tbody>
                   {data &&
@@ -447,7 +449,7 @@ const DashboardPage = () => {
                 BUAH PLASMA
               </span>
             </label>
-            <div className='max-h-[30vh] overflow-y-auto'>
+            <div className='h-[25vh] overflow-y-auto'>
               <table className='table'>
                 <tbody>
                   {data &&
@@ -534,7 +536,7 @@ const DashboardPage = () => {
                   range={selectedRangeChartsInti}
                   type={selectedTypeChart.value}
                   variant='inti'
-                  height={290}
+                  height={270}
                   toggleDrawer={handleSelectDataChart}
                 />
               )}
@@ -545,7 +547,7 @@ const DashboardPage = () => {
                   range={selectedRangeChartsInti}
                   type={selectedTypeChart.value}
                   variant='inti'
-                  height={290}
+                  height={270}
                   toggleDrawer={handleSelectDataChart}
                 />
               )}
@@ -603,7 +605,7 @@ const DashboardPage = () => {
                   range={selectedRangeChartsPlasma}
                   type={selectedTypeChart.value}
                   variant='plasma'
-                  height={290}
+                  height={270}
                   toggleDrawer={handleSelectDataChart}
                 />
               )}
@@ -614,7 +616,7 @@ const DashboardPage = () => {
                   range={selectedRangeChartsPlasma}
                   type={selectedTypeChart.value}
                   variant='plasma'
-                  height={290}
+                  height={270}
                   toggleDrawer={handleSelectDataChart}
                 />
               )}
