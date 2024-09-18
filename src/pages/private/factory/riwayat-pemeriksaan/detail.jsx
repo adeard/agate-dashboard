@@ -62,15 +62,15 @@ const columnsDiterima = [
     ),
     size: 20,
   }),
-  // columnHelper.accessor('<3kg', {
-  //   header: () => <div className='text-center'>{`<3KG`}</div>,
-  //   cell: (info) => (
-  //     <div className='!body-m-r text-[#000000DE] text-center'>
-  //       {info.getValue().toLocaleString()}
-  //     </div>
-  //   ),
-  //   size: 20,
-  // }),
+  columnHelper.accessor('<3kg', {
+    header: () => <div className='text-center'>{`<3KG`}</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
   columnHelper.accessor('3-5kg', {
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
@@ -214,8 +214,8 @@ const DetailRiwayatPemeriksaanPage = () => {
       normal: data?.grading_result.accepted_summary[key].NORMAL,
       pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
       longStash: data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
-      // '<3kg':
-      //   data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
+      '<3kg':
+        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
       '3-5kg':
         data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
     }));
@@ -253,7 +253,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
     longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
-    // '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
+    '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
   };
 
