@@ -269,7 +269,7 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDidenda = {
     title: <div className='text-left'>Total</div>,
-    fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
+    // fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
     total: dataDidenda?.reduce((acc, row) => acc + row.total, 0),
     total_kg: dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0),
   };
