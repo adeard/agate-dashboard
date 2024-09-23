@@ -70,6 +70,7 @@ const DashboardPage = () => {
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
+
   useEffect(() => {
     if (optionsFactory) {
       setSelectedFactory(optionsFactory[0]);
@@ -84,12 +85,19 @@ const DashboardPage = () => {
       factory: selectedFactory.value,
     },
     onSubmit: async ({ value }) => {
+      refetch(
+        {
+          date_from: value.date_from,
+          date_to: value.date_to,
+          factory: selectedFactory.value,
+        },
+        {
+          date_from: value.date_from,
+          date_to: value.date_to,
+          factory: selectedFactory.value,
+        }
+      );
       setQueryParams({
-        date_from: value.date_from,
-        date_to: value.date_to,
-        factory: selectedFactory.value,
-      });
-      refetch({
         date_from: value.date_from,
         date_to: value.date_to,
         factory: selectedFactory.value,
