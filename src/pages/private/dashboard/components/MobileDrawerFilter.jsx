@@ -1,0 +1,97 @@
+import { MdArrowBackIosNew } from 'react-icons/md';
+
+import { useGet } from '@/services/use-services';
+
+import Dropdown from '@/components/shared/Dropdown';
+import Button from '@/components/shared/Button';
+import Input from '@/components/shared/Input';
+
+const MobileDrawerFilter = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  selectedFactory,
+  setSelectedFactory,
+  optionsFactory,
+  form,
+}) => {
+  const handleSubmit = () => {
+    form.handleSubmit();
+    closeDrawer();
+  };
+
+  return (
+    <div className='drawer z-20'>
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
+          isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeDrawer}
+      ></div>
+
+      <div
+        id={idDrawer}
+        className={`w-full h-max fixed bottom-0 left-0 right-0 bg-white p-4 pb-8 rounded-t-2xl shadow-lg transition-transform duration-300 transform ${
+          isDrawerOpen ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div className='flex items-center justify-between text-color-1'>
+          <div className='flex-none'>
+            <MdArrowBackIosNew className='text-xl' onClick={closeDrawer} />
+          </div>
+          <h2 className='flex-1 !text-center mr-4 subheadline-s'>Filter</h2>
+        </div>
+        <div className='flex flex-col gap-2 mt-4'>
+          <label className='body-s-b text-color-1'>Waktu Dari</label>
+          <form.Field
+            name='date_from'
+            children={(field) => (
+              <Input
+                type='date'
+                size='lg'
+                name={field.name}
+                value={field.state.value}
+                className='bg-white pr-8'
+                onChange={(e) => {
+                  field.handleChange(e.target.value);
+                }}
+                full
+              />
+            )}
+          />
+          <label className='body-s-b text-color-1'>Waktu Hingga</label>
+          <form.Field
+            name='date_to'
+            children={(field) => (
+              <Input
+                type='date'
+                size='lg'
+                name={field.name}
+                placeholder='tanggal'
+                value={field.state.value}
+                className='bg-white pr-8'
+                onChange={(e) => {
+                  field.handleChange(e.target.value);
+                }}
+                full
+              />
+            )}
+          />
+          <label className='body-s-b text-color-1'>Pabrik</label>
+          <Dropdown
+            selected={selectedFactory}
+            setSelected={setSelectedFactory}
+            options={optionsFactory}
+            buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
+            arrowPosition='right'
+          />
+          <Button size='lg' className='mt-4' onClick={handleSubmit} full>
+            Apply
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MobileDrawerFilter;

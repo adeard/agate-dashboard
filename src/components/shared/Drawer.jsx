@@ -1,10 +1,7 @@
-import React from 'react';
-
 const Drawer = ({ idDrawer, isOpen, closeDrawer, children, widthDrawer }) => {
   return (
     <div className='drawer drawer-end z-20'>
       <input id={idDrawer} type='checkbox' className='drawer-toggle' />
-      <div className='drawer-content'></div>
       <div className='drawer-side'>
         <label
           aria-label='close sidebar'

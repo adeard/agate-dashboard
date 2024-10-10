@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { useGet } from '@/services/use-services';
 
@@ -76,15 +75,12 @@ const DrawerRiwayatPemeriksaan = ({
     columnHelper.display({
       id: 'actions',
       cell: (info) => {
-        const navigate = useNavigate();
-
         return (
           <div className='flex justify-end gap-4'>
             <Button
               className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
               size='lg'
               onClick={() =>
-                // navigate(`riwayat-pemeriksaan/${info.row.original._id}`, {})
                 window.open(
                   `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
                   '_blank'

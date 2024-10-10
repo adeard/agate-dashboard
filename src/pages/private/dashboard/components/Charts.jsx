@@ -109,8 +109,8 @@ const Charts = ({
     stack: true,
 
     onReady: ({ chart }) => {
-      console.log({ chart });
-      chart.on('element:click', ({ data }) => {
+      const handleClick = (event) => {
+        const { data } = event;
         const allData = chart.value.data
           .filter((i) => i.xField === data.data.xField)
           .map((e) => e.data);
@@ -120,12 +120,15 @@ const Charts = ({
           label: data.data.xField,
           demography: allData,
         });
-      });
+      };
+
+      chart.on('element:click', handleClick); // Desktop click
+      chart.on('element:pointerdown', handleClick); // Mobile tap (POINTER_DOWN)
     },
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
       {/* Chart */}
       <div style={{ flex: 4 }}>
         <Column
@@ -151,7 +154,7 @@ const Charts = ({
           interaction={{
             tooltip: {
               render: (e, v) => {
-                console.log({ v });
+                // console.log({ v });
                 const total = v.items.reduce(
                   (acc, curr) => acc + Number(curr.value || 0),
                   0
@@ -162,7 +165,9 @@ const Charts = ({
                       {range === 'weekly' ? 'Week ' : ''}
                       {v.title}
                     </h4>
-                    <h5 className='text-xs font-semibold italic'>Total: {total} tbs</h5>
+                    <h5 className='text-xs font-semibold italic'>
+                      Total: {total} tbs
+                    </h5>
                     {v.items.map((item) => {
                       const { name, value, color } = item;
                       return (
@@ -204,14 +209,13 @@ const Charts = ({
       </div>
       {/* Custom Legend */}
       <div style={{ flex: 1, marginLeft: '20px' }}>
-        <div>
+        <div className='flex flex-wrap lg:flex-col gap-2'>
           {Object.keys(legendStatus).map((key, index) => (
             <div
               key={index}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: '12px',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '400',

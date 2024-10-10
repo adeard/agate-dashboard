@@ -4,11 +4,19 @@ const pageList = {
   privates: [
     {
       path: '/',
-      component: lazy(() => import('@/pages/private/dashboard')),
+      component: lazy(() => import('@/pages/private/index')),
     },
     {
       path: '/dashboard',
       component: lazy(() => import('@/pages/private/dashboard')),
+    },
+    {
+      path: '/dashboard/monitoring-grading',
+      component: lazy(() => import('@/pages/private/dashboard/mobileview/MonitoringGrading')),
+    },
+    {
+      path: '/dashboard/demografi-buah',
+      component: lazy(() => import('@/pages/private/dashboard/mobileview/DemografiBuah')),
     },
     {
       path: '/dashboard/riwayat-pemeriksaan/:id',

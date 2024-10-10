@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import Button from './Button';
 

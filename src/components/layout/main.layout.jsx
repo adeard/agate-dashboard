@@ -13,7 +13,7 @@ const MainLayout = () => {
         }
       >
         <Navbar />
-        <div className='min-h-[calc(100vh-64px)] bg-[#F6F6F6]'>
+        <div className='min-h-screen lg:min-h-[calc(100vh-64px)] bg-[#F6F6F6]'>
           <Outlet />
         </div>
       </Suspense>

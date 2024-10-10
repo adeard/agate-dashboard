@@ -1,4 +1,3 @@
-import React from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { IoMdClose } from 'react-icons/io';

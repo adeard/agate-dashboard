@@ -1,0 +1,565 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { useForm } from '@tanstack/react-form';
+
+import {
+  MdOutlineFilterAlt,
+  MdOutlineViewModule,
+  MdBarChart,
+} from 'react-icons/md';
+
+import { useGet, useGetWithPost } from '@/services/use-services';
+import useDrawer from '@/hooks/useDrawer';
+
+import { convertLabel } from '@/utils/common';
+
+import NavbarMobile from '@/components/shared/NavbarMobile';
+import MobileDrawerFilter from '../components/MobileDrawerFilter';
+import MobileDrawerSenderBuah from '../components/MobileDrawerSenderBuah';
+import MobileDrawerSenderVendor from '../components/MobileDrawerSenderVendor';
+
+import Charts from '../components/Charts';
+import DrawerDemografiChart from '../components/DrawerDemografiChart';
+import TableDemografi from '../components/TableDemografi';
+import DrawerRiwayatPemeriksaan from '../components/DrawerRiwayatPemeriksaan';
+import Dropdown from '@/components/shared/Dropdown';
+import MobileDrawerDemografiChart from '../components/MobileDrawerDemografiChart';
+
+const listMenuTypeChart = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'main',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'tp',
+  },
+];
+const listMenuTypeInti = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'by_inti_fruits',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'by_inti_fruits_size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'by_inti_fruits_tp',
+  },
+];
+const listMenuTypePlasma = [
+  {
+    label: 'Klasifikasi Utama',
+    value: 'by_plasma_fruits',
+  },
+  {
+    label: 'Ukuran Buah',
+    value: 'by_plasma_fruits_size',
+  },
+  {
+    label: 'Tangkai Panjang',
+    value: 'by_plasma_fruits_tp',
+  },
+];
+
+const DemografiBuah = () => {
+  const { data: optionsFactory } = useGet('/v1/options/factory');
+
+  const { data, loading, refetch, setQueryParams } =
+    useGetWithPost('/v2/dashboard');
+
+  // untuk filter
+  const [selectedFactory, setSelectedFactory] = useState({});
+  const [isBuahInti, setIsBuahInti] = useState(true);
+
+  useEffect(() => {
+    if (optionsFactory) {
+      setSelectedFactory(optionsFactory[0]);
+    }
+  }, [optionsFactory]);
+
+  // form filter
+  const form = useForm({
+    defaultValues: {
+      date_from: '',
+      date_to: '',
+      factory: selectedFactory.value,
+    },
+    onSubmit: async ({ value }) => {
+      refetch(
+        {
+          date_from: value.date_from,
+          date_to: value.date_to,
+          factory: selectedFactory.value,
+        },
+        {
+          date_from: value.date_from,
+          date_to: value.date_to,
+          factory: selectedFactory.value,
+        }
+      );
+      setQueryParams({
+        date_from: value.date_from,
+        date_to: value.date_to,
+        factory: selectedFactory.value,
+      });
+    },
+  });
+
+  // type classficiation state
+  const [activeMenuType, setActiveMenuType] = useState(0);
+  const [selectedTypeChart, setSelectedTypeChart] = useState(
+    listMenuTypeChart[0]
+  );
+  const [selectedClassification, setSelectedClassification] = useState(
+    listMenuTypeInti[0]
+  );
+  const [selectedClassificationPlasma, setSelectedClassificationPlasma] =
+    useState(listMenuTypePlasma[0]);
+
+  // range chart state
+  const listRangeCharts = ['monthly', 'weekly', 'daily'];
+  const [selectedRangeChartsInti, setSelectedRangeChartsInti] =
+    useState('weekly');
+  const [selectedRangeChartsPlasma, setSelectedRangeChartsPlasma] =
+    useState('weekly');
+
+  // display data mode chart/table
+  const [chartModeInti, setChartModeInti] = useState('chart');
+  const [chartModePlasma, setChartModePlasma] = useState('chart');
+
+  const {
+    idDrawer: idMobileDrawerFilter,
+    isDrawerOpen: isMobileDrawerFilterOpen,
+    toggleDrawer: toggleMobileDrawerFilter,
+    closeDrawer: closeMobileDrawerFilter,
+  } = useDrawer('MobileDrawerFilter');
+
+  const [selectedDataSenderBuah, setSelectedDataSenderBuah] = useState('');
+  const {
+    idDrawer: idMobileDrawerSenderBuah,
+    isDrawerOpen: isMobileDrawerSenderBuahOpen,
+    toggleDrawer: toggleMobileDrawerSenderBuah,
+    closeDrawer: closeMobileDrawerSenderBuah,
+  } = useDrawer('MobileDrawerSenderBuah');
+
+  const [selectedDataSenderVendor, setSelectedDataSenderVendor] = useState('');
+  const {
+    idDrawer: idMobileDrawerSenderVendor,
+    isDrawerOpen: isMobileDrawerSenderVendorOpen,
+    toggleDrawer: toggleMobileDrawerSenderVendor,
+    closeDrawer: closeMobileDrawerSenderVendor,
+  } = useDrawer('MobileDrawerSenderVendor');
+
+  const [selectedDataChart, setSelectedDataChart] = useState('');
+  const {
+    idDrawer: idMobileDrawerDemografiChart,
+    isDrawerOpen: isMobileDrawerDemografiChartOpen,
+    toggleDrawer: toggleMobileDrawerDemografiChart,
+    closeDrawer: closeMobileDrawerDemografiChart,
+  } = useDrawer('MobileDrawerDemografiChart');
+
+  const handleSelectDataChart = (data) => {
+    setSelectedDataChart(data);
+    toggleMobileDrawerDemografiChart();
+  };
+
+  return (
+    <div>
+      <NavbarMobile
+        linkBack='/dashboard'
+        title='Demografi Kualitas Buah'
+        rightIcon={
+          <MdOutlineFilterAlt
+            className='text-xl'
+            onClick={toggleMobileDrawerFilter}
+          />
+        }
+      />
+      <main className='bg-white p-4'>
+        <section className='space-y-4'>
+          {/* card vendor inti */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            <label>
+              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                %DITERIMA VENDOR INTI{' '}
+                <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
+                  {data?.by_inti_accepted.length}
+                </span>
+              </span>
+            </label>
+            <div className='h-max max-h-[30vh] overflow-y-auto'>
+              <table className='table'>
+                <tbody>
+                  {data &&
+                    data?.by_inti_accepted.map((item, index) => (
+                      <tr
+                        key={index}
+                        className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                        onClick={() => {
+                          setSelectedDataSenderVendor(item);
+                          toggleMobileDrawerSenderVendor();
+                        }}
+                      >
+                        <td width={20}>{index + 1}.</td>
+                        <td className='text-color-1'>{item.label}</td>
+                        <td width={70} className='text-right'>
+                          <p className='inline-flex'>
+                            <span className='text-color-1'>
+                              {item.percent.toFixed(2)}
+                            </span>{' '}
+                            <span className='body-s-r'>%</span>
+                          </p>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* card buah inti */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            <div className='flex items-center justify-between'>
+              <label>
+                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                  BUAH INTI
+                </span>
+              </label>
+              <Dropdown
+                selected={selectedClassification}
+                setSelected={setSelectedClassification}
+                options={listMenuTypeInti}
+                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                arrowPosition='right'
+                full
+              />
+            </div>
+            <div className='h-max max-h-[30vh] overflow-y-auto'>
+              <table className='table'>
+                <tbody>
+                  {data &&
+                    data?.[selectedClassification['value']].map(
+                      (item, index) => (
+                        <tr
+                          key={index}
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() => {
+                            setSelectedDataSenderBuah(item);
+                            toggleMobileDrawerSenderBuah();
+                          }}
+                        >
+                          <td width={20}>{index + 1}.</td>
+                          <td className='text-color-1'>
+                            {convertLabel(item.label)}
+                          </td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {item.percent.toFixed(2)}
+                              </span>{' '}
+                              <span className='body-s-r'>%</span>
+                            </p>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* card vendor plasma */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            <label>
+              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                %DITERIMA VENDOR PLASMA{' '}
+                <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
+                  {data?.by_plasma_accepted.length}
+                </span>
+              </span>
+            </label>
+            <div className='h-max max-h-[30vh] overflow-y-auto'>
+              <table className='table'>
+                <tbody>
+                  {data &&
+                    data?.by_plasma_accepted.map((item, index) => (
+                      <tr
+                        key={index}
+                        className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                        onClick={() => {
+                          setSelectedDataSenderVendor(item);
+                          toggleMobileDrawerSenderVendor();
+                        }}
+                      >
+                        <td width={20}>{index + 1}.</td>
+                        <td className='text-color-1'>{item.label}</td>
+                        <td width={70} className='text-right'>
+                          <p className='inline-flex'>
+                            <span className='text-color-1'>
+                              {item.percent.toFixed(2)}
+                            </span>{' '}
+                            <span className='body-s-r'>%</span>
+                          </p>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* card buah plasma */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            <div className='flex items-center justify-between'>
+              <label>
+                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                  BUAH PLASMA
+                </span>
+              </label>
+              <Dropdown
+                selected={selectedClassificationPlasma}
+                setSelected={setSelectedClassificationPlasma}
+                options={listMenuTypePlasma}
+                buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+                arrowPosition='right'
+                full
+              />
+            </div>
+            <div className='h-max max-h-[30vh] overflow-y-auto'>
+              <table className='table'>
+                <tbody>
+                  {data &&
+                    data?.[selectedClassificationPlasma['value']].map(
+                      (item, index) => (
+                        <tr
+                          key={index}
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() => {
+                            setSelectedDataSenderBuah(item);
+                            toggleMobileDrawerSenderBuah();
+                          }}
+                        >
+                          <td width={20}>{index + 1}.</td>
+                          <td className='text-color-1'>
+                            {convertLabel(item.label)}
+                          </td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {item.percent.toFixed(2)}
+                              </span>{' '}
+                              <span className='body-s-r'>%</span>
+                            </p>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section className='space-y-4'>
+          <div className='flex w-full justify-end mt-8'>
+            <Dropdown
+              selected={selectedTypeChart}
+              setSelected={setSelectedTypeChart}
+              options={listMenuTypeChart}
+              buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-[169px]'
+              arrowPosition='right'
+              full
+            />
+          </div>
+
+          {/* charts inti */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                CHART DEMOGRAFI BUAH INTI
+              </span>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <div className='divider divider-horizontal mx-0' />
+                {chartModeInti === 'table' ? (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModeInti('chart')}
+                  >
+                    <MdBarChart className='text-lg' />
+                    Chart
+                  </button>
+                ) : (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModeInti('table')}
+                  >
+                    <MdOutlineViewModule className='text-lg' />
+                    Table
+                  </button>
+                )}
+              </div>
+            </div>
+            <div>
+              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                {listRangeCharts.map((item, index) => (
+                  <li
+                    key={index}
+                    className={`${
+                      selectedRangeChartsInti === item
+                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                        : 'text-color-2 font-medium'
+                    } `}
+                    onClick={() => {
+                      setSelectedRangeChartsInti(item);
+                      document.activeElement.blur();
+                    }}
+                  >
+                    <button>{convertLabel(item)}</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {data && chartModeInti === 'chart' && (
+              <Charts
+                data={data?.by_demography_inti[selectedTypeChart.value]}
+                range={selectedRangeChartsInti}
+                type={selectedTypeChart.value}
+                variant='inti'
+                height={270}
+                toggleDrawer={handleSelectDataChart}
+              />
+            )}
+
+            {data && chartModeInti === 'table' && (
+              <TableDemografi
+                data={data?.by_demography_inti[selectedTypeChart.value]}
+                range={selectedRangeChartsInti}
+                type={selectedTypeChart.value}
+                variant='inti'
+                height={270}
+                toggleDrawer={handleSelectDataChart}
+              />
+            )}
+          </div>
+
+          {/* charts plasma */}
+          <div className='bg-white border border-primary-4 rounded-xl p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <span className='label-text tag-l text-color-1 flex items-center gap-2'>
+                CHART DEMOGRAFI BUAH PLASMA
+              </span>
+              <div className='flex items-center body-m-r text-neutrals-5 '>
+                <div className='divider divider-horizontal mx-0' />
+                {chartModePlasma === 'table' ? (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModePlasma('chart')}
+                  >
+                    <MdBarChart className='text-lg' />
+                    Chart
+                  </button>
+                ) : (
+                  <button
+                    className='flex items-center'
+                    onClick={() => setChartModePlasma('table')}
+                  >
+                    <MdOutlineViewModule className='text-lg' />
+                    Table
+                  </button>
+                )}
+              </div>
+            </div>
+            <div>
+              <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                {listRangeCharts.map((item, index) => (
+                  <li
+                    key={index}
+                    className={`${
+                      selectedRangeChartsInti === item
+                        ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                        : 'text-color-2 font-medium'
+                    } `}
+                    onClick={() => {
+                      setSelectedRangeChartsPlasma(item);
+                      document.activeElement.blur();
+                    }}
+                  >
+                    <button>{convertLabel(item)}</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {data && chartModePlasma === 'chart' && (
+              <Charts
+                data={data?.by_demography_plasma[selectedTypeChart.value]}
+                range={selectedRangeChartsPlasma}
+                type={selectedTypeChart.value}
+                variant='plasma'
+                height={270}
+                toggleDrawer={handleSelectDataChart}
+              />
+            )}
+
+            {data && chartModePlasma === 'table' && (
+              <TableDemografi
+                data={data?.by_demography_plasma[selectedTypeChart.value]}
+                range={selectedRangeChartsPlasma}
+                type={selectedTypeChart.value}
+                variant='plasma'
+                height={270}
+                toggleDrawer={handleSelectDataChart}
+              />
+            )}
+          </div>
+        </section>
+      </main>
+
+      <MobileDrawerFilter
+        idDrawer={idMobileDrawerFilter}
+        isDrawerOpen={isMobileDrawerFilterOpen}
+        closeDrawer={closeMobileDrawerFilter}
+        selectedFactory={selectedFactory}
+        setSelectedFactory={setSelectedFactory}
+        optionsFactory={optionsFactory}
+        form={form}
+      />
+
+      <MobileDrawerSenderBuah
+        idDrawer={idMobileDrawerSenderBuah}
+        isDrawerOpen={isMobileDrawerSenderBuahOpen}
+        closeDrawer={closeMobileDrawerSenderBuah}
+        data={selectedDataSenderBuah}
+      />
+
+      <MobileDrawerSenderVendor
+        idDrawer={idMobileDrawerSenderVendor}
+        isDrawerOpen={isMobileDrawerSenderVendorOpen}
+        closeDrawer={closeMobileDrawerSenderVendor}
+        data={selectedDataSenderVendor}
+      />
+
+      <MobileDrawerDemografiChart
+        idDrawer={idMobileDrawerDemografiChart}
+        isDrawerOpen={isMobileDrawerDemografiChartOpen}
+        closeDrawer={closeMobileDrawerDemografiChart}
+        data={selectedDataChart}
+        range={
+          selectedDataChart.variant === 'inti'
+            ? selectedRangeChartsInti
+            : selectedRangeChartsPlasma
+        }
+      />
+    </div>
+  );
+};
+
+export default DemografiBuah;

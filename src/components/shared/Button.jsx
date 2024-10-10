@@ -1,6 +1,4 @@
-import React from 'react';
 import { joinClassnames } from '@/utils/common';
-
 
 const buttonVariants = {
   primary: 'bg-primary-1 text-color-4 hover:bg-primary-2 px-3',
@@ -35,7 +33,8 @@ const Button = ({
         buttonVariants[variant],
         full ? 'w-full' : 'w-fit',
         className,
-        (disabled || loading) && '!bg-primary-4 !text-color-3 cursor-not-allowed',
+        (disabled || loading) &&
+          '!bg-primary-4 !text-color-3 cursor-not-allowed',
       ])}
       onClick={onClick}
       disabled={disabled || loading}
