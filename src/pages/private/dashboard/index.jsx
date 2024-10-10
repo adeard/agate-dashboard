@@ -1,15 +1,25 @@
+import { useState, useEffect } from 'react';
 import DesktopViewDashboardPage from './DesktopView';
 import MobileViewDashboardPage from './mobileview';
 
 const DashboardPage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div>
-      <div className='hidden lg:block'>
-        <DesktopViewDashboardPage />
-      </div>
-      <div className='block lg:hidden'>
-        <MobileViewDashboardPage />
-      </div>
+      {isMobile ? <MobileViewDashboardPage /> : <DesktopViewDashboardPage />}
     </div>
   );
 };

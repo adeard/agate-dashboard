@@ -128,7 +128,10 @@ const Charts = ({
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+    <div
+      style={{ display: 'flex', flexWrap: 'wrap' }}
+      className='chart-container'
+    >
       {/* Chart */}
       <div style={{ flex: 4 }}>
         <Column
@@ -154,7 +157,6 @@ const Charts = ({
           interaction={{
             tooltip: {
               render: (e, v) => {
-                // console.log({ v });
                 const total = v.items.reduce(
                   (acc, curr) => acc + Number(curr.value || 0),
                   0
@@ -169,7 +171,7 @@ const Charts = ({
                       Total: {total} tbs
                     </h5>
                     {v.items.map((item) => {
-                      const { name, value, color } = item;
+                      const { name, value } = item;
                       return (
                         <div>
                           <div
@@ -207,9 +209,10 @@ const Charts = ({
           }}
         />
       </div>
+
       {/* Custom Legend */}
-      <div style={{ flex: 1, marginLeft: '20px' }}>
-        <div className='flex flex-wrap lg:flex-col gap-2'>
+      <div style={{ flex: 1, marginLeft: '20px' }} className='custom-legend'>
+        <div className='h-max lg:h-full flex flex-wrap lg:justify-center lg:flex-col gap-2'>
           {Object.keys(legendStatus).map((key, index) => (
             <div
               key={index}
