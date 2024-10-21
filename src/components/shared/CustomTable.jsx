@@ -1,4 +1,4 @@
-import  { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
   flexRender,
@@ -17,9 +17,35 @@ const renderPageButtons = (table) => {
   const currentPage = table.getState().pagination.pageIndex;
   const pageButtons = [];
 
-  const startPage = Math.max(0, currentPage - 1);
-  const endPage = Math.min(pageCount - 1, currentPage + 1);
+  // Always show the first page
+  pageButtons.push(
+    <button
+      key={0}
+      className={`body-s-r w-7 h-7 !text-center mx-1 ${
+        currentPage === 0
+          ? 'bg-primary-2 text-white rounded-full'
+          : 'text-color-2'
+      }`}
+      onClick={() => table.setPageIndex(0)}
+    >
+      1
+    </button>
+  );
 
+  // Show '...' if current page is far from the first page
+  if (currentPage > 3) {
+    pageButtons.push(
+      <span key='start-ellipsis' className='px-2 mx-1'>
+        ...
+      </span>
+    );
+  }
+
+  // Determine the start and end page index for the pagination buttons
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(pageCount - 2, currentPage + 1);
+
+  // Add the buttons for the current range of pages
   for (let i = startPage; i <= endPage; i++) {
     pageButtons.push(
       <button
@@ -35,6 +61,30 @@ const renderPageButtons = (table) => {
       </button>
     );
   }
+
+  // Show '...' if current page is far from the last page
+  if (currentPage < pageCount - 4) {
+    pageButtons.push(
+      <span key='end-ellipsis' className='px-2 mx-1'>
+        ...
+      </span>
+    );
+  }
+
+  // Always show the last page
+  pageButtons.push(
+    <button
+      key={pageCount - 1}
+      className={`body-s-r w-7 h-7 !text-center mx-1 ${
+        currentPage === pageCount - 1
+          ? 'bg-primary-2 text-white rounded-full'
+          : 'text-color-2'
+      }`}
+      onClick={() => table.setPageIndex(pageCount - 1)}
+    >
+      {pageCount}
+    </button>
+  );
 
   return pageButtons;
 };
