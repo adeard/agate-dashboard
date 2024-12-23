@@ -25,6 +25,7 @@ const Charts = ({
   height,
   width,
   toggleDrawer,
+  dividerPercent = null,
 }) => {
   const [legendStatus, setLegendStatus] = useState({
     MENTAH: true,
@@ -34,6 +35,8 @@ const Charts = ({
     'JANJANG KOSONG': true,
   });
   const [selectedData, setSelectedData] = useState(null);
+
+  console.log({ dividerPercent, range });
 
   useEffect(() => {
     if (type === 'main') {
@@ -71,6 +74,16 @@ const Charts = ({
       [key]: !prev[key],
     }));
   };
+
+  const rangeMainData = useMemo(() => {
+    if (dividerPercent && range) {
+      const founded = dividerPercent[range];
+      console.log({ founded });
+      return founded;
+    } else {
+      return [];
+    }
+  }, [range, dividerPercent]);
 
   const filteredData = useMemo(() => {
     return data[range].reduce((curr, item) => {
@@ -161,6 +174,14 @@ const Charts = ({
                   (acc, curr) => acc + Number(curr.value || 0),
                   0
                 );
+                const sameDate =
+                  rangeMainData?.find((e) => e.title === v.title) || null;
+                const totalDivider =
+                  sameDate?.data?.reduce(
+                    (acc, curr) => acc + Number(curr?.total || 0),
+                    0
+                  ) || total;
+
                 return (
                   <div key={v.title}>
                     <h4 className='font-semibold text-md'>
@@ -197,7 +218,9 @@ const Charts = ({
                                 {convertLabel(name)}
                               </span>
                             </div>
-                            <b>{countPercentage(value, total).toFixed(2)}%</b>
+                            <b>
+                              {countPercentage(value, totalDivider).toFixed(2)}%
+                            </b>
                           </div>
                         </div>
                       );

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useForm } from '@tanstack/react-form';
 
@@ -174,7 +174,9 @@ const DesktopViewDashboardPage = () => {
   return (
     <div>
       <div className='min-h-screen flex flex-col items-center justify-center lg:hidden'>
-        <h1 className='subheadline-m'>Halaman ini hanya tersedia untuk desktop</h1>
+        <h1 className='subheadline-m'>
+          Halaman ini hanya tersedia untuk desktop
+        </h1>
       </div>
       <div className='hidden lg:block'>
         <header>
@@ -550,6 +552,7 @@ const DesktopViewDashboardPage = () => {
                     variant='inti'
                     height={270}
                     toggleDrawer={handleSelectDataChart}
+                    dividerPercent={data?.by_demography_inti['main']}
                   />
                 )}
 
@@ -619,6 +622,7 @@ const DesktopViewDashboardPage = () => {
                     variant='plasma'
                     height={270}
                     toggleDrawer={handleSelectDataChart}
+                    dividerPercent={data?.by_demography_plasma['main']}
                   />
                 )}
 
