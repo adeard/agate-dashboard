@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
 
@@ -63,6 +64,8 @@ const listMenuTypePlasma = [
 ];
 
 const DesktopViewDashboardPage = () => {
+  const [searchParams] = useSearchParams();
+
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
   const { data, loading, refetch, setQueryParams } =
@@ -80,9 +83,9 @@ const DesktopViewDashboardPage = () => {
   // form filter
   const form = useForm({
     defaultValues: {
-      date_from: '',
-      date_to: '',
-      factory: selectedFactory.value,
+      date_from: searchParams.get('date_from') || '',
+      date_to: searchParams.get('date_to') || '',
+      factory: searchParams.get('factory') || selectedFactory.value,
     },
     onSubmit: async ({ value }) => {
       refetch(
