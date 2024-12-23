@@ -26,15 +26,6 @@ const columnsDiterima = [
     ),
     size: 400,
   }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
   columnHelper.accessor('normal', {
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
@@ -73,6 +64,15 @@ const columnsDiterima = [
   }),
   columnHelper.accessor('3-5kg', {
     header: () => <div className='text-center'>3-5KG</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
         {info.getValue().toLocaleString()}
@@ -92,15 +92,6 @@ const columnsDitolak = [
     ),
     size: 400,
   }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
   columnHelper.accessor('normal', {
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
@@ -141,6 +132,15 @@ const columnsDitolak = [
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] !text-center'>
         {info.getValue().toLocaleString()}
       </div>
     ),
