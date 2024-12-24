@@ -101,8 +101,18 @@ const VendorPage = () => {
         </div>
       </header>
       <main>
-        <div className='bg-white rounded-2xl p-4 h-[calc(100vh-218px)]'>
-          {data && <CustomTable dataTable={data} columns={columns} />}
+        <div
+          className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
+          style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
+        >
+          {data && (
+            <CustomTable
+              dataTable={data}
+              columns={columns}
+              showPagination={true}
+              loading={loading}
+            />
+          )}
         </div>
 
         <DrawerFilterVendor

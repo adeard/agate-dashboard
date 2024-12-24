@@ -3,13 +3,14 @@ import { useForm } from '@tanstack/react-form';
 
 import { IoMdClose } from 'react-icons/io';
 
+import { statusOptions } from '@/utils/optionsKey';
+import { getFilteredValues } from '@/utils/common';
+
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
 import CustomSelect from '@/components/shared/CustomSelect';
-
-import { statusOptions } from '@/utils/optionsKey';
 
 const DrawerFilterUser = ({
   idDrawer,
@@ -30,16 +31,11 @@ const DrawerFilterUser = ({
       status: searchParams.get('status') || '',
     },
     onSubmit: async ({ value }) => {
-      setQueryParams({
-        full_name: value.full_name,
-        email: value.email,
-        status: value.status,
-      });
-      refetch({
-        full_name: value.full_name,
-        email: value.email,
-        status: value.status,
-      });
+      const filteredValues = getFilteredValues(value);
+
+      setQueryParams({ ...filteredValues });
+      refetch({ ...filteredValues });
+
       handleClose();
     },
   });

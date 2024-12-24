@@ -4,13 +4,14 @@ import { useForm } from '@tanstack/react-form';
 import { IoMdClose } from 'react-icons/io';
 
 import { useGet } from '@/services/use-services';
+import { getFilteredValues } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-
 import CustomSelect from '@/components/shared/CustomSelect';
+
 
 const DrawerFilterRiwayat = ({
   idDrawer,
@@ -27,7 +28,7 @@ const DrawerFilterRiwayat = ({
     defaultValues: {
       dateFromCheckBox: searchParams.get('date_from') ? true : false,
       date_from: searchParams.get('date_from') || '',
-      dateEndCheckBox: searchParams.get('date_from') ? true : false,
+      dateEndCheckBox: searchParams.get('date_to') ? true : false,
       date_to: searchParams.get('date_to') || '',
       vendorCheckbox: searchParams.get('vendor_id') ? true : false,
       vendor_id: searchParams.get('vendor_id') || '',
@@ -37,22 +38,12 @@ const DrawerFilterRiwayat = ({
       vehicle_number: searchParams.get('vehicle_number') || '',
     },
     onSubmit: async ({ value }) => {
-      setQueryParams({
-        date_from: value.date_from,
-        date_to: value.date_to,
-        delivery_number: value.delivery_number,
-        vehicle_number: value.vehicle_number,
-        vendor_id: value.vendor_id,
-      });
-      refetch({
-        date_from: value.date_from,
-        date_to: value.date_to,
-        delivery_number: value.delivery_number,
-        vehicle_number: value.vehicle_number,
-        vendor_id: value.vendor_id,
-      });
+      const filteredValues = getFilteredValues(value);
+
+      setQueryParams({ ...filteredValues });
+      refetch({ ...filteredValues });
+
       handleClose();
-      console.log(value);
     },
   });
 

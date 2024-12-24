@@ -59,7 +59,6 @@ const RiwayatPemeriksaanPage = () => {
     columnHelper.accessor('no', {
       header: <div className='text-center'>NO</div>,
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
-      size: 20,
     }),
     columnHelper.accessor('date', {
       header: 'WAKTU',
@@ -201,18 +200,22 @@ const RiwayatPemeriksaanPage = () => {
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DIDENDA</label>
             <p className='text-xl text-color-1'>
-              {(meta?.total_fined || 0).toLocaleString()}(
+              {(meta?.total_fined || 0).toLocaleString()} (
               {countPercentage(meta?.total_fined || 0, meta?.total_tandan, 2)}%
               )
             </p>
           </div>
         </div>
-        <div className='bg-white rounded-2xl p-4 h-full'>
+        <div
+          className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
+          style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
+        >
           {data && (
             <CustomTable
               dataTable={data}
               columns={columns}
               showPagination={true}
+              loading={loading}
             />
           )}
         </div>
