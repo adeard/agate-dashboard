@@ -433,6 +433,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                   dataTable={dataDiterima || []}
                   columns={columnsDiterima}
                   footerData={totalRowDiterima}
+                  minHeight='10vh'
                 />
               </div>
             }
@@ -446,6 +447,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                   dataTable={dataDitolak || []}
                   columns={columnsDitolak}
                   footerData={totalRowDitolak}
+                  minHeight='10vh'
                 />
               </div>
             }
@@ -459,6 +461,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                   dataTable={dataDidenda || []}
                   columns={columnsDidenda}
                   footerData={totalRowDidenda}
+                  minHeight='10vh'
                 />
               </div>
             }

@@ -37,7 +37,7 @@ const MobileViewDashboardPage = () => {
             full
             onClick={() => navigate('demografi-buah')}
           >
-            Demografi Kualtias Buah
+            Demografi Kualitas Buah
           </Button>
         </div>
       </div>

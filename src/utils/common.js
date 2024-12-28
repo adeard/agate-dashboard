@@ -87,3 +87,12 @@ export function formatNumberWithK(number) {
 export const countPercentage = (number = 0, divider = 1) => {
   return divider > 0 && number ? (Number(number) / Number(divider)) * 100 : 0;
 };
+
+export const getFilteredValues = (values) => {
+  return Object.fromEntries(
+    Object.entries(values).filter(
+      ([key, val]) =>
+        !key.toLowerCase().includes('checkbox') && val !== null && val !== ''
+    )
+  );
+};

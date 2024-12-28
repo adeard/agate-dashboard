@@ -179,6 +179,11 @@ table tbody tr td {
   height: 65px;
 }
 
+table thead tr th:nth-child(1),
+table tbody tr td:nth-child(1) {
+  width: 60px;
+}
+
 table tbody tr:hover {
   background-color: #f6f6f6 !important;
 }
