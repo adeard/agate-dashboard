@@ -92,11 +92,13 @@ const RiwayatPemeriksaanPage = () => {
       header: 'DITOLAK',
       cell: (info) => (
         <div className=''>
+          {Number(info.getValue() || 0)} (
           {(
             (Number(info.getValue() || 0) /
               Number(info.row.original.grading_result.total_tandan || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
+          )%
         </div>
       ),
     }),
@@ -104,12 +106,13 @@ const RiwayatPemeriksaanPage = () => {
       header: 'DITERIMA',
       cell: (info) => (
         <div className=''>
-          {' '}
+          {Number(info.getValue() || 0)} (
           {(
             (Number(info.getValue() || 0) /
               Number(info.row.original.grading_result.total_tandan || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
+          )%
         </div>
       ),
     }),
@@ -117,11 +120,13 @@ const RiwayatPemeriksaanPage = () => {
       header: 'DIDENDA',
       cell: (info) => (
         <div className=''>
+          {Number(info.getValue() || 0)} (
           {(
             (Number(info.getValue() || 0) /
               Number(info.row.original.grading_result.total_accepted || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
+          )%
         </div>
       ),
     }),
