@@ -62,8 +62,16 @@ const RiwayatPemeriksaanPage = () => {
       size: 20,
     }),
     columnHelper.accessor('date', {
-      header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm:ss'),
+      header: 'MULAI',
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm'),
+    }),
+    columnHelper.accessor('finish_date', {
+      header: 'SELESAI',
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm'),
+    }),
+    columnHelper.accessor('machine', {
+      header: 'MESIN',
+      cell: (info) => (info.getValue() ? info.getValue() : '-'),
     }),
     columnHelper.accessor('vendor_name', {
       header: 'VENDOR',
@@ -83,15 +91,40 @@ const RiwayatPemeriksaanPage = () => {
     }),
     columnHelper.accessor('grading_result.total_rejected', {
       header: 'DITOLAK',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
+      cell: (info) => (
+        <div className=''>
+          {(
+            (Number(info.getValue() || 0) /
+              Number(info.row.original.grading_result.total_tandan || 1)) *
+            100
+          ).toLocaleString('en', { maximumFractionDigits: 2 })}
+        </div>
+      ),
     }),
     columnHelper.accessor('grading_result.total_accepted', {
       header: 'DITERIMA',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
+      cell: (info) => (
+        <div className=''>
+          {' '}
+          {(
+            (Number(info.getValue() || 0) /
+              Number(info.row.original.grading_result.total_tandan || 1)) *
+            100
+          ).toLocaleString('en', { maximumFractionDigits: 2 })}
+        </div>
+      ),
     }),
     columnHelper.accessor('grading_result.total_fined', {
       header: 'DIDENDA',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
+      cell: (info) => (
+        <div className=''>
+          {(
+            (Number(info.getValue() || 0) /
+              Number(info.row.original.grading_result.total_accepted || 1)) *
+            100
+          ).toLocaleString('en', { maximumFractionDigits: 2 })}
+        </div>
+      ),
     }),
     columnHelper.display({
       id: 'actions',
