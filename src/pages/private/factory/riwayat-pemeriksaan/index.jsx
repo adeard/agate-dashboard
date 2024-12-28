@@ -61,12 +61,11 @@ const RiwayatPemeriksaanPage = () => {
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
     }),
     columnHelper.accessor('date', {
-      header: 'MULAI',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm'),
-    }),
-    columnHelper.accessor('finish_date', {
-      header: 'SELESAI',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm'),
+      header: 'WAKTU',
+      cell: (info) =>
+        `${dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm')} - ${dayjs(
+          info.getValue()
+        ).format('HH:mm')}`,
     }),
     columnHelper.accessor('machine', {
       header: 'MESIN',
