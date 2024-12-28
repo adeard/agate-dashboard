@@ -97,7 +97,7 @@ const RiwayatPemeriksaanPage = () => {
               Number(info.row.original.grading_result.total_tandan || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
-          )%
+          %)
         </div>
       ),
     }),
@@ -111,7 +111,7 @@ const RiwayatPemeriksaanPage = () => {
               Number(info.row.original.grading_result.total_tandan || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
-          )%
+          %)
         </div>
       ),
     }),
@@ -125,7 +125,7 @@ const RiwayatPemeriksaanPage = () => {
               Number(info.row.original.grading_result.total_accepted || 1)) *
             100
           ).toLocaleString('en', { maximumFractionDigits: 2 })}
-          )%
+          %)
         </div>
       ),
     }),
