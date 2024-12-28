@@ -64,7 +64,7 @@ const RiwayatPemeriksaanPage = () => {
       header: 'WAKTU',
       cell: (info) =>
         `${dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm')} - ${dayjs(
-          info.getValue()
+          info.row.original.finish_date
         ).format('HH:mm')}`,
     }),
     columnHelper.accessor('machine', {
