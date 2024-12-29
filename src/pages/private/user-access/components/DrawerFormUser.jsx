@@ -53,24 +53,20 @@ const DrawerFormUser = ({
       subscribe_notification: data?.subscribe_notification || '',
     },
     onSubmit: async ({ value }) => {
-      // isEdit
-      //   ? handlePut({
-      //       email: value.email,
-      //       full_name: value.full_name,
-      //       status: value.status,
-      //       access_factory: data?.access_factory,
-      //     })
-      //   : handlePost({
-      //       email: value.email,
-      //       full_name: value.full_name,
-      //       status: value.status,
-      //       access_factory: value.access_factory,
-      //     });
-      // openModalResponseSave();
-      console.log({
-        ...value,
-        subscribe_notification: value.subscribe_notification ? 1 : 0,
-      });
+      isEdit
+        ? handlePut({
+            ...value,
+            subscribe_notification: value.subscribe_notification ? 1 : 0,
+          })
+        : handlePost({
+            ...value,
+            subscribe_notification: value.subscribe_notification ? 1 : 0,
+          });
+      openModalResponseSave();
+      // console.log({
+      //   ...value,
+      //   subscribe_notification: value.subscribe_notification ? 1 : 0,
+      // });
     },
   });
 

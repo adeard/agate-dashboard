@@ -35,15 +35,15 @@ const columnsDiterima = [
     ),
     size: 20,
   }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
+  // columnHelper.accessor('pest', {
+  //   header: () => <div className='text-center'>PEST</div>,
+  //   cell: (info) => (
+  //     <div className='!body-m-r text-[#000000DE] text-center'>
+  //       {info.getValue().toLocaleString()}
+  //     </div>
+  //   ),
+  //   size: 20,
+  // }),
   columnHelper.accessor('longStash', {
     header: () => <div className='text-center'>LONG STASH</div>,
     cell: (info) => (
@@ -101,15 +101,15 @@ const columnsDitolak = [
     ),
     size: 20,
   }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
+  // columnHelper.accessor('pest', {
+  //   header: () => <div className='text-center'>PEST</div>,
+  //   cell: (info) => (
+  //     <div className='!body-m-r text-[#000000DE] text-center'>
+  //       {info.getValue().toLocaleString()}
+  //     </div>
+  //   ),
+  //   size: 20,
+  // }),
   columnHelper.accessor('longStash', {
     header: () => <div className='text-center'>LONG STASH</div>,
     cell: (info) => (
