@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
 
@@ -22,13 +22,19 @@ import MobileDrawerFilter from '../components/MobileDrawerFilter';
 import MobileDrawerSenderBuah from '../components/MobileDrawerSenderBuah';
 import MobileDrawerRiwayatPemeriksaan from '../components/MobileDrawerRiwayatPemeriksaan';
 
+import dayjs from 'dayjs';
+
 const MonitoringGrading = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
-  const { data, loading, refetch, setQueryParams } =
-    useGetWithPost('/v2/dashboard');
+  const { data, loading, refetch, setQueryParams } = useGetWithPost(
+    '/v2/dashboard',
+    {},
+    false
+  );
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -37,33 +43,31 @@ const MonitoringGrading = () => {
   useEffect(() => {
     if (optionsFactory) {
       setSelectedFactory(optionsFactory[0]);
+
+      setQueryParams({
+        date_from: dayjs().format('YYYY-MM-DD'),
+        date_to: dayjs().format('YYYY-MM-DD'),
+        factory: optionsFactory[0].value,
+      });
     }
   }, [optionsFactory]);
+
+  useEffect(() => {
+    refetch();
+  }, [searchParams]);
 
   // form filter
   const form = useForm({
     defaultValues: {
-      date_from: '',
-      date_to: '',
-      factory: selectedFactory.value,
+      date_from: searchParams.get('date_from') || '',
+      date_to: searchParams.get('date_to') || '',
+      factory: searchParams.get('factory') || selectedFactory.value,
     },
     onSubmit: async ({ value }) => {
-      refetch(
-        {
-          date_from: value.date_from,
-          date_to: value.date_to,
-          factory: selectedFactory.value,
-        },
-        {
-          date_from: value.date_from,
-          date_to: value.date_to,
-          factory: selectedFactory.value,
-        }
-      );
       setQueryParams({
         date_from: value.date_from,
         date_to: value.date_to,
-        factory: selectedFactory.value,
+        factory: value.factory,
       });
     },
   });
