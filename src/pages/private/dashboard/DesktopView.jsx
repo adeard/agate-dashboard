@@ -652,7 +652,6 @@ const DesktopViewDashboardPage = () => {
         idDrawer={idDrawerRiwayatPemeriksaan}
         isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
         closeDrawer={closeDrawerRiwayatPemeriksaan}
-        factoryId={selectedFactory.value}
       />
 
       <DrawerSenderBuah
