@@ -179,12 +179,12 @@ const DesktopViewDashboardPage = () => {
 
   return (
     <div>
-      <div className='min-h-screen flex flex-col items-center justify-center lg:hidden'>
+      <div className='min-h-screen flex flex-col items-center justify-center hidden-dashboard'>
         <h1 className='subheadline-m'>
           Halaman ini hanya tersedia untuk desktop
         </h1>
       </div>
-      <div className='hidden lg:block'>
+      <div className='hidden display-dashboard'>
         <header>
           <div className='flex items-center justify-between  px-12 pt-6 py-0'>
             <div className='flex items-center gap-2 mr-8'>
