@@ -53,7 +53,9 @@ const MonitoringGrading = () => {
   }, [optionsFactory]);
 
   useEffect(() => {
-    refetch();
+    if (searchParams.size > 0) {
+      refetch();
+    }
   }, [searchParams]);
 
   // form filter
