@@ -75,6 +75,19 @@ const RiwayatPemeriksaanPage = () => {
       header: 'VENDOR',
       cell: (info) => info.getValue(),
     }),
+    columnHelper.accessor('vendor_type', {
+      header: 'TIPE VENDOR',
+      cell: (info) => {
+        const type = info.getValue();
+        const engine = info.row.original.engine_type;
+
+        if (Number(type) === 2) {
+          return `Plasma ${engine === 'V6' ? 'Normal' : '(KM)'}`;
+        } else {
+          return 'Inti';
+        }
+      },
+    }),
     columnHelper.accessor('delivery_number', {
       header: 'SURAT JALAN',
       cell: (info) => info.getValue(),
