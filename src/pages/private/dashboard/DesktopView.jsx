@@ -20,6 +20,8 @@ import DrawerDemografiChart from './components/DrawerDemografiChart';
 import TableDemografi from './components/TableDemografi';
 import DrawerRiwayatPemeriksaan from './components/DrawerRiwayatPemeriksaan';
 
+import dayjs from 'dayjs';
+
 const listMenuTypeChart = [
   {
     label: 'Klasifikasi Utama',
@@ -68,8 +70,11 @@ const DesktopViewDashboardPage = () => {
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
-  const { data, loading, refetch, setQueryParams } =
-    useGetWithPost('/v2/dashboard');
+  const { data, loading, refetch, setQueryParams } = useGetWithPost(
+    '/v2/dashboard',
+    {},
+    false
+  );
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -77,8 +82,20 @@ const DesktopViewDashboardPage = () => {
   useEffect(() => {
     if (optionsFactory) {
       setSelectedFactory(optionsFactory[0]);
+
+      setQueryParams({
+        date_from: dayjs().format('YYYY-MM-DD'),
+        date_to: dayjs().format('YYYY-MM-DD'),
+        factory: optionsFactory[0].value,
+      });
     }
   }, [optionsFactory]);
+
+  useEffect(() => {
+    if (searchParams.size > 0) {
+      refetch();
+    }
+  }, [searchParams]);
 
   // form filter
   const form = useForm({
@@ -88,22 +105,10 @@ const DesktopViewDashboardPage = () => {
       factory: searchParams.get('factory') || selectedFactory.value,
     },
     onSubmit: async ({ value }) => {
-      refetch(
-        {
-          date_from: value.date_from,
-          date_to: value.date_to,
-          factory: selectedFactory.value,
-        },
-        {
-          date_from: value.date_from,
-          date_to: value.date_to,
-          factory: selectedFactory.value,
-        }
-      );
       setQueryParams({
         date_from: value.date_from,
         date_to: value.date_to,
-        factory: selectedFactory.value,
+        factory: value.factory,
       });
     },
   });
@@ -176,12 +181,12 @@ const DesktopViewDashboardPage = () => {
 
   return (
     <div>
-      <div className='min-h-screen flex flex-col items-center justify-center lg:hidden'>
+      <div className='min-h-screen flex flex-col items-center justify-center hidden-dashboard'>
         <h1 className='subheadline-m'>
           Halaman ini hanya tersedia untuk desktop
         </h1>
       </div>
-      <div className='hidden lg:block'>
+      <div className='hidden display-dashboard'>
         <header>
           <div className='flex items-center justify-between  px-12 pt-6 py-0'>
             <div className='flex items-center gap-2 mr-8'>
@@ -649,7 +654,6 @@ const DesktopViewDashboardPage = () => {
         idDrawer={idDrawerRiwayatPemeriksaan}
         isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
         closeDrawer={closeDrawerRiwayatPemeriksaan}
-        factoryId={selectedFactory.value}
       />
 
       <DrawerSenderBuah

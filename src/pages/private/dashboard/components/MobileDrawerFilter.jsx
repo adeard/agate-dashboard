@@ -1,7 +1,5 @@
 import { MdArrowBackIosNew } from 'react-icons/md';
 
-import { useGet } from '@/services/use-services';
-
 import Dropdown from '@/components/shared/Dropdown';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
@@ -51,7 +49,7 @@ const MobileDrawerFilter = ({
                 size='lg'
                 name={field.name}
                 value={field.state.value}
-                className='bg-white pr-8'
+                className='bg-white'
                 onChange={(e) => {
                   field.handleChange(e.target.value);
                 }}
@@ -69,7 +67,7 @@ const MobileDrawerFilter = ({
                 name={field.name}
                 placeholder='tanggal'
                 value={field.state.value}
-                className='bg-white pr-8'
+                className='bg-white'
                 onChange={(e) => {
                   field.handleChange(e.target.value);
                 }}

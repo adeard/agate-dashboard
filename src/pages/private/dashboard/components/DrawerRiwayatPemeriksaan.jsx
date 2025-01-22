@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { useGet } from '@/services/use-services';
 
@@ -12,25 +13,20 @@ import Button from '@/components/shared/Button';
 
 import dayjs from 'dayjs';
 
-const DrawerRiwayatPemeriksaan = ({
-  idDrawer,
-  isDrawerOpen,
-  closeDrawer,
-  factoryId,
-}) => {
+const DrawerRiwayatPemeriksaan = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
+  const [searchParams] = useSearchParams();
+
   const { data, loading, meta, refetch, setQueryParams } = useGet(
-    '/v1/inspection-data/by-factory/' + factoryId,
+    '/v1/inspection-data/by-factory/' + searchParams.get('factory'),
     {},
     false
   );
 
   useEffect(() => {
-    if (factoryId) {
+    if (searchParams.get('factory')) {
       refetch();
     }
-  }, [factoryId]);
-
-  const currentDate = dayjs().format('DD/MM/YYYY');
+  }, [searchParams]);
 
   // table column
   const columnHelper = createColumnHelper();
@@ -111,7 +107,9 @@ const DrawerRiwayatPemeriksaan = ({
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
-          Riwayat Pemeriksaan Tanggal {currentDate}
+          Riwayat Pemeriksaan Tanggal{' '}
+          {dayjs(searchParams.get('date_from')).format('DD/MM/YYYY')} -{' '}
+          {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')}
         </h3>
         <Button
           variant='primary-outline'
@@ -132,6 +130,7 @@ const DrawerRiwayatPemeriksaan = ({
               dataTable={data}
               columns={columns}
               showPagination={true}
+              loading={loading}
             />
           )}
         </div>

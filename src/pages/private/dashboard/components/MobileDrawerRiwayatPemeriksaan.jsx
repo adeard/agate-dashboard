@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import {
@@ -23,6 +24,8 @@ const MobileDrawerRiwayatPemeriksaan = ({
   closeDrawer,
   factoryId,
 }) => {
+  const [searchParams] = useSearchParams();
+
   const { data, loading, meta, refetch, setQueryParams } = useGet(
     '/v1/inspection-data/by-factory/' + factoryId,
     {},
@@ -107,8 +110,6 @@ const MobileDrawerRiwayatPemeriksaan = ({
     closeDrawer();
   };
 
-  console.log(data);
-
   return (
     <DrawerMobile
       idDrawer={idDrawer}
@@ -125,39 +126,39 @@ const MobileDrawerRiwayatPemeriksaan = ({
       </div>
 
       <div className='card mt-8 w-full bg-white'>
-        <div className='flex items-center justify-between px-2'>
-          <p>Tanggal {currentDate}</p>
-          <Button className='!px-2'>
-            <MdOutlineFilterAlt className='text-xl' />
-          </Button>
+        <div className='px-2'>
+          <p>
+            Tanggal {dayjs(searchParams.get('date_from')).format('DD/MM/YYYY')}{' '}
+            - {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')}
+          </p>
         </div>
-        {data?.map((item) => (
-          <div className='mt-4 border border-[#E7E7E7] p-2'>
-            <div className='grid grid-cols-2 gap-2 text-[#3B3B3B] overflow-auto '>
+        {data?.map((item, index) => (
+          <div key={index} className='mt-4 border border-[#E7E7E7] p-2'>
+            <div className='grid grid-cols-3 gap-2 text-[#3B3B3B] overflow-auto'>
               <p className='tag-m'>WAKTU</p>
-              <p className='body-s-r !text-right'>
+              <p className='col-span-2 body-s-r !text-right'>
                 {dayjs(item.date).format('DD/MM/YYYY HH:mm')}
               </p>
               <p className='tag-m'>VENDOR</p>
-              <p className='body-s-r !text-right'>{item.vendor_name}</p>
+              <p className='col-span-2 body-s-r !text-right'>{item.vendor_name}</p>
               <p className='tag-m'>SURAT JALAN</p>
-              <p className='body-s-r !text-right'>{item.delivery_number}</p>
+              <p className='col-span-2 body-s-r !text-right text-ellipsis'>{item.delivery_number}</p>
               <p className='tag-m'>PLAT KENDARAAN</p>
-              <p className='body-s-r !text-right'>{item.vehicle_number}</p>
+              <p className='col-span-2 body-s-r !text-right'>{item.vehicle_number}</p>
               <p className='tag-m'>TOTAL TANDAN</p>
-              <p className='body-s-r !text-right'>
+              <p className='col-span-2 body-s-r !text-right'>
                 {item.grading_result.total_tandan}
               </p>
               <p className='tag-m'>DITOLAK</p>
-              <p className='body-s-r !text-right'>
+              <p className='col-span-2 body-s-r !text-right'>
                 {item.grading_result.total_rejected}
               </p>
               <p className='tag-m'>DITERIMA</p>
-              <p className='body-s-r !text-right'>
+              <p className='col-span-2 body-s-r !text-right'>
                 {item.grading_result.total_accepted}
               </p>
               <p className='tag-m'>DIDENDA</p>
-              <p className='body-s-r !text-right'>
+              <p className='col-span-2 body-s-r !text-right'>
                 {item.grading_result.total_fined}
               </p>
             </div>

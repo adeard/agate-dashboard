@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     <section>
-      <div className='navbar hidden lg:flex max-h-16 p-4'>
+      <div className='navbar hidden display-navbar max-h-16 p-4'>
         <div className='flex-1'>
           <div className='mr-4'>
             <img src={Logo} alt='Sinarmas Logo' width={130} height={33} />
