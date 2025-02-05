@@ -48,8 +48,8 @@ const DrawerFormUser = ({
       email: data?.email || '',
       full_name: data?.full_name || '',
       whatsapp_number: data?.whatsapp_number || '',
-      access_factory: [data?.access_factory] || [],
-      status: data?.status || '',
+      access_factory: data?.access_factory || [],
+      status: String(data?.status) || '',
       subscribe_notification: data?.subscribe_notification || '',
     },
     onSubmit: async ({ value }) => {
