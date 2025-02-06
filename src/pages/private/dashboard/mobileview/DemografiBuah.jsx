@@ -129,9 +129,9 @@ const DemografiBuah = () => {
   // range chart state
   const listRangeCharts = ['monthly', 'weekly', 'daily'];
   const [selectedRangeChartsInti, setSelectedRangeChartsInti] =
-    useState('weekly');
+    useState('daily');
   const [selectedRangeChartsPlasma, setSelectedRangeChartsPlasma] =
-    useState('weekly');
+    useState('daily');
 
   // display data mode chart/table
   const [chartModeInti, setChartModeInti] = useState('chart');
