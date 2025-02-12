@@ -21,6 +21,8 @@ import TableDemografi from './components/TableDemografi';
 import DrawerRiwayatPemeriksaan from './components/DrawerRiwayatPemeriksaan';
 
 import dayjs from 'dayjs';
+import LineCharts from './components/LIneCharts';
+import CustomSelect from '@/components/shared/CustomSelect';
 
 const listMenuTypeChart = [
   {
@@ -39,15 +41,15 @@ const listMenuTypeChart = [
 const listMenuTypeInti = [
   {
     label: 'Klasifikasi Utama',
-    value: 'by_inti_fruits',
+    value: 'by_fruits',
   },
   {
     label: 'Ukuran Buah',
-    value: 'by_inti_fruits_size',
+    value: 'by_fruits_size',
   },
   {
     label: 'Tangkai Panjang',
-    value: 'by_inti_fruits_tp',
+    value: 'by_fruits_tp',
   },
 ];
 const listMenuTypePlasma = [
@@ -65,13 +67,56 @@ const listMenuTypePlasma = [
   },
 ];
 
+const menuTypeDictionary = {
+  by_fruits: 'main',
+  by_fruits_size: 'size',
+  by_fruits_tp: 'tp',
+};
+
+const chartTypeDictionary = {
+  summary_performance: 'Summary Performance',
+  durations: 'Waktu Grading',
+  truck_gaps: 'Gap Antar Truck',
+  truck_fines: 'Denda Truk',
+  rejected: 'TBS Ditolak',
+  demography: 'Demografi Klasifikasi',
+  machine_utility: 'Utilitas Mesin',
+};
+
+const listOptionsMachine = [
+  { label: 'Semua Mesin', value: 'All' },
+  {
+    label: 'Mesin 1',
+    value: '1',
+  },
+  {
+    label: 'Mesin 2',
+    value: '2',
+  },
+  {
+    label: 'Mesin 3',
+    value: '3',
+  },
+  {
+    label: 'Mesin 4',
+    value: '4',
+  },
+];
+
+const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
+  ([key, value]) => ({
+    label: value,
+    value: key,
+  })
+);
+
 const DesktopViewDashboardPage = () => {
   const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
 
   const { data, loading, refetch, setQueryParams } = useGetWithPost(
-    '/v2/dashboard',
+    '/v3/dashboard',
     {},
     false
   );
@@ -84,7 +129,7 @@ const DesktopViewDashboardPage = () => {
       setSelectedFactory(optionsFactory[0]);
 
       setQueryParams({
-        date_from: dayjs().format('YYYY-MM-DD'),
+        date_from: dayjs().startOf('month').format('YYYY-MM-DD'),
         date_to: dayjs().format('YYYY-MM-DD'),
         factory: optionsFactory[0].value,
       });
@@ -178,6 +223,9 @@ const DesktopViewDashboardPage = () => {
     setSelectedClassification(listMenuTypeInti[index]);
     setSelectedClassificationPlasma(listMenuTypePlasma[index]);
   };
+
+  const [chartType, setChartType] = useState(chartTypeListOptions[0]);
+  const [machineType, setMachineType] = useState(listOptionsMachine[0]);
 
   return (
     <div>
@@ -345,9 +393,9 @@ const DesktopViewDashboardPage = () => {
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
                 <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                  %DITERIMA VENDOR INTI{' '}
+                  %DITERIMA VENDOR
                   <span className='w-7 h-7 bg-[#EEECEA] text-center rounded-full'>
-                    {data?.by_inti_accepted.length}
+                    {data?.by_vendor_accepted.length}
                   </span>
                 </span>
               </label>
@@ -355,7 +403,7 @@ const DesktopViewDashboardPage = () => {
                 <table className='table'>
                   <tbody>
                     {data &&
-                      data?.by_inti_accepted.map((item, index) => (
+                      data?.by_vendor_accepted.map((item, index) => (
                         <tr
                           key={index}
                           className='body-m-r group hover text-color-2 hover:cursor-pointer'
@@ -385,7 +433,7 @@ const DesktopViewDashboardPage = () => {
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
                 <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                  BUAH INTI
+                  KRITERIA GRADING
                 </span>
               </label>
 
@@ -423,8 +471,106 @@ const DesktopViewDashboardPage = () => {
               </div>
             </div>
 
-            {/* card vendor plasma */}
+            {/* card utlitas mesin */}
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+              <label>
+                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                  UTILITAS MESIN
+                </span>
+              </label>
+
+              <div className='h-[25vh] overflow-y-auto'>
+                <table className='table'>
+                  <tbody>
+                    {data &&
+                      data?.machine_utility.map((item, index) => (
+                        <tr
+                          key={index}
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                          onClick={() => {
+                            setSelectedDataSenderBuah(item);
+                            toggleDrawerSenderBuah();
+                          }}
+                        >
+                          <td width={20}>{index + 1}.</td>
+                          <td className='text-color-1'>Mesin {item.machine}</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {item.percent.toFixed(2)}
+                              </span>{' '}
+                              <span className='body-s-r'>%</span>
+                            </p>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* card summary average */}
+            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+              <label>
+                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                  REKAP RATA - RATA
+                </span>
+              </label>
+
+              <div className='h-[25vh] overflow-y-auto'>
+                <table className='table'>
+                  <tbody>
+                    {data && (
+                      <>
+                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                          <td className='text-color-1'>Diterima</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {data?.average?.accepted || '-'}
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                          <td className='text-color-1'>Ditolak</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {data?.average?.rejected || '-'}
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                          <td className='text-color-1'>Didenda</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {data?.average?.fined || '-'}
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                          <td className='text-color-1'>Durasi Grading</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {data?.average?.duration || '-'}
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* card vendor plasma */}
+            {/* <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
                 <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                   %DITERIMA VENDOR PLASMA{' '}
@@ -462,10 +608,10 @@ const DesktopViewDashboardPage = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
 
             {/* card buah plasma */}
-            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            {/* <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
                 <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                   BUAH PLASMA
@@ -503,145 +649,79 @@ const DesktopViewDashboardPage = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
 
             <section className='col-span-4 grid grid-cols-2 gap-4'>
-              {/* charts inti */}
-              <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center gap-16'>
-                    <div className='flex items-center gap-4'>
-                      <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                        CHART DEMOGRAFI BUAH INTI
-                      </span>
-                      <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                        {listRangeCharts.map((item, index) => (
-                          <li
-                            key={index}
-                            className={`${
-                              selectedRangeChartsInti === item
-                                ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                                : 'text-color-2 font-medium'
-                            } `}
-                            onClick={() => setSelectedRangeChartsInti(item)}
-                          >
-                            <button>{convertLabel(item)}</button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className='flex items-center body-m-r text-neutrals-5 '>
-                    {chartModeInti === 'table' ? (
-                      <button
-                        className='flex items-center'
-                        onClick={() => setChartModeInti('chart')}
-                      >
-                        <MdBarChart className='text-lg' />
-                        Chart
-                      </button>
-                    ) : (
-                      <button
-                        className='flex items-center'
-                        onClick={() => setChartModeInti('table')}
-                      >
-                        <MdOutlineViewModule className='text-lg' />
-                        Table
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {data && chartModeInti === 'chart' && (
-                  <Charts
-                    data={data?.by_demography_inti[selectedTypeChart.value]}
-                    range={selectedRangeChartsInti}
-                    type={selectedTypeChart.value}
-                    variant='inti'
-                    height={270}
-                    toggleDrawer={handleSelectDataChart}
-                    dividerPercent={data?.by_demography_inti['main']}
-                  />
-                )}
-
-                {data && chartModeInti === 'table' && (
-                  <TableDemografi
-                    data={data?.by_demography_inti[selectedTypeChart.value]}
-                    range={selectedRangeChartsInti}
-                    type={selectedTypeChart.value}
-                    variant='inti'
-                    height={270}
-                    toggleDrawer={handleSelectDataChart}
-                  />
-                )}
-              </div>
-
               {/* charts plasma */}
-              <div className='col-span-1 bg-white border border-primary-4 rounded-xl p-4'>
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center gap-16'>
-                    <div className='flex items-center gap-4'>
-                      <span className='label-text tag-l text-color-1 flex items-center gap-2'>
-                        CHART DEMOGRAFI BUAH PLASMA
-                      </span>
-                      <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                        {listRangeCharts.map((item, index) => (
-                          <li
-                            key={index}
-                            className={`${
-                              selectedRangeChartsPlasma === item
-                                ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                                : 'text-color-2 font-medium'
-                            } `}
-                            onClick={() => setSelectedRangeChartsPlasma(item)}
-                          >
-                            <button>{convertLabel(item)}</button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              <div className='col-span-2 bg-white border border-primary-4 rounded-xl p-4'>
+                <div className='flex items-center justify-between mb-4 w-full'>
+                  <div className='flex items-center gap-4'>
+                    <span className='text-color-1 flex items-center gap-2 text-lg'>
+                      {chartType?.label}
+                    </span>
+                    <Dropdown
+                      selected={chartType}
+                      setSelected={setChartType}
+                      options={chartTypeListOptions}
+                      buttonClassname='body-s-r border-primary-3 border-2 w-fit'
+                      arrowPosition='right'
+                      noLabel
+                    />
                   </div>
-                  <div className='flex items-center body-m-r text-neutrals-5 '>
-                    {chartModePlasma === 'table' ? (
-                      <button
-                        className='flex items-center'
-                        onClick={() => setChartModePlasma('chart')}
-                      >
-                        <MdBarChart className='text-lg' />
-                        Chart
-                      </button>
-                    ) : (
-                      <button
-                        className='flex items-center'
-                        onClick={() => setChartModePlasma('table')}
-                      >
-                        <MdOutlineViewModule className='text-lg' />
-                        Table
-                      </button>
-                    )}
+                  <div className='flex items-center gap-4'>
+                    <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                      {listRangeCharts.map((item, index) => (
+                        <li
+                          key={index}
+                          className={`${
+                            selectedRangeChartsPlasma === item
+                              ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                              : 'text-color-2 font-medium'
+                          } `}
+                          onClick={() => setSelectedRangeChartsPlasma(item)}
+                        >
+                          <button>{convertLabel(item)}</button>
+                        </li>
+                      ))}
+                    </ul>
+                    {chartType?.value === 'truck_gaps' ? (
+                      <CustomSelect
+                        placeholder='Pilih Mesin'
+                        className='body-m-r'
+                        options={listOptionsMachine}
+                        onChange={(selected) => {
+                          setMachineType(selected);
+                        }}
+                        isSearchable={false}
+                        value={machineType.value}
+                        // name={field.name}
+                        // value={field.state.value}
+                        // options={optionsFactory || []}
+                        // onChange={(selectedOption) => {
+                        //   const selectedValue = selectedOption
+                        //     ? selectedOption.value
+                        //     : null;
+                        //   field.handleChange(selectedValue);
+                        // }}
+                        // size='lg'
+                        // full
+                      />
+                    ) : null}
                   </div>
                 </div>
 
-                {data && chartModePlasma === 'chart' && (
-                  <Charts
-                    data={data?.by_demography_plasma[selectedTypeChart.value]}
+                {data && (
+                  <LineCharts
+                    data={data?.charts_data?.[chartType.value]}
                     range={selectedRangeChartsPlasma}
                     type={selectedTypeChart.value}
-                    variant='plasma'
+                    // variant='plasma'
                     height={270}
-                    toggleDrawer={handleSelectDataChart}
-                    dividerPercent={data?.by_demography_plasma['main']}
-                  />
-                )}
-
-                {data && chartModePlasma === 'table' && (
-                  <TableDemografi
-                    data={data?.by_demography_plasma[selectedTypeChart.value]}
-                    range={selectedRangeChartsPlasma}
-                    type={selectedTypeChart.value}
-                    variant='plasma'
-                    height={270}
-                    toggleDrawer={handleSelectDataChart}
+                    // toggleDrawer={handleSelectDataChart}
+                    // dividerPercent={data?.by_demography_plasma['main']}
+                    chartType={chartType.value}
+                    machineType={machineType.value}
+                    // range={menuTypeDictionary[selectedClassification.value]}
                   />
                 )}
               </div>

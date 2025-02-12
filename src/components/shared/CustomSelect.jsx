@@ -50,6 +50,7 @@ const CustomSelect = ({
   disabled = false,
   onChange,
   multiple = false,
+  isSearchable = true,
 }) => {
   const selectedValues = multiple
     ? options.filter((option) => value.includes(option.value))
@@ -72,6 +73,7 @@ const CustomSelect = ({
       onChange={onChange}
       isMulti={multiple}
       isDisabled={disabled}
+      isSearchable={isSearchable}
     />
   );
 };

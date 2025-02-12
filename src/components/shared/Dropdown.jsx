@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import Button from './Button';
 
@@ -9,6 +9,7 @@ const Dropdown = ({
   arrowPosition = 'left',
   full = false,
   buttonClassname,
+  noLabel = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,7 +33,7 @@ const Dropdown = ({
         onClick={toggleDropdown}
         onBlur={() => setTimeout(() => setIsOpen(false), 100)}
       >
-        <TiArrowSortedDown /> {selected.label}
+        <TiArrowSortedDown /> {!noLabel ? selected.label : null}
       </Button>
       {isOpen && (
         <ul
