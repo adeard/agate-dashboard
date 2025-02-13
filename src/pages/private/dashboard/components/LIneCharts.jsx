@@ -212,7 +212,7 @@ const LineCharts = ({
         <Line
           {...config}
           height={height}
-          style={{ lineWidth: 2 }}
+          style={{ lineWidth: 3 }}
           scale={
             chartType === 'machine_utility'
               ? {
@@ -236,11 +236,11 @@ const LineCharts = ({
                             'TANGKAI PANJANG',
                           ],
                           range: [
-                            '#4A4A4A', // MENTAH (soft black)
-                            '#FFE082', // KURANG MATANG (soft yellow)
-                            '#FF8A80', // MATANG (soft red)
-                            '#FFB74D', // LEWAT MATANG (soft orange)
-                            '#B0BEC5',
+                            '#000000', // MENTAH (black)
+                            '#FFD700', // KURANG MATANG (bold yellow)
+                            '#FF0000', // MATANG (bold red)
+                            '#FF8C00', // LEWAT MATANG (bold orange)
+                            '#78909C', // Bolder gray
                             '#CDE441',
                             '#78C52A',
                             '#CDE441',
