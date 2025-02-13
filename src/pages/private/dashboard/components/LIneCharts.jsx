@@ -8,11 +8,11 @@ import {
 import dayjs from 'dayjs';
 
 const classificationColor = {
-  MENTAH: '#4A4A4A',
-  'KURANG MATANG': '#FFE082',
-  MATANG: '#FF8A80',
-  'LEWAT MATANG': '#FFB74D',
-  'JANJANG KOSONG': '#B0BEC5',
+  MENTAH: '#000000',
+  'KURANG MATANG': '#FFD700',
+  MATANG: '#FF0000',
+  'LEWAT MATANG': '#FF8C00',
+  'JANJANG KOSONG': '#78909C',
 };
 const classificationColorFruit = {
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
@@ -213,6 +213,21 @@ const LineCharts = ({
           {...config}
           height={height}
           style={{ lineWidth: 3 }}
+          point={{
+            shapeField: 'circle',
+            sizeField: 3,
+          }}
+          label={{
+            position: 'bottom',
+            formatter: (text) => `${text}${unitSuffix[chartType]}`,
+            style: {
+              fill: '#000000',
+              opacity: 1,
+              transform: 'translate(0, 16px)', // Move down 4px and rotate 30 degrees
+              textAlign: 'start',
+            },
+            offsetY: 8, // Additional offset from the point
+          }}
           scale={
             chartType === 'machine_utility'
               ? {
