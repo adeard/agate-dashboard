@@ -8,14 +8,41 @@ import {
 import dayjs from 'dayjs';
 
 const classificationColor = {
-  MENTAH: '#CDE441',
-  'KURANG MATANG': '#78C52A',
-  MATANG: '#4BA92A',
-  'LEWAT MATANG': '#617E46',
-  'JANJANG KOSONG': '#436840',
+  MENTAH: '#4A4A4A',
+  'KURANG MATANG': '#FFE082',
+  MATANG: '#FF8A80',
+  'LEWAT MATANG': '#FFB74D',
+  'JANJANG KOSONG': '#B0BEC5',
+};
+const classificationColorFruit = {
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
   'BUAH KECIL DIBAWAH 5KG': '#78C52A',
+};
+const classificationColorTP = {
   'TANGKAI PANJANG': '#CDE441',
+};
+const statisticsColorAverage = {
+  Highest: '#6BAB25',
+  Average: '#F0CC00',
+  Lowest: '#AC0F18',
+};
+const statisticsColorSummary = {
+  Diterima: '#6BAB25',
+  Didenda: '#F0CC00',
+  Ditolak: '#AC0F18',
+};
+
+const dictionaryLegendColorDemography = {
+  main: classificationColor,
+  size: classificationColorFruit,
+  tp: classificationColorTP,
+};
+
+const machineColor = {
+  'Mesin 1': '#64B5F6', // lighter blue
+  'Mesin 2': '#4DD0E1', // lighter cyan
+  'Mesin 3': '#4DB6AC', // lighter teal
+  'Mesin 4': '#81C784', // lighter green
 };
 
 const unitSuffix = {
@@ -24,7 +51,7 @@ const unitSuffix = {
   durations: 'min',
   summary_performance: '%',
   rejected: '%',
-  demography: 'jjg',
+  demography: '%',
   machine_utility: '%',
 };
 
@@ -162,19 +189,38 @@ const LineCharts = ({
     // },
   };
 
+  const usedLegendColor = useMemo(() => {
+    if (chartType === 'demography') {
+      return dictionaryLegendColorDemography[type];
+    }
+    if (chartType === 'summary_performance') {
+      return statisticsColorSummary;
+    }
+    if (chartType === 'machine_utility') {
+      return machineColor;
+    }
+
+    return statisticsColorAverage;
+  }, [type, chartType]);
+
   return (
     <div
-      style={{ display: 'flex', flexWrap: 'wrap' }}
-      className='chart-container'
+      // style={{ display: 'flex', flexWrap: 'wrap' }}
+      className='grid grid-cols-9'
     >
-      <div style={{ flex: 4 }}>
+      <div className='col-span-8'>
         <Line
           {...config}
           height={height}
-          style={{ lineWidth: 1.5 }}
+          style={{ lineWidth: 2 }}
           scale={
             chartType === 'machine_utility'
-              ? null
+              ? {
+                  color: {
+                    domain: ['Mesin 1', 'Mesin 2', 'Mesin 3', 'Mesin 4'],
+                    range: ['#64B5F6', '#4DD0E1', '#4DB6AC', '#81C784'],
+                  },
+                }
               : {
                   color:
                     chartType === 'demography'
@@ -190,11 +236,11 @@ const LineCharts = ({
                             'TANGKAI PANJANG',
                           ],
                           range: [
-                            '#CDE441',
-                            '#78C52A',
-                            '#4BA92A',
-                            '#617E46',
-                            '#436840',
+                            '#4A4A4A', // MENTAH (soft black)
+                            '#FFE082', // KURANG MATANG (soft yellow)
+                            '#FF8A80', // MATANG (soft red)
+                            '#FFB74D', // LEWAT MATANG (soft orange)
+                            '#B0BEC5',
                             '#CDE441',
                             '#78C52A',
                             '#CDE441',
@@ -225,9 +271,26 @@ const LineCharts = ({
                 let title =
                   range === 'weekly'
                     ? `Week ${v.title}`
-                    : dayjs(reformatStringDate(v.title)).format(
-                        range === 'monthly' ? 'MMMM YYYY' : 'DD MMMM YYYY'
-                      );
+                    : range === 'monthly'
+                    ? v.title
+                    : dayjs(reformatStringDate(v.title)).format('DD MMMM YYYY');
+
+                let totalDivider = null;
+
+                if (chartType === 'demography') {
+                  const total = v.items.reduce(
+                    (acc, curr) => acc + Number(curr.value || 0),
+                    0
+                  );
+                  const sameDate =
+                    rangeMainData?.find((e) => e.title === v.title) || null;
+                  totalDivider =
+                    sameDate?.data?.reduce(
+                      (acc, curr) => acc + Number(curr?.total || 0),
+                      0
+                    ) || total;
+                }
+
                 return (
                   <div key={v.title}>
                     <header>
@@ -272,98 +335,11 @@ const LineCharts = ({
           }}
         />
       </div>
-      {/* Chart */}
-      {/* <div style={{ flex: 4 }}>
-        <Column
-          {...config}
-          height={height}
-          width={width}
-          style={{
-            fill: ({ type }) => {
-              return classificationColor[type];
-            },
-            radiusTopLeft: 32,
-            radiusTopRight: 32,
-          }}
-          axis={{
-            x: {
-              labelFormatter: (value) =>
-                range === 'weekly' ? `Week ${value}` : value,
-            },
-            y: {
-              labelFormatter: (value) => formatNumberWithK(value),
-            },
-          }}
-          interaction={{
-            tooltip: {
-              render: (e, v) => {
-                const total = v.items.reduce(
-                  (acc, curr) => acc + Number(curr.value || 0),
-                  0
-                );
-                const sameDate =
-                  rangeMainData?.find((e) => e.title === v.title) || null;
-                const totalDivider =
-                  sameDate?.data?.reduce(
-                    (acc, curr) => acc + Number(curr?.total || 0),
-                    0
-                  ) || total;
-
-                return (
-                  <div key={v.title}>
-                    <h4 className='font-semibold text-md'>
-                      {range === 'weekly' ? 'Week ' : ''}
-                      {v.title}
-                    </h4>
-                    <h5 className='text-xs font-semibold italic'>
-                      Total: {total} tbs
-                    </h5>
-                    {v.items.map((item) => {
-                      const { name, value } = item;
-                      return (
-                        <div>
-                          <div
-                            style={{
-                              margin: 0,
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              gap: '8px',
-                            }}
-                          >
-                            <div>
-                              <span
-                                style={{
-                                  display: 'inline-block',
-                                  width: 6,
-                                  height: 6,
-                                  borderRadius: '50%',
-                                  backgroundColor: classificationColor[name],
-                                  marginRight: 6,
-                                }}
-                              ></span>
-                              <span className='capitalize'>
-                                {convertLabel(name)}
-                              </span>
-                            </div>
-                            <b>
-                              {countPercentage(value, totalDivider).toFixed(2)}%
-                            </b>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              },
-            },
-          }}
-        />
-      </div> */}
 
       {/* Custom Legend */}
-      {/* <div style={{ flex: 1, marginLeft: '20px' }} className='custom-legend'>
+      <div className='flex-1'>
         <div className='h-max lg:h-full flex flex-wrap lg:justify-center lg:flex-col gap-2'>
-          {Object.keys(legendStatus).map((key, index) => (
+          {Object.keys(usedLegendColor).map((key, index) => (
             <div
               key={index}
               style={{
@@ -373,9 +349,9 @@ const LineCharts = ({
                 fontSize: '14px',
                 fontWeight: '400',
                 color: '#6D6060',
-                opacity: legendStatus[key] ? 1 : 0.5,
+                opacity: 1,
               }}
-              onClick={() => handleLegendClick(key)}
+              // onClick={() => handleLegendClick(key)}
             >
               <span
                 style={{
@@ -383,9 +359,7 @@ const LineCharts = ({
                   width: 14,
                   height: 14,
                   borderRadius: '25%',
-                  backgroundColor: legendStatus[key]
-                    ? config.color[index]
-                    : '#ccc',
+                  backgroundColor: usedLegendColor[key],
                   marginRight: 12,
                 }}
               ></span>
@@ -393,7 +367,7 @@ const LineCharts = ({
             </div>
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

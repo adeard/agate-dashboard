@@ -123,6 +123,10 @@ const DesktopViewDashboardPage = () => {
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
+  const [selectedVendorType, setSelectedVendorType] = useState({
+    label: 'Semua',
+    value: 'all',
+  });
 
   useEffect(() => {
     if (optionsFactory) {
@@ -148,12 +152,15 @@ const DesktopViewDashboardPage = () => {
       date_from: searchParams.get('date_from') || '',
       date_to: searchParams.get('date_to') || '',
       factory: searchParams.get('factory') || selectedFactory.value,
+      vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
         date_from: value.date_from,
         date_to: value.date_to,
         factory: value.factory,
+        vendor_type:
+          selectedVendorType.value === 'all' ? "" : selectedVendorType.value,
       });
     },
   });
@@ -292,6 +299,26 @@ const DesktopViewDashboardPage = () => {
                 selected={selectedFactory}
                 setSelected={setSelectedFactory}
                 options={optionsFactory}
+                buttonClassname='body-s-r border-primary-3 border-2 !h-10'
+                arrowPosition='right'
+              />
+              <Dropdown
+                selected={selectedVendorType}
+                setSelected={setSelectedVendorType}
+                options={[
+                  {
+                    label: 'Semua',
+                    value: 'all',
+                  },
+                  {
+                    label: 'Inti',
+                    value: '1',
+                  },
+                  {
+                    label: 'Plasma',
+                    value: '2',
+                  },
+                ]}
                 buttonClassname='body-s-r border-primary-3 border-2 !h-10'
                 arrowPosition='right'
               />
@@ -484,22 +511,16 @@ const DesktopViewDashboardPage = () => {
                   <tbody>
                     {data &&
                       data?.machine_utility.map((item, index) => (
-                        <tr
-                          key={index}
-                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                          onClick={() => {
-                            setSelectedDataSenderBuah(item);
-                            toggleDrawerSenderBuah();
-                          }}
-                        >
+                        <tr key={index} className='body-m-r text-color-2'>
                           <td width={20}>{index + 1}.</td>
                           <td className='text-color-1'>Mesin {item.machine}</td>
-                          <td width={70} className='text-right'>
-                            <p className='inline-flex'>
-                              <span className='text-color-1'>
+                          <td width={100} className='text-right'>
+                            <p className='flex gap-1 items-center justify-end'>
+                              <span>{item.value}x</span> |
+                              <span className='text-color-1 text-xs'>
                                 {item.percent.toFixed(2)}
-                              </span>{' '}
-                              <span className='body-s-r'>%</span>
+                                <span className='body-s-r'>%</span>
+                              </span>
                             </p>
                           </td>
                         </tr>
@@ -522,7 +543,7 @@ const DesktopViewDashboardPage = () => {
                   <tbody>
                     {data && (
                       <>
-                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                        <tr className='body-m-r group hover text-color-2'>
                           <td className='text-color-1'>Diterima</td>
                           <td width={70} className='text-right'>
                             <p className='inline-flex'>
@@ -532,7 +553,7 @@ const DesktopViewDashboardPage = () => {
                             </p>
                           </td>
                         </tr>
-                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                        <tr className='body-m-r group hover text-color-2'>
                           <td className='text-color-1'>Ditolak</td>
                           <td width={70} className='text-right'>
                             <p className='inline-flex'>
@@ -542,7 +563,7 @@ const DesktopViewDashboardPage = () => {
                             </p>
                           </td>
                         </tr>
-                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                        <tr className='body-m-r group hover text-color-2'>
                           <td className='text-color-1'>Didenda</td>
                           <td width={70} className='text-right'>
                             <p className='inline-flex'>
@@ -552,7 +573,7 @@ const DesktopViewDashboardPage = () => {
                             </p>
                           </td>
                         </tr>
-                        <tr className='body-m-r group hover text-color-2 hover:cursor-pointer'>
+                        <tr className='body-m-r group hover text-color-2'>
                           <td className='text-color-1'>Durasi Grading</td>
                           <td width={70} className='text-right'>
                             <p className='inline-flex'>
@@ -656,7 +677,7 @@ const DesktopViewDashboardPage = () => {
               <div className='col-span-2 bg-white border border-primary-4 rounded-xl p-4'>
                 <div className='flex items-center justify-between mb-4 w-full'>
                   <div className='flex items-center gap-4'>
-                    <span className='text-color-1 flex items-center gap-2 text-lg'>
+                    <span className='text-color-1 flex items-center gap-2 text-lg w-52'>
                       {chartType?.label}
                     </span>
                     <Dropdown
@@ -718,7 +739,11 @@ const DesktopViewDashboardPage = () => {
                     // variant='plasma'
                     height={270}
                     // toggleDrawer={handleSelectDataChart}
-                    // dividerPercent={data?.by_demography_plasma['main']}
+                    dividerPercent={
+                      chartType.value === 'demography'
+                        ? data?.charts_data?.[chartType.value]['main']
+                        : null
+                    }
                     chartType={chartType.value}
                     machineType={machineType.value}
                     // range={menuTypeDictionary[selectedClassification.value]}
