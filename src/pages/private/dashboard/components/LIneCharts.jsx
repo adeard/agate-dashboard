@@ -213,10 +213,10 @@ const LineCharts = ({
           {...config}
           height={height}
           style={{ lineWidth: 3 }}
-          point={{
-            shapeField: 'circle',
-            sizeField: 3,
-          }}
+          // point={{
+          //   shapeField: 'circle',
+          //   sizeField: 3,
+          // }}
           label={{
             position: 'bottom',
             formatter: (text) => `${text}${unitSuffix[chartType]}`,
@@ -289,22 +289,6 @@ const LineCharts = ({
                     : range === 'monthly'
                     ? v.title
                     : dayjs(reformatStringDate(v.title)).format('DD MMMM YYYY');
-
-                let totalDivider = null;
-
-                if (chartType === 'demography') {
-                  const total = v.items.reduce(
-                    (acc, curr) => acc + Number(curr.value || 0),
-                    0
-                  );
-                  const sameDate =
-                    rangeMainData?.find((e) => e.title === v.title) || null;
-                  totalDivider =
-                    sameDate?.data?.reduce(
-                      (acc, curr) => acc + Number(curr?.total || 0),
-                      0
-                    ) || total;
-                }
 
                 return (
                   <div key={v.title}>
