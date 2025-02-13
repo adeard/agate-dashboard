@@ -55,7 +55,7 @@ export const useGet = (url, query, shouldFetch = true, pagination = true) => {
     total,
     objectSearch,
     meta,
-    refetch: (params = null) => _fetchData(params || objectSearch),
+    refetch: (params = {}) => _fetchData({ ...params, ...objectSearch }),
     setQueryParams: (object) => setSearch(object),
   };
 };

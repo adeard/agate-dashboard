@@ -24,7 +24,7 @@ const DrawerRiwayatPemeriksaan = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
 
   useEffect(() => {
     if (searchParams.get('factory')) {
-      refetch();
+      refetch({ limit_minimum: 200 });
     }
   }, [searchParams]);
 
