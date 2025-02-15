@@ -419,8 +419,8 @@ const DesktopViewDashboardPage = () => {
             {/* card vendor supply */}
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
-                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                  %Supply Vendor
+                <span className='uppercase label-text tag-l text-color-3 flex items-center gap-2'>
+                  %SUPPLY VENDOR
                 </span>
               </label>
 
