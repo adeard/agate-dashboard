@@ -160,7 +160,7 @@ const DesktopViewDashboardPage = () => {
         date_to: value.date_to,
         factory: value.factory,
         vendor_type:
-          selectedVendorType.value === 'all' ? "" : selectedVendorType.value,
+          selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
       });
     },
   });
@@ -416,6 +416,43 @@ const DesktopViewDashboardPage = () => {
             </div>
           </section>
           <section className='grid grid-cols-4 gap-4'>
+            {/* card vendor supply */}
+            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+              <label>
+                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                  %Supply Vendor
+                </span>
+              </label>
+
+              <div className='h-[25vh] overflow-y-auto'>
+                <table className='table'>
+                  <tbody>
+                    {data &&
+                      data?.vendor_supply.map((item, index) => (
+                        <tr
+                          key={index}
+                          className='body-m-r group hover text-color-2'
+                          // onClick={() => {
+                          //   setSelectedDataSenderVendor(item);
+                          //   toggleDrawerSenderVendor();
+                          // }}
+                        >
+                          <td width={20}>{index + 1}.</td>
+                          <td className='text-color-1'>{item.label}</td>
+                          <td width={70} className='text-right'>
+                            <p className='inline-flex'>
+                              <span className='text-color-1'>
+                                {item.percent.toFixed(2)}
+                              </span>{' '}
+                              <span className='body-s-r'>%</span>
+                            </p>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
             {/* card vendor inti */}
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
@@ -468,7 +505,7 @@ const DesktopViewDashboardPage = () => {
                 <table className='table'>
                   <tbody>
                     {data &&
-                      data?.[selectedClassification['value']].map(
+                      data?.[selectedClassification['value']]?.sort((a,b) => b.percent - a.percent).map(
                         (item, index) => (
                           <tr
                             key={index}
@@ -531,7 +568,7 @@ const DesktopViewDashboardPage = () => {
             </div>
 
             {/* card summary average */}
-            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+            {/* <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
               <label>
                 <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                   REKAP RATA - RATA
@@ -588,7 +625,7 @@ const DesktopViewDashboardPage = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
 
             {/* card vendor plasma */}
             {/* <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
