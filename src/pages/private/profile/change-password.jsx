@@ -1,19 +1,28 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { IoMdLock } from 'react-icons/io';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 
 import { useForm } from '@tanstack/react-form';
+import { usePut } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 
-import { getDecodeToken } from '@/services/auth';
 import InputWithIcon from '@/components/shared/InputWithIcon';
 
 const ChangePassword = () => {
   const navigate = useNavigate();
+
+  const {
+    handlePut,
+    loadingPut,
+    responseData: responsePut,
+  } = usePut('/v1/user/change-password', () => {
+    handleClose();
+    refetch();
+  });
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,7 +32,11 @@ const ChangePassword = () => {
       new_password: '',
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      handlePut(value);
+
+      console.log(responsePut);
+
+      form.reset();
     },
   });
 

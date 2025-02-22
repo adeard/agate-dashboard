@@ -56,11 +56,11 @@ const DrawerFormUser = ({
       isEdit
         ? handlePut({
             ...value,
-            subscribe_notification: value.subscribe_notification ? 1 : 0,
+            subscribe_notification: value.subscribe_notification ? 1 : null,
           })
         : handlePost({
             ...value,
-            subscribe_notification: value.subscribe_notification ? 1 : 0,
+            subscribe_notification: value.subscribe_notification ? 1 : null,
           });
       openModalResponseSave();
       // console.log({
