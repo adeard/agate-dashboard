@@ -27,82 +27,16 @@ const MobileDrawerRiwayatPemeriksaan = ({
   const [searchParams] = useSearchParams();
 
   const { data, loading, meta, refetch, setQueryParams } = useGet(
-    '/v1/inspection-data/by-factory/' + factoryId,
+    '/v1/inspection-data/by-factory/' + searchParams.get('factory'),
     {},
     false
   );
 
   useEffect(() => {
-    if (factoryId) {
-      refetch();
+    if (searchParams.get('factory')) {
+      refetch({ limit_minimum: 200 });
     }
-  }, [factoryId]);
-
-  const currentDate = dayjs().format('DD/MM/YYYY');
-
-  // table column
-  const columnHelper = createColumnHelper();
-  const columns = [
-    columnHelper.accessor('no', {
-      header: <div className='text-center'>NO</div>,
-      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
-      size: 20,
-    }),
-    columnHelper.accessor('date', {
-      header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY HH:mm'),
-    }),
-    columnHelper.accessor('vendor_name', {
-      header: 'VENDOR',
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor('delivery_number', {
-      header: 'SURAT JALAN',
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor('vehicle_number', {
-      header: 'PLAT KENDARAAN',
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor('grading_result.total_tandan', {
-      header: 'TOTAL TANDAN',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
-    }),
-    columnHelper.accessor('grading_result.total_rejected', {
-      header: 'DITOLAK',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
-    }),
-    columnHelper.accessor('grading_result.total_accepted', {
-      header: 'DITERIMA',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
-    }),
-    columnHelper.accessor('grading_result.total_fined', {
-      header: 'DIDENDA',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
-    }),
-    columnHelper.display({
-      id: 'actions',
-      cell: (info) => {
-        return (
-          <div className='flex justify-end gap-4'>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-              size='lg'
-              onClick={() =>
-                window.open(
-                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
-                  '_blank'
-                )
-              }
-            >
-              <MdOutlineVisibility className='text-lg' />
-              Detail
-            </Button>
-          </div>
-        );
-      },
-    }),
-  ];
+  }, [searchParams]);
 
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
@@ -140,11 +74,17 @@ const MobileDrawerRiwayatPemeriksaan = ({
                 {dayjs(item.date).format('DD/MM/YYYY HH:mm')}
               </p>
               <p className='tag-m'>VENDOR</p>
-              <p className='col-span-2 body-s-r !text-right'>{item.vendor_name}</p>
+              <p className='col-span-2 body-s-r !text-right'>
+                {item.vendor_name}
+              </p>
               <p className='tag-m'>SURAT JALAN</p>
-              <p className='col-span-2 body-s-r !text-right text-ellipsis'>{item.delivery_number}</p>
+              <p className='col-span-2 body-s-r !text-right text-ellipsis'>
+                {item.delivery_number}
+              </p>
               <p className='tag-m'>PLAT KENDARAAN</p>
-              <p className='col-span-2 body-s-r !text-right'>{item.vehicle_number}</p>
+              <p className='col-span-2 body-s-r !text-right'>
+                {item.vehicle_number}
+              </p>
               <p className='tag-m'>TOTAL TANDAN</p>
               <p className='col-span-2 body-s-r !text-right'>
                 {item.grading_result.total_tandan}
