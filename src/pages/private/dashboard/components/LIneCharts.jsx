@@ -52,7 +52,39 @@ const unitSuffix = {
   summary_performance: '%',
   rejected: '%',
   demography: '%',
-  machine_utility: '%',
+  machine_utility: '',
+};
+
+const colorCodes = {
+  // Maturity classifications
+  MENTAH: '#000000',
+  'KURANG MATANG': '#FFD700',
+  MATANG: '#FF0000',
+  'LEWAT MATANG': '#FF8C00',
+  'JANJANG KOSONG': '#78909C',
+
+  // Fruit size classifications
+  'BUAH KECIL DIBAWAH 3KG': '#CDE441',
+  'BUAH KECIL DIBAWAH 5KG': '#78C52A',
+
+  // Stalk classification
+  'TANGKAI PANJANG': '#CDE441',
+
+  // Statistics average values
+  Highest: '#6BAB25',
+  Average: '#F0CC00',
+  Lowest: '#AC0F18',
+
+  // Summary statistics
+  Diterima: '#6BAB25',
+  Didenda: '#F0CC00',
+  Ditolak: '#AC0F18',
+
+  // Machine colors
+  1: '#64B5F6', // lighter blue
+  2: '#4DD0E1', // lighter cyan
+  3: '#4DB6AC', // lighter teal
+  4: '#81C784', // lighter green
 };
 
 const reformatStringDate = (string) => {
@@ -73,43 +105,12 @@ const LineCharts = ({
   machineType = 'all',
 }) => {
   const [legendStatus, setLegendStatus] = useState({
-    MENTAH: true,
-    'KURANG MATANG': true,
-    MATANG: true,
-    'LEWAT MATANG': true,
-    'JANJANG KOSONG': true,
+    'Mesin 1': true,
+    'Mesin 2': true,
+    'Mesin 3': true,
+    'Mesin 4': true,
   });
   const [selectedData, setSelectedData] = useState(null);
-
-  useEffect(() => {
-    if (type === 'main') {
-      if (variant === 'inti') {
-        setLegendStatus({
-          MENTAH: true,
-          'KURANG MATANG': true,
-          MATANG: true,
-          'LEWAT MATANG': true,
-          'JANJANG KOSONG': true,
-        });
-      } else {
-        setLegendStatus({
-          MENTAH: true,
-          MATANG: true,
-          'LEWAT MATANG': true,
-          'JANJANG KOSONG': true,
-        });
-      }
-    } else if (type === 'size') {
-      setLegendStatus({
-        'BUAH KECIL DIBAWAH 3KG': true,
-        'BUAH KECIL DIBAWAH 5KG': true,
-      });
-    } else {
-      setLegendStatus({
-        'TANGKAI PANJANG': true,
-      });
-    }
-  }, [type]);
 
   const handleLegendClick = (key) => {
     setLegendStatus((prev) => ({
@@ -138,21 +139,25 @@ const LineCharts = ({
           : item['data'];
       let availData = [
         ...dataUsed.map((dt) => {
+          if (chartType === 'machine_utility') {
+            const isLegendActive = legendStatus[`Mesin ${dt.name}`] === true;
+            if (isLegendActive) {
+              return {
+                xField: item.title,
+                yField: dt['total'],
+                type: dt['name'],
+                data: dt,
+              };
+            } else {
+              return;
+            }
+          }
           return {
             xField: item.title,
             yField: dt['total'],
             type: dt['name'],
             data: dt,
           };
-          //   const isLegendActive = legendStatus[dt.name] === true;
-          //   if (isLegendActive) {
-          //     return {
-          //       xField: item.title,
-          //       yField: dt['total'],
-          //       type: dt['name'],
-          //       data: dt,
-          //     };
-          //   }
         }),
       ];
 
@@ -212,7 +217,14 @@ const LineCharts = ({
         <Line
           {...config}
           height={height}
-          style={{ lineWidth: 3 }}
+          style={{
+            lineWidth: 3,
+            stroke: (v) => {
+              const { type } = v[0];
+
+              return colorCodes[type];
+            },
+          }}
           // point={{
           //   shapeField: 'circle',
           //   sizeField: 3,
@@ -228,48 +240,48 @@ const LineCharts = ({
             },
             offsetY: 8, // Additional offset from the point
           }}
-          scale={
-            chartType === 'machine_utility'
-              ? {
-                  color: {
-                    domain: ['Mesin 1', 'Mesin 2', 'Mesin 3', 'Mesin 4'],
-                    range: ['#64B5F6', '#4DD0E1', '#4DB6AC', '#81C784'],
-                  },
-                }
-              : {
-                  color:
-                    chartType === 'demography'
-                      ? {
-                          domain: [
-                            'MENTAH',
-                            'KURANG MATANG',
-                            'MATANG',
-                            'LEWAT MATANG',
-                            'JANJANG KOSONG',
-                            'BUAH KECIL DIBAWAH 3KG',
-                            'BUAH KECIL DIBAWAH 5KG',
-                            'TANGKAI PANJANG',
-                          ],
-                          range: [
-                            '#000000', // MENTAH (black)
-                            '#FFD700', // KURANG MATANG (bold yellow)
-                            '#FF0000', // MATANG (bold red)
-                            '#FF8C00', // LEWAT MATANG (bold orange)
-                            '#78909C', // Bolder gray
-                            '#CDE441',
-                            '#78C52A',
-                            '#CDE441',
-                          ],
-                        }
-                      : {
-                          domain:
-                            chartType === 'summary_performance'
-                              ? ['Diterima', 'Didenda', 'Ditolak']
-                              : ['Highest', 'Average', 'Lowest'],
-                          range: ['#6BAB25', '#F0CC00', '#AC0F18'],
-                        },
-                }
-          }
+          // scale={
+          //   chartType === 'machine_utility'
+          //     ? {
+          //         color: {
+          //           domain: ['Mesin 1', 'Mesin 2', 'Mesin 3', 'Mesin 4'],
+          //           range: ['#64B5F6', '#4DD0E1', '#4DB6AC', '#81C784'],
+          //         },
+          //       }
+          //     : {
+          //         color:
+          //           chartType === 'demography'
+          //             ? {
+          //                 domain: [
+          //                   'MENTAH',
+          //                   'KURANG MATANG',
+          //                   'MATANG',
+          //                   'LEWAT MATANG',
+          //                   'JANJANG KOSONG',
+          //                   'BUAH KECIL DIBAWAH 3KG',
+          //                   'BUAH KECIL DIBAWAH 5KG',
+          //                   'TANGKAI PANJANG',
+          //                 ],
+          //                 range: [
+          //                   '#000000', // MENTAH (black)
+          //                   '#FFD700', // KURANG MATANG (bold yellow)
+          //                   '#FF0000', // MATANG (bold red)
+          //                   '#FF8C00', // LEWAT MATANG (bold orange)
+          //                   '#78909C', // Bolder gray
+          //                   '#CDE441',
+          //                   '#78C52A',
+          //                   '#CDE441',
+          //                 ],
+          //               }
+          //             : {
+          //                 domain:
+          //                   chartType === 'summary_performance'
+          //                     ? ['Diterima', 'Didenda', 'Ditolak']
+          //                     : ['Highest', 'Average', 'Lowest'],
+          //                 range: ['#6BAB25', '#F0CC00', '#AC0F18'],
+          //               },
+          //       }
+          // }
           axis={{
             x: {
               labelFormatter: (value) =>
@@ -344,13 +356,17 @@ const LineCharts = ({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                cursor: 'pointer',
+                cursor: chartType === 'machine_utility' ? 'pointer' : '',
                 fontSize: '14px',
                 fontWeight: '400',
                 color: '#6D6060',
                 opacity: 1,
               }}
-              // onClick={() => handleLegendClick(key)}
+              onClick={
+                chartType === 'machine_utility'
+                  ? () => handleLegendClick(key)
+                  : null
+              }
             >
               <span
                 style={{
@@ -358,7 +374,11 @@ const LineCharts = ({
                   width: 14,
                   height: 14,
                   borderRadius: '25%',
-                  backgroundColor: usedLegendColor[key],
+                  backgroundColor: (
+                    chartType === 'machine_utility' ? legendStatus[key] : true
+                  )
+                    ? usedLegendColor[key]
+                    : 'lightgray',
                   marginRight: 12,
                 }}
               ></span>

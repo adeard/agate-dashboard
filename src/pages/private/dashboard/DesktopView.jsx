@@ -76,7 +76,7 @@ const menuTypeDictionary = {
 const chartTypeDictionary = {
   summary_performance: 'Summary Performance',
   durations: 'Waktu Grading',
-  truck_gaps: 'Gap Antar Truck',
+  // truck_gaps: 'Gap Antar Truck',
   truck_fines: 'Denda Truk',
   rejected: 'TBS Ditolak',
   demography: 'Demografi Klasifikasi',
