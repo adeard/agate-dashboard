@@ -315,7 +315,7 @@ const LineCharts = ({
                               <div className='flex items-center gap-2'>
                                 <div
                                   className='size-2 rounded-sm'
-                                  style={{ backgroundColor: item.color }}
+                                  style={{ backgroundColor: colorCodes[item.name] }}
                                 ></div>
 
                                 <span>
