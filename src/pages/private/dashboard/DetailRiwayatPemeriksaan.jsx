@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -25,15 +24,6 @@ const columnsDiterima = [
     ),
     size: 400,
   }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
   columnHelper.accessor('normal', {
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
@@ -43,15 +33,15 @@ const columnsDiterima = [
     ),
     size: 20,
   }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
+  // columnHelper.accessor('pest', {
+  //   header: () => <div className='text-center'>PEST</div>,
+  //   cell: (info) => (
+  //     <div className='!body-m-r text-[#000000DE] text-center'>
+  //       {info.getValue().toLocaleString()}
+  //     </div>
+  //   ),
+  //   size: 20,
+  // }),
   columnHelper.accessor('longStash', {
     header: () => <div className='text-center'>LONG STASH</div>,
     cell: (info) => (
@@ -72,6 +62,15 @@ const columnsDiterima = [
   }),
   columnHelper.accessor('3-5kg', {
     header: () => <div className='text-center'>3-5KG</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
         {info.getValue().toLocaleString()}
@@ -91,15 +90,6 @@ const columnsDitolak = [
     ),
     size: 400,
   }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
   columnHelper.accessor('normal', {
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
@@ -109,15 +99,15 @@ const columnsDitolak = [
     ),
     size: 20,
   }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
-      </div>
-    ),
-    size: 20,
-  }),
+  // columnHelper.accessor('pest', {
+  //   header: () => <div className='text-center'>PEST</div>,
+  //   cell: (info) => (
+  //     <div className='!body-m-r text-[#000000DE] text-center'>
+  //       {info.getValue().toLocaleString()}
+  //     </div>
+  //   ),
+  //   size: 20,
+  // }),
   columnHelper.accessor('longStash', {
     header: () => <div className='text-center'>LONG STASH</div>,
     cell: (info) => (
@@ -140,6 +130,15 @@ const columnsDitolak = [
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
+  columnHelper.accessor('total', {
+    header: () => <div className='text-center'>TOTAL</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] !text-center'>
         {info.getValue().toLocaleString()}
       </div>
     ),
@@ -194,18 +193,21 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const dataDiterima =
     data &&
-    Object.keys(data?.grading_result.accepted_summary).map((key, index) => ({
-      id: index + 1,
-      title: key,
-      total: data?.grading_result.accepted_summary[key].TOTAL,
-      normal: data?.grading_result.accepted_summary[key].NORMAL,
-      pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
-      longStash: data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
-      '<3kg':
-        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
-      '3-5kg':
-        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
-    }));
+    Object.keys(data?.grading_result.accepted_summary)
+      .filter((key) => key !== 'MENTAH')
+      .map((key, index) => ({
+        id: index + 1,
+        title: key,
+        total: data?.grading_result.accepted_summary[key].TOTAL,
+        normal: data?.grading_result.accepted_summary[key].NORMAL,
+        pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
+        longStash:
+          data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
+        '<3kg':
+          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
+        '3-5kg':
+          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
+      }));
 
   const dataDitolak =
     data &&
@@ -280,9 +282,6 @@ const DetailRiwayatPemeriksaanPage = () => {
               size='lg'
               className='flex items-center'
               onClick={() => {
-                // refetchDownloadPdf().then((res) => {
-                //   console.log({ res });
-                // });
                 window.open(
                   BASE_URL + '/v1/inspection-data/download-pdf/' + id,
                   '_blank'

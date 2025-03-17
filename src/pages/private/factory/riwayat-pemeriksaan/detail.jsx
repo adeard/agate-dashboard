@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -9,7 +8,6 @@ import { useGet } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
-import ModalPreviewImage from '../components/ModalPreviewImage';
 import dayjs from 'dayjs';
 import { convertLabel } from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
@@ -194,31 +192,24 @@ const DetailRiwayatPemeriksaanPage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, refetch } = useGet(`/v1/inspection-data/${historyId}`);
-  const { refetch: refetchDownloadPdf } = useGet(
-    '/v1/inspection-data/download-pdf/' + historyId,
-    null,
-    false
-  );
-
-  // const dialogPreviewImageRef = useRef(null);
-  // const openModalPreviewImage = () => {
-  //   dialogPreviewImageRef.current.showModal();
-  // };
 
   const dataDiterima =
     data &&
-    Object.keys(data?.grading_result.accepted_summary).map((key, index) => ({
-      id: index + 1,
-      title: key,
-      total: data?.grading_result.accepted_summary[key].TOTAL,
-      normal: data?.grading_result.accepted_summary[key].NORMAL,
-      pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
-      longStash: data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
-      '<3kg':
-        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
-      '3-5kg':
-        data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
-    }));
+    Object.keys(data?.grading_result.accepted_summary)
+      .filter((key) => key !== 'MENTAH')
+      .map((key, index) => ({
+        id: index + 1,
+        title: key,
+        total: data?.grading_result.accepted_summary[key].TOTAL,
+        normal: data?.grading_result.accepted_summary[key].NORMAL,
+        pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
+        longStash:
+          data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
+        '<3kg':
+          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
+        '3-5kg':
+          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
+      }));
 
   const dataDitolak =
     data &&
@@ -297,9 +288,6 @@ const DetailRiwayatPemeriksaanPage = () => {
               size='lg'
               className='flex items-center'
               onClick={() => {
-                // refetchDownloadPdf().then((res) => {
-                //   console.log({ res });
-                // });
                 window.open(
                   BASE_URL + '/v1/inspection-data/download-pdf/' + historyId,
                   '_blank'
