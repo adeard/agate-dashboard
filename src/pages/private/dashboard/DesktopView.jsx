@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
 
-import { IoMdArrowDropright, IoMdMore } from 'react-icons/io';
+import { IoMdArrowDropright } from 'react-icons/io';
+import { MdFileDownload } from 'react-icons/md';
 
 import { useGet, useGetWithPost } from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
@@ -20,19 +21,18 @@ import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
 import CustomSelect from '@/components/shared/CustomSelect';
 import ButtonMore from '@/components/shared/ButtonMore';
-import DrawerSenderBuah from './components/DrawerSenderBuah';
 import LineCharts from './components/LIneCharts';
 import DrawerTotalTruk from './components/DrawerTotalTruk';
 import DrawerTrenKriteria from './components/DrawerTrenKriteria';
 import DrawerAnalisaVendor from './components/DrawerAnalisaVendor';
 import DrawerPerformaHarianVendor from './components/DrawerPerformaHarianVendor';
 import DrawerRiwayatPemeriksaanTruk from './components/DrawerRiwayatPemeriksaanTruk';
-
-import dayjs from 'dayjs';
-import CustomTable from '@/components/shared/CustomTable';
-import SampleTable from './components/SampleTable';
 import TableRankingVendor from './components/TableRankingVendor';
 import TableAnalisaVendor from './components/TableAnalisaVendor';
+
+import { BASE_URL } from '@/utils/axios';
+
+import dayjs from 'dayjs';
 
 const colorKriteriaGrading = {
   mentah: 'bg-[#AC0F18]',
@@ -257,6 +257,19 @@ const DesktopViewDashboardPage = () => {
               />
               <Button size='lg' onClick={form.handleSubmit}>
                 Apply
+              </Button>
+              <Button
+                size='lg'
+                className='flex items-center'
+                onClick={() => {
+                  window.open(
+                    BASE_URL + '/v4/dashboard/download-report',
+                    '_blank'
+                  );
+                }}
+              >
+                <MdFileDownload className='text-xl mr-2' />
+                Download
               </Button>
             </div>
           </div>
