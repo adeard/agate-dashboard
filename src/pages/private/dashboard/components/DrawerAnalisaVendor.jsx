@@ -5,18 +5,37 @@ import { IoMdClose } from 'react-icons/io';
 import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
+import { convertLabelUnderscore } from '@/utils/common';
 
-const DrawerAnalisaVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+const DrawerAnalisaVendor = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  data,
+  criteria,
+}) => {
   const columnHelper = createColumnHelper();
   const columns = [
-    columnHelper.accessor('label', {
+    columnHelper.accessor('vendor_name', {
       header: <div className='text-color-2'>VENDOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    columnHelper.accessor('percent', {
+    columnHelper.accessor('supply', {
       header: <div className='text-color-2'>%SUPPLY BUAH</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
+        </div>
+      ),
+    }),
+    columnHelper.accessor('percent', {
+      header: (
+        <div className='text-color-2 uppercase'>
+          %AVG {convertLabelUnderscore(criteria)}
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
@@ -36,7 +55,7 @@ const DrawerAnalisaVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='494px'
+      widthDrawer='512px'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>Analisa Vendor</h3>
@@ -54,7 +73,7 @@ const DrawerAnalisaVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data?.vendors || []} columns={columns} />
+          <CustomTable dataTable={data || []} columns={columns} />
         </div>
       </div>
     </Drawer>

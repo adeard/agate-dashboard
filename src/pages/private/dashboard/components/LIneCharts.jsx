@@ -43,7 +43,7 @@ const statisticsColorFruitTP = {
 };
 const statisticsColorFruitRejected = {
   Mentah: '#6BAB25',
-  'Lewat Matang': '#F0CC00',
+  // 'Lewat Matang': '#F0CC00',
   'Janjang Kosong': '#A86523',
   'Buah <3kg': '#AC0F18',
   'Buah 3-5kg': '#E07324',

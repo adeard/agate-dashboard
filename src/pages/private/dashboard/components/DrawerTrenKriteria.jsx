@@ -5,19 +5,32 @@ import { IoMdClose } from 'react-icons/io';
 import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
-import { convertLabel } from '@/utils/common';
+import { convertLabel, convertLabelUnderscore } from '@/utils/common';
+import dayjs from 'dayjs';
 
-const DrawerTrenKriteria = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+const DrawerTrenKriteria = ({
+  idDrawer,
+  isDrawerOpen,
+  closeDrawer,
+  data,
+  criteria,
+}) => {
   const columnHelper = createColumnHelper();
   const columns = [
-    columnHelper.accessor('label', {
+    columnHelper.accessor('date', {
       header: <div className='text-color-2'>TANGGAL</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-b !text-color-1'>
+          {dayjs(info.getValue()).format('DD/MM/YYYY HH:mm')}
+        </div>
       ),
     }),
     columnHelper.accessor('percent', {
-      header: <div className='text-color-2'>%AVG MENTAH</div>,
+      header: (
+        <div className='text-color-2 uppercase'>
+          %AVG {convertLabelUnderscore(criteria)}
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {info.getValue().toFixed(2)} <span className='body-s-r'>%</span>
@@ -55,7 +68,7 @@ const DrawerTrenKriteria = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data?.vendors || []} columns={columns} />
+          <CustomTable dataTable={data || []} columns={columns} />
         </div>
       </div>
     </Drawer>

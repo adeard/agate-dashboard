@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
@@ -14,6 +14,7 @@ import {
   convertLabel,
   convertLabelUnderscore,
   formattedDataDashboard,
+  joinClassnames,
 } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
@@ -81,6 +82,56 @@ const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
     value: key,
   })
 );
+
+const RocComponent = ({ type, roc }) => {
+  console.log({ roc });
+  const rocValue = useMemo(() => {
+    return roc[type];
+  }, [roc, type]);
+  console.log({ rocValue });
+  const isPositiveValue = rocValue > 0;
+  const isPositive =
+    rocValue === 0
+      ? true
+      : type === 'diterima'
+      ? isPositiveValue
+      : !isPositiveValue;
+
+  return (
+    <div
+      className={joinClassnames([
+        'bg-white border rounded-xl p-3 inline-flex items-center justify-between',
+        isPositive ? 'border-[#006D33]' : 'border-secondary-2',
+      ])}
+    >
+      <label>
+        <span
+          className={joinClassnames([
+            'label-text body-m-b flex items-center gap-2 capitalize',
+            isPositive ? 'text-[#006D33]' : 'text-secondary-2',
+          ])}
+        >
+          ROC %{type}
+        </span>
+      </label>
+      <p
+        className={joinClassnames([
+          isPositive ? 'text-[#006D33]' : 'text-secondary-2',
+        ])}
+      >
+        <span
+          className={joinClassnames([
+            'h-full w-2 border mx-2',
+            isPositive ? 'border-[#006D33]' : 'border-secondary-2',
+          ])}
+        ></span>
+        <span className='body-m-r mr-1'>{`${rocValue < 0 ? '-' : '+'}${Math.abs(
+          rocValue
+        ).toLocaleString('en', { maximumFractionDigits: 2 })}`}</span>
+      </p>
+    </div>
+  );
+};
 
 const DesktopViewDashboardPage = () => {
   const [searchParams] = useSearchParams();
@@ -183,6 +234,8 @@ const DesktopViewDashboardPage = () => {
 
   const [chartType, setChartType] = useState(chartTypeListOptions[0]);
   const [machineType, setMachineType] = useState(listOptionsMachine[0]);
+  const [selectedCriteria, setSelectedCriteria] = useState('matang');
+  const [selectedVendor, setSelectedVendor] = useState('');
 
   return (
     <div>
@@ -263,13 +316,18 @@ const DesktopViewDashboardPage = () => {
                 className='flex items-center'
                 onClick={() => {
                   window.open(
-                    BASE_URL + '/v4/dashboard/download-report',
+                    BASE_URL +
+                      '/v4/dashboard/download-report' +
+                      `?targetDate=${searchParams.get(
+                        'date_from'
+                      )}&targetEnd=${searchParams.get('date_to')}`,
                     '_blank'
                   );
                 }}
+                variant='primary-outline'
               >
                 <MdFileDownload className='text-xl mr-2' />
-                Download
+                Download Report
               </Button>
             </div>
           </div>
@@ -419,11 +477,17 @@ const DesktopViewDashboardPage = () => {
                                 listMenu={[
                                   {
                                     label: 'Tren Kriteria',
-                                    onClick: toggleDrawerTrenKriteria,
+                                    onClick: () => {
+                                      setSelectedCriteria(item.label);
+                                      toggleDrawerTrenKriteria();
+                                    },
                                   },
                                   {
                                     label: 'Analisa Vendor',
-                                    onClick: toggleDrawerAnalisaVendor,
+                                    onClick: () => {
+                                      setSelectedCriteria(item.label);
+                                      toggleDrawerAnalisaVendor();
+                                    },
                                   },
                                 ]}
                               />
@@ -475,11 +539,17 @@ const DesktopViewDashboardPage = () => {
                                 listMenu={[
                                   {
                                     label: 'Performa Harian Vendor',
-                                    onClick: toggleDrawerPerformaHarianVendor,
+                                    onClick: () => {
+                                      setSelectedVendor(item.label);
+                                      toggleDrawerPerformaHarianVendor();
+                                    },
                                   },
                                   {
                                     label: 'Riwayat Pemeriksaan Truk',
-                                    onClick: toggleDrawerRiwayatPemeriksaanTruk,
+                                    onClick: () => {
+                                      setSelectedVendor(item.label);
+                                      toggleDrawerRiwayatPemeriksaanTruk();
+                                    },
                                   },
                                 ]}
                               />
@@ -526,41 +596,21 @@ const DesktopViewDashboardPage = () => {
                       ))}
                     </ul>
                   </div>
-                  {chartType?.label === 'Summary Performance' && (
+                  {chartType?.label === 'Summary Performance' && data?.rocs && (
                     <div className='flex items-center gap-4'>
-                      <div className='bg-white border border-secondary-2 rounded-xl p-3 inline-flex items-center justify-between'>
-                        <label>
-                          <span className='label-text body-m-b text-secondary-2 flex items-center gap-2'>
-                            ROC %Diterima
-                          </span>
-                        </label>
-                        <p className='text-secondary-2'>
-                          <span className='h-full w-2 border border-secondary-2 mx-2'></span>
-                          <span className='body-m-r mr-1'>-0,2</span>
-                        </p>
-                      </div>
-                      <div className='bg-white border border-secondary-2 rounded-xl p-3 inline-flex items-center justify-between'>
-                        <label>
-                          <span className='label-text body-m-b text-secondary-2 flex items-center gap-2'>
-                            ROC %Ditolak
-                          </span>
-                        </label>
-                        <p className='text-secondary-2'>
-                          <span className='h-full w-2 border border-secondary-2 mx-2'></span>
-                          <span className='body-m-r mr-1'>+0,2</span>
-                        </p>
-                      </div>
-                      <div className='bg-white border border-[#006D33] rounded-xl p-3 inline-flex items-center justify-between'>
-                        <label>
-                          <span className='label-text body-m-b text-[#006D33] flex items-center gap-2'>
-                            ROC %Didenda
-                          </span>
-                        </label>
-                        <p className='text-[#006D33]'>
-                          <span className='h-full w-2 border border-[#006D33] mx-1'></span>
-                          <span className='body-m-r mr-1'>+0,2</span>
-                        </p>
-                      </div>
+                      <RocComponent
+                        type='diterima'
+                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                      />
+
+                      <RocComponent
+                        type='ditolak'
+                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                      />
+                      <RocComponent
+                        type='didenda'
+                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                      />
                       {chartType?.value === 'truck_gaps' ? (
                         <CustomSelect
                           placeholder='Pilih Mesin'
@@ -631,26 +681,37 @@ const DesktopViewDashboardPage = () => {
         idDrawer={idDrawerRiwayatPemeriksaan}
         isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
         closeDrawer={closeDrawerRiwayatPemeriksaan}
+        tempData={data?.inspections}
       />
       <DrawerTrenKriteria
         idDrawer={idDrawerTrenKriteria}
         isDrawerOpen={isDrawerTrenKriteriaOpen}
         closeDrawer={closeDrawerTrenKriteria}
+        data={data?.['average_grading_trend']?.[selectedCriteria]}
+        criteria={selectedCriteria}
       />
       <DrawerAnalisaVendor
         idDrawer={idDrawerAnalisaVendor}
         isDrawerOpen={isDrawerAnalisaVendorOpen}
         closeDrawer={closeDrawerAnalisaVendor}
+        data={data?.['average_grading_vendor']?.[selectedCriteria]}
+        criteria={selectedCriteria}
       />
       <DrawerPerformaHarianVendor
         idDrawer={idDrawerPerformaHarianVendor}
         isDrawerOpen={isDrawerPerformaHarianVendorOpen}
         closeDrawer={closeDrawerPerformaHarianVendor}
+        vendor={selectedVendor}
+        data={data?.['average_vendor_accepted_daily']?.[selectedVendor]}
       />
       <DrawerRiwayatPemeriksaanTruk
         idDrawer={idDrawerRiwayatPemeriksaanTruk}
         isDrawerOpen={isDrawerRiwayatPemeriksaanTrukOpen}
         closeDrawer={closeDrawerRiwayatPemeriksaanTruk}
+        vendor={selectedVendor}
+        data={
+          data?.['average_vendor_accepted_trucks_history']?.[selectedVendor]
+        }
       />
     </div>
   );
