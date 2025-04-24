@@ -139,7 +139,7 @@ const LoginPage = () => {
           />
           <h3 className='text-2xl'>Automatic Grading System</h3>
         </div>
-        <div className='card w-full h-max bg-white p-4 space-y-4'>
+        <form className='card w-full h-max bg-white p-4 space-y-4'>
           <form.Field
             name='email'
             children={(field) => (
@@ -183,19 +183,18 @@ const LoginPage = () => {
             )}
           />
 
-          <div>
-            <Button
-              variant='primary'
-              size='lg'
-              className='button-l mt-4'
-              full
-              onClick={form.handleSubmit}
-              loading={loadingSubmit}
-            >
-              Login
-            </Button>
-          </div>
-        </div>
+          <Button
+            type='submit'
+            variant='primary'
+            size='lg'
+            className='button-l mt-4'
+            full
+            onClick={form.handleSubmit}
+            loading={loadingSubmit}
+          >
+            Login
+          </Button>
+        </form>
       </div>
     </div>
   );

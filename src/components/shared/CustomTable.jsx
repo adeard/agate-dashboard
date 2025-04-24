@@ -152,7 +152,12 @@ const CustomTable = ({
                         className='body-s-r group hover text-color-2'
                       >
                         {row.getVisibleCells().map((cell) => (
-                          <td key={cell.id}>
+                          <td
+                            key={cell.id}
+                            className={`${
+                              cell.column.columnDef.meta?.className || ''
+                            }`}
+                          >
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()

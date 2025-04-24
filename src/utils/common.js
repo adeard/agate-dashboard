@@ -77,6 +77,25 @@ export const convertLabel = (data) => {
   }
 };
 
+export const convertLabelUnderscore = (data) => {
+  const label = data
+    ?.replace(/_/g, ' ') // ganti underscore dengan spasi
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  switch (label.toLowerCase()) {
+    case 'Buah Kecil Dibawah 3kg'.toLowerCase():
+      return 'Buah <3kg';
+    case 'Buah Kecil Dibawah 5kg'.toLowerCase():
+      return 'Buah 3-5kg';
+    default:
+      return label;
+  }
+};
+
+
 export function formatNumberWithK(number) {
   if (number >= 1000) {
     return `${(number / 1000).toLocaleString()}k`;
@@ -96,3 +115,18 @@ export const getFilteredValues = (values) => {
     )
   );
 };
+
+export function formattedDataDashboard(data) {
+  return Object.entries(data).map(([key, value]) => ({
+    label: key,
+    percent: parseFloat(value),
+  }));
+}
+
+export function chunkArray(array, size) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
