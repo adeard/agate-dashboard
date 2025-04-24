@@ -84,14 +84,14 @@ const TableAnalisaVendor = ({
         </div>
       ),
     }),
-    columnHelper.accessor('total_tandan', {
+    columnHelper.accessor('avg_tandan', {
       header: (
         <div>
           AVG TBS <br /> PER TRUK
         </div>
       ),
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue() || 0}</div>
+        <div className='!body-m-b !text-color-1'>{info.getValue()?.percent || 0}</div>
       ),
     }),
     columnHelper.accessor('avg_accepted', {

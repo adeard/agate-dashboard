@@ -112,7 +112,7 @@ const TableRankingVendor = ({ data }) => {
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('avgTP', {
+    columnHelper.accessor('percent_tangkai_panjang', {
       header: <div>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
@@ -166,7 +166,7 @@ const TableRankingVendor = ({ data }) => {
         return (
           <div className='flex justify-end gap-4'>
             <Button
-              className='bg-transparent text-transparent border border-transparent group-hover:bg-white group-hover:text-color-1 group-hover:border-primary-2 flex items-center gap-2'
+              className='bg-transparent text-transparent border border-transparent group-hover:bg-white group-hover:shadow group-hover:text-color-1 flex items-center gap-2'
               size='lg'
               onClick={() => null}
             >

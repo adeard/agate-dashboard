@@ -34,6 +34,16 @@ import SampleTable from './components/SampleTable';
 import TableRankingVendor from './components/TableRankingVendor';
 import TableAnalisaVendor from './components/TableAnalisaVendor';
 
+const colorKriteriaGrading = {
+  mentah: 'bg-[#AC0F18]',
+  janjang_kosong: 'bg-[#AC0F18]',
+  buah_kecil_3: 'bg-[#AC0F18]',
+  buah_kecil_5: 'bg-[#AC0F18]',
+  tangkai_panjang: 'bg-[#F0CC00]',
+  matang: 'bg-[#6BAB25]',
+  lewat_matang: 'bg-[#6BAB25]',
+};
+
 const chartTypeDictionary = {
   summary_performance: 'Summary Performance',
   grading_trucks: 'Grading Truk',
@@ -375,9 +385,8 @@ const DesktopViewDashboardPage = () => {
                             <td className='!w-4 !p-0'>
                               <div
                                 className={`w-3 h-3 rounded-full ${
-                                  index % 2 === 0
-                                    ? 'bg-primary-G400'
-                                    : 'bg-secondary-1'
+                                  colorKriteriaGrading[item.label] ||
+                                  'bg-gray-300'
                                 }`}
                               ></div>
                             </td>
