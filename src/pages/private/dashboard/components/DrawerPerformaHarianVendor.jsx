@@ -5,19 +5,7 @@ import { IoMdClose } from 'react-icons/io';
 import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
-
-// const tempData = new Array(10).fill().map(() => ({
-//   tanggal: '01/01/2025, 19:10:10',
-//   totalTruk: '88',
-//   avgTbsTruk: '16,8',
-//   avgDiterima: '16,8',
-//   avgMM: '16,8',
-//   avgLM: '16,8',
-//   avgTP: '16,8',
-//   avgM: '16,8',
-//   avgJK: '16,8',
-//   avhBK: '16,8',
-// }));
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 const DrawerPerformaHarianVendor = ({
   idDrawer,
@@ -55,7 +43,7 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_accepted', {
       header: (
         <div>
-          % AVG <br /> DITERIMA
+          AVG <br /> DITERIMA
         </div>
       ),
       cell: (info) => (
@@ -67,14 +55,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_matang', {
       header: (
         <div>
-          % AVG <br /> MM
+          AVG <br /> MM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -82,14 +68,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_lewat_matang', {
       header: (
         <div>
-          % AVG <br /> LM
+          AVG <br /> LM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -97,14 +81,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_tangkai_panjang', {
       header: (
         <div>
-          % AVG <br /> TP
+          AVG <br /> TP
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
@@ -112,14 +94,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_mentah', {
       header: (
         <div>
-          % AVG <br /> M
+          AVG <br /> M
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -127,14 +107,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_janjang_kosong', {
       header: (
         <div>
-          % AVG <br /> JK
+          AVG <br /> JK
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -142,14 +120,12 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_buah_kecil', {
       header: (
         <div>
-          % AVG <br /> BK
+          AVG <br /> BK
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },

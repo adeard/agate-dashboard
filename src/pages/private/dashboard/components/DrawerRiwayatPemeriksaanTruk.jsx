@@ -7,6 +7,7 @@ import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 // const tempData = new Array(10).fill().map(() => ({
 //   tanggal: '01/01/2025, 19:10:10',
@@ -50,11 +51,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       ),
     }),
     columnHelper.accessor('delivery_number', {
-      header: (
-        <div>
-          SURAT <br /> JALAN
-        </div>
-      ),
+      header: <div>SURAT JALAN</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -79,9 +76,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),
@@ -89,9 +84,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -100,9 +93,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -111,9 +102,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
@@ -122,9 +111,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -133,9 +120,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% JK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -144,9 +129,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -206,7 +189,11 @@ const DrawerRiwayatPemeriksaanTruk = ({
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data || []} columns={columns} />
+          <CustomTable
+            dataTable={data || []}
+            columns={columns}
+            showPagination={true}
+          />
         </div>
       </div>
     </Drawer>

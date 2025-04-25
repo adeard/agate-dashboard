@@ -7,6 +7,7 @@ import { FaCircle } from 'react-icons/fa6';
 import CustomTable from '@/components/shared/CustomTable';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -52,6 +53,10 @@ const getIcon = (rank) => {
 const TableRankingVendor = ({ data }) => {
   const columnHelper = createColumnHelper();
   const columns = [
+    columnHelper.accessor('no', {
+      header: <div className='text-center'>NO</div>,
+      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+    }),
     columnHelper.accessor('date', {
       header: <div className='w-32'>TANGGAL</div>,
       cell: (info) => (
@@ -82,9 +87,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info
-            .getValue()
-            ?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
         </div>
       ),
     }),
@@ -92,9 +95,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -104,9 +105,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -116,9 +115,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -128,9 +125,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -140,9 +135,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% JK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -152,9 +145,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info
-            .getValue()
-            ?.percent?.toLocaleString('en', { maximumFractionDigits: 2 }) ?? 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -168,7 +159,12 @@ const TableRankingVendor = ({ data }) => {
             <Button
               className='bg-transparent text-transparent border border-transparent group-hover:bg-white group-hover:shadow group-hover:text-color-1 flex items-center gap-2'
               size='lg'
-              onClick={() => null}
+              onClick={() =>
+                window.open(
+                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
+                  '_blank'
+                )
+              }
             >
               <MdOutlineVisibility className='text-lg' />
               Detail
@@ -185,6 +181,7 @@ const TableRankingVendor = ({ data }) => {
       dataTable={data || []}
       columns={columns}
       showPagination={true}
+      minHeight='max-content'
     />
   );
 };

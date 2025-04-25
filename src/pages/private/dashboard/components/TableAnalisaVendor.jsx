@@ -8,6 +8,7 @@ import CustomTable from '@/components/shared/CustomTable';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
 import ButtonMore from '@/components/shared/ButtonMore';
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -52,11 +53,16 @@ const getIcon = (rank) => {
 
 const TableAnalisaVendor = ({
   data,
-  toggleDrawerPerformaHarianVendor,
+  setSelectedVendor,
+  togglePerformaHarian,
   toggleRiwayatPemeriksaan,
 }) => {
   const columnHelper = createColumnHelper();
   const columns = [
+    columnHelper.accessor('no', {
+      header: <div className='text-center'>NO</div>,
+      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+    }),
     columnHelper.accessor('vendor_name', {
       header: <div className='w-32'>VENDOR</div>,
       cell: (info) => (
@@ -71,7 +77,7 @@ const TableAnalisaVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
         </div>
       ),
     }),
@@ -79,7 +85,7 @@ const TableAnalisaVendor = ({
       header: <div>% SUPPLY</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -91,18 +97,20 @@ const TableAnalisaVendor = ({
         </div>
       ),
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()?.percent || 0}</div>
+        <div className='!body-m-b !text-color-1'>
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
+        </div>
       ),
     }),
     columnHelper.accessor('avg_accepted', {
       header: (
         <div>
-          % AVG <br /> DITERIMA
+          AVG <br /> DITERIMA
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -110,12 +118,12 @@ const TableAnalisaVendor = ({
     columnHelper.accessor('avg_matang', {
       header: (
         <div>
-          % AVG <br /> MM
+          AVG <br /> MM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -124,12 +132,12 @@ const TableAnalisaVendor = ({
     columnHelper.accessor('avg_lewat_matang', {
       header: (
         <div>
-          % AVG <br /> LM
+          AVG <br /> LM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -138,42 +146,42 @@ const TableAnalisaVendor = ({
     columnHelper.accessor('avg_tangkai_panjang', {
       header: (
         <div>
-          % AVG <br /> TP
+          AVG <br /> TP
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.accessor('avg_mentah', {
-      header: <div>% AVG M</div>,
+      header: <div>AVG M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_janjang_kosong', {
-      header: <div>% AVG JK</div>,
+      header: <div>AVG JK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_buah_kecil', {
-      header: <div>% AVG BK</div>,
+      header: <div>AVG BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {info.getValue()?.percent || 0}
+          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
           {getIcon(info.getValue()?.rank)}
         </div>
       ),
@@ -188,11 +196,17 @@ const TableAnalisaVendor = ({
               listMenu={[
                 {
                   label: 'Performa Harian Vendor',
-                  onClick: toggleDrawerPerformaHarianVendor,
+                  onClick: () => {
+                    setSelectedVendor(info.row.original.vendor_name);
+                    togglePerformaHarian();
+                  },
                 },
                 {
                   label: 'Riwayat Pemeriksaan Truk',
-                  onClick: toggleRiwayatPemeriksaan,
+                  onClick: () => {
+                    setSelectedVendor(info.row.original.vendor_name);
+                    toggleRiwayatPemeriksaan();
+                  },
                 },
               ]}
             />
@@ -208,6 +222,7 @@ const TableAnalisaVendor = ({
       dataTable={data || []}
       columns={columns}
       showPagination={true}
+      minHeight='max-content'
     />
   );
 };

@@ -133,7 +133,7 @@ const CustomTable = ({
                     {table.getHeaderGroups().map((headerGroup) => (
                       <tr key={headerGroup.id} className='text-color-2'>
                         {headerGroup.headers.map((header) => (
-                          <th key={header.id} className='tag-l'>
+                          <th key={header.id} className='tag-l !font-bold'>
                             {header.isPlaceholder
                               ? null
                               : flexRender(

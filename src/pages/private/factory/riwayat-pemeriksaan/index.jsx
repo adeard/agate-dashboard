@@ -53,6 +53,8 @@ const RiwayatPemeriksaanPage = () => {
     closeDrawer: closeDrawerFilter,
   } = useDrawer('DrawerFilter');
 
+  console.log(data);
+
   // table column
   const columnHelper = createColumnHelper();
   const columns = [
@@ -61,10 +63,14 @@ const RiwayatPemeriksaanPage = () => {
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
     }),
     columnHelper.accessor('date', {
+      header: 'TANGGAL',
+      cell: (info) => dayjs(info.getValue()).format('DD/MM/YYYY'),
+    }),
+    columnHelper.accessor('finish_date', {
       header: 'WAKTU',
       cell: (info) =>
-        `${dayjs(info.getValue()).format('DD/MM/YYYY, HH:mm')} - ${dayjs(
-          info.row.original.finish_date
+        `${dayjs(info.row.original.finish_date).format('HH:mm')} - ${dayjs(
+          info.getValue()
         ).format('HH:mm')}`,
     }),
     columnHelper.accessor('machine', {

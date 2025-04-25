@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Column, G2, Line } from '@ant-design/plots';
 import {
   convertLabel,
   countPercentage,
   formatNumberWithK,
+  formatPercentWithLeadingZeros,
 } from '@/utils/common';
 import dayjs from 'dayjs';
 
@@ -44,7 +45,7 @@ const statisticsColorFruitTP = {
 const statisticsColorFruitRejected = {
   Mentah: '#6BAB25',
   // 'Lewat Matang': '#F0CC00',
-  'Janjang Kosong': '#A86523',
+  'Janjang Kosong': '#A1E3F9',
   'Buah <3kg': '#AC0F18',
   'Buah 3-5kg': '#E07324',
 };
@@ -87,7 +88,7 @@ const colorCodes = {
   'LEWAT MATANG': '#FF8C00',
   'Lewat Matang': '#F0CC00',
   'JANJANG KOSONG': '#78909C',
-  'Janjang Kosong': '#A86523',
+  'Janjang Kosong': '#A1E3F9',
 
   // Fruit size classifications
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
@@ -284,7 +285,7 @@ const LineCharts = ({
               position: 'bottom',
               formatter: (text) => {
                 const num = Number(text);
-                const formatted = Number.isInteger(num) ? num : num.toFixed(3);
+                const formatted = formatPercentWithLeadingZeros(num);
                 return `${formatted}${unitSuffix[chartType]}`;
               },
               style: {
@@ -309,6 +310,8 @@ const LineCharts = ({
             tooltip: {
               render: (e, v) => {
                 // console.log({ e, v });
+                const [rawDate, type] = v.title.split(',');
+
                 let getTitleFirstIndex = v.title.split(',')[0];
                 let title =
                   range === 'weekly'
@@ -318,6 +321,11 @@ const LineCharts = ({
                     : dayjs(reformatStringDate(getTitleFirstIndex)).format(
                         'DD MMMM YYYY'
                       );
+
+                const originalData = filteredData.find(
+                  (d) => d.xField === rawDate && d.type === type
+                );
+                const machines = originalData?.data?.machines ?? [];
 
                 return (
                   <div key={v.title}>
@@ -333,35 +341,47 @@ const LineCharts = ({
                           )
                           .map((item, index) => {
                             return (
-                              <li
-                                className='flex items-center justify-between gap-2'
-                                key={index}
-                              >
-                                <div className='flex items-center gap-2'>
-                                  <div
-                                    className='size-2 rounded-sm'
-                                    style={{
-                                      backgroundColor: colorCodes[item.name],
-                                    }}
-                                  ></div>
+                              <React.Fragment key={index}>
+                                <li className='flex items-center justify-between gap-2'>
+                                  <div className='flex items-center gap-2'>
+                                    <div
+                                      className='size-2 rounded-sm'
+                                      style={{
+                                        backgroundColor: colorCodes[item.name],
+                                      }}
+                                    ></div>
 
-                                  <span>
-                                    {chartType === 'machine_utility'
+                                    <span>
+                                      {/* {chartType === 'machine_utility'
                                       ? 'Mesin '
-                                      : ''}
-                                    {item.name}
+                                      : ''} */}
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                  <span className='font-semibold'>
+                                    {typeof item.value === 'number'
+                                      ? Number(item.value).toLocaleString()
+                                      : item.value}
+                                    <span className='text-xs font-thin'>
+                                      {' '}
+                                      {unitSuffix[chartType]}
+                                    </span>
                                   </span>
-                                </div>
-                                <span className='font-semibold'>
-                                  {typeof item.value === 'number'
-                                    ? Number(item.value).toLocaleString()
-                                    : item.value}
-                                  <span className='text-xs font-thin'>
-                                    {' '}
-                                    {unitSuffix[chartType]}
-                                  </span>
-                                </span>
-                              </li>
+                                </li>
+                                {chartType === 'grading_trucks' && (
+                                  <ul className='mt-2'>
+                                    {machines.map((item, index) => (
+                                      <li
+                                        className='flex items-center justify-between'
+                                        key={index}
+                                      >
+                                        <span>{item.name}</span>
+                                        <span>{item.total}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </React.Fragment>
                             );
                           })}
                       </ul>

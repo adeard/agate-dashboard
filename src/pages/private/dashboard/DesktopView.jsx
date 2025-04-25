@@ -13,6 +13,7 @@ import {
   chunkArray,
   convertLabel,
   convertLabelUnderscore,
+  formatPercentWithLeadingZeros,
   formattedDataDashboard,
   joinClassnames,
 } from '@/utils/common';
@@ -84,11 +85,9 @@ const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
 );
 
 const RocComponent = ({ type, roc }) => {
-  console.log({ roc });
   const rocValue = useMemo(() => {
     return roc[type];
   }, [roc, type]);
-  console.log({ rocValue });
   const isPositiveValue = rocValue > 0;
   const isPositive =
     rocValue === 0
@@ -144,7 +143,7 @@ const DesktopViewDashboardPage = () => {
     false
   );
 
-  console.log('data-v4', data);
+  // console.log('data-v4', data);
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -334,346 +333,370 @@ const DesktopViewDashboardPage = () => {
         </header>
 
         <main className='space-y-4'>
-          <section className='grid grid-cols-5 gap-4'>
-            <div
-              className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
-              onClick={toggleDrawerRiwayatPemeriksaan}
-            >
-              <label>
-                <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                  TOTAL TRUK
-                </span>
-              </label>
-              <p>
-                <span className='subheadline-s text-color-1'>
-                  {data?.monitoring.total_grading.toLocaleString()}
-                </span>{' '}
-                <span className='body-m-bold text-color-3 text-sm'>
-                  truk{' '}
-                  <IoMdArrowDropright className='inline text-lg text-primary-2' />
-                </span>
-              </p>
+          {loading ? (
+            <div className='min-h-[80vh] bg-white rounded-2xl flex items-center justify-center'>
+              <span className='loading loading-spinner loading-lg'></span>
             </div>
-            <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                  TOTAL JANJANG
-                </span>
-              </label>
-              <p>
-                <span className='subheadline-s text-color-1'>
-                  {data?.monitoring.total_tandan.toLocaleString()}
-                </span>{' '}
-                <span className='body-m-bold text-color-3 text-sm'>Pcs</span>
-              </p>
-            </div>
-            <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
-                  DITERIMA
-                </span>
-              </label>
-              <p className='text-[#006D33]'>
-                <span className='subheadline-s'>
-                  {data?.monitoring.total_passed.toLocaleString()}
-                </span>{' '}
-                <span className='body-m-bold text-sm'>Pcs</span>
-                <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                <span className='body-m-r mr-1'>
-                  {Number(data?.monitoring.percent_passed).toLocaleString(
-                    'en',
-                    { maxFractionDigit: 2 }
-                  )}
-                </span>
-                <span className='body-s-r text-sm'>%</span>
-              </p>
-            </div>
-            <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
-                  DITOLAK
-                </span>
-              </label>
-              <p className='text-secondary-2'>
-                <span className='subheadline-s'>
-                  {data?.monitoring.total_rejected.toLocaleString()}
-                </span>{' '}
-                <span className='body-m-bold text-sm'>Pcs</span>
-                <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                <span className='body-m-r mr-1'>
-                  {Number(data?.monitoring.percent_rejected).toLocaleString(
-                    'en',
-                    { maxFractionDigit: 2 }
-                  )}
-                </span>
-                <span className='body-s-r text-sm'>%</span>
-              </p>
-            </div>
-            <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
-                  DIDENDA
-                </span>
-              </label>
-              <p className='text-[#E07324]'>
-                <span className='subheadline-s'>
-                  {data?.monitoring.total_fined.toLocaleString()}
-                </span>{' '}
-                <span className='body-m-bold text-sm'>Pcs</span>
-                <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                <span className='body-m-r mr-1'>
-                  {Number(data?.monitoring.percent_fined).toLocaleString('en', {
-                    maxFractionDigit: 2,
-                  })}
-                </span>
-                <span className='body-s-r text-sm'>%</span>
-              </p>
-            </div>
-          </section>
-          <section className='grid grid-cols-2 gap-4'>
-            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
-              <label>
-                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                  RATA-RATA PERSENTASE KRITERIA GRADING
-                </span>
-              </label>
-
-              <div className='grid grid-cols-2 gap-4'>
-                {chunkArray(
-                  formattedDataDashboard(data?.average_grading || {}).sort(
-                    (a, b) => b.percent - a.percent
-                  ),
-                  5
-                ).map((chunk, colIndex) => (
-                  <div key={colIndex}>
-                    <table className='table'>
-                      <tbody>
-                        {chunk.map((item, index) => (
-                          <tr
-                            key={index}
-                            className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                          >
-                            <td className='!w-4 !p-0'>
-                              <div
-                                className={`w-3 h-3 rounded-full ${
-                                  colorKriteriaGrading[item.label] ||
-                                  'bg-gray-300'
-                                }`}
-                              ></div>
-                            </td>
-                            <td className='text-color-1 !pl-1'>
-                              {convertLabelUnderscore(item.label)}
-                            </td>
-                            <td className='text-right'>
-                              <p className='inline-flex'>
-                                <span className='text-color-1'>
-                                  {item.percent.toFixed(2)}
-                                </span>{' '}
-                                <span className='body-s-r'>%</span>
-                              </p>
-                            </td>
-                            <td className='!p-0 flex items-center'>
-                              <ButtonMore
-                                listMenu={[
-                                  {
-                                    label: 'Tren Kriteria',
-                                    onClick: () => {
-                                      setSelectedCriteria(item.label);
-                                      toggleDrawerTrenKriteria();
-                                    },
-                                  },
-                                  {
-                                    label: 'Analisa Vendor',
-                                    onClick: () => {
-                                      setSelectedCriteria(item.label);
-                                      toggleDrawerAnalisaVendor();
-                                    },
-                                  },
-                                ]}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
-              <label>
-                <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                  RATA-RATA PERSENTASE DITERIMA VENDOR
-                </span>
-              </label>
-
-              <div className='grid grid-cols-2 gap-4'>
-                {chunkArray(
-                  formattedDataDashboard(
-                    data?.average_vendor_accepted || {}
-                  ).sort((a, b) => b.percent - a.percent),
-                  5
-                ).map((chunk, colIndex) => (
-                  <div key={colIndex}>
-                    <table className='table'>
-                      <tbody>
-                        {chunk.map((item, index) => (
-                          <tr
-                            key={index}
-                            className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                          >
-                            <td className='!w-4 !p-0'>
-                              {colIndex * 5 + index + 1}.
-                            </td>
-                            <td className='text-color-1'>{item.label}</td>
-                            <td className='text-right'>
-                              <p className='inline-flex'>
-                                <span className='text-color-1'>
-                                  {item.percent.toFixed(2)}
-                                </span>{' '}
-                                <span className='body-s-r'>%</span>
-                              </p>
-                            </td>
-                            <td className='!p-0 flex items-center'>
-                              <ButtonMore
-                                listMenu={[
-                                  {
-                                    label: 'Performa Harian Vendor',
-                                    onClick: () => {
-                                      setSelectedVendor(item.label);
-                                      toggleDrawerPerformaHarianVendor();
-                                    },
-                                  },
-                                  {
-                                    label: 'Riwayat Pemeriksaan Truk',
-                                    onClick: () => {
-                                      setSelectedVendor(item.label);
-                                      toggleDrawerRiwayatPemeriksaanTruk();
-                                    },
-                                  },
-                                ]}
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-          <section className='grid grid-cols-4 gap-4'>
-            <section className='col-span-4 grid grid-cols-2 gap-4'>
-              {/* charts plasma */}
-              <div className='col-span-2 bg-white border border-primary-4 rounded-xl p-4'>
-                <div className='flex items-center justify-between mb-4 w-full'>
-                  <div className='flex items-center gap-4'>
-                    <span className='text-color-1 flex items-center gap-2 text-lg w-52'>
-                      {chartType?.label}
+          ) : (
+            <>
+              <section className='grid grid-cols-5 gap-4'>
+                <div
+                  className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
+                  onClick={toggleDrawerRiwayatPemeriksaan}
+                >
+                  <label>
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      TOTAL TRUK
                     </span>
-                    <Dropdown
-                      selected={chartType}
-                      setSelected={setChartType}
-                      options={chartTypeListOptions}
-                      buttonClassname='body-s-r border-primary-3 border-2 w-fit'
-                      arrowPosition='right'
-                      noLabel
-                    />
-                    <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
-                      {listRangeCharts.map((item, index) => (
-                        <li
-                          key={index}
-                          className={`${
-                            selectedRangeChartsPlasma === item
-                              ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
-                              : 'text-color-2 font-medium'
-                          } `}
-                          onClick={() => setSelectedRangeChartsPlasma(item)}
-                        >
-                          <button>{convertLabel(item)}</button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  {chartType?.label === 'Summary Performance' && data?.rocs && (
-                    <div className='flex items-center gap-4'>
-                      <RocComponent
-                        type='diterima'
-                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
-                      />
-
-                      <RocComponent
-                        type='ditolak'
-                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
-                      />
-                      <RocComponent
-                        type='didenda'
-                        roc={data?.rocs?.[selectedRangeChartsPlasma]}
-                      />
-                      {chartType?.value === 'truck_gaps' ? (
-                        <CustomSelect
-                          placeholder='Pilih Mesin'
-                          className='body-m-r'
-                          options={listOptionsMachine}
-                          onChange={(selected) => {
-                            setMachineType(selected);
-                          }}
-                          isSearchable={false}
-                          value={machineType.value}
-                          // name={field.name}
-                          // value={field.state.value}
-                          // options={optionsFactory || []}
-                          // onChange={(selectedOption) => {
-                          //   const selectedValue = selectedOption
-                          //     ? selectedOption.value
-                          //     : null;
-                          //   field.handleChange(selectedValue);
-                          // }}
-                          // size='lg'
-                          // full
-                        />
-                      ) : null}
-                    </div>
-                  )}
+                  </label>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {data?.monitoring.total_grading.toLocaleString()}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      truk{' '}
+                      <IoMdArrowDropright className='inline text-lg text-primary-2' />
+                    </span>
+                  </p>
                 </div>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      TOTAL JANJANG
+                    </span>
+                  </label>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {data?.monitoring.total_tandan.toLocaleString()}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      Pcs
+                    </span>
+                  </p>
+                </div>
+                <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
+                      DITERIMA
+                    </span>
+                  </label>
+                  <p className='text-[#006D33]'>
+                    <span className='subheadline-s'>
+                      {data?.monitoring.total_passed.toLocaleString()}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_passed)
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+                <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
+                      DITOLAK
+                    </span>
+                  </label>
+                  <p className='text-secondary-2'>
+                    <span className='subheadline-s'>
+                      {data?.monitoring.total_rejected.toLocaleString()}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_rejected)
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+                <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
+                      DIDENDA
+                    </span>
+                  </label>
+                  <p className='text-[#E07324]'>
+                    <span className='subheadline-s'>
+                      {data?.monitoring.total_fined.toLocaleString()}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_fined)
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+              </section>
+              <section className='grid grid-cols-2 gap-4'>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+                  <label>
+                    <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                      RATA-RATA PERSENTASE KRITERIA GRADING
+                    </span>
+                  </label>
 
-                {data &&
-                  (chartType?.label === 'Analisa Kinerja Vendor' ? (
-                    <TableAnalisaVendor
-                      data={data?.charts_data?.vendor}
-                      togglePerformaHarian={toggleDrawerPerformaHarianVendor}
-                      toggleRiwayatPemeriksaan={
-                        toggleDrawerRiwayatPemeriksaanTruk
-                      }
-                    />
-                  ) : chartType?.label === '10 Truk Terbaik' ? (
-                    <TableRankingVendor
-                      data={data?.charts_data?.highest_vendor}
-                    />
-                  ) : chartType?.label === '10 Truk Terburuk' ? (
-                    <TableRankingVendor
-                      data={data?.charts_data?.lowest_vendor}
-                    />
-                  ) : (
-                    <LineCharts
-                      data={data?.charts_data?.[chartType.value]}
-                      range={selectedRangeChartsPlasma}
-                      // type={selectedTypeChart.value}
-                      type={null}
-                      height={270}
-                      dividerPercent={
-                        chartType.value === 'demography'
-                          ? data?.charts_data?.[chartType.value]['main']
-                          : null
-                      }
-                      chartType={chartType.value}
-                      machineType={machineType.value}
-                    />
-                  ))}
-              </div>
-            </section>
-          </section>
+                  <div className='grid grid-cols-2 gap-4'>
+                    {chunkArray(
+                      formattedDataDashboard(data?.average_grading || {}),
+                      5
+                    ).map((chunk, colIndex) => (
+                      <div key={colIndex}>
+                        <table className='table'>
+                          <tbody>
+                            {chunk.map((item, index) => (
+                              <tr
+                                key={index}
+                                className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                              >
+                                <td className='!w-4 !p-0'>
+                                  <div
+                                    className={`w-3 h-3 rounded-full ${
+                                      colorKriteriaGrading[item.label] ||
+                                      'bg-gray-300'
+                                    }`}
+                                  ></div>
+                                </td>
+                                <td className='text-color-1 !pl-1'>
+                                  {convertLabelUnderscore(item.label)}
+                                </td>
+                                <td className='text-right'>
+                                  <p className='inline-flex'>
+                                    <span className='text-color-1'>
+                                      {formatPercentWithLeadingZeros(
+                                        item.percent
+                                      )}
+                                    </span>{' '}
+                                    <span className='body-s-r'>%</span>
+                                  </p>
+                                </td>
+                                <td className='!p-0 flex items-center'>
+                                  <ButtonMore
+                                    listMenu={[
+                                      {
+                                        label: 'Tren Kriteria',
+                                        onClick: () => {
+                                          setSelectedCriteria(item.label);
+                                          toggleDrawerTrenKriteria();
+                                        },
+                                      },
+                                      {
+                                        label: 'Analisa Vendor',
+                                        onClick: () => {
+                                          setSelectedCriteria(item.label);
+                                          toggleDrawerAnalisaVendor();
+                                        },
+                                      },
+                                    ]}
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+                  <label>
+                    <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                      RATA-RATA PERSENTASE DITERIMA VENDOR
+                    </span>
+                  </label>
+
+                  <div className='grid grid-cols-2 gap-4'>
+                    {chunkArray(
+                      formattedDataDashboard(
+                        data?.average_vendor_accepted || {}
+                      ),
+                      5
+                    ).map((chunk, colIndex) => (
+                      <div key={colIndex}>
+                        <table className='table'>
+                          <tbody>
+                            {chunk.map((item, index) => (
+                              <tr
+                                key={index}
+                                className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                              >
+                                <td className='!w-4 !p-0'>
+                                  {colIndex * 5 + index + 1}.
+                                </td>
+                                <td className='text-color-1'>{item.label}</td>
+                                <td className='text-right'>
+                                  <p className='inline-flex items-center'>
+                                    <span
+                                      className={`font-semibold ${
+                                        item.percent >= 80
+                                          ? 'text-[#006D33]'
+                                          : 'text-secondary-2'
+                                      }`}
+                                    >
+                                      {formatPercentWithLeadingZeros(
+                                        item.percent
+                                      )}
+                                    </span>
+                                    <span className='body-s-r ml-1'>%</span>
+                                  </p>
+                                </td>
+                                <td className='!p-0 flex items-center'>
+                                  <ButtonMore
+                                    listMenu={[
+                                      {
+                                        label: 'Performa Harian Vendor',
+                                        onClick: () => {
+                                          setSelectedVendor(item.label);
+                                          toggleDrawerPerformaHarianVendor();
+                                        },
+                                      },
+                                      {
+                                        label: 'Riwayat Pemeriksaan Truk',
+                                        onClick: () => {
+                                          setSelectedVendor(item.label);
+                                          toggleDrawerRiwayatPemeriksaanTruk();
+                                        },
+                                      },
+                                    ]}
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+              <section className='grid grid-cols-4 gap-4'>
+                <section className='col-span-4 grid grid-cols-2 gap-4'>
+                  <div className='col-span-2 bg-white border border-primary-4 rounded-xl p-4'>
+                    <div className='flex items-center justify-between mb-4 w-full'>
+                      <div className='flex items-center gap-4'>
+                        <span className='text-color-1 flex items-center gap-2 text-lg w-52'>
+                          {chartType?.label}
+                        </span>
+                        <Dropdown
+                          selected={chartType}
+                          setSelected={setChartType}
+                          options={chartTypeListOptions}
+                          buttonClassname='body-s-r border-primary-3 border-2 w-fit'
+                          arrowPosition='right'
+                          noLabel
+                        />
+                        {chartType.label !== '10 Truk Terbaik' &&
+                          chartType.label !== '10 Truk Terburuk' && (
+                            <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
+                              {listRangeCharts.map((item, index) => (
+                                <li
+                                  key={index}
+                                  className={`${
+                                    selectedRangeChartsPlasma === item
+                                      ? 'rounded-full bg-[#F2F7F3] text-[#006D33] font-bold'
+                                      : 'text-color-2 font-medium'
+                                  } `}
+                                  onClick={() =>
+                                    setSelectedRangeChartsPlasma(item)
+                                  }
+                                >
+                                  <button>{convertLabel(item)}</button>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                      </div>
+                      {chartType?.label === 'Summary Performance' &&
+                        data?.rocs && (
+                          <div className='flex items-center gap-4'>
+                            <RocComponent
+                              type='diterima'
+                              roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                            />
+
+                            <RocComponent
+                              type='ditolak'
+                              roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                            />
+                            <RocComponent
+                              type='didenda'
+                              roc={data?.rocs?.[selectedRangeChartsPlasma]}
+                            />
+                            {chartType?.value === 'truck_gaps' ? (
+                              <CustomSelect
+                                placeholder='Pilih Mesin'
+                                className='body-m-r'
+                                options={listOptionsMachine}
+                                onChange={(selected) => {
+                                  setMachineType(selected);
+                                }}
+                                isSearchable={false}
+                                value={machineType.value}
+                                // name={field.name}
+                                // value={field.state.value}
+                                // options={optionsFactory || []}
+                                // onChange={(selectedOption) => {
+                                //   const selectedValue = selectedOption
+                                //     ? selectedOption.value
+                                //     : null;
+                                //   field.handleChange(selectedValue);
+                                // }}
+                                // size='lg'
+                                // full
+                              />
+                            ) : null}
+                          </div>
+                        )}
+                    </div>
+
+                    {data &&
+                      (chartType?.label === 'Analisa Kinerja Vendor' ? (
+                        <TableAnalisaVendor
+                          data={data?.charts_data?.vendor}
+                          setSelectedVendor={setSelectedVendor}
+                          togglePerformaHarian={
+                            toggleDrawerPerformaHarianVendor
+                          }
+                          toggleRiwayatPemeriksaan={
+                            toggleDrawerRiwayatPemeriksaanTruk
+                          }
+                        />
+                      ) : chartType?.label === '10 Truk Terbaik' ? (
+                        <TableRankingVendor
+                          data={data?.charts_data?.highest_vendor}
+                        />
+                      ) : chartType?.label === '10 Truk Terburuk' ? (
+                        <TableRankingVendor
+                          data={data?.charts_data?.lowest_vendor}
+                        />
+                      ) : (
+                        <LineCharts
+                          data={data?.charts_data?.[chartType.value]}
+                          range={selectedRangeChartsPlasma}
+                          // type={selectedTypeChart.value}
+                          type={null}
+                          height={270}
+                          dividerPercent={
+                            chartType.value === 'demography'
+                              ? data?.charts_data?.[chartType.value]['main']
+                              : null
+                          }
+                          chartType={chartType.value}
+                          machineType={machineType.value}
+                        />
+                      ))}
+                  </div>
+                </section>
+              </section>
+            </>
+          )}
         </main>
       </div>
 
@@ -681,7 +704,7 @@ const DesktopViewDashboardPage = () => {
         idDrawer={idDrawerRiwayatPemeriksaan}
         isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
         closeDrawer={closeDrawerRiwayatPemeriksaan}
-        tempData={data?.inspections}
+        data={data?.inspections}
       />
       <DrawerTrenKriteria
         idDrawer={idDrawerTrenKriteria}

@@ -12,26 +12,16 @@ import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 
 import dayjs from 'dayjs';
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
-// const tempData = new Array(10).fill().map(() => ({
-//   tanggal: '01/01/2025, 19:10:10',
-//   vendor: 'Vendor',
-//   nomorMesin: '3',
-//   suratJalan: '00000000',
-//   platKendaraan: 'BM 8888 AB',
-//   tbsTruk: '88',
-//   diterima: '16,8',
-//   MM: '16,8',
-//   LM: '16,8',
-//   TP: '16,8',
-//   M: '16,8',
-//   BK: '16,8',
-// }));
-
-const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
+const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const [searchParams] = useSearchParams();
 
-  const { data, loading, meta, refetch, setQueryParams } = useGet(
+  const {
+    data: dataFactory,
+    loading,
+    refetch,
+  } = useGet(
     '/v1/inspection-data/by-factory/' + searchParams.get('factory'),
     {},
     false
@@ -53,38 +43,35 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
         </div>
       ),
     }),
+    columnHelper.accessor('finish_date', {
+      header: <div className='w-24'>WAKTU</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {dayjs(info.row.original.date).format('HH:mm')} -{' '}
+          {dayjs(info.getValue()).format('HH:mm')}
+        </div>
+      ),
+    }),
     columnHelper.accessor('vendor_name', {
-      header: <div>Vendor</div>,
+      header: <div>VENDOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('mesin', {
-      header: (
-        <div>
-          NOMOR <br /> MESIN
-        </div>
-      ),
+      header: <div>MESIN</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('delivery_number', {
-      header: (
-        <div>
-          SURAT <br /> JALAN
-        </div>
-      ),
+      header: <div>SURAT JALAN</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('vehicle_number', {
-      header: (
-        <div>
-          PLAT <br /> KENDARAAN
-        </div>
-      ),
+      header: <div>PLAT NOMOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -99,9 +86,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),
@@ -109,9 +94,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -120,9 +103,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
@@ -131,9 +112,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
@@ -142,9 +121,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -153,9 +130,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       header: <div>% BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -218,7 +193,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, tempData }) => {
       >
         <div className='p-2 pb-8'>
           <CustomTable
-            dataTable={tempData || []}
+            dataTable={data || []}
             columns={columns}
             showPagination={true}
             loading={loading}

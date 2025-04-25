@@ -23,7 +23,6 @@ const ButtonMore = ({ listMenu = [] }) => {
             <li key={i}>
               <span
                 onClick={() => {
-                  console.log('tes')
                   item.onClick?.();
                   setIsOpen(false);
                 }}
