@@ -24,9 +24,7 @@ const DrawerTrenKriteria = ({
     columnHelper.accessor('date', {
       header: <div className='text-color-2 w-32'>TANGGAL</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {dayjs(info.getValue()).format('DD/MM/YYYY HH:mm')}
-        </div>
+        <div className='!body-m-b !text-color-1'>{info.getValue() || '-'}</div>
       ),
     }),
     columnHelper.accessor('percent', {

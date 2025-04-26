@@ -446,7 +446,7 @@ const DesktopViewDashboardPage = () => {
                   <div className='grid grid-cols-2 gap-4'>
                     {chunkArray(
                       formattedDataDashboard(data?.average_grading || {}),
-                      5
+                      4
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table'>

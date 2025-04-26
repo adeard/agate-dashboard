@@ -14,10 +14,12 @@ const DrawerPerformaHarianVendor = ({
   data,
   vendor,
 }) => {
+  console.log('harian vendor', data);
+
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
-      header: <div className='w-32'>TANGGAL</div>,
+      header: <div>TANGGAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -143,7 +145,7 @@ const DrawerPerformaHarianVendor = ({
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='80vw'
+      widthDrawer='50vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>

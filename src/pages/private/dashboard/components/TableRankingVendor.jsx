@@ -87,7 +87,7 @@ const TableRankingVendor = ({ data }) => {
       header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),

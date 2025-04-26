@@ -77,7 +77,7 @@ const TableAnalisaVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
+          {info.getValue()?.percent || 0}
         </div>
       ),
     }),
@@ -98,7 +98,9 @@ const TableAnalisaVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
+          <div className='!body-m-b !text-color-1'>
+            {info.getValue()?.percent || 0}
+          </div>
         </div>
       ),
     }),
