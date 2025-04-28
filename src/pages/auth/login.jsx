@@ -142,16 +142,6 @@ const LoginPage = () => {
         />
       )}
 
-      <p
-        className='underline text-blue-400 !mt-4 cursor-pointer'
-        onClick={() => {
-          setIsForgotPassword(!isForgotPassword);
-          form.reset();
-        }}
-      >
-        {isForgotPassword ? 'back to login' : 'forgot password'}
-      </p>
-
       <Button
         type={isForgotPassword ? 'button' : 'submit'}
         variant='primary'
@@ -163,6 +153,16 @@ const LoginPage = () => {
       >
         {isForgotPassword ? 'Submit' : 'Login'}
       </Button>
+
+      <p
+        className='underline text-blue-400 !mt-4 cursor-pointer'
+        onClick={() => {
+          setIsForgotPassword(!isForgotPassword);
+          form.reset();
+        }}
+      >
+        {isForgotPassword ? 'back to login' : 'forgot password'}
+      </p>
     </form>
   );
 
