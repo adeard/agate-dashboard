@@ -84,12 +84,13 @@ const DrawerAnalisaVendor = ({
     columnHelper.accessor('percent', {
       header: (
         <div className='text-color-2 uppercase'>
-          AVG {convertLabelUnderscore(criteria)}
+          % AVG {convertLabelUnderscore(criteria)}
         </div>
       ),
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
+        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_rank)}
         </div>
       ),
     }),

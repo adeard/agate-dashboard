@@ -64,7 +64,7 @@ const TableAnalisaVendor = ({
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
     }),
     columnHelper.accessor('vendor_name', {
-      header: <div className='w-32'>VENDOR</div>,
+      header: <div className='w-20'>VENDOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue() || '-'}</div>
       ),
@@ -82,7 +82,11 @@ const TableAnalisaVendor = ({
       ),
     }),
     columnHelper.accessor('percent_supply', {
-      header: <div>% SUPPLY</div>,
+      header: (
+        <div>
+          % SUPPLY <br /> TRUK
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -107,7 +111,7 @@ const TableAnalisaVendor = ({
     columnHelper.accessor('avg_accepted', {
       header: (
         <div>
-          AVG <br /> DITERIMA
+          % AVG <br /> DITERIMA
         </div>
       ),
       cell: (info) => (
@@ -118,11 +122,7 @@ const TableAnalisaVendor = ({
       ),
     }),
     columnHelper.accessor('avg_matang', {
-      header: (
-        <div>
-          AVG <br /> MM
-        </div>
-      ),
+      header: <div>% AVG MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -132,11 +132,7 @@ const TableAnalisaVendor = ({
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('avg_lewat_matang', {
-      header: (
-        <div>
-          AVG <br /> LM
-        </div>
-      ),
+      header: <div>% AVG LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -146,11 +142,7 @@ const TableAnalisaVendor = ({
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('avg_tangkai_panjang', {
-      header: (
-        <div>
-          AVG <br /> TP
-        </div>
-      ),
+      header: <div>% AVG TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -160,7 +152,7 @@ const TableAnalisaVendor = ({
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.accessor('avg_mentah', {
-      header: <div>AVG M</div>,
+      header: <div>% AVG M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -170,7 +162,7 @@ const TableAnalisaVendor = ({
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_janjang_kosong', {
-      header: <div>AVG JK</div>,
+      header: <div>% AVG JK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
@@ -180,7 +172,7 @@ const TableAnalisaVendor = ({
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_buah_kecil', {
-      header: <div>AVG BK</div>,
+      header: <div>% AVG BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1 flex items-center gap-2'>
           {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %

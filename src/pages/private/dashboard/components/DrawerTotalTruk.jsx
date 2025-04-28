@@ -36,10 +36,10 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
-      header: <div className='w-32'>TANGGAL</div>,
+      header: <div>TANGGAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {dayjs(info.getValue()).format('DD/MM/YYYY HH:mm')}
+          {dayjs(info.getValue()).format('DD/MM/YYYY')}
         </div>
       ),
     }),
@@ -64,12 +64,12 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    columnHelper.accessor('delivery_number', {
-      header: <div>SURAT JALAN</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
-      ),
-    }),
+    // columnHelper.accessor('delivery_number', {
+    //   header: <div>SURAT JALAN</div>,
+    //   cell: (info) => (
+    //     <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+    //   ),
+    // }),
     columnHelper.accessor('vehicle_number', {
       header: <div>PLAT NOMOR</div>,
       cell: (info) => (
@@ -77,7 +77,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: <div>TBS TRUK</div>,
+      header: <div>TBS <br /> TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -91,7 +91,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('percent_matang', {
-      header: <div>% MM</div>,
+      header: <div className='w-16'>% MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -100,7 +100,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('percent_lewat_matang', {
-      header: <div>% LM</div>,
+      header: <div className='w-16'>% LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -109,7 +109,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('percent_tangkai_panjang', {
-      header: <div>% TP</div>,
+      header: <div className='w-16'>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -118,7 +118,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.accessor('percent_mentah', {
-      header: <div>% M</div>,
+      header: <div className='w-16'>% M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -127,7 +127,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('percent_buah_kecil', {
-      header: <div>% BK</div>,
+      header: <div className='w-16'>% BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -170,7 +170,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='90vw'
+      widthDrawer='95vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>

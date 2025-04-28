@@ -30,7 +30,7 @@ const DrawerTrenKriteria = ({
     columnHelper.accessor('percent', {
       header: (
         <div className='text-color-2 uppercase'>
-          AVG {convertLabelUnderscore(criteria)}
+          % AVG {convertLabelUnderscore(criteria)}
         </div>
       ),
       cell: (info) => (

@@ -14,8 +14,6 @@ const DrawerPerformaHarianVendor = ({
   data,
   vendor,
 }) => {
-  console.log('harian vendor', data);
-
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
@@ -25,7 +23,11 @@ const DrawerPerformaHarianVendor = ({
       ),
     }),
     columnHelper.accessor('trucks', {
-      header: <div>TOTAL TRUK</div>,
+      header: (
+        <div>
+          TOTAL <br /> TRUK
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -45,19 +47,20 @@ const DrawerPerformaHarianVendor = ({
     columnHelper.accessor('avg_accepted', {
       header: (
         <div>
-          AVG <br /> DITERIMA
+          % AVG <br /> DITERIMA
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Math.round(info.getValue())}
+          {/* {Math.round(info.getValue())} */}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),
     columnHelper.accessor('avg_matang', {
       header: (
-        <div>
-          AVG <br /> MM
+        <div className='w-16'>
+          % AVG <br /> MM
         </div>
       ),
       cell: (info) => (
@@ -69,8 +72,8 @@ const DrawerPerformaHarianVendor = ({
     }),
     columnHelper.accessor('avg_lewat_matang', {
       header: (
-        <div>
-          AVG <br /> LM
+        <div className='w-16'>
+          % AVG <br /> LM
         </div>
       ),
       cell: (info) => (
@@ -82,8 +85,8 @@ const DrawerPerformaHarianVendor = ({
     }),
     columnHelper.accessor('avg_tangkai_panjang', {
       header: (
-        <div>
-          AVG <br /> TP
+        <div className='w-16'>
+          % AVG <br /> TP
         </div>
       ),
       cell: (info) => (
@@ -95,8 +98,8 @@ const DrawerPerformaHarianVendor = ({
     }),
     columnHelper.accessor('avg_mentah', {
       header: (
-        <div>
-          AVG <br /> M
+        <div className='w-16'>
+          % AVG <br /> M
         </div>
       ),
       cell: (info) => (
@@ -108,8 +111,8 @@ const DrawerPerformaHarianVendor = ({
     }),
     columnHelper.accessor('avg_janjang_kosong', {
       header: (
-        <div>
-          AVG <br /> JK
+        <div className='w-16'>
+          % AVG <br /> JK
         </div>
       ),
       cell: (info) => (
@@ -121,8 +124,8 @@ const DrawerPerformaHarianVendor = ({
     }),
     columnHelper.accessor('avg_buah_kecil', {
       header: (
-        <div>
-          AVG <br /> BK
+        <div className='w-16'>
+          % AVG <br /> BK
         </div>
       ),
       cell: (info) => (
@@ -145,7 +148,7 @@ const DrawerPerformaHarianVendor = ({
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='50vw'
+      widthDrawer='70vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>

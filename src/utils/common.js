@@ -86,9 +86,9 @@ export const convertLabelUnderscore = (data) => {
     .join(' ');
 
   switch (label.toLowerCase()) {
-    case 'Buah Kecil Dibawah 3kg'.toLowerCase():
+    case 'Buah Kecil 3'.toLowerCase():
       return 'Buah <3kg';
-    case 'Buah Kecil Dibawah 5kg'.toLowerCase():
+    case 'Buah Kecil 5'.toLowerCase():
       return 'Buah 3-5kg';
     default:
       return label;

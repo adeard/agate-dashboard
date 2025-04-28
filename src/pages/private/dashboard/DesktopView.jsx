@@ -143,7 +143,7 @@ const DesktopViewDashboardPage = () => {
     false
   );
 
-  // console.log('data-v4', data);
+  console.log('data-v4', data);
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -517,7 +517,7 @@ const DesktopViewDashboardPage = () => {
                       formattedDataDashboard(
                         data?.average_vendor_accepted || {}
                       ),
-                      5
+                      4
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table'>
@@ -593,7 +593,8 @@ const DesktopViewDashboardPage = () => {
                           noLabel
                         />
                         {chartType.label !== '10 Truk Terbaik' &&
-                          chartType.label !== '10 Truk Terburuk' && (
+                          chartType.label !== '10 Truk Terburuk' &&
+                          chartType.label !== 'Analisa Kinerja Vendor' && (
                             <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
                               {listRangeCharts.map((item, index) => (
                                 <li

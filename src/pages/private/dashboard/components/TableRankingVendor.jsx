@@ -78,13 +78,13 @@ const TableRankingVendor = ({ data }) => {
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: <div>TBS TRUK</div>,
+      header: <div>TBS <br /> TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('percent_accepted', {
-      header: <div>% DITERIMA</div>,
+      header: <div>% <br /> DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
