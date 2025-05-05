@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
@@ -23,14 +23,14 @@ import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
 import CustomSelect from '@/components/shared/CustomSelect';
 import ButtonMore from '@/components/shared/ButtonMore';
-import LineCharts from './components/LIneCharts';
-import DrawerTotalTruk from './components/DrawerTotalTruk';
-import DrawerTrenKriteria from './components/DrawerTrenKriteria';
-import DrawerAnalisaVendor from './components/DrawerAnalisaVendor';
-import DrawerPerformaHarianVendor from './components/DrawerPerformaHarianVendor';
-import DrawerRiwayatPemeriksaanTruk from './components/DrawerRiwayatPemeriksaanTruk';
-import TableRankingVendor from './components/TableRankingVendor';
-import TableAnalisaVendor from './components/TableAnalisaVendor';
+import LineCharts from './components/desktop/LIneCharts';
+import DrawerTotalTruk from './components/desktop/DrawerTotalTruk';
+import DrawerTrenKriteria from './components/desktop/DrawerTrenKriteria';
+import DrawerAnalisaVendor from './components/desktop/DrawerAnalisaVendor';
+import DrawerPerformaHarianVendor from './components/desktop/DrawerPerformaHarianVendor';
+import DrawerRiwayatPemeriksaanTruk from './components/desktop/DrawerRiwayatPemeriksaanTruk';
+import TableRankingVendor from './components/desktop/TableRankingVendor';
+import TableAnalisaVendor from './components/desktop/TableAnalisaVendor';
 
 import { BASE_URL } from '@/utils/axios';
 
@@ -142,8 +142,6 @@ const DesktopViewDashboardPage = () => {
     {},
     false
   );
-
-  console.log('data-v4', data);
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -333,7 +331,7 @@ const DesktopViewDashboardPage = () => {
         </header>
 
         <main className='space-y-4'>
-          {loading ? (
+          {loading || !data ? (
             <div className='min-h-[80vh] bg-white rounded-2xl flex items-center justify-center'>
               <span className='loading loading-spinner loading-lg'></span>
             </div>

@@ -143,7 +143,6 @@ const UserAccessPage = () => {
             <CustomTable
               dataTable={data}
               columns={columns}
-              showPagination={true}
             />
           )}
         </div>

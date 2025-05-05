@@ -125,11 +125,7 @@ const DrawerAnalisaVendor = ({
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable
-            dataTable={data || []}
-            columns={columns}
-            minHeight={data?.length > 0 && 'max-content'}
-          />
+          <CustomTable dataTable={data || []} columns={columns} />
         </div>
       </div>
     </Drawer>

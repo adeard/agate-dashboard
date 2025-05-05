@@ -148,20 +148,20 @@ const LoginPage = () => {
         size='lg'
         className='button-l mt-4'
         full
-        onClick={isMobile ? undefined : form.handleSubmit}
+        onClick={form.handleSubmit}
         loading={loadingSubmit}
       >
         {isForgotPassword ? 'Submit' : 'Login'}
       </Button>
 
       <p
-        className='underline text-blue-400 !mt-4 cursor-pointer'
+        className='underline text-color-2 text-center !mt-6 !mb-2 cursor-pointer'
         onClick={() => {
           setIsForgotPassword(!isForgotPassword);
           form.reset();
         }}
       >
-        {isForgotPassword ? 'back to login' : 'forgot password'}
+        {isForgotPassword ? 'back to login' : 'forgot password ?'}
       </p>
     </form>
   );

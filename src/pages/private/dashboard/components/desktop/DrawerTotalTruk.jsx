@@ -17,22 +17,6 @@ import { formatPercentWithLeadingZeros } from '@/utils/common';
 const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const [searchParams] = useSearchParams();
 
-  const {
-    data: dataFactory,
-    loading,
-    refetch,
-  } = useGet(
-    '/v1/inspection-data/by-factory/' + searchParams.get('factory'),
-    {},
-    false
-  );
-
-  useEffect(() => {
-    if (searchParams.get('factory')) {
-      refetch({ limit_minimum: 200 });
-    }
-  }, [searchParams]);
-
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
@@ -77,7 +61,11 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: <div>TBS <br /> TRUK</div>,
+      header: (
+        <div>
+          TBS <br /> TRUK
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -174,9 +162,10 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
-          Riwayat Pemeriksaan Truk Tanggal{' '}
+          {/* Riwayat Pemeriksaan Truk Tanggal{' '}
           {dayjs(searchParams.get('date_from')).format('DD/MM/YYYY')} -{' '}
-          {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')}
+          {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')} */}
+          Riwayat Truk
         </h3>
         <Button
           variant='primary-outline'
@@ -196,7 +185,6 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
             dataTable={data || []}
             columns={columns}
             showPagination={true}
-            loading={loading}
           />
         </div>
       </div>

@@ -52,7 +52,6 @@ const DrawerPerformaHarianVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {/* {Math.round(info.getValue())} */}
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),

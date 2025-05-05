@@ -30,8 +30,6 @@ const DrawerRiwayatPemeriksaanTruk = ({
   data,
   vendor,
 }) => {
-  console.log('riwayat', data);
-
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
