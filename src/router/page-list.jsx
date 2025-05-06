@@ -22,12 +22,12 @@ const pageList = {
         import('@/pages/private/dashboard/MobileView/MonitoringGrading')
       ),
     },
-    {
-      path: '/dashboard/demografi-buah',
-      component: lazy(() =>
-        import('@/pages/private/dashboard/MobileView/DemografiBuah')
-      ),
-    },
+    // {
+    //   path: '/dashboard/demografi-buah',
+    //   component: lazy(() =>
+    //     import('@/pages/private/dashboard/MobileView/DemografiBuah')
+    //   ),
+    // },
     {
       path: '/dashboard/riwayat-pemeriksaan/:id',
       component: lazy(() =>
