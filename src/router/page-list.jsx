@@ -16,12 +16,12 @@ const pageList = {
         import('@/pages/private/dashboard/MobileView/main')
       ),
     },
-    {
-      path: '/dashboard/monitoring-grading',
-      component: lazy(() =>
-        import('@/pages/private/dashboard/MobileView/MonitoringGrading')
-      ),
-    },
+    // {
+    //   path: '/dashboard/monitoring-grading',
+    //   component: lazy(() =>
+    //     import('@/pages/private/dashboard/MobileView/MonitoringGrading')
+    //   ),
+    // },
     // {
     //   path: '/dashboard/demografi-buah',
     //   component: lazy(() =>
