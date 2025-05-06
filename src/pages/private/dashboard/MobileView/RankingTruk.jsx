@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { MdOutlineFilterAlt } from 'react-icons/md';
-import { IoMdArrowDropright } from 'react-icons/io';
+import { MdArrowBackIosNew, MdOutlineFilterAlt } from 'react-icons/md';
 import { FaStar } from 'react-icons/fa';
 import { FaCircle } from 'react-icons/fa6';
 
 import { formatPercentWithLeadingZeros } from '@/utils/common';
-import NavbarMobile from '@/components/shared/NavbarMobile';
 
 import dayjs from 'dayjs';
 
@@ -55,19 +53,22 @@ const RankingTruk = ({
   data,
   toggleMobileDrawerFilter,
   currentPage,
+  goBack,
 }) => {
   return (
-    <div>
-      <NavbarMobile
-        linkBack='/dashboard'
-        title={currentPage}
-        rightIcon={
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
+        <div className='flex-none'>
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
+        </div>
+        <h2 className='flex-1 !text-center subheadline-s'>{currentPage}</h2>
+        <div className='flex-none'>
           <MdOutlineFilterAlt
             className='text-xl'
             onClick={toggleMobileDrawerFilter}
           />
-        }
-      />
+        </div>
+      </section>
 
       <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         {data?.map((item, index) => {
@@ -91,13 +92,14 @@ const RankingTruk = ({
             {
               label: '%DITERIMA',
               value:
-                formatPercentWithLeadingZeros(item.percent_accepted) || '00.00',
+                (formatPercentWithLeadingZeros(item.percent_accepted) ||
+                  '00.00') + ' %',
             },
             {
               label: '%MM',
               value:
-                formatPercentWithLeadingZeros(item.percent_matang.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_matang.percent) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#299300',
@@ -105,18 +107,18 @@ const RankingTruk = ({
             {
               label: '%LM',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.percent_lewat_matang.percent
-                ) || '00.00',
+                ) || '00.00') + ' %',
               bold: true,
               color: '#299300',
             },
             {
               label: '%TP',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.percent_tangkai_panjang.percent
-                ) || '00.00',
+                ) || '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#E07324',
@@ -124,17 +126,17 @@ const RankingTruk = ({
             {
               label: '%M',
               value:
-                formatPercentWithLeadingZeros(item.percent_mentah.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_mentah.percent) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
             {
               label: '%JK',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.percent_janjang_kosong.percent
-                ) || '00.00',
+                ) || '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#BD2828',
@@ -142,9 +144,9 @@ const RankingTruk = ({
             {
               label: '%BK',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.percent_buah_kecil.percent
-                ) || '00.00',
+                ) || '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
@@ -176,27 +178,28 @@ const RankingTruk = ({
                       >
                         {row.label}
                       </p>
-                      {row.label === 'TANGGAL' ? (
+                      {/* {row.label === 'TANGGAL' ? (
                         <p
                           className={`col-span-3 body-s-r flex justify-between items-center ${classNames}`}
                           style={style}
-                          onClick={() =>
-                            window.open(
-                              `/dashboard/riwayat-pemeriksaan/${item._id}`,
-                              '_blank'
-                            )
-                          }
+                          // onClick={() =>
+                          //   window.open(
+                          //     `/dashboard/riwayat-pemeriksaan/${item._id}`,
+                          //     '_blank'
+                          //   )
+                          // }
                         >
-                          {row.value} <IoMdArrowDropright className='text-xl' />
+                          {row.value} 
+                          <IoMdArrowDropright className='text-xl' />
                         </p>
-                      ) : (
-                        <p
-                          className={`col-span-3 body-s-r ${classNames}`}
-                          style={style}
-                        >
-                          {row.value} {row.icon}
-                        </p>
-                      )}
+                      ) : ( */}
+                      <p
+                        className={`col-span-3 body-s-r ${classNames}`}
+                        style={style}
+                      >
+                        {row.value} {row.icon}
+                      </p>
+                      {/* )} */}
                     </React.Fragment>
                   );
                 })}
@@ -205,7 +208,7 @@ const RankingTruk = ({
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

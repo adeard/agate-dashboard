@@ -137,7 +137,10 @@ const MobileDrawerTotalTruk = ({
                       <p className={`tag-m ${classNames}`} style={style}>
                         {row.label}
                       </p>
-                      <p className={`body-s-r ${classNames}`} style={style}>
+                      <p
+                        className={`body-s-r truncate ${classNames}`}
+                        style={style}
+                      >
                         {row.value}
                       </p>
                     </React.Fragment>

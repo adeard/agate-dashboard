@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { IoMdCheckmark } from 'react-icons/io';
 
@@ -21,20 +21,25 @@ const MobileDrawerTypeDashboard = ({
   isDrawerOpen,
   closeDrawer,
   currentPage,
-  setCurrentPage,
+  goToPage,
 }) => {
-  const [selectedTypeTable, setSelectedTypeTable] = useState(null);
+  const [selectedTypeTable, setSelectedTypeTable] = useState(currentPage);
 
   const handleClose = () => {
-    setSelectedTypeTable(null);
+    setSelectedTypeTable(currentPage);
     closeDrawer();
   };
 
   const handleSubmit = () => {
-    setCurrentPage(selectedTypeTable);
-    setSelectedTypeTable(null);
+    goToPage(selectedTypeTable);
     closeDrawer();
   };
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      setSelectedTypeTable(currentPage);
+    }
+  }, [isDrawerOpen, currentPage]);
 
   return (
     <div className='drawer z-20'>

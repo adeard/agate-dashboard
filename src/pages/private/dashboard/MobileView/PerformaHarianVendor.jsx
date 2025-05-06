@@ -5,45 +5,53 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-const PerformaHarianVendor = ({ data, vendor, setCurrentPage }) => {
+dayjs.extend(customParseFormat);
+
+const PerformaHarianVendor = ({ data, vendor, goBack }) => {
   return (
-    <div>
-      <div className='flex items-center justify-between max-h-16 p-4 bg-white'>
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
         <div className='flex-none'>
-          <MdArrowBackIosNew
-            className='text-xl'
-            onClick={() => setCurrentPage('Monitoring Grading')}
-          />
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
         </div>
         <h2 className='flex-1 !text-center mr-4 subheadline-s'>
           Performa Harian Vendor
         </h2>
-      </div>
+      </section>
 
-      <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
+      <section className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         <p className='ml-2'>{vendor}</p>
         {data?.map((item, index) => {
           const rows = [
-            { label: 'TANGGAL', value: item.date, bold: true },
+            {
+              label: 'TANGGAL',
+              value: dayjs(item.date, 'DD/MM/YY').format('DD/MM/YYYY'),
+              bold: true,
+            },
             { label: 'TOTAL TRUK', value: item.trucks, bg: true },
             { label: 'AVG TBS TRUK', value: Math.round(item.avg_tandan) },
             {
               label: '%AVG DITERIMA',
               value:
-                formatPercentWithLeadingZeros(item.avg_accepted) || '00.00',
+                (formatPercentWithLeadingZeros(item.avg_accepted) || '00.00') +
+                ' %',
               bg: true,
             },
             {
               label: '%AVG MM',
-              value: formatPercentWithLeadingZeros(item.avg_matang) || '00.00',
+              value:
+                (formatPercentWithLeadingZeros(item.avg_matang) || '00.00') +
+                ' %',
               bold: true,
               color: '#299300',
             },
             {
               label: '%AVG LM',
               value:
-                formatPercentWithLeadingZeros(item.avg_lewat_matang) || '00.00',
+                (formatPercentWithLeadingZeros(item.avg_lewat_matang) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#299300',
@@ -51,14 +59,16 @@ const PerformaHarianVendor = ({ data, vendor, setCurrentPage }) => {
             {
               label: '%AVG TP',
               value:
-                formatPercentWithLeadingZeros(item.avg_tangkai_panjang) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_tangkai_panjang) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#E07324',
             },
             {
               label: '%AVG M',
-              value: formatPercentWithLeadingZeros(item.avg_mentah) || '00.00',
+              value:
+                (formatPercentWithLeadingZeros(item.avg_mentah) || '00.00') +
+                ' %',
               bg: true,
               bold: true,
               color: '#BD2828',
@@ -66,15 +76,16 @@ const PerformaHarianVendor = ({ data, vendor, setCurrentPage }) => {
             {
               label: '%AVG JK',
               value:
-                formatPercentWithLeadingZeros(item.avg_janjang_kosong) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_janjang_kosong) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
             {
               label: '%AVG BK',
               value:
-                formatPercentWithLeadingZeros(item.avg_buah_kecil) || '00.00',
+                (formatPercentWithLeadingZeros(item.avg_buah_kecil) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#BD2828',
@@ -103,7 +114,10 @@ const PerformaHarianVendor = ({ data, vendor, setCurrentPage }) => {
                       <p className={`tag-m ${classNames}`} style={style}>
                         {row.label}
                       </p>
-                      <p className={`body-s-r ${classNames}`} style={style}>
+                      <p
+                        className={`body-s-r truncate ${classNames}`}
+                        style={style}
+                      >
                         {row.value}
                       </p>
                     </React.Fragment>
@@ -113,8 +127,8 @@ const PerformaHarianVendor = ({ data, vendor, setCurrentPage }) => {
             </div>
           );
         })}
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

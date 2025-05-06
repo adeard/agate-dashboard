@@ -14,7 +14,7 @@ import {
 } from '@/utils/common';
 import GetTrendIconTable from '../components/GetTrendIconTable';
 
-const TrenKriteria = ({ data, criteria, setCurrentPage }) => {
+const TrenKriteria = ({ data, criteria, goBack }) => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
@@ -41,25 +41,22 @@ const TrenKriteria = ({ data, criteria, setCurrentPage }) => {
   ];
 
   return (
-    <div>
-      <div className='flex items-center justify-between max-h-16 p-4 bg-white'>
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
         <div className='flex-none'>
-          <MdArrowBackIosNew
-            className='text-xl'
-            onClick={() => setCurrentPage('Monitoring Grading')}
-          />
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
         </div>
         <h2 className='flex-1 !text-center mr-4 subheadline-s'>
           Tren Kriteria
         </h2>
-      </div>
+      </section>
 
-      <div className='w-full bg-[#F8F9FB] p-4'>
+      <section className='w-full bg-[#F8F9FB] p-4'>
         <div className='bg-white border border-[#E7E7E7] button-shadow rounded-xl py-4'>
           <CustomTable dataTable={data || []} columns={columns} />
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

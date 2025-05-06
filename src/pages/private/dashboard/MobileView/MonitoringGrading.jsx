@@ -27,7 +27,7 @@ const MonitoringGrading = ({
   setSelectedDiterimaVendor,
   toggleMobileDrawerAvgGrading,
   toggleMobileDrawerDiterimaVendor,
-  setCurrentPage,
+  goToPage,
 }) => {
   const [currentAvgCard, setCurrentAvgCard] = useState('Kriteria Grading');
 
@@ -47,7 +47,7 @@ const MonitoringGrading = ({
         <section className='grid gap-2'>
           <div
             className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
-            onClick={() => setCurrentPage('Total Truk')}
+            onClick={() => goToPage('Total Truk')}
           >
             <label>
               <span className='label-text tag-m text-color-3 flex items-center gap-2'>

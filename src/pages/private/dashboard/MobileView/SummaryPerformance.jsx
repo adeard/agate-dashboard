@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
-import { MdOutlineFilterAlt } from 'react-icons/md';
+import { MdArrowBackIosNew, MdOutlineFilterAlt } from 'react-icons/md';
 
 import { formatPercentWithLeadingZeros, joinClassnames } from '@/utils/common';
 
-import NavbarMobile from '@/components/shared/NavbarMobile';
 import GetTrendIconSection from '../components/GetTrendIconSection';
 
 import dayjs from 'dayjs';
@@ -60,7 +59,12 @@ const RocComponent = ({ type, roc }) => {
   );
 };
 
-const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
+const SummaryPerformance = ({
+  data,
+  roc,
+  toggleMobileDrawerFilter,
+  goBack,
+}) => {
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('daily');
 
   const options = ['monthly', 'weekly', 'daily'];
@@ -77,17 +81,22 @@ const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
     .reverse();
 
   return (
-    <div>
-      <NavbarMobile
-        linkBack='/dashboard'
-        title='Summary Performance'
-        rightIcon={
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
+        <div className='flex-none'>
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
+        </div>
+        <h2 className='flex-1 !text-center subheadline-s'>
+          Summary Performance
+        </h2>
+        <div className='flex-none'>
           <MdOutlineFilterAlt
             className='text-xl'
             onClick={toggleMobileDrawerFilter}
           />
-        }
-      />
+        </div>
+      </section>
+
       <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         <div className='w-full relative inline-block mb-2'>
           <div className='relative flex rounded-lg bg-[#EEEEEE] overflow-hidden'>
@@ -152,7 +161,8 @@ const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
               {
                 label: 'DITERIMA',
                 value:
-                  formatPercentWithLeadingZeros(dataMap['diterima']) || '00.00',
+                  (formatPercentWithLeadingZeros(dataMap['diterima']) ||
+                    '00.00') + ' %',
                 bg: true,
                 bold: true,
                 color: '#299300',
@@ -161,7 +171,8 @@ const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
               {
                 label: 'DITOLAK',
                 value:
-                  formatPercentWithLeadingZeros(dataMap['ditolak']) || '00.00',
+                  (formatPercentWithLeadingZeros(dataMap['ditolak']) ||
+                    '00.00') + ' %',
                 bold: true,
                 color: '#BD2828',
                 iconKey: 'ditolak',
@@ -169,7 +180,8 @@ const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
               {
                 label: 'DIDENDA',
                 value:
-                  formatPercentWithLeadingZeros(dataMap['didenda']) || '00.00',
+                  (formatPercentWithLeadingZeros(dataMap['didenda']) ||
+                    '00.00') + ' %',
                 bg: true,
                 bold: true,
                 color: '#E07324',
@@ -215,7 +227,7 @@ const SummaryPerformance = ({ data, roc, toggleMobileDrawerFilter }) => {
           })}
         </section>
       </div>
-    </div>
+    </>
   );
 };
 

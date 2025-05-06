@@ -48,10 +48,26 @@ const MainPage = () => {
   });
 
   // dashboard page
-  const [currentPage, setCurrentPage] = useState('Monitoring Grading');
+  const [pageHistory, setPageHistory] = useState(['Monitoring Grading']);
+  const currentPage = pageHistory[pageHistory.length - 1]; // halaman terakhir
 
   const [selectedCriteriaGrading, setSelectedCriteriaGrading] = useState('');
   const [selectedDiterimaVendor, setSelectedDiterimaVendor] = useState('');
+
+  const goToPage = (page) => {
+    setPageHistory((prev) => [...prev, page]);
+  };
+
+  const goBack = () => {
+    setPageHistory((prev) => {
+      if (prev.length > 1) {
+        const newHistory = [...prev];
+        newHistory.pop(); // hapus halaman terakhir
+        return newHistory;
+      }
+      return prev; // jika cuma satu, jangan diubah
+    });
+  };
 
   useEffect(() => {
     if (optionsFactory) {
@@ -158,7 +174,7 @@ const MainPage = () => {
                   toggleMobileDrawerDiterimaVendor={
                     toggleMobileDrawerDiterimaVendor
                   }
-                  setCurrentPage={setCurrentPage}
+                  goToPage={goToPage}
                 />
               )}
               {currentPage === 'Summary Performance' && (
@@ -166,12 +182,14 @@ const MainPage = () => {
                   data={data?.charts_data?.summary_performance}
                   roc={data?.rocs}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Grading Truk' && (
                 <GradingTruk
                   data={data?.charts_data?.grading_trucks}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Analisa Kinerja Vendor' && (
@@ -182,24 +200,28 @@ const MainPage = () => {
                   toggleMobileDrawerDiterimaVendor={
                     toggleMobileDrawerDiterimaVendor
                   }
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Tren Buah Diterima' && (
                 <TrenBuahDiterima
                   data={data?.charts_data?.fruit_accepted}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Tren Buah Didenda' && (
                 <TrenBuahDidenda
                   data={data?.charts_data?.fruit_tangkai_panjang}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Tren Buah Ditolak' && (
                 <TrenBuahDitolak
                   data={data?.charts_data?.fruit_rejected}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
+                  goBack={goBack}
                 />
               )}
               {currentPage === '10 Truk Terbaik' && (
@@ -207,6 +229,7 @@ const MainPage = () => {
                   data={data?.charts_data?.highest_vendor}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
                   currentPage={currentPage}
+                  goBack={goBack}
                 />
               )}
               {currentPage === '10 Truk Terburuk' && (
@@ -214,13 +237,11 @@ const MainPage = () => {
                   data={data?.charts_data?.lowest_vendor}
                   toggleMobileDrawerFilter={toggleMobileDrawerFilter}
                   currentPage={currentPage}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Total Truk' && (
-                <TotalTruk
-                  data={data?.inspections}
-                  setCurrentPage={setCurrentPage}
-                />
+                <TotalTruk data={data?.inspections} goBack={goBack} />
               )}
               {currentPage === 'Tren Kriteria' && (
                 <TrenKriteria
@@ -228,7 +249,7 @@ const MainPage = () => {
                     data?.['average_grading_trend']?.[selectedCriteriaGrading]
                   }
                   criteria={selectedCriteriaGrading}
-                  setCurrentPage={setCurrentPage}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Analisa Vendor' && (
@@ -237,7 +258,7 @@ const MainPage = () => {
                     data?.['average_grading_vendor']?.[selectedCriteriaGrading]
                   }
                   criteria={selectedCriteriaGrading}
-                  setCurrentPage={setCurrentPage}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Performa Harian Vendor' && (
@@ -249,7 +270,7 @@ const MainPage = () => {
                   }
                   vendor={selectedDiterimaVendor}
                   currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
+                  goBack={goBack}
                 />
               )}
               {currentPage === 'Riwayat Pemeriksaan Truk' && (
@@ -261,7 +282,7 @@ const MainPage = () => {
                   }
                   vendor={selectedDiterimaVendor}
                   currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
+                  goBack={goBack}
                 />
               )}
 
@@ -301,7 +322,7 @@ const MainPage = () => {
         isDrawerOpen={isMobileDrawerTypeDashboardOpen}
         closeDrawer={closeMobileDrawerTypeDashboard}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        goToPage={goToPage}
       />
 
       <MobileDrawerCriteriaGrading
@@ -309,7 +330,7 @@ const MainPage = () => {
         isDrawerOpen={isMobileDrawerAvgGradingOpen}
         closeDrawer={closeMobileDrawerAvgGrading}
         selectedCriteriaGrading={selectedCriteriaGrading}
-        setCurrentPage={setCurrentPage}
+        goToPage={goToPage}
       />
 
       <MobileDrawerDiterimaVendor
@@ -317,7 +338,7 @@ const MainPage = () => {
         isDrawerOpen={isMobileDrawerDiterimaVendorOpen}
         closeDrawer={closeMobileDrawerDiterimaVendor}
         selectedDiterimaVendor={selectedDiterimaVendor}
-        setCurrentPage={setCurrentPage}
+        goToPage={goToPage}
       />
     </div>
   );

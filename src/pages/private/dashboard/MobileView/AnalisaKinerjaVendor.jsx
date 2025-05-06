@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { MdOutlineFilterAlt } from 'react-icons/md';
+import { MdArrowBackIosNew, MdOutlineFilterAlt } from 'react-icons/md';
 import { IoMdArrowDropright } from 'react-icons/io';
 import { FaStar } from 'react-icons/fa';
 import { FaCircle } from 'react-icons/fa6';
 
 import { formatPercentWithLeadingZeros } from '@/utils/common';
-import NavbarMobile from '@/components/shared/NavbarMobile';
-
-import dayjs from 'dayjs';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -56,19 +53,24 @@ const AnalisaKinerjaVendor = ({
   setSelectedDiterimaVendor,
   toggleMobileDrawerFilter,
   toggleMobileDrawerDiterimaVendor,
+  goBack,
 }) => {
   return (
-    <div>
-      <NavbarMobile
-        linkBack='/dashboard'
-        title='Analisa Kinerja Vendor'
-        rightIcon={
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
+        <div className='flex-none'>
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
+        </div>
+        <h2 className='flex-1 !text-center subheadline-s'>
+          Analisa Kinerja Vendor
+        </h2>
+        <div className='flex-none'>
           <MdOutlineFilterAlt
             className='text-xl'
             onClick={toggleMobileDrawerFilter}
           />
-        }
-      />
+        </div>
+      </section>
 
       <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         {data?.map((item, index) => {
@@ -78,23 +80,23 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%SUPPLY TRUK',
               value:
-                formatPercentWithLeadingZeros(item.percent_supply.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_supply.percent) ||
+                  '00.00') + ' %',
               icon: getIcon(item.percent_supply.rank),
             },
             { label: 'AVG TBS TRUK', value: item.avg_tandan.percent, bg: true },
             {
               label: '%AVG DITERIMA',
               value:
-                formatPercentWithLeadingZeros(item.avg_accepted.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_accepted.percent) ||
+                  '00.00') + ' %',
               icon: getIcon(item.avg_accepted.rank),
             },
             {
               label: '%AVG MM',
               value:
-                formatPercentWithLeadingZeros(item.avg_matang.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_matang.percent) ||
+                  '00.00') + ' %',
               icon: getIcon(item.avg_matang.rank),
               bg: true,
               bold: true,
@@ -103,8 +105,8 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%AVG LM',
               value:
-                formatPercentWithLeadingZeros(item.avg_lewat_matang.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_lewat_matang.percent) ||
+                  '00.00') + ' %',
               icon: getIcon(item.avg_lewat_matang.rank),
               bold: true,
               color: '#299300',
@@ -112,9 +114,9 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%AVG TP',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.avg_tangkai_panjang.percent
-                ) || '00.00',
+                ) || '00.00') + ' %',
               icon: getIcon(item.avg_tangkai_panjang.rank),
               bg: true,
               bold: true,
@@ -123,8 +125,8 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%AVG M',
               value:
-                formatPercentWithLeadingZeros(item.avg_mentah.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_mentah.percent) ||
+                  '00.00') + ' %',
               bold: true,
               icon: getIcon(item.avg_mentah.rank),
               color: '#BD2828',
@@ -132,9 +134,9 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%AVG JK',
               value:
-                formatPercentWithLeadingZeros(
+                (formatPercentWithLeadingZeros(
                   item.avg_janjang_kosong.percent
-                ) || '00.00',
+                ) || '00.00') + '%',
               icon: getIcon(item.avg_janjang_kosong.rank),
               bg: true,
               bold: true,
@@ -143,8 +145,8 @@ const AnalisaKinerjaVendor = ({
             {
               label: '%AVG BK',
               value:
-                formatPercentWithLeadingZeros(item.avg_buah_kecil.percent) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.avg_buah_kecil.percent) ||
+                  '00.00') + ' %',
               icon: getIcon(item.avg_buah_kecil.rank),
               bold: true,
               color: '#BD2828',
@@ -186,7 +188,10 @@ const AnalisaKinerjaVendor = ({
                           {row.value} <IoMdArrowDropright className='text-xl' />
                         </p>
                       ) : (
-                        <p className={`body-s-r ${classNames}`} style={style}>
+                        <p
+                          className={`body-s-r truncate ${classNames}`}
+                          style={style}
+                        >
                           {row.value} {row.icon}
                         </p>
                       )}
@@ -198,7 +203,7 @@ const AnalisaKinerjaVendor = ({
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import { MdOutlineFilterAlt } from 'react-icons/md';
+import { MdArrowBackIosNew, MdOutlineFilterAlt } from 'react-icons/md';
 
 import { formatPercentWithLeadingZeros } from '@/utils/common';
 
-import NavbarMobile from '@/components/shared/NavbarMobile';
 import GetTrendIconSection from '../components/GetTrendIconSection';
 
 import dayjs from 'dayjs';
@@ -12,7 +11,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-const TrenBuahDiterima = ({ data, toggleMobileDrawerFilter }) => {
+const TrenBuahDiterima = ({ data, toggleMobileDrawerFilter, goBack }) => {
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('daily');
 
   const options = ['monthly', 'weekly', 'daily'];
@@ -29,17 +28,22 @@ const TrenBuahDiterima = ({ data, toggleMobileDrawerFilter }) => {
     .reverse();
 
   return (
-    <div>
-      <NavbarMobile
-        linkBack='/dashboard'
-        title='Tren Buah Diterima'
-        rightIcon={
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
+        <div className='flex-none'>
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
+        </div>
+        <h2 className='flex-1 !text-center subheadline-s'>
+          Tren Buah Diterima
+        </h2>
+        <div className='flex-none'>
           <MdOutlineFilterAlt
             className='text-xl'
             onClick={toggleMobileDrawerFilter}
           />
-        }
-      />
+        </div>
+      </section>
+
       <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         <div className='w-full relative inline-block mb-2'>
           <div className='relative flex rounded-lg bg-[#EEEEEE] overflow-hidden'>
@@ -98,16 +102,21 @@ const TrenBuahDiterima = ({ data, toggleMobileDrawerFilter }) => {
               {
                 label: 'MATANG',
                 value:
-                  formatPercentWithLeadingZeros(dataMap['matang']) || '00.00',
+                  (formatPercentWithLeadingZeros(dataMap['matang']) ||
+                    '00.00') + ' %',
                 bg: true,
+                bold: true,
                 iconKey: 'matang',
+                color: '#299300',
               },
               {
                 label: 'LEWAT MATANG',
                 value:
-                  formatPercentWithLeadingZeros(dataMap['lewat matang']) ||
-                  '00.00',
+                  (formatPercentWithLeadingZeros(dataMap['lewat matang']) ||
+                    '00.00') + ' %',
+                bold: true,
                 iconKey: 'lewat matang',
+                color: '#299300',
               },
             ];
 
@@ -149,7 +158,7 @@ const TrenBuahDiterima = ({ data, toggleMobileDrawerFilter }) => {
           })}
         </section>
       </div>
-    </div>
+    </>
   );
 };
 

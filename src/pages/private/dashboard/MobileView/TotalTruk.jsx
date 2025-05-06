@@ -6,20 +6,17 @@ import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 import dayjs from 'dayjs';
 
-const TotalTruk = ({ data, setCurrentPage }) => {
+const TotalTruk = ({ data, goBack }) => {
   return (
-    <div>
-      <div className='flex items-center justify-between max-h-16 p-4 bg-white'>
+    <>
+      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
         <div className='flex-none'>
-          <MdArrowBackIosNew
-            className='text-xl'
-            onClick={() => setCurrentPage('Monitoring Grading')}
-          />
+          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
         </div>
         <h2 className='flex-1 !text-center mr-4 subheadline-s'>Riwayat Truk</h2>
-      </div>
+      </section>
 
-      <div className='w-full bg-[#F8F9FB] p-4 space-y-4'>
+      <section className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         {data?.map((item, index) => {
           const rows = [
             {
@@ -35,12 +32,14 @@ const TotalTruk = ({ data, setCurrentPage }) => {
             {
               label: '%AVG DITERIMA',
               value:
-                formatPercentWithLeadingZeros(item.percent_accepted) || '00.00',
+                (formatPercentWithLeadingZeros(item.percent_accepted) ||
+                  '00.00') + ' %',
             },
             {
               label: '%AVG MM',
               value:
-                formatPercentWithLeadingZeros(item.percent_matang) || '00.00',
+                (formatPercentWithLeadingZeros(item.percent_matang) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#299300',
@@ -48,16 +47,16 @@ const TotalTruk = ({ data, setCurrentPage }) => {
             {
               label: '%AVG LM',
               value:
-                formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
+                  '00.00') + '%',
               bold: true,
               color: '#299300',
             },
             {
               label: '%AVG TP',
               value:
-                formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#E07324',
@@ -65,15 +64,16 @@ const TotalTruk = ({ data, setCurrentPage }) => {
             {
               label: '%AVG M',
               value:
-                formatPercentWithLeadingZeros(item.percent_mentah) || '00.00',
+                (formatPercentWithLeadingZeros(item.percent_mentah) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
             {
               label: '%AVG JK',
               value:
-                formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
+                  '00.00') + ' %',
               bg: true,
               bold: true,
               color: '#BD2828',
@@ -81,8 +81,8 @@ const TotalTruk = ({ data, setCurrentPage }) => {
             {
               label: '%AVG BK',
               value:
-                formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
-                '00.00',
+                (formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
@@ -110,7 +110,10 @@ const TotalTruk = ({ data, setCurrentPage }) => {
                       <p className={`tag-m ${classNames}`} style={style}>
                         {row.label}
                       </p>
-                      <p className={`body-s-r ${classNames}`} style={style}>
+                      <p
+                        className={`body-s-r truncate ${classNames}`}
+                        style={style}
+                      >
                         {row.value}
                       </p>
                     </React.Fragment>
@@ -120,8 +123,8 @@ const TotalTruk = ({ data, setCurrentPage }) => {
             </div>
           );
         })}
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

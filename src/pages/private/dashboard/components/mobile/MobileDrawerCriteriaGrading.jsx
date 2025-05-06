@@ -12,12 +12,12 @@ const MobileDrawerCriteriaGrading = ({
   isDrawerOpen,
   closeDrawer,
   selectedCriteriaGrading,
-  setCurrentPage,
+  goToPage,
 }) => {
   const [selectedTypeTable, setSelectedTypeTable] = useState(null);
 
   const handleSubmit = () => {
-    setCurrentPage(selectedTypeTable);
+    goToPage(selectedTypeTable);
     setSelectedTypeTable(null);
     closeDrawer();
   };

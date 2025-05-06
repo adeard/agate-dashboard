@@ -12,12 +12,12 @@ const MobileDrawerDiterimaVendor = ({
   isDrawerOpen,
   closeDrawer,
   selectedDiterimaVendor,
-  setCurrentPage,
+  goToPage,
 }) => {
   const [selectedTypeTable, setSelectedTypeTable] = useState(null);
 
   const handleSubmit = () => {
-    setCurrentPage(selectedTypeTable);
+    goToPage(selectedTypeTable);
     setSelectedTypeTable(null);
     closeDrawer();
   };
