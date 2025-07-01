@@ -11,13 +11,13 @@ const MobileViewDashboardPage = () => {
     <section className='flex min-h-screen login-bg'>
       <div className='w-full flex lg:hidden flex-col justify-center items-center gap-8 p-4'>
         <div className='text-white space-y-4'>
-          <img
+          {/* <img
             src={LogoWhite}
             alt='Sinarmas Logo'
             width={167}
             height={42}
             className='mx-auto'
-          />
+          /> */}
           <h3 className='text-2xl'>Automatic Grading System</h3>
         </div>
         <div className='card w-full h-max bg-white px-4 py-6 space-y-4'>

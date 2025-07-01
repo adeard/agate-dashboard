@@ -56,9 +56,9 @@ const LoginPage = () => {
         <div className='h-full w-full'>
           <div className='card h-full w-full bg-white'>
             <div className='flex h-full flex-col items-center justify-center gap-8'>
-              <div className='mb-8'>
+              {/* <div className='mb-8'>
                 <img src={Logo} alt='Sinarmas Logo' width={220} height={56} />
-              </div>
+              </div> */}
               <div className='text-center text-primary'>
                 <h3 className='headline-m mb-4'>Automatic Grading System</h3>
                 <p className='body-m-r text-primary-2'>
@@ -130,13 +130,13 @@ const LoginPage = () => {
       </div>
       <div className='w-full flex lg:hidden flex-col justify-center items-center gap-8 p-4'>
         <div className='text-white space-y-4'>
-          <img
+          {/* <img
             src={LogoWhite}
             alt='Sinarmas Logo'
             width={167}
             height={42}
             className='mx-auto'
-          />
+          /> */}
           <h3 className='text-2xl'>Automatic Grading System</h3>
         </div>
         <form className='card w-full h-max bg-white p-4 space-y-4'>
