@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@/components/shared/Button';
 
 import LogoWhite from '@/assets/images/logo-white.png';
+import { logoutUser } from '@/services/auth';
 
 const MobileViewDashboardPage = () => {
   const navigate = useNavigate();
@@ -26,18 +27,36 @@ const MobileViewDashboardPage = () => {
             size='lg'
             className='button-l'
             full
-            onClick={() => navigate('monitoring-grading')}
+            onClick={() => navigate('monitoring')}
           >
-            Monitoring Grading
+            Dashboard Monitoring
           </Button>
           <Button
             variant='primary'
             size='lg'
             className='button-l'
             full
-            onClick={() => navigate('demografi-buah')}
+            onClick={() => navigate('/profile')}
           >
-            Demografi Kualitas Buah
+            Profile
+          </Button>
+          <Button
+            variant='primary'
+            size='lg'
+            className='button-l'
+            full
+            onClick={() => navigate('/profile/change-password')}
+          >
+            Change Password
+          </Button>
+          <Button
+            variant='primary'
+            size='lg'
+            className='button-l'
+            full
+            onClick={logoutUser}
+          >
+            Log Out
           </Button>
         </div>
       </div>

@@ -70,7 +70,7 @@ const columnsDiterima = [
     size: 20,
   }),
   columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
+    header: () => <div className='text-center'>TOTAL TBS</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
         {info.getValue().toLocaleString()}
@@ -136,7 +136,7 @@ const columnsDitolak = [
     size: 20,
   }),
   columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
+    header: () => <div className='text-center'>TOTAL TBS</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] !text-center'>
         {info.getValue().toLocaleString()}
@@ -368,7 +368,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_tandan}
+                    {data?.grading_result.total_tandan} TBS
                   </p>
                 </div>
                 <div>
@@ -398,7 +398,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_fined}
+                    {data?.grading_result.total_fined} kg
                   </p>
                 </div>
               </div>
@@ -413,6 +413,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               >
                 <CustomTable
                   dataTable={dataDiterima}
+                  loading={loading}
                   columns={columnsDiterima}
                   footerData={totalRowDiterima}
                   minHeight='10vh'
@@ -427,6 +428,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               >
                 <CustomTable
                   dataTable={dataDitolak || []}
+                  loading={loading}
                   columns={columnsDitolak}
                   footerData={totalRowDitolak}
                   minHeight='10vh'
@@ -441,6 +443,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               >
                 <CustomTable
                   dataTable={dataDidenda || []}
+                  loading={loading}
                   columns={columnsDidenda}
                   footerData={totalRowDidenda}
                   minHeight='10vh'

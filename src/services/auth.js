@@ -4,6 +4,9 @@ import { removeToken } from '@/utils/storages';
 export const postLogin = async (payload) =>
   await instance.post('/v1/auth/signin', payload);
 
+export const postForgotPassword = async (payload) =>
+  await instance.post('/v1/auth/forgot-password', payload);
+
 export const getDecodeToken = async () =>
   await instance.get('/v1/auth/decode-token');
 

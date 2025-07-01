@@ -11,6 +11,8 @@ const MobileDrawerFilter = ({
   selectedFactory,
   setSelectedFactory,
   optionsFactory,
+  selectedVendorType,
+  setSelectedVendorType,
   form,
 }) => {
   const handleSubmit = () => {
@@ -80,6 +82,27 @@ const MobileDrawerFilter = ({
             selected={selectedFactory}
             setSelected={setSelectedFactory}
             options={optionsFactory}
+            buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
+            arrowPosition='right'
+          />
+          <label className='body-s-b text-color-1'>Jenis</label>
+          <Dropdown
+            selected={selectedVendorType}
+            setSelected={setSelectedVendorType}
+            options={[
+              {
+                label: 'Semua',
+                value: 'all',
+              },
+              {
+                label: 'Inti',
+                value: '1',
+              },
+              {
+                label: 'Plasma',
+                value: '2',
+              },
+            ]}
             buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
             arrowPosition='right'
           />

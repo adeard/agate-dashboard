@@ -11,13 +11,23 @@ const pageList = {
       component: lazy(() => import('@/pages/private/dashboard')),
     },
     {
-      path: '/dashboard/monitoring-grading',
-      component: lazy(() => import('@/pages/private/dashboard/mobileview/MonitoringGrading')),
+      path: '/dashboard/monitoring',
+      component: lazy(() =>
+        import('@/pages/private/dashboard/MobileView/main')
+      ),
     },
-    {
-      path: '/dashboard/demografi-buah',
-      component: lazy(() => import('@/pages/private/dashboard/mobileview/DemografiBuah')),
-    },
+    // {
+    //   path: '/dashboard/monitoring-grading',
+    //   component: lazy(() =>
+    //     import('@/pages/private/dashboard/MobileView/MonitoringGrading')
+    //   ),
+    // },
+    // {
+    //   path: '/dashboard/demografi-buah',
+    //   component: lazy(() =>
+    //     import('@/pages/private/dashboard/MobileView/DemografiBuah')
+    //   ),
+    // },
     {
       path: '/dashboard/riwayat-pemeriksaan/:id',
       component: lazy(() =>

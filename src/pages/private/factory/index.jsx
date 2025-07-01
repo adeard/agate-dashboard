@@ -134,6 +134,7 @@ const FactoryPage = () => {
           {data && (
             <CustomTable
               dataTable={data}
+              loading={loading}
               columns={columns}
               showPagination={true}
             />

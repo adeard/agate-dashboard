@@ -86,15 +86,14 @@ export const convertLabelUnderscore = (data) => {
     .join(' ');
 
   switch (label.toLowerCase()) {
-    case 'Buah Kecil Dibawah 3kg'.toLowerCase():
+    case 'Buah Kecil 3'.toLowerCase():
       return 'Buah <3kg';
-    case 'Buah Kecil Dibawah 5kg'.toLowerCase():
+    case 'Buah Kecil 5'.toLowerCase():
       return 'Buah 3-5kg';
     default:
       return label;
   }
 };
-
 
 export function formatNumberWithK(number) {
   if (number >= 1000) {
@@ -116,17 +115,29 @@ export const getFilteredValues = (values) => {
   );
 };
 
-export function formattedDataDashboard(data) {
+export const formattedDataDashboard = (data) => {
   return Object.entries(data).map(([key, value]) => ({
     label: key,
     percent: parseFloat(value),
   }));
-}
+};
 
-export function chunkArray(array, size) {
+export const chunkArray = (array, size) => {
   const result = [];
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size));
   }
   return result;
-}
+};
+
+export const formatPercentWithLeadingZeros = (value) => {
+  const num = Number(value ?? 0);
+  const formatted = num.toLocaleString('en', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  const [intPart, decimalPart] = formatted.split('.');
+  const paddedInt = intPart.padStart(2, '0');
+  return `${paddedInt}.${decimalPart}`;
+};

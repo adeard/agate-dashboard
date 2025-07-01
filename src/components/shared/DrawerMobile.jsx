@@ -1,4 +1,4 @@
-const DrawerMobile = ({ idDrawer, closeDrawer, children }) => {
+const DrawerMobile = ({ idDrawer, closeDrawer, classNameDrawer, children, }) => {
   return (
     <div className='drawer z-20'>
       <input id={idDrawer} type='checkbox' className='drawer-toggle' />
@@ -8,7 +8,7 @@ const DrawerMobile = ({ idDrawer, closeDrawer, children }) => {
           className='drawer-overlay'
           onClick={closeDrawer}
         ></label>
-        <div className='my-auto h-screen overflow-auto bg-white w-full p-4 pb-8'>
+        <div className={`my-auto h-screen overflow-auto bg-white w-full p-4 pb-8 ${classNameDrawer}`}>
           {children}
         </div>
       </div>

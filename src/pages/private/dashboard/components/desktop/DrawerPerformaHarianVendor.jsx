@@ -5,19 +5,7 @@ import { IoMdClose } from 'react-icons/io';
 import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
-
-// const tempData = new Array(10).fill().map(() => ({
-//   tanggal: '01/01/2025, 19:10:10',
-//   totalTruk: '88',
-//   avgTbsTruk: '16,8',
-//   avgDiterima: '16,8',
-//   avgMM: '16,8',
-//   avgLM: '16,8',
-//   avgTP: '16,8',
-//   avgM: '16,8',
-//   avgJK: '16,8',
-//   avhBK: '16,8',
-// }));
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
 const DrawerPerformaHarianVendor = ({
   idDrawer,
@@ -29,13 +17,17 @@ const DrawerPerformaHarianVendor = ({
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
-      header: <div className='w-32'>TANGGAL</div>,
+      header: <div>TANGGAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('trucks', {
-      header: <div>TOTAL TRUK</div>,
+      header: (
+        <div>
+          TOTAL <br /> TRUK
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -60,96 +52,84 @@ const DrawerPerformaHarianVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Math.round(info.getValue())}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),
     columnHelper.accessor('avg_matang', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> MM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('avg_lewat_matang', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> LM
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('avg_tangkai_panjang', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> TP
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.accessor('avg_mentah', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> M
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_janjang_kosong', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> JK
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('avg_buah_kecil', {
       header: (
-        <div>
+        <div className='w-16'>
           % AVG <br /> BK
         </div>
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -167,7 +147,7 @@ const DrawerPerformaHarianVendor = ({
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='80vw'
+      widthDrawer='70vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>

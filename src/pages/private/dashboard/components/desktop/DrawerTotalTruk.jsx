@@ -1,76 +1,71 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
+import { useGet } from '@/services/use-services';
+
+import { createColumnHelper } from '@tanstack/react-table';
 import { IoMdClose } from 'react-icons/io';
 import { MdOutlineVisibility } from 'react-icons/md';
 
 import CustomTable from '@/components/shared/CustomTable';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
+
 import dayjs from 'dayjs';
+import { formatPercentWithLeadingZeros } from '@/utils/common';
 
-// const tempData = new Array(10).fill().map(() => ({
-//   tanggal: '01/01/2025, 19:10:10',
-//   nomorMesin: '3',
-//   suratJalan: '00000000',
-//   platKendaraan: 'BM 8888 AB',
-//   tbsTruk: '88',
-//   diterima: '16,8',
-//   MM: '16,8',
-//   LM: '16,8',
-//   TP: '16,8',
-//   M: '16,8',
-//   BK: '16,8',
-// }));
+const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
+  const [searchParams] = useSearchParams();
 
-const DrawerRiwayatPemeriksaanTruk = ({
-  idDrawer,
-  isDrawerOpen,
-  closeDrawer,
-  data,
-  vendor,
-}) => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
-      header: <div className='w-32'>TANGGAL</div>,
+      header: <div>TANGGAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {dayjs(info.getValue()).format('DD/MM/YYYY HH:mm')}
+          {dayjs(info.getValue()).format('DD/MM/YYYY')}
         </div>
+      ),
+    }),
+    columnHelper.accessor('finish_date', {
+      header: <div className='w-24'>WAKTU</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {dayjs(info.row.original.date).format('HH:mm')} -{' '}
+          {dayjs(info.getValue()).format('HH:mm')}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('vendor_name', {
+      header: <div>VENDOR</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('mesin', {
-      header: (
-        <div>
-          NOMOR <br /> MESIN
-        </div>
-      ),
+      header: <div>MESIN</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    columnHelper.accessor('delivery_number', {
-      header: (
-        <div>
-          SURAT <br /> JALAN
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
-      ),
-    }),
+    // columnHelper.accessor('delivery_number', {
+    //   header: <div>SURAT JALAN</div>,
+    //   cell: (info) => (
+    //     <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+    //   ),
+    // }),
     columnHelper.accessor('vehicle_number', {
-      header: (
-        <div>
-          PLAT <br /> KENDARAAN
-        </div>
-      ),
+      header: <div>PLAT NOMOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: <div>TBS TRUK</div>,
+      header: (
+        <div>
+          TBS <br /> TRUK
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -79,74 +74,51 @@ const DrawerRiwayatPemeriksaanTruk = ({
       header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
     }),
     columnHelper.accessor('percent_matang', {
-      header: <div>% MM</div>,
+      header: <div className='w-16'>% MM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('percent_lewat_matang', {
-      header: <div>% LM</div>,
+      header: <div className='w-16'>% LM</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
     columnHelper.accessor('percent_tangkai_panjang', {
-      header: <div>% TP</div>,
+      header: <div className='w-16'>% TP</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.accessor('percent_mentah', {
-      header: <div>% M</div>,
+      header: <div className='w-16'>% M</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('percent_janjang_kosong', {
-      header: <div>% JK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.accessor('percent_buah_kecil', {
-      header: <div>% BK</div>,
+      header: <div className='w-16'>% BK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {Number(info.getValue()).toLocaleString('en', {
-            maximumFractionDigits: 2,
-          })}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -186,11 +158,14 @@ const DrawerRiwayatPemeriksaanTruk = ({
       idDrawer={idDrawer}
       isOpen={isDrawerOpen}
       closeDrawer={handleClose}
-      widthDrawer='85vw'
+      widthDrawer='95vw'
     >
       <div className='flex items-center justify-between'>
         <h3 className='subheadline-m text-color-1'>
-          Riwayat Pemeriksaan Truk ({vendor})
+          {/* Riwayat Pemeriksaan Truk Tanggal{' '}
+          {dayjs(searchParams.get('date_from')).format('DD/MM/YYYY')} -{' '}
+          {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')} */}
+          Riwayat Truk
         </h3>
         <Button
           variant='primary-outline'
@@ -206,11 +181,15 @@ const DrawerRiwayatPemeriksaanTruk = ({
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data || []} columns={columns} />
+          <CustomTable
+            dataTable={data || []}
+            columns={columns}
+            showPagination={true}
+          />
         </div>
       </div>
     </Drawer>
   );
 };
 
-export default DrawerRiwayatPemeriksaanTruk;
+export default DrawerTotalTruk;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import DesktopViewDashboardPage from './DesktopView';
-import MobileViewDashboardPage from './mobileview';
+import MobileViewDashboardPage from './MobileView';
 
 const DashboardPage = () => {
   const [isMobile, setIsMobile] = useState(false);
