@@ -15,6 +15,8 @@ import { postForgotPassword, postLogin } from '@/services/auth';
 // import Logo from '@/assets/images/logo.png';
 // import LogoWhite from '@/assets/images/logo-white.png';
 
+import AgateLogo from '@/assets/images/agate-logo.png';
+
 const LoginPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -171,13 +173,13 @@ const LoginPage = () => {
       {isMobile ? (
         <div className='w-full flex flex-col justify-center items-center gap-8 p-4'>
           <div className='text-white space-y-4'>
-            {/* <img
-              src={LogoWhite}
-              alt='Sinarmas Logo'
-              width={167}
-              height={42}
+            <img
+              src={AgateLogo}
+              alt='Logo'
+              width={160}
+              height={48}
               className='mx-auto'
-            /> */}
+            />
             <h3 className='text-2xl'>Automatic Grading System</h3>
           </div>
           {renderForm()}
@@ -187,9 +189,9 @@ const LoginPage = () => {
           <div className='h-full w-full'>
             <div className='card h-full w-full bg-white'>
               <div className='flex h-full flex-col items-center justify-center gap-8'>
-                {/* <div className='mb-8'>
-                  <img src={Logo} alt='Sinarmas Logo' width={220} height={56} />
-                </div> */}
+                <div className='mb-8'>
+                  <img src={AgateLogo} alt='Logo' width={200} height={60} />
+                </div>
                 <div className='text-center text-primary'>
                   <h3 className='headline-m mb-4'>Automatic Grading System</h3>
                   <p className='body-m-r text-primary-2'>
