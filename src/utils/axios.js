@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '@/utils/storages';
+import { getToken, removeToken } from '@/utils/storages';
 
 export let BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -38,9 +38,9 @@ instance.interceptors.response.use(
     }
 
     if (err.response && err.response.data) {
-      if (err.response.status === 401) {
-        clearStorages();
-        location.reload();
+      if (err.response.status === 401 || err.response.status === 403) {
+        removeToken();
+        window.location.reload();
       }
       return Promise.reject(err.response.data);
     } else {
@@ -79,8 +79,8 @@ formDataInstance.interceptors.response.use(
     }
 
     if (err.response && err.response.data) {
-      if (err.response.status === 401) {
-        storages.removeToken();
+      if (err.response.status === 401 || err.response.status === 403) {
+        removeToken();
         window.location.reload();
       }
       return Promise.reject(err.response.data);
