@@ -35,6 +35,7 @@ import TableAnalisaVendor from './components/desktop/TableAnalisaVendor';
 import { BASE_URL } from '@/utils/axios';
 
 import dayjs from 'dayjs';
+import { useAuthStore } from '@/store/auth.context';
 
 const colorKriteriaGrading = {
   mentah: 'bg-[#AC0F18]',
@@ -133,6 +134,9 @@ const RocComponent = ({ type, roc }) => {
 };
 
 const DesktopViewDashboardPage = () => {
+  const { state } = useAuthStore();
+  const { userData } = state;
+
   const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
@@ -317,7 +321,9 @@ const DesktopViewDashboardPage = () => {
                       '/v4/dashboard/download-report' +
                       `?targetDate=${searchParams.get(
                         'date_from'
-                      )}&targetEnd=${searchParams.get('date_to')}`,
+                      )}&targetEnd=${searchParams.get('date_to')}&company=${
+                        userData?.company
+                      }`,
                     '_blank'
                   );
                 }}

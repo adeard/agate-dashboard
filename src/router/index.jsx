@@ -31,6 +31,7 @@ const PrivateLayout = () => {
   const _checkDecodeToken = () => {
     getDecodeToken()
       .then((res) => {
+        console.log({ res });
         handleSignIn(res.data);
       })
       .catch((err) => {

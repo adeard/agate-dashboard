@@ -1,19 +1,19 @@
-import { createContext, useContext, useReducer } from 'react'
+import { createContext, useContext, useReducer } from 'react';
 
-export const AuthContext = createContext({})
+export const AuthContext = createContext({});
 
 export const authActionTypes = {
   SIGN_IN: 'SIGN_IN',
   SIGN_OUT: 'SIGN_OUT',
-}
+};
 
 const initialState = {
   isLoggedIn: false,
   userData: null,
-}
+};
 
 const reducer = (state, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
 
   switch (type) {
     case authActionTypes.SIGN_IN:
@@ -21,16 +21,16 @@ const reducer = (state, action) => {
         ...state,
         isLoggedIn: true,
         userData: payload.userData,
-      }
+      };
     case authActionTypes.SIGN_OUT:
-      return { ...state, isLoggedIn: false, userData: null }
+      return { ...state, isLoggedIn: false, userData: null };
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const useAuthActions = () => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return {
     state,
@@ -38,27 +38,27 @@ export const useAuthActions = () => {
       dispatch({
         type: authActionTypes.SIGN_IN,
         payload: {
-          userData: payload.userData,
-          accessUser: payload.accessUser,
+          userData: payload,
+          // accessUser: payload.accessUser,
         },
-      })
+      });
     },
     handleSignOut: () => {
       dispatch({
         type: authActionTypes.SIGN_OUT,
-      })
+      });
     },
-  }
-}
+  };
+};
 
 export const AuthProvider = ({ children }) => {
-  const actions = useAuthActions()
+  const actions = useAuthActions();
 
   return (
     <AuthContext.Provider value={{ ...actions }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export const useAuthStore = () => useContext(AuthContext)
+export const useAuthStore = () => useContext(AuthContext);
