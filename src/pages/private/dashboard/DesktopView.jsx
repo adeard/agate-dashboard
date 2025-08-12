@@ -534,7 +534,7 @@ const DesktopViewDashboardPage = () => {
                                 <td className='!w-4 !p-0'>
                                   {colIndex * 5 + index + 1}.
                                 </td>
-                                <td className='text-color-1 w-[250px]'>
+                                <td className='text-color-1 w-[225px]'>
                                   <div className='truncate' title={item.label}>
                                     {item.label}
                                   </div>
