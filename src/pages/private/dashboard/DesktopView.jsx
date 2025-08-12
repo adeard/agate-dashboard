@@ -524,7 +524,7 @@ const DesktopViewDashboardPage = () => {
                       4
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
-                        <table className='table'>
+                        <table className='table table-fixed'>
                           <tbody>
                             {chunk.map((item, index) => (
                               <tr
@@ -534,7 +534,11 @@ const DesktopViewDashboardPage = () => {
                                 <td className='!w-4 !p-0'>
                                   {colIndex * 5 + index + 1}.
                                 </td>
-                                <td className='text-color-1'>{item.label}</td>
+                                <td className='text-color-1 w-[250px]'>
+                                  <div className='truncate' title={item.label}>
+                                    {item.label}
+                                  </div>
+                                </td>
                                 <td className='text-right'>
                                   <p className='inline-flex items-center'>
                                     <span
@@ -551,7 +555,7 @@ const DesktopViewDashboardPage = () => {
                                     <span className='body-s-r ml-1'>%</span>
                                   </p>
                                 </td>
-                                <td className='!p-0 flex items-center'>
+                                <td className='!p-0 flex items-center justify-center w-full'>
                                   <ButtonMore
                                     listMenu={[
                                       {
