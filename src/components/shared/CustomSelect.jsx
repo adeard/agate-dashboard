@@ -53,8 +53,8 @@ const CustomSelect = ({
   isSearchable = true,
 }) => {
   const selectedValues = multiple
-    ? options.filter((option) => value.includes(option.value))
-    : options.filter((option) => option.value === value) || null;
+    ? options.filter((option) => value?.includes(option.value))
+    : options.filter((option) => option?.value === value) || null;
 
   return (
     <Select

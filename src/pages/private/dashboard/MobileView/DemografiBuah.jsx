@@ -73,9 +73,11 @@ const DemografiBuah = () => {
   const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
+  const { data: optionsVendor, refetch: refetchOptionsVendor } =
+    useGet('/v2/vendor');
 
   const { data, loading, refetch, setQueryParams } = useGetWithPost(
-    '/v2/dashboard',
+    '/v4/dashboard',
     {},
     false
   );
@@ -96,7 +98,10 @@ const DemografiBuah = () => {
   }, [optionsFactory]);
 
   useEffect(() => {
-    refetch();
+    if (searchParams.size > 0) {
+      refetch();
+      refetchOptionsVendor();
+    }
   }, [searchParams]);
 
   // form filter
@@ -105,12 +110,17 @@ const DemografiBuah = () => {
       date_from: searchParams.get('date_from') || '',
       date_to: searchParams.get('date_to') || '',
       factory: searchParams.get('factory') || selectedFactory.value,
+      vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
+      ids: '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
         date_from: value.date_from,
         date_to: value.date_to,
         factory: value.factory,
+        vendor_type:
+          selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
+        ids: value.ids,
       });
     },
   });
@@ -547,10 +557,13 @@ const DemografiBuah = () => {
         idDrawer={idMobileDrawerFilter}
         isDrawerOpen={isMobileDrawerFilterOpen}
         closeDrawer={closeMobileDrawerFilter}
+        form={form}
         selectedFactory={selectedFactory}
         setSelectedFactory={setSelectedFactory}
         optionsFactory={optionsFactory}
-        form={form}
+        selectedVendorType={selectedVendorType}
+        setSelectedVendorType={setSelectedVendorType}
+        optionsVendor={optionsVendor}
       />
 
       <MobileDrawerSenderBuah

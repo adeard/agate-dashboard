@@ -406,50 +406,44 @@ const DetailRiwayatPemeriksaanPage = () => {
           </div>
 
           <div className='basis-2/3'>
-            {dataDiterima?.length > 0 && (
-              <div
-                className='card w-full bg-white p-4'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDiterima}
-                  loading={loading}
-                  columns={columnsDiterima}
-                  footerData={totalRowDiterima}
-                  minHeight='10vh'
-                />
-              </div>
-            )}
+            <div
+              className='card w-full bg-white p-4'
+              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            >
+              <CustomTable
+                dataTable={dataDiterima || []}
+                columns={columnsDiterima}
+                footerData={totalRowDiterima}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
 
-            {
-              <div
-                className='card w-full bg-white p-4 mt-5'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDitolak || []}
-                  loading={loading}
-                  columns={columnsDitolak}
-                  footerData={totalRowDitolak}
-                  minHeight='10vh'
-                />
-              </div>
-            }
+            <div
+              className='card w-full bg-white p-4 mt-5'
+              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            >
+              <CustomTable
+                dataTable={dataDitolak || []}
+                columns={columnsDitolak}
+                footerData={totalRowDitolak}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
 
-            {
-              <div
-                className='card w-full bg-white p-4 mt-5'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDidenda || []}
-                  loading={loading}
-                  columns={columnsDidenda}
-                  footerData={totalRowDidenda}
-                  minHeight='10vh'
-                />
-              </div>
-            }
+            <div
+              className='card w-full bg-white p-4 mt-5'
+              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            >
+              <CustomTable
+                dataTable={dataDidenda || []}
+                columns={columnsDidenda}
+                footerData={totalRowDidenda}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
           </div>
         </div>
       </main>

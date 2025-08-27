@@ -131,14 +131,12 @@ const FactoryPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 h-[calc(100vh-218px)]'>
-          {data && (
-            <CustomTable
-              dataTable={data}
-              loading={loading}
-              columns={columns}
-              showPagination={true}
-            />
-          )}
+          <CustomTable
+            dataTable={data || []}
+            loading={loading}
+            columns={columns}
+            showPagination={true}
+          />
         </div>
 
         <DrawerFilterFactory

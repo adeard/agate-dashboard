@@ -3,17 +3,19 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import Dropdown from '@/components/shared/Dropdown';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
+import CustomSelect from '@/components/shared/CustomSelect';
 
 const MobileDrawerFilter = ({
   idDrawer,
   isDrawerOpen,
   closeDrawer,
+  form,
   selectedFactory,
   setSelectedFactory,
   optionsFactory,
   selectedVendorType,
   setSelectedVendorType,
-  form,
+  optionsVendor,
 }) => {
   const handleSubmit = () => {
     form.handleSubmit();
@@ -84,6 +86,7 @@ const MobileDrawerFilter = ({
             options={optionsFactory}
             buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
             arrowPosition='right'
+            full
           />
           <label className='body-s-b text-color-1'>Jenis</label>
           <Dropdown
@@ -105,6 +108,28 @@ const MobileDrawerFilter = ({
             ]}
             buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
             arrowPosition='right'
+            full
+          />
+          <label className='body-s-b text-color-1'>Vendor</label>
+          <form.Field
+            name='ids'
+            children={(field) => (
+              <CustomSelect
+                placeholder='Vendor'
+                className='body-m-r !h-full'
+                name={field.name}
+                value={field.state.value}
+                options={optionsVendor || []}
+                onChange={(selectedOptions) => {
+                  const selectedValues = selectedOptions
+                    ? selectedOptions.map((option) => option.value)
+                    : [];
+                  field.handleChange(selectedValues);
+                }}
+                size='lg'
+                multiple
+              />
+            )}
           />
           <Button size='lg' className='mt-4' onClick={handleSubmit} full>
             Apply

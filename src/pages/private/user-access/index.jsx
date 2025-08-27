@@ -139,12 +139,11 @@ const UserAccessPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 h-full'>
-          {data && (
-            <CustomTable
-              dataTable={data}
-              columns={columns}
-            />
-          )}
+          <CustomTable
+            dataTable={data || []}
+            columns={columns}
+            loading={loading}
+          />
         </div>
 
         <DrawerFilterUser

@@ -8,3 +8,18 @@ export const statusOptions = [
     value: '1',
   },
 ];
+
+export const vendorTypeOptions = [
+  {
+    label: 'Semua',
+    value: 'all',
+  },
+  {
+    label: 'Inti',
+    value: '1',
+  },
+  {
+    label: 'Plasma',
+    value: '2',
+  },
+];

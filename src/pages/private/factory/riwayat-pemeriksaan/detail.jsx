@@ -412,95 +412,46 @@ const DetailRiwayatPemeriksaanPage = () => {
           </div>
 
           <div className='basis-2/3'>
-            {
-              <div
-                className='card w-full bg-white p-4'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDiterima || []}
-                  columns={columnsDiterima}
-                  footerData={totalRowDiterima}
-                  minHeight='10vh'
-                />
-              </div>
-            }
+            <div
+              className='card w-full bg-white p-4'
+              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            >
+              <CustomTable
+                dataTable={dataDiterima || []}
+                columns={columnsDiterima}
+                footerData={totalRowDiterima}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
 
-            {
-              <div
-                className='card w-full bg-white p-4 mt-5'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDitolak || []}
-                  columns={columnsDitolak}
-                  footerData={totalRowDitolak}
-                  minHeight='10vh'
-                />
-              </div>
-            }
-
-            {
-              <div
-                className='card w-full bg-white p-4 mt-5'
-                style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
-              >
-                <CustomTable
-                  dataTable={dataDidenda || []}
-                  columns={columnsDidenda}
-                  footerData={totalRowDidenda}
-                  minHeight='10vh'
-                />
-              </div>
-            }
-
-            {/* <div
+            <div
               className='card w-full bg-white p-4 mt-5'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
-              <div>
-                <label className='label !pl-0'>
-                  <span className='label-text tag-m text-color-2'>NOTES</span>
-                </label>
-                <p className='body-m-r text-color-1'>
-                  lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus laoreet suscipit justo a hendrerit. Donec commodo
-                  tellus sed nisl pellentesque, eu vestibulum ex convallis.
-                </p>
-              </div>
-              <br />
-              <div>
-                <label className='label !pl-0'>
-                  <span className='label-text tag-m text-color-2'>
-                    ATTACHMENT
-                  </span>
-                </label>
-                <ul className='flex flex-1 list-none gap-2 body-m-r text-color-1'>
-                  <li
-                    className='cursor-pointer hover:underline'
-                    onClick={openModalPreviewImage}
-                  >
-                    Photo 1,
-                  </li>
-                  <li
-                    className='cursor-pointer hover:underline'
-                    onClick={openModalPreviewImage}
-                  >
-                    Photo 2,
-                  </li>
-                  <li
-                    className='cursor-pointer hover:underline'
-                    onClick={openModalPreviewImage}
-                  >
-                    Photo 3,
-                  </li>
-                </ul>
-              </div>
-            </div> */}
+              <CustomTable
+                dataTable={dataDitolak || []}
+                columns={columnsDitolak}
+                footerData={totalRowDitolak}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
+
+            <div
+              className='card w-full bg-white p-4 mt-5'
+              style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            >
+              <CustomTable
+                dataTable={dataDidenda || []}
+                columns={columnsDidenda}
+                footerData={totalRowDidenda}
+                minHeight='10vh'
+                loading={loading}
+              />
+            </div>
           </div>
         </div>
-
-        {/* <ModalPreviewImage modalRef={dialogPreviewImageRef} /> */}
       </main>
     </div>
   );

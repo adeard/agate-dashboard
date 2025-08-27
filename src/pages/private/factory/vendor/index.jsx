@@ -21,7 +21,9 @@ const VendorPage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const { data, loading, refetch, setQueryParams } = useGet('/v1/vendor');
+  const { data, loading, refetch, setQueryParams } = useGet('/v2/vendor', {
+    factory: factoryId,
+  });
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -105,14 +107,12 @@ const VendorPage = () => {
           className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
-          {data && (
-            <CustomTable
-              dataTable={data}
-              columns={columns}
-              showPagination={true}
-              loading={loading}
-            />
-          )}
+          <CustomTable
+            dataTable={data || []}
+            columns={columns}
+            showPagination={true}
+            loading={loading}
+          />
         </div>
 
         <DrawerFilterVendor

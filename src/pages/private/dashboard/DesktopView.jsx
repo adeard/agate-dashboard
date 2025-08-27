@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useForm } from '@tanstack/react-form';
 
 import { IoMdArrowDropright } from 'react-icons/io';
-import { MdFileDownload } from 'react-icons/md';
+import { MdOutlineFilterAlt, MdFileDownload } from 'react-icons/md';
 
 import { useGet, useGetWithPost } from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
@@ -36,6 +36,7 @@ import { BASE_URL } from '@/utils/axios';
 
 import dayjs from 'dayjs';
 import { useAuthStore } from '@/store/auth.context';
+import DrawerFilterDashboard from './components/desktop/DrawerFilterDashboard';
 
 const colorKriteriaGrading = {
   mentah: 'bg-[#AC0F18]',
@@ -140,6 +141,8 @@ const DesktopViewDashboardPage = () => {
   const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
+  const { data: optionsVendor, refetch: refetchOptionsVendor } =
+    useGet('/v2/vendor');
 
   const { data, loading, refetch, setQueryParams } = useGetWithPost(
     '/v4/dashboard',
@@ -169,6 +172,7 @@ const DesktopViewDashboardPage = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
+      refetchOptionsVendor();
     }
   }, [searchParams]);
 
@@ -179,6 +183,7 @@ const DesktopViewDashboardPage = () => {
       date_to: searchParams.get('date_to') || '',
       factory: searchParams.get('factory') || selectedFactory.value,
       vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
+      ids: '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
@@ -187,6 +192,7 @@ const DesktopViewDashboardPage = () => {
         factory: value.factory,
         vendor_type:
           selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
+        ids: value.ids,
       });
     },
   });
@@ -198,6 +204,13 @@ const DesktopViewDashboardPage = () => {
     useState('daily');
 
   // drawer
+  const {
+    idDrawer: idDrawerFilterDashboard,
+    isDrawerOpen: isDrawerFilterDashboardOpen,
+    toggleDrawer: toggleDrawerFilterDashboard,
+    closeDrawer: closeDrawerFilterDashboard,
+  } = useDrawer('DrawerFilterDashboard');
+
   const {
     idDrawer: idDrawerRiwayatPemeriksaan,
     isDrawerOpen: isDrawerRiwayatPemeriksaanOpen,
@@ -250,67 +263,14 @@ const DesktopViewDashboardPage = () => {
           <div className='flex items-center justify-between  px-12 pt-6 py-0'>
             <h1 className='headline-s'>Dashboard Monitoring</h1>
             <div className='flex gap-2'>
-              <label className='tag-l my-auto text-color-2'>FILTER</label>
-              <form.Field
-                name='date_from'
-                children={(field) => (
-                  <Input
-                    type='date'
-                    size='lg'
-                    name={field.name}
-                    value={field.state.value}
-                    className='bg-white pr-8'
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                    }}
-                  />
-                )}
-              />
-              <span className='m-auto'>-</span>
-              <form.Field
-                name='date_to'
-                children={(field) => (
-                  <Input
-                    type='date'
-                    size='lg'
-                    name={field.name}
-                    value={field.state.value}
-                    className='bg-white pr-8'
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                    }}
-                  />
-                )}
-              />
-              <Dropdown
-                selected={selectedFactory}
-                setSelected={setSelectedFactory}
-                options={optionsFactory}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10'
-                arrowPosition='right'
-              />
-              <Dropdown
-                selected={selectedVendorType}
-                setSelected={setSelectedVendorType}
-                options={[
-                  {
-                    label: 'Semua',
-                    value: 'all',
-                  },
-                  {
-                    label: 'Inti',
-                    value: '1',
-                  },
-                  {
-                    label: 'Plasma',
-                    value: '2',
-                  },
-                ]}
-                buttonClassname='body-s-r border-primary-3 border-2 !h-10'
-                arrowPosition='right'
-              />
-              <Button size='lg' onClick={form.handleSubmit}>
-                Apply
+              <Button
+                variant='primary-outline'
+                size='lg'
+                className='flex items-center'
+                onClick={toggleDrawerFilterDashboard}
+              >
+                <MdOutlineFilterAlt className='text-2xl mr-2' />
+                Filter
               </Button>
               <Button
                 size='lg'
@@ -327,7 +287,6 @@ const DesktopViewDashboardPage = () => {
                     '_blank'
                   );
                 }}
-                variant='primary-outline'
               >
                 <MdFileDownload className='text-xl mr-2' />
                 Download Report
@@ -709,6 +668,18 @@ const DesktopViewDashboardPage = () => {
         </main>
       </div>
 
+      <DrawerFilterDashboard
+        idDrawer={idDrawerFilterDashboard}
+        isDrawerOpen={isDrawerFilterDashboardOpen}
+        closeDrawer={closeDrawerFilterDashboard}
+        form={form}
+        selectedFactory={selectedFactory}
+        setSelectedFactory={setSelectedFactory}
+        optionsFactory={optionsFactory}
+        selectedVendorType={selectedVendorType}
+        setSelectedVendorType={setSelectedVendorType}
+        optionsVendor={optionsVendor}
+      />
       <DrawerTotalTruk
         idDrawer={idDrawerRiwayatPemeriksaan}
         isDrawerOpen={isDrawerRiwayatPemeriksaanOpen}
