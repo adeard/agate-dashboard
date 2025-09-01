@@ -10,11 +10,24 @@ export const showNotification = (type, message) => {
 
 export const getObjectSearch = (search) => {
   const params = [];
+
   for (let entry of search.entries()) {
     params.push(entry);
   }
 
-  return params.reduce((curr, acc) => ({ ...curr, [acc[0]]: acc[1] }), {});
+  return params.reduce((curr, [key, value]) => {
+    if (curr.hasOwnProperty(key)) {
+      if (Array.isArray(curr[key])) {
+        curr[key].push(value);
+      } else {
+        curr[key] = [curr[key], value];
+      }
+    } else {
+      curr[key] = value;
+    }
+
+    return curr;
+  }, {});
 };
 
 export const removeEmptyObjectValue = (object) => {
@@ -140,4 +153,23 @@ export const formatPercentWithLeadingZeros = (value) => {
   const [intPart, decimalPart] = formatted.split('.');
   const paddedInt = intPart.padStart(2, '0');
   return `${paddedInt}.${decimalPart}`;
+};
+
+export const mappingOptions = (listData, customKeys = []) => {
+  return (
+    listData?.map((item) => {
+      let obj = {
+        label: item.name,
+        value: item._id,
+      };
+
+      if (customKeys.length) {
+        customKeys.forEach((key) => {
+          obj[key] = item[key];
+        });
+      }
+
+      return obj;
+    }) ?? []
+  );
 };

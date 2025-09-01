@@ -6,7 +6,11 @@ import { useForm } from '@tanstack/react-form';
 import { IoMdArrowDropright } from 'react-icons/io';
 import { MdOutlineFilterAlt, MdFileDownload } from 'react-icons/md';
 
-import { useGet, useGetWithPost } from '@/services/use-services';
+import {
+  useGet,
+  useGetWithoutObjectSearch,
+  useGetWithPost,
+} from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
 
 import {
@@ -16,6 +20,7 @@ import {
   formatPercentWithLeadingZeros,
   formattedDataDashboard,
   joinClassnames,
+  mappingOptions,
 } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
@@ -142,13 +147,10 @@ const DesktopViewDashboardPage = () => {
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
   const { data: optionsVendor, refetch: refetchOptionsVendor } =
-    useGet('/v2/vendor');
+    useGetWithoutObjectSearch('/v2/vendor', {}, false, false);
 
-  const { data, loading, refetch, setQueryParams } = useGetWithPost(
-    '/v4/dashboard',
-    {},
-    false
-  );
+  const { data, loading, refetch, setQueryParams, objectSearch } =
+    useGetWithPost('/v4/dashboard', {}, false);
 
   // untuk filter
   const [selectedFactory, setSelectedFactory] = useState({});
@@ -172,7 +174,7 @@ const DesktopViewDashboardPage = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
-      refetchOptionsVendor();
+      refetchOptionsVendor({ factory: selectedFactory?.value });
     }
   }, [searchParams]);
 
@@ -183,7 +185,7 @@ const DesktopViewDashboardPage = () => {
       date_to: searchParams.get('date_to') || '',
       factory: searchParams.get('factory') || selectedFactory.value,
       vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
-      ids: '',
+      ids: searchParams.getAll('ids') || '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
@@ -678,7 +680,7 @@ const DesktopViewDashboardPage = () => {
         optionsFactory={optionsFactory}
         selectedVendorType={selectedVendorType}
         setSelectedVendorType={setSelectedVendorType}
-        optionsVendor={optionsVendor}
+        optionsVendor={mappingOptions(optionsVendor)}
       />
       <DrawerTotalTruk
         idDrawer={idDrawerRiwayatPemeriksaan}

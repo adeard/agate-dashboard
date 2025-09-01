@@ -5,7 +5,11 @@ import { useForm } from '@tanstack/react-form';
 
 import { MdOutlineViewHeadline } from 'react-icons/md';
 
-import { useGet, useGetWithPost } from '@/services/use-services';
+import {
+  useGet,
+  useGetWithoutObjectSearch,
+  useGetWithPost,
+} from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
 
 import MobileDrawerFilter from '../components/mobile/MobileDrawerFilter';
@@ -27,12 +31,15 @@ import TrenBuahDiterima from './TrenBuahDiterima';
 import TrenBuahDidenda from './TrenBuahDidenda';
 import TrenBuahDitolak from './TrenBuahDitolak';
 import RankingTruk from './RankingTruk';
+import { mappingOptions } from '@/utils/common';
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
+  const { data: optionsVendor, refetch: refetchOptionsVendor } =
+    useGetWithoutObjectSearch('/v2/vendor', {}, false, false);
 
   const { data, loading, refetch, setQueryParams } = useGetWithPost(
     '/v4/dashboard',
@@ -84,6 +91,7 @@ const MainPage = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
+      refetchOptionsVendor({ factory: selectedFactory?.value });
     }
   }, [searchParams]);
 
@@ -94,6 +102,7 @@ const MainPage = () => {
       date_to: searchParams.get('date_to') || '',
       factory: searchParams.get('factory') || selectedFactory.value,
       vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
+      ids: searchParams.getAll('ids') || '',
     },
     onSubmit: async ({ value }) => {
       setQueryParams({
@@ -102,6 +111,7 @@ const MainPage = () => {
         factory: value.factory,
         vendor_type:
           selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
+        ids: value.ids,
       });
     },
   });
@@ -309,12 +319,13 @@ const MainPage = () => {
         idDrawer={idMobileDrawerFilter}
         isDrawerOpen={isMobileDrawerFilterOpen}
         closeDrawer={closeMobileDrawerFilter}
+        form={form}
         selectedFactory={selectedFactory}
         setSelectedFactory={setSelectedFactory}
         optionsFactory={optionsFactory}
         selectedVendorType={selectedVendorType}
         setSelectedVendorType={setSelectedVendorType}
-        form={form}
+        optionsVendor={mappingOptions(optionsVendor)}
       />
 
       <MobileDrawerTypeDashboard

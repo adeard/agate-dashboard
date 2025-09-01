@@ -193,14 +193,34 @@ export const useGetWithPost = (
   const _fetchData = async (payload, query, customUrl) => {
     try {
       setLoading(true);
+
       const response = await instance.post(
         customUrl ?? url,
         payload,
-        query && { params: query }
+        query
+          ? {
+              params: query,
+              // untuk handle params berulang tanpa replace value
+              paramsSerializer: (params) => {
+                const searchParams = new URLSearchParams();
+
+                for (const key in params) {
+                  const value = params[key];
+                  if (Array.isArray(value)) {
+                    value.forEach((v) => searchParams.append(key, v));
+                  } else {
+                    searchParams.append(key, value ?? '');
+                  }
+                }
+
+                return searchParams.toString();
+              },
+            }
+          : undefined
       );
 
       setData(response.data);
-      setTotal(response.meta.total_data || 0);
+      setTotal(response.meta?.total_data || 0);
     } catch (err) {
       setData(null);
       console.error(err.message);
@@ -221,5 +241,61 @@ export const useGetWithPost = (
       _fetchData(payload, query || objectSearch, customUrl),
     setQueryParams: (object) =>
       saveQuery && setSearch(object, { replace: true }),
+  };
+};
+
+export const useGetWithoutObjectSearch = (
+  url,
+  query,
+  shouldFetch = true,
+  pagination = true
+) => {
+  const [data, setData] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [meta, setMeta] = useState(null);
+
+  useEffect(() => {
+    if (shouldFetch) {
+      const payload = { ...query };
+
+      if (!pagination) {
+        _fetchData(payload);
+        return;
+      }
+
+      setSearch({ ...payload });
+      _fetchData({ ...payload });
+    }
+  }, [shouldFetch, pagination]);
+
+  const _fetchData = async (params) => {
+    try {
+      setLoading(true);
+      const response = await instance.get(url, { params });
+
+      setData(response.data);
+      setTotal(response.meta.total_data || 0);
+      setMeta(response?.meta || null);
+      return Promise.resolve(response.data);
+    } catch (err) {
+      setMeta(null);
+      setData(null);
+      setError(err.message);
+      showNotification('error', err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    data,
+    loading,
+    error,
+    total,
+    meta,
+    refetch: (params = {}) => _fetchData({ ...params }),
+    setQueryParams: (object) => setSearch(object),
   };
 };

@@ -9,10 +9,14 @@ import {
   MdBarChart,
 } from 'react-icons/md';
 
-import { useGet, useGetWithPost } from '@/services/use-services';
+import {
+  useGet,
+  useGetWithoutObjectSearch,
+  useGetWithPost,
+} from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
 
-import { convertLabel } from '@/utils/common';
+import { convertLabel, mappingOptions } from '@/utils/common';
 
 import NavbarMobile from '@/components/shared/NavbarMobile';
 import MobileDrawerFilter from '../components/mobile/MobileDrawerFilter';
@@ -74,7 +78,7 @@ const DemografiBuah = () => {
 
   const { data: optionsFactory } = useGet('/v1/options/factory');
   const { data: optionsVendor, refetch: refetchOptionsVendor } =
-    useGet('/v2/vendor');
+    useGetWithoutObjectSearch('/v2/vendor', {}, false, false);
 
   const { data, loading, refetch, setQueryParams } = useGetWithPost(
     '/v4/dashboard',
@@ -100,7 +104,7 @@ const DemografiBuah = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
-      refetchOptionsVendor();
+      refetchOptionsVendor({ factory: selectedFactory?.value });
     }
   }, [searchParams]);
 
@@ -563,7 +567,7 @@ const DemografiBuah = () => {
         optionsFactory={optionsFactory}
         selectedVendorType={selectedVendorType}
         setSelectedVendorType={setSelectedVendorType}
-        optionsVendor={optionsVendor}
+        optionsVendor={mappingOptions(optionsVendor)}
       />
 
       <MobileDrawerSenderBuah
