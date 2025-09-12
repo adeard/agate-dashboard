@@ -9,16 +9,7 @@ import {
 } from '@/utils/common';
 
 import NavbarMobile from '@/components/shared/NavbarMobile';
-
-const colorKriteriaGrading = {
-  mentah: 'bg-[#AC0F18]',
-  janjang_kosong: 'bg-[#AC0F18]',
-  buah_kecil_3: 'bg-[#AC0F18]',
-  buah_kecil_5: 'bg-[#AC0F18]',
-  tangkai_panjang: 'bg-[#F0CC00]',
-  matang: 'bg-[#6BAB25]',
-  lewat_matang: 'bg-[#6BAB25]',
-};
+import { colorKriteriaGrading } from '@/utils/optionsKey';
 
 const MonitoringGrading = ({
   data,
@@ -238,7 +229,7 @@ const MonitoringGrading = ({
                 </span>
               </label>
 
-              <table className='table'>
+              <table className='table table-fixed'>
                 <tbody>
                   {Object.entries(data?.average_vendor_accepted || {}).map(
                     ([key, value], index) => (
@@ -251,7 +242,9 @@ const MonitoringGrading = ({
                         }}
                       >
                         <td className='!w-4 !p-0'>{index + 1}.</td>
-                        <td className='text-color-1'>{key}</td>
+                        <td className='text-color-1 w-3/5'>
+                          <p className='truncate'>{key}</p>
+                        </td>
                         <td className='text-right !pr-2'>
                           <p className='inline-flex items-center'>
                             <span
@@ -266,7 +259,7 @@ const MonitoringGrading = ({
                             <span className='body-s-r ml-1'>%</span>
                           </p>
                         </td>
-                        <td className='!p-0'>
+                        <td className='!p-0 !w-8'>
                           <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
                           <IoMdArrowDropright className='inline text-lg text-primary-2' />
                         </td>

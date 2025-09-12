@@ -1,20 +1,16 @@
 import { MdArrowBackIosNew } from 'react-icons/md';
 
-import Dropdown from '@/components/shared/Dropdown';
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import CustomSelect from '@/components/shared/CustomSelect';
+import { vendorTypeOptions } from '@/utils/optionsKey';
 
 const MobileDrawerFilter = ({
   idDrawer,
   isDrawerOpen,
   closeDrawer,
   form,
-  selectedFactory,
-  setSelectedFactory,
   optionsFactory,
-  selectedVendorType,
-  setSelectedVendorType,
   optionsVendor,
 }) => {
   const handleSubmit = () => {
@@ -80,35 +76,44 @@ const MobileDrawerFilter = ({
             )}
           />
           <label className='body-s-b text-color-1'>Pabrik</label>
-          <Dropdown
-            selected={selectedFactory}
-            setSelected={setSelectedFactory}
-            options={optionsFactory}
-            buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
-            arrowPosition='right'
-            full
+          <form.Field
+            name='factory'
+            children={(field) => (
+              <CustomSelect
+                placeholder='Pabrik'
+                className='body-m-r !h-full'
+                name={field.name}
+                value={field.state.value}
+                options={optionsFactory || []}
+                onChange={(selectedOption) => {
+                  const selectedValue = selectedOption
+                    ? selectedOption.value
+                    : null;
+                  field.handleChange(selectedValue);
+                }}
+                size='lg'
+              />
+            )}
           />
           <label className='body-s-b text-color-1'>Jenis</label>
-          <Dropdown
-            selected={selectedVendorType}
-            setSelected={setSelectedVendorType}
-            options={[
-              {
-                label: 'Semua',
-                value: 'all',
-              },
-              {
-                label: 'Inti',
-                value: '1',
-              },
-              {
-                label: 'Plasma',
-                value: '2',
-              },
-            ]}
-            buttonClassname='body-s-r border-primary-3 border-2 !h-10 !w-full'
-            arrowPosition='right'
-            full
+          <form.Field
+            name='vendor_type'
+            children={(field) => (
+              <CustomSelect
+                placeholder='Vendor Type'
+                className='body-m-r !h-full'
+                name={field.name}
+                value={field.state.value}
+                options={vendorTypeOptions || []}
+                onChange={(selectedOption) => {
+                  const selectedValue = selectedOption
+                    ? selectedOption.value
+                    : null;
+                  field.handleChange(selectedValue);
+                }}
+                size='lg'
+              />
+            )}
           />
           <label className='body-s-b text-color-1'>Vendor</label>
           <form.Field

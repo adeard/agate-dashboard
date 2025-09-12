@@ -47,13 +47,6 @@ const MainPage = () => {
     false
   );
 
-  // untuk filter
-  const [selectedFactory, setSelectedFactory] = useState({});
-  const [selectedVendorType, setSelectedVendorType] = useState({
-    label: 'Semua',
-    value: 'all',
-  });
-
   // dashboard page
   const [pageHistory, setPageHistory] = useState(['Monitoring Grading']);
   const currentPage = pageHistory[pageHistory.length - 1]; // halaman terakhir
@@ -78,8 +71,6 @@ const MainPage = () => {
 
   useEffect(() => {
     if (optionsFactory) {
-      setSelectedFactory(optionsFactory[0]);
-
       setQueryParams({
         date_from: dayjs().startOf('month').format('YYYY-MM-DD'),
         date_to: dayjs().format('YYYY-MM-DD'),
@@ -91,7 +82,9 @@ const MainPage = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
-      refetchOptionsVendor({ factory: selectedFactory?.value });
+      if (searchParams.get('factory')) {
+        refetchOptionsVendor({ factory: searchParams.get('factory') });
+      }
     }
   }, [searchParams]);
 
@@ -100,8 +93,8 @@ const MainPage = () => {
     defaultValues: {
       date_from: searchParams.get('date_from') || '',
       date_to: searchParams.get('date_to') || '',
-      factory: searchParams.get('factory') || selectedFactory.value,
-      vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
+      factory: searchParams.get('factory') || '',
+      vendor_type: searchParams.get('vendor_type') || 'all',
       ids: searchParams.getAll('ids') || '',
     },
     onSubmit: async ({ value }) => {
@@ -109,8 +102,7 @@ const MainPage = () => {
         date_from: value.date_from,
         date_to: value.date_to,
         factory: value.factory,
-        vendor_type:
-          selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
+        vendor_type: value.vendor_type || 'all',
         ids: value.ids,
       });
     },
@@ -320,11 +312,7 @@ const MainPage = () => {
         isDrawerOpen={isMobileDrawerFilterOpen}
         closeDrawer={closeMobileDrawerFilter}
         form={form}
-        selectedFactory={selectedFactory}
-        setSelectedFactory={setSelectedFactory}
         optionsFactory={optionsFactory}
-        selectedVendorType={selectedVendorType}
-        setSelectedVendorType={setSelectedVendorType}
         optionsVendor={mappingOptions(optionsVendor)}
       />
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
@@ -19,16 +19,15 @@ import {
   convertLabelUnderscore,
   formatPercentWithLeadingZeros,
   formattedDataDashboard,
-  joinClassnames,
   mappingOptions,
 } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
-import Input from '@/components/shared/Input';
 import Dropdown from '@/components/shared/Dropdown';
 import CustomSelect from '@/components/shared/CustomSelect';
 import ButtonMore from '@/components/shared/ButtonMore';
 import LineCharts from './components/desktop/LIneCharts';
+import DrawerFilterDashboard from './components/desktop/DrawerFilterDashboard';
 import DrawerTotalTruk from './components/desktop/DrawerTotalTruk';
 import DrawerTrenKriteria from './components/desktop/DrawerTrenKriteria';
 import DrawerAnalisaVendor from './components/desktop/DrawerAnalisaVendor';
@@ -36,108 +35,17 @@ import DrawerPerformaHarianVendor from './components/desktop/DrawerPerformaHaria
 import DrawerRiwayatPemeriksaanTruk from './components/desktop/DrawerRiwayatPemeriksaanTruk';
 import TableRankingVendor from './components/desktop/TableRankingVendor';
 import TableAnalisaVendor from './components/desktop/TableAnalisaVendor';
-
-import { BASE_URL } from '@/utils/axios';
+import RocComponent from './components/desktop/RocComponent';
 
 import dayjs from 'dayjs';
 import { useAuthStore } from '@/store/auth.context';
-import DrawerFilterDashboard from './components/desktop/DrawerFilterDashboard';
 
-const colorKriteriaGrading = {
-  mentah: 'bg-[#AC0F18]',
-  janjang_kosong: 'bg-[#AC0F18]',
-  buah_kecil_3: 'bg-[#AC0F18]',
-  buah_kecil_5: 'bg-[#AC0F18]',
-  tangkai_panjang: 'bg-[#F0CC00]',
-  matang: 'bg-[#6BAB25]',
-  lewat_matang: 'bg-[#6BAB25]',
-};
-
-const chartTypeDictionary = {
-  summary_performance: 'Summary Performance',
-  grading_trucks: 'Grading Truk',
-  kinerja_vendor: 'Analisa Kinerja Vendor',
-  fruit_accepted: 'Tren Buah Diterima',
-  fruit_tangkai_panjang: 'Tren Tangkai Panjang',
-  fruit_rejected: 'Tren Buah Ditolak',
-  highest_vendor: '10 Truk Terbaik',
-  lowest_vendor: '10 Truk Terburuk',
-};
-
-const listOptionsMachine = [
-  { label: 'Semua Mesin', value: 'All' },
-  {
-    label: 'Mesin 1',
-    value: '1',
-  },
-  {
-    label: 'Mesin 2',
-    value: '2',
-  },
-  {
-    label: 'Mesin 3',
-    value: '3',
-  },
-  {
-    label: 'Mesin 4',
-    value: '4',
-  },
-];
-
-const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
-  ([key, value]) => ({
-    label: value,
-    value: key,
-  })
-);
-
-const RocComponent = ({ type, roc }) => {
-  const rocValue = useMemo(() => {
-    return roc[type];
-  }, [roc, type]);
-  const isPositiveValue = rocValue > 0;
-  const isPositive =
-    rocValue === 0
-      ? true
-      : type === 'diterima'
-      ? isPositiveValue
-      : !isPositiveValue;
-
-  return (
-    <div
-      className={joinClassnames([
-        'bg-white border rounded-xl p-3 inline-flex items-center justify-between',
-        isPositive ? 'border-[#006D33]' : 'border-secondary-2',
-      ])}
-    >
-      <label>
-        <span
-          className={joinClassnames([
-            'label-text body-m-b flex items-center gap-2 capitalize',
-            isPositive ? 'text-[#006D33]' : 'text-secondary-2',
-          ])}
-        >
-          ROC %{type}
-        </span>
-      </label>
-      <p
-        className={joinClassnames([
-          isPositive ? 'text-[#006D33]' : 'text-secondary-2',
-        ])}
-      >
-        <span
-          className={joinClassnames([
-            'h-full w-2 border mx-2',
-            isPositive ? 'border-[#006D33]' : 'border-secondary-2',
-          ])}
-        ></span>
-        <span className='body-m-r mr-1'>{`${rocValue < 0 ? '-' : '+'}${Math.abs(
-          rocValue
-        ).toLocaleString('en', { maximumFractionDigits: 2 })}`}</span>
-      </p>
-    </div>
-  );
-};
+import {
+  chartTypeListOptions,
+  colorKriteriaGrading,
+  listOptionsMachine,
+} from '@/utils/optionsKey';
+import { BASE_URL } from '@/utils/axios';
 
 const DesktopViewDashboardPage = () => {
   const { state } = useAuthStore();
@@ -152,17 +60,8 @@ const DesktopViewDashboardPage = () => {
   const { data, loading, refetch, setQueryParams, objectSearch } =
     useGetWithPost('/v4/dashboard', {}, false);
 
-  // untuk filter
-  const [selectedFactory, setSelectedFactory] = useState({});
-  const [selectedVendorType, setSelectedVendorType] = useState({
-    label: 'Semua',
-    value: 'all',
-  });
-
   useEffect(() => {
     if (optionsFactory) {
-      setSelectedFactory(optionsFactory[0]);
-
       setQueryParams({
         date_from: dayjs().startOf('month').format('YYYY-MM-DD'),
         date_to: dayjs().format('YYYY-MM-DD'),
@@ -174,7 +73,9 @@ const DesktopViewDashboardPage = () => {
   useEffect(() => {
     if (searchParams.size > 0) {
       refetch();
-      refetchOptionsVendor({ factory: selectedFactory?.value });
+      if (searchParams.get('factory')) {
+        refetchOptionsVendor({ factory: searchParams.get('factory') });
+      }
     }
   }, [searchParams]);
 
@@ -183,8 +84,8 @@ const DesktopViewDashboardPage = () => {
     defaultValues: {
       date_from: searchParams.get('date_from') || '',
       date_to: searchParams.get('date_to') || '',
-      factory: searchParams.get('factory') || selectedFactory.value,
-      vendor_type: searchParams.get('vendor_type') || selectedVendorType.value,
+      factory: searchParams.get('factory') || '',
+      vendor_type: searchParams.get('vendor_type') || 'all',
       ids: searchParams.getAll('ids') || '',
     },
     onSubmit: async ({ value }) => {
@@ -192,8 +93,7 @@ const DesktopViewDashboardPage = () => {
         date_from: value.date_from,
         date_to: value.date_to,
         factory: value.factory,
-        vendor_type:
-          selectedVendorType.value === 'all' ? '' : selectedVendorType.value,
+        vendor_type: value.vendor_type || 'all',
         ids: value.ids,
       });
     },
@@ -408,10 +308,10 @@ const DesktopViewDashboardPage = () => {
                     </span>
                   </label>
 
-                  <div className='grid grid-cols-2 gap-4'>
+                  <div className='grid grid-cols-2 gap-2'>
                     {chunkArray(
                       formattedDataDashboard(data?.average_grading || {}),
-                      4
+                      5
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table'>
@@ -482,7 +382,7 @@ const DesktopViewDashboardPage = () => {
                       formattedDataDashboard(
                         data?.average_vendor_accepted || {}
                       ),
-                      4
+                      5
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table table-fixed'>
@@ -496,9 +396,9 @@ const DesktopViewDashboardPage = () => {
                                   {colIndex * 5 + index + 1}.
                                 </td>
                                 <td className='text-color-1 w-[225px]'>
-                                  <div className='truncate' title={item.label}>
+                                  <p className='truncate' title={item.label}>
                                     {item.label}
-                                  </div>
+                                  </p>
                                 </td>
                                 <td className='text-right'>
                                   <p className='inline-flex items-center'>
@@ -609,17 +509,6 @@ const DesktopViewDashboardPage = () => {
                                 }}
                                 isSearchable={false}
                                 value={machineType.value}
-                                // name={field.name}
-                                // value={field.state.value}
-                                // options={optionsFactory || []}
-                                // onChange={(selectedOption) => {
-                                //   const selectedValue = selectedOption
-                                //     ? selectedOption.value
-                                //     : null;
-                                //   field.handleChange(selectedValue);
-                                // }}
-                                // size='lg'
-                                // full
                               />
                             ) : null}
                           </div>
@@ -675,11 +564,7 @@ const DesktopViewDashboardPage = () => {
         isDrawerOpen={isDrawerFilterDashboardOpen}
         closeDrawer={closeDrawerFilterDashboard}
         form={form}
-        selectedFactory={selectedFactory}
-        setSelectedFactory={setSelectedFactory}
         optionsFactory={optionsFactory}
-        selectedVendorType={selectedVendorType}
-        setSelectedVendorType={setSelectedVendorType}
         optionsVendor={mappingOptions(optionsVendor)}
       />
       <DrawerTotalTruk

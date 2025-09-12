@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import Button from './Button';
 
@@ -10,11 +10,13 @@ const Dropdown = ({
   full = false,
   buttonClassname,
   noLabel = false,
+  position = 'bottom',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   const handleSelect = (option) => {
@@ -22,28 +24,43 @@ const Dropdown = ({
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className='body-m-r dropdown'>
+    <div ref={dropdownRef} className='relative inline-block'>
       <Button
-        tabIndex={0}
+        type='button'
         variant='primary-outline'
+        aria-haspopup='listbox'
+        aria-expanded={isOpen}
         className={`flex items-center justify-between gap-2 ${buttonClassname} ${
           arrowPosition !== 'left' ? 'flex-row-reverse' : ''
-        } `}
+        }`}
         onClick={toggleDropdown}
-        onBlur={() => setTimeout(() => setIsOpen(false), 100)}
       >
         <TiArrowSortedDown /> {!noLabel ? selected.label : null}
       </Button>
+
       {isOpen && (
         <ul
-          tabIndex={0}
-          className={`dropdown-content z-[1] ${
-            full ? 'w-full' : 'w-max'
-          } rounded-box bg-base-100 p-2 shadow`}
+          role='listbox'
+          className={`absolute z-20 mt-2 max-h-60 overflow-auto rounded-box bg-base-100 p-2 shadow 
+            ${full ? 'w-full' : 'w-max'}
+            ${position === 'top' ? 'bottom-full mb-2' : ''}
+            ${position === 'right' ? 'left-full ml-2 top-0' : ''}
+            ${position === 'left' ? 'right-full mr-2 top-0' : ''}
+          `}
         >
           {options?.map((option) => (
-            <li key={option.value} className='text-left'>
+            <li key={option.value} role='option'>
               <Button
                 variant='primary-outline'
                 className='flex w-full items-center !border-none'

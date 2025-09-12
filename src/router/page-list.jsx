@@ -31,7 +31,7 @@ const pageList = {
     {
       path: '/dashboard/riwayat-pemeriksaan/:id',
       component: lazy(() =>
-        import('@/pages/private/dashboard/DetailRiwayatPemeriksaan')
+        import('@/pages/private/factory/riwayat-pemeriksaan/detail')
       ),
     },
     {

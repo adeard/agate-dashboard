@@ -1,10 +1,4 @@
-import { useEffect, useState } from 'react';
-import {
-  Link,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -16,7 +10,7 @@ import {
   MdOutlineVisibility,
 } from 'react-icons/md';
 
-import { useGet, useGetWithPost } from '@/services/use-services';
+import { useGet } from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
@@ -53,8 +47,6 @@ const RiwayatPemeriksaanPage = () => {
     closeDrawer: closeDrawerFilter,
   } = useDrawer('DrawerFilter');
 
-  console.log(data);
-
   // table column
   const columnHelper = createColumnHelper();
   const columns = [
@@ -69,7 +61,7 @@ const RiwayatPemeriksaanPage = () => {
     columnHelper.accessor('finish_date', {
       header: 'WAKTU',
       cell: (info) =>
-        `${dayjs(info.row.original.finish_date).format('HH:mm')} - ${dayjs(
+        `${dayjs(info.row.original.date).format('HH:mm')} - ${dayjs(
           info.getValue()
         ).format('HH:mm')}`,
     }),

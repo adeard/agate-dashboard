@@ -1,28 +1,18 @@
-import { useSearchParams } from 'react-router-dom';
-import { useForm } from '@tanstack/react-form';
-
 import { IoMdClose } from 'react-icons/io';
 
-import { statusOptions, vendorTypeOptions } from '@/utils/optionsKey';
-import { getFilteredValues } from '@/utils/common';
+import { vendorTypeOptions } from '@/utils/optionsKey';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
-import Checkbox from '@/components/shared/Checkbox';
 import CustomSelect from '@/components/shared/CustomSelect';
-import Dropdown from '@/components/shared/Dropdown';
 
 const DrawerFilterDashboard = ({
   idDrawer,
   isDrawerOpen,
   closeDrawer,
   form,
-  selectedFactory,
-  setSelectedFactory,
   optionsFactory,
-  selectedVendorType,
-  setSelectedVendorType,
   optionsVendor,
 }) => {
   const handleClose = () => {
@@ -55,7 +45,7 @@ const DrawerFilterDashboard = ({
             <label className='basis-1/4'>
               <span className='label-text'>Tanggal</span>
             </label>
-            <div className='basis-3/4'>
+            <div className='basis-3/4 flex items-center justify-between gap-4'>
               <form.Field
                 name='date_from'
                 children={(field) => (
@@ -64,14 +54,15 @@ const DrawerFilterDashboard = ({
                     size='lg'
                     name={field.name}
                     value={field.state.value}
-                    className='bg-white pr-8 w-40'
+                    className='bg-white pr-8'
                     onChange={(e) => {
                       field.handleChange(e.target.value);
                     }}
+                    full
                   />
                 )}
               />
-              <span className='mx-4'>-</span>
+              <span>-</span>
               <form.Field
                 name='date_to'
                 children={(field) => (
@@ -80,10 +71,11 @@ const DrawerFilterDashboard = ({
                     size='lg'
                     name={field.name}
                     value={field.state.value}
-                    className='bg-white pr-8 w-40'
+                    className='bg-white pr-8'
                     onChange={(e) => {
                       field.handleChange(e.target.value);
                     }}
+                    full
                   />
                 )}
               />
@@ -94,13 +86,24 @@ const DrawerFilterDashboard = ({
               <span className='label-text'>Pabrik</span>
             </label>
             <div className='basis-3/4'>
-              <Dropdown
-                selected={selectedFactory}
-                setSelected={setSelectedFactory}
-                options={optionsFactory}
-                buttonClassname='!w-40 !h-10 body-s-r border-primary-3 border-2'
-                arrowPosition='right'
-                full
+              <form.Field
+                name='factory'
+                children={(field) => (
+                  <CustomSelect
+                    placeholder='Pabrik'
+                    className='body-m-r !h-full'
+                    name={field.name}
+                    value={field.state.value}
+                    options={optionsFactory || []}
+                    onChange={(selectedOption) => {
+                      const selectedValue = selectedOption
+                        ? selectedOption.value
+                        : null;
+                      field.handleChange(selectedValue);
+                    }}
+                    size='lg'
+                  />
+                )}
               />
             </div>
           </div>
@@ -110,13 +113,24 @@ const DrawerFilterDashboard = ({
               <span className='label-text'>Vendor Type</span>
             </label>
             <div className='basis-3/4'>
-              <Dropdown
-                selected={selectedVendorType}
-                setSelected={setSelectedVendorType}
-                options={vendorTypeOptions}
-                buttonClassname='!w-40 !h-10 body-s-r border-primary-3 border-2'
-                arrowPosition='right'
-                full
+              <form.Field
+                name='vendor_type'
+                children={(field) => (
+                  <CustomSelect
+                    placeholder='Vendor Type'
+                    className='body-m-r !h-full'
+                    name={field.name}
+                    value={field.state.value}
+                    options={vendorTypeOptions || []}
+                    onChange={(selectedOption) => {
+                      const selectedValue = selectedOption
+                        ? selectedOption.value
+                        : null;
+                      field.handleChange(selectedValue);
+                    }}
+                    size='lg'
+                  />
+                )}
               />
             </div>
           </div>

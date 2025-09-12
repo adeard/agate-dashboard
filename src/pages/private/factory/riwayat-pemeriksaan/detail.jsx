@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -42,8 +42,17 @@ const columnsDiterima = [
     ),
     size: 20,
   }),
+  columnHelper.accessor('largeFruit', {
+    header: () => <div className='text-center'>BB</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
   columnHelper.accessor('longStash', {
-    header: () => <div className='text-center'>LONG STASH</div>,
+    header: () => <div className='text-center'>TP</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
         {info.getValue().toLocaleString()}
@@ -108,8 +117,17 @@ const columnsDitolak = [
     ),
     size: 20,
   }),
+  columnHelper.accessor('largeFruit', {
+    header: () => <div className='text-center'>BB</div>,
+    cell: (info) => (
+      <div className='!body-m-r text-[#000000DE] text-center'>
+        {info.getValue().toLocaleString()}
+      </div>
+    ),
+    size: 20,
+  }),
   columnHelper.accessor('longStash', {
-    header: () => <div className='text-center'>LONG STASH</div>,
+    header: () => <div className='text-center'>TP</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
         {info.getValue().toLocaleString()}
@@ -187,11 +205,14 @@ const columnsDidenda = [
 ];
 
 const DetailRiwayatPemeriksaanPage = () => {
-  const { factoryId, historyId } = useParams();
+  const { id, factoryId, historyId } = useParams();
+  const location = useLocation();
 
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const { data, loading, refetch } = useGet(`/v1/inspection-data/${historyId}`);
+  const { data, loading, refetch } = useGet(
+    `/v1/inspection-data/${historyId || id}`
+  );
 
   const dataDiterima =
     data &&
@@ -203,6 +224,7 @@ const DetailRiwayatPemeriksaanPage = () => {
         total: data?.grading_result.accepted_summary[key].TOTAL,
         normal: data?.grading_result.accepted_summary[key].NORMAL,
         pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
+        largeFruit: data?.grading_result.accepted_summary[key]['BUAH BESAR'],
         longStash:
           data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
         '<3kg':
@@ -219,6 +241,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       total: data?.grading_result.rejected_summary[key].TOTAL,
       normal: data?.grading_result.rejected_summary[key].NORMAL,
       pest: data?.grading_result.rejected_summary[key]['RUSAK DIMAKAN TIKUS'],
+      largeFruit: data?.grading_result.rejected_summary[key]['BUAH BESAR'],
       longStash: data?.grading_result.rejected_summary[key]['TANGKAI PANJANG'],
       '<3kg':
         data?.grading_result.rejected_summary[key]['BUAH KECIL DIBAWAH 3KG'],
@@ -243,6 +266,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: dataDiterima?.reduce((acc, row) => acc + row.total, 0),
     normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
+    largeFruit: dataDiterima?.reduce((acc, row) => acc + row.largeFruit, 0),
     longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
     '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
@@ -253,6 +277,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: dataDitolak?.reduce((acc, row) => acc + row.total, 0),
     normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
+    largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit, 0),
     longStash: dataDitolak?.reduce((acc, row) => acc + row.longStash, 0),
     '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDitolak?.reduce((acc, row) => acc + row['3-5kg'], 0),
@@ -270,16 +295,40 @@ const DetailRiwayatPemeriksaanPage = () => {
       <header>
         <div className='flex items-center justify-between bg-white px-12 py-6'>
           <div className='flex items-center'>
-            <Link to='/factory' className='font-semibold text-2xl text-color-3'>
-              {factoryName}
-            </Link>
-            <MdKeyboardArrowRight className='text-2xl text-color-3' />
-            <Link
-              to={`/factory/${factoryId}/riwayat-pemeriksaan`}
-              className='font-semibold text-2xl text-color-3'
-            >
-              Riwayat Pemeriksaan
-            </Link>
+            {location?.pathname.includes('/factory') ? (
+              <>
+                <Link
+                  to='/factory'
+                  className='font-semibold text-2xl text-color-3'
+                >
+                  {factoryName}
+                </Link>
+                <MdKeyboardArrowRight className='text-2xl text-color-3' />
+                <Link
+                  to={`/factory/${factoryId}/riwayat-pemeriksaan`}
+                  className='font-semibold text-2xl text-color-3'
+                >
+                  Riwayat Pemeriksaan
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to='/dashboard'
+                  className='font-semibold text-2xl text-color-3'
+                >
+                  Dashboard
+                </Link>
+                <MdKeyboardArrowRight className='text-2xl text-color-3' />
+                <Link
+                  to='/dashboard'
+                  className='font-semibold text-2xl text-color-3'
+                >
+                  Riwayat Truk
+                </Link>
+              </>
+            )}
+
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='headline-s'>Detail</h2>
           </div>
@@ -404,7 +453,8 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_fined}
+                    {dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)}{' '}
+                    kg
                   </p>
                 </div>
               </div>
