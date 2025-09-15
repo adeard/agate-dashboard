@@ -54,6 +54,8 @@ export const colorKriteriaGrading = {
   janjang_kosong: 'bg-[#AC0F18]',
   buah_kecil_3: 'bg-[#AC0F18]',
   buah_kecil_5: 'bg-[#AC0F18]',
+  matang_ditolak: 'bg-[#AC0F18]',
+  lewat_matang_ditolak: 'bg-[#AC0F18]',
   tangkai_panjang: 'bg-[#F0CC00]',
 };
 
