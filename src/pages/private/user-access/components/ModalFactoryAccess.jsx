@@ -1,4 +1,4 @@
-import  { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { createColumnHelper } from '@tanstack/react-table';
 
@@ -11,7 +11,11 @@ import CustomTable from '@/components/shared/CustomTable';
 import Checkbox from '@/components/shared/Checkbox';
 
 const ModalFactoryAccess = ({ modalRef, data }) => {
-  const { data: listFactory, loading, refetch } = useGet('/v1/factory');
+  const {
+    data: listFactory,
+    loading,
+    refetch,
+  } = useGet('/v1/factory', { filter: 'false' });
 
   const { handlePut, loadingPut } = usePut(`/v1/user/${data?._id}`);
 
