@@ -185,7 +185,7 @@ const DesktopViewDashboardPage = () => {
                         'date_from'
                       )}&targetEnd=${searchParams.get('date_to')}&company=${
                         userData?.company
-                      }`,
+                      }&factory=${searchParams.get('factory')}`,
                     '_blank'
                   );
                 }}
