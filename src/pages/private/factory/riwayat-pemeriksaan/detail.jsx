@@ -338,7 +338,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               className='flex items-center'
               onClick={() => {
                 window.open(
-                  BASE_URL + '/v1/inspection-data/download-pdf/' + historyId,
+                  BASE_URL + '/v1/inspection-data/download-pdf/' + (historyId ? historyId : id),
                   '_blank'
                 );
               }}
