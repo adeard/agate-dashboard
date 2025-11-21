@@ -2,17 +2,11 @@ import { Link, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
-import {
-  MdOutlineFilterAlt,
-  MdKeyboardArrowRight,
-  MdOutlineVisibility,
-} from 'react-icons/md';
+import { MdKeyboardArrowRight, MdOutlineVisibility } from 'react-icons/md';
 
 import { useGet } from '@/services/use-services';
-import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
-import DrawerFilterVendor from '../components/DrawerFilterVendor';
 import CustomTable from '@/components/shared/CustomTable';
 
 const tempData = new Array(10).fill().map(() => ({
@@ -25,13 +19,6 @@ const HistoryMaintenancePage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, refetch, setQueryParams } = useGet('');
-
-  const {
-    idDrawer: idDrawerFilterVendor,
-    isDrawerOpen: isDrawerFilterVendorOpen,
-    toggleDrawer: toggleDrawerFilter,
-    closeDrawer: closeDrawerFilter,
-  } = useDrawer('DrawerFilterVendor');
 
   // table column
   const columnHelper = createColumnHelper();
@@ -89,25 +76,6 @@ const HistoryMaintenancePage = () => {
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='headline-s'>History Maintenance</h2>
           </div>
-          <div className='flex gap-4'>
-            <Button
-              variant='primary-outline'
-              size='lg'
-              className='flex items-center button-shadow'
-              onClick={toggleDrawerFilter}
-            >
-              <MdOutlineFilterAlt className='text-2xl mr-2' />
-              Filter
-            </Button>
-            {/* <Button
-              size='lg'
-              className='flex items-center'
-              onClick={toggleDrawerAdd}
-            >
-              <IoMdAdd className='text-2xl mr-2' />
-              Add
-            </Button> */}
-          </div>
         </div>
       </header>
       <main>
@@ -122,14 +90,6 @@ const HistoryMaintenancePage = () => {
             loading={loading}
           />
         </div>
-
-        <DrawerFilterVendor
-          idDrawer={idDrawerFilterVendor}
-          isDrawerOpen={isDrawerFilterVendorOpen}
-          closeDrawer={closeDrawerFilter}
-          setQueryParams={setQueryParams}
-          refetch={refetch}
-        />
       </main>
     </div>
   );

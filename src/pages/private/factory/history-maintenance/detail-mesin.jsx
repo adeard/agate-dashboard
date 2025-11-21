@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import {
-  MdOutlineFilterAlt,
   MdKeyboardArrowRight,
+  MdFileDownload,
   MdOutlineVisibility,
 } from 'react-icons/md';
 
@@ -135,22 +135,20 @@ const DetailMesinPage = () => {
           </div>
           <div className='flex gap-4'>
             <Button
-              variant='primary-outline'
-              size='lg'
-              className='flex items-center button-shadow'
-              onClick={toggleDrawerFilter}
-            >
-              <MdOutlineFilterAlt className='text-2xl mr-2' />
-              Filter
-            </Button>
-            {/* <Button
               size='lg'
               className='flex items-center'
-              onClick={toggleDrawerAdd}
+              // onClick={() => {
+              //   window.open(
+              //     BASE_URL +
+              //       '/v1/inspection-data/download-pdf/' +
+              //       (historyId ? historyId : id),
+              //     '_blank'
+              //   );
+              // }}
             >
-              <IoMdAdd className='text-2xl mr-2' />
-              Add
-            </Button> */}
+              <MdFileDownload className='text-xl mr-2' />
+              Unduh Laporan
+            </Button>
           </div>
         </div>
       </header>

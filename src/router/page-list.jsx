@@ -67,6 +67,14 @@ const pageList = {
       component: lazy(() => import('@/pages/private/factory/history-maintenance/detail-maintenance')),
     },
     {
+      path: '/factory/:factoryId/logs-mesin',
+      component: lazy(() => import('@/pages/private/factory/logs-mesin')),
+    },
+    {
+      path: '/factory/:factoryId/logs-mesin/:logsId',
+      component: lazy(() => import('@/pages/private/factory/logs-mesin/detail')),
+    },
+    {
       path: '/user-access',
       component: lazy(() => import('@/pages/private/user-access')),
     },

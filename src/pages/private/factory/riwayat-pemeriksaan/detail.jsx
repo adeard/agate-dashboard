@@ -350,15 +350,14 @@ const DetailRiwayatPemeriksaanPage = () => {
         </div>
       </header>
       <main>
-        <div className='flex gap-5 w-full max-w-[1280px] min-h-[calc(100vh-64px)] m-auto'>
-          <div className='basis-1/3 pl-16'>
+        <div className='flex gap-8 w-full max-w-[1280px] min-h-[calc(100vh-64px)] m-auto'>
+          <div className='basis-1/3 pl-16 space-y-6'>
             <div
               className='card w-full bg-white p-6'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <h3 className='subheadline-s text-color-1'>Detail Grading</h3>
-
-              <div className='space-y-4 mt-8'>
+              <div className='space-y-4 mt-4'>
                 <div>
                   <label className='label !pl-0'>
                     <span className='label-text tag-m text-color-2'>
@@ -410,12 +409,11 @@ const DetailRiwayatPemeriksaanPage = () => {
               </div>
             </div>
             <div
-              className='card w-full bg-white p-6 mt-5'
+              className='card w-full bg-white p-6'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <h3 className='subheadline-s text-color-1'>Hasil Grading</h3>
-
-              <div className='space-y-4 mt-8'>
+              <div className='space-y-4 mt-4'>
                 <div>
                   <label className='label !pl-0'>
                     <span className='label-text tag-m text-color-2'>
@@ -461,7 +459,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
           </div>
 
-          <div className='basis-2/3'>
+          <div className='basis-2/3 space-y-6'>
             <div
               className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
@@ -476,7 +474,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
 
             <div
-              className='card w-full bg-white p-4 mt-5'
+              className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <CustomTable
@@ -489,7 +487,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
 
             <div
-              className='card w-full bg-white p-4 mt-5'
+              className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
               <CustomTable

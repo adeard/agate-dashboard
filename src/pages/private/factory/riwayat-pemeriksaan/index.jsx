@@ -142,28 +142,23 @@ const RiwayatPemeriksaanPage = () => {
       ),
     }),
     columnHelper.display({
+      header: <div className='end-column-content'></div>,
       id: 'actions',
-      cell: (info) => {
-        const navigate = useNavigate();
-
-        return (
-          <div className='flex justify-end gap-4'>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-              size='lg'
-              onClick={() =>
-                window.open(
-                  `riwayat-pemeriksaan/${info.row.original._id}`,
-                  '_blank'
-                )
-              }
-            >
-              <MdOutlineVisibility className='text-lg' />
-              Detail
-            </Button>
-          </div>
-        );
-      },
+      cell: (info) => (
+        <Button
+          className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
+          size='lg'
+          onClick={() =>
+            window.open(
+              `riwayat-pemeriksaan/${info.row.original._id}`,
+              '_blank'
+            )
+          }
+        >
+          <MdOutlineVisibility className='text-lg' />
+          Detail
+        </Button>
+      ),
     }),
   ];
 
