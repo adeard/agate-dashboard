@@ -8,6 +8,7 @@ import {
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { MdOutlineDoNotDisturbOn } from 'react-icons/md';
 import Button from './Button';
+import { joinClassnames } from '@/utils/common';
 
 const renderPageButtons = (table) => {
   const pageCount = table.getPageCount();
@@ -131,9 +132,9 @@ const CustomTable = ({
                 <table className='table h-full'>
                   <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
-                      <tr key={headerGroup.id} className='text-color-2'>
+                      <tr key={headerGroup.id} className='text-color-3'>
                         {headerGroup.headers.map((header) => (
-                          <th key={header.id} className='tag-l !font-bold'>
+                          <th key={header.id} className='tag-l'>
                             {header.isPlaceholder
                               ? null
                               : flexRender(
@@ -154,9 +155,16 @@ const CustomTable = ({
                         {row.getVisibleCells().map((cell) => (
                           <td
                             key={cell.id}
-                            className={`${
-                              cell.column.columnDef.meta?.className || ''
-                            }`}
+                            className={joinClassnames([
+                              cell.column.columnDef.meta?.className || '',
+                              typeof cell.column.columnDef.header ===
+                                'object' &&
+                              cell.column.columnDef.header?.props?.className?.includes(
+                                'end-column-content'
+                              )
+                                ? 'flex justify-end w-full'
+                                : '',
+                            ])}
                           >
                             {flexRender(
                               cell.column.columnDef.cell,

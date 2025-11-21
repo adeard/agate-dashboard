@@ -55,6 +55,18 @@ const pageList = {
       ),
     },
     {
+      path: '/factory/:factoryId/history-maintenance',
+      component: lazy(() => import('@/pages/private/factory/history-maintenance')),
+    },
+    {
+      path: '/factory/:factoryId/history-maintenance/:mesinId',
+      component: lazy(() => import('@/pages/private/factory/history-maintenance/detail-mesin')),
+    },
+    {
+      path: '/factory/:factoryId/history-maintenance/:mesinId/:maintenanceId',
+      component: lazy(() => import('@/pages/private/factory/history-maintenance/detail-maintenance')),
+    },
+    {
       path: '/user-access',
       component: lazy(() => import('@/pages/private/user-access')),
     },

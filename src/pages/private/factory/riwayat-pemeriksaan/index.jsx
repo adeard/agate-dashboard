@@ -20,6 +20,7 @@ import CustomTable from '@/components/shared/CustomTable';
 import dayjs from 'dayjs';
 import exportExcel from '@/utils/xlsx';
 import { BASE_URL } from '@/utils/axios';
+import { getObjectSearch } from '@/utils/common';
 
 const countPercentage = (value = 0, divider = 0, fixed = null) => {
   let percent = (value / divider || 1) * 100;
@@ -31,7 +32,7 @@ const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const { data, loading, meta, refetch, setQueryParams } = useGet(
+  const { data, loading, meta, refetch, setQueryParams, objectSearch } = useGet(
     '/v1/inspection-data/by-factory/' + factoryId
   );
   const { data: dataExcel, refetch: refetchDownloadExcel } = useGet(
@@ -182,11 +183,10 @@ const RiwayatPemeriksaanPage = () => {
               size='lg'
               className='flex items-center'
               onClick={() => {
+                const query = new URLSearchParams(objectSearch).toString();
+
                 window.open(
-                  BASE_URL +
-                    '/v1/inspection-data/download-pdf/' +
-                    factoryId +
-                    '/summary',
+                  `${BASE_URL}/v1/inspection-data/download-pdf/${factoryId}/summary?${query}`,
                   '_blank'
                 );
               }}
@@ -199,7 +199,6 @@ const RiwayatPemeriksaanPage = () => {
               className='flex items-center'
               onClick={() => {
                 refetchDownloadExcel().then((res) => {
-                  console.log({ res });
                   exportExcel(res, 'Laporan Excel Grading All');
                 });
               }}

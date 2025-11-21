@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { MdOutlineFilterAlt, MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineFilterAlt, MdEdit } from 'react-icons/md';
 import { IoMdAdd } from 'react-icons/io';
 
 import { useGet } from '@/services/use-services';
@@ -14,6 +14,7 @@ import Button from '@/components/shared/Button';
 import DrawerFormFactory from './components/DrawerFormFactory';
 import DrawerFilterFactory from './components/DrawerFilterFactory';
 import CustomTable from '@/components/shared/CustomTable';
+import DropdownMenu from '@/components/shared/DropdownMenu';
 
 const FactoryPage = () => {
   const navigate = useNavigate();
@@ -46,58 +47,74 @@ const FactoryPage = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('no', {
-      header: <div className='text-center text-color-2'>NO</div>,
+      header: <div className='text-center'>NO</div>,
       cell: (info) => (
         <div className='text-center !body-m-r !text-color-1'>
           {info.row.index + 1}
         </div>
       ),
-      size: 20,
     }),
     columnHelper.accessor('name', {
-      header: <div className='text-color-2'>PABRIK</div>,
+      header: <div className='w-20'>PABRIK</div>,
       cell: (info) => (
-        <div className='!body-m-r !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-r !text-color-1 !font-medium'>
+          {info.getValue()}
+        </div>
       ),
-      size: 500,
+    }),
+    columnHelper.accessor('total_vendor', {
+      header: <div className='w-80'>JUMLAH VENDOR</div>,
+      cell: (info) => <div className='!body-m-r'>{info.getValue()}</div>,
     }),
     columnHelper.display({
+      header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => {
+        const data = info.row.original;
+        const handleStoreFactoryName = () =>
+          sessionStorage.setItem('factoryName', data.name);
+
         return (
-          <div className='flex justify-end gap-4'>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
-              size='lg'
-              onClick={() => {
-                navigate(`${info.row.original._id}/riwayat-pemeriksaan`);
-                sessionStorage.setItem('factoryName', info.row.original.name);
-              }}
-            >
-              Riwayat Pemeriksaan
-            </Button>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-white group-hover:text-color-1 group-hover:button-shadow'
-              size='lg'
-              onClick={() => {
-                navigate(`${info.row.original._id}/vendor`);
-                sessionStorage.setItem('factoryName', info.row.original.name);
-              }}
-            >
-              Daftar Vendor
-            </Button>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-              size='lg'
-              onClick={() => {
-                setSelectedData(info.row.original);
-                toggleDrawerEdit();
-              }}
-            >
-              <MdOutlineEdit className='text-lg' />
-              Edit
-            </Button>
-          </div>
+          <DropdownMenu
+            info={info}
+            options={[
+              <span
+                className='flex items-center gap-2'
+                onClick={() => {
+                  setSelectedData(data);
+                  toggleDrawerEdit();
+                }}
+              >
+                <MdEdit className='text-lg text-color-2' />
+                Edit
+              </span>,
+
+              <Link
+                to={`${data._id}/riwayat-pemeriksaan`}
+                onClick={handleStoreFactoryName}
+              >
+                Riwayat Pemeriksaan
+              </Link>,
+
+              <Link to={`${data._id}/vendor`} onClick={handleStoreFactoryName}>
+                Daftar Vendor
+              </Link>,
+
+              <Link
+                to={`${data._id}/history-maintenance`}
+                onClick={handleStoreFactoryName}
+              >
+                History Maintenance
+              </Link>,
+
+              <Link
+                to={`${data._id}/logs-mesin`}
+                onClick={handleStoreFactoryName}
+              >
+                Logs Mesin
+              </Link>,
+            ]}
+          />
         );
       },
     }),

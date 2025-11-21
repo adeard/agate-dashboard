@@ -1,14 +1,24 @@
+import { useEffect, useRef } from 'react';
 import { joinClassnames } from '@/utils/common';
 
 const Checkbox = ({
   name,
   label,
   isChecked = false,
+  isIndeterminate = false,
   classNameDiv,
   classNameLabel,
   disabled = false,
   onChange,
 }) => {
+  const checkboxRef = useRef(null);
+
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
+
   return (
     <div className={classNameDiv}>
       <label
@@ -17,6 +27,7 @@ const Checkbox = ({
         }`}
       >
         <input
+          ref={checkboxRef}
           id={name}
           name={name}
           type='checkbox'

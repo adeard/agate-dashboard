@@ -36,20 +36,20 @@ const VendorPage = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('no', {
-      header: <div className='text-center text-color-2'>NO</div>,
+      header: <div className='text-center'>NO</div>,
       cell: (info) => (
         <div className='text-center !body-m-r !text-color-1'>
           {info.row.index + 1}
         </div>
       ),
-      size: 20,
     }),
     columnHelper.accessor('name', {
-      header: <div className='text-color-2'>Vendor</div>,
+      header: <div>VENDOR</div>,
       cell: (info) => (
-        <div className='!body-m-r !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-r !text-color-1 !font-medium'>
+          {info.getValue()}
+        </div>
       ),
-      size: 800,
     }),
     // columnHelper.display({
     //   id: 'actions',
