@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import CustomSelect from '@/components/shared/CustomSelect';
-import { vendorTypeOptions } from '@/utils/optionsKey';
+
+import { vendorTypeOptions, vendorKJGMTypeOptions } from '@/utils/optionsKey';
 
 const MobileDrawerFilter = ({
   idDrawer,
@@ -13,6 +15,9 @@ const MobileDrawerFilter = ({
   optionsFactory,
   optionsVendor,
 }) => {
+  const [vendorTypeOptionList, setVendorTypeOptionList] =
+    useState(vendorTypeOptions);
+
   const handleSubmit = () => {
     form.handleSubmit();
     closeDrawer();
@@ -90,6 +95,11 @@ const MobileDrawerFilter = ({
                     ? selectedOption.value
                     : null;
                   field.handleChange(selectedValue);
+                  if (selectedValue === '68fc9b419a7c87b51e2002b5') {
+                    setVendorTypeOptionList(vendorKJGMTypeOptions);
+                  } else {
+                    setVendorTypeOptionList(vendorTypeOptions);
+                  }
                 }}
                 size='lg'
               />
@@ -104,7 +114,7 @@ const MobileDrawerFilter = ({
                 className='body-m-r !h-full'
                 name={field.name}
                 value={field.state.value}
-                options={vendorTypeOptions || []}
+                options={vendorTypeOptionList || []}
                 onChange={(selectedOption) => {
                   const selectedValue = selectedOption
                     ? selectedOption.value

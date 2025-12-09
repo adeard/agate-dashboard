@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-
-import { vendorTypeOptions } from '@/utils/optionsKey';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import CustomSelect from '@/components/shared/CustomSelect';
+
+import { vendorTypeOptions, vendorKJGMTypeOptions } from '@/utils/optionsKey';
 
 const DrawerFilterDashboard = ({
   idDrawer,
@@ -15,6 +16,9 @@ const DrawerFilterDashboard = ({
   optionsFactory,
   optionsVendor,
 }) => {
+  const [vendorTypeOptionList, setVendorTypeOptionList] =
+    useState(vendorTypeOptions);
+
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
     drawerElement.checked = false;
@@ -100,6 +104,11 @@ const DrawerFilterDashboard = ({
                         ? selectedOption.value
                         : null;
                       field.handleChange(selectedValue);
+                      if (selectedValue === '68fc9b419a7c87b51e2002b5') {
+                        setVendorTypeOptionList(vendorKJGMTypeOptions);
+                      } else {
+                        setVendorTypeOptionList(vendorTypeOptions);
+                      }
                     }}
                     size='lg'
                   />
@@ -121,7 +130,7 @@ const DrawerFilterDashboard = ({
                     className='body-m-r !h-full'
                     name={field.name}
                     value={field.state.value}
-                    options={vendorTypeOptions || []}
+                    options={vendorTypeOptionList || []}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value
