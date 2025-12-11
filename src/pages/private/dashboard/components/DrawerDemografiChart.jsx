@@ -43,7 +43,7 @@ const DrawerDemografiChart = ({
       header: <div className='text-color-2'>TOTAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue().toLocaleString()}
+          {info.getValue()?.toLocaleString() || 0}
         </div>
       ),
     }),

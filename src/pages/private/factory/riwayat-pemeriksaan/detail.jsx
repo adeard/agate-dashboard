@@ -28,7 +28,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -37,7 +37,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>PEST</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -46,7 +46,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>BB</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -55,7 +55,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>TP</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -64,7 +64,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>{`<3KG`}</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -73,7 +73,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -82,7 +82,7 @@ const columnsDiterima = [
     header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -103,7 +103,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>NORMAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -112,7 +112,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>PEST</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -121,7 +121,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>BB</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -130,7 +130,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>TP</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -139,7 +139,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>{`<3KG`}</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -148,7 +148,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>3-5KG</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -157,7 +157,7 @@ const columnsDitolak = [
     header: () => <div className='text-center'>TOTAL</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
       </div>
     ),
     size: 20,
@@ -178,7 +178,7 @@ const columnsDidenda = [
     header: () => <div className='text-center'>DENDA</div>,
     cell: (info) => (
       <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue().toLocaleString()}
+        {info.getValue()?.toLocaleString() || 0}
         <span className='!body-s-r text-color-2'>kg</span>
       </div>
     ),
@@ -266,7 +266,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: dataDiterima?.reduce((acc, row) => acc + row.total, 0),
     normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
-    largeFruit: dataDiterima?.reduce((acc, row) => acc + row.largeFruit, 0),
+    largeFruit: dataDiterima?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
     longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
     '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
@@ -277,7 +277,7 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: dataDitolak?.reduce((acc, row) => acc + row.total, 0),
     normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
-    largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit, 0),
+    largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
     longStash: dataDitolak?.reduce((acc, row) => acc + row.longStash, 0),
     '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDitolak?.reduce((acc, row) => acc + row['3-5kg'], 0),
@@ -338,7 +338,9 @@ const DetailRiwayatPemeriksaanPage = () => {
               className='flex items-center'
               onClick={() => {
                 window.open(
-                  BASE_URL + '/v1/inspection-data/download-pdf/' + (historyId ? historyId : id),
+                  BASE_URL +
+                    '/v1/inspection-data/download-pdf/' +
+                    (historyId ? historyId : id),
                   '_blank'
                 );
               }}
