@@ -18,7 +18,7 @@ const HistoryMaintenancePage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const { data, loading, refetch, setQueryParams } = useGet('');
+  const { data, loading, refetch, setQueryParams } = useGet('/v4/machine-check');
 
   // table column
   const columnHelper = createColumnHelper();

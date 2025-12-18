@@ -2,7 +2,10 @@ import React from 'react';
 
 import { MdArrowBackIosNew } from 'react-icons/md';
 
+import Button from '@/components/shared/Button';
+
 import { formatPercentWithLeadingZeros } from '@/utils/common';
+import { BASE_URL } from '@/utils/axios';
 
 import dayjs from 'dayjs';
 
@@ -21,7 +24,14 @@ const TotalTruk = ({ data, goBack }) => {
           const rows = [
             {
               label: 'TANGGAL',
-              value: dayjs(item.date).format('DD/MM/YYYY, HH:mm'),
+              value: (
+                <>
+                  {dayjs(item.date).format('DD/MM/YYYY')}
+                  <br />
+                  {dayjs(item.date).format('HH:mm')} -{' '}
+                  {dayjs(item.finish_date).format('HH:mm')}
+                </>
+              ),
               bold: true,
             },
             { label: 'NOMOR MESIN', value: item.mesin, bg: true },
@@ -91,7 +101,7 @@ const TotalTruk = ({ data, goBack }) => {
           return (
             <div
               key={index}
-              className='bg-white border border-[#E7E7E7] button-shadow rounded-xl py-4'
+              className='bg-white border border-[#E7E7E7] button-shadow rounded-xl pt-4'
             >
               <div className='grid grid-cols-2 text-[#3B3B3B]'>
                 {rows.map((row, i) => {
@@ -119,6 +129,22 @@ const TotalTruk = ({ data, goBack }) => {
                     </React.Fragment>
                   );
                 })}
+              </div>
+              <div className='p-4'>
+                <Button
+                  variant='primary'
+                  size='lg'
+                  className='button-l'
+                  full
+                  onClick={() => {
+                    window.open(
+                      BASE_URL + '/v1/inspection-data/download-pdf/' + item._id,
+                      '_blank'
+                    );
+                  }}
+                >
+                  Download PDF
+                </Button>
               </div>
             </div>
           );
