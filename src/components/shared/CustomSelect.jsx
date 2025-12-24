@@ -37,6 +37,10 @@ const customStyles = {
       color: '#6D6060',
     },
   }),
+  menuPortal: (base) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 const CustomSelect = ({
@@ -74,6 +78,10 @@ const CustomSelect = ({
       isMulti={multiple}
       isDisabled={disabled}
       isSearchable={isSearchable}
+      menuPortalTarget={document.body}
+      menuShouldScrollIntoView={false}
+      menuPlacement='auto'
+      menuPosition='fixed'
     />
   );
 };

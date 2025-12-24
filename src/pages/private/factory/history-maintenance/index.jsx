@@ -1,10 +1,8 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdKeyboardArrowRight, MdOutlineVisibility } from 'react-icons/md';
-
-import { useGet } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
@@ -14,7 +12,6 @@ const tempData = new Array(4).fill().map((_, index) => ({
 }));
 
 const HistoryMaintenancePage = () => {
-  const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
   // table column
@@ -41,7 +38,7 @@ const HistoryMaintenancePage = () => {
       id: 'actions',
       cell: (info) => (
         <Link
-          to='list-date'
+          to={String(info.row.index + 1)}
           onClick={() =>
             sessionStorage.setItem('mesinName', info.row.original.mesin)
           }

@@ -59,19 +59,23 @@ const pageList = {
       component: lazy(() => import('@/pages/private/factory/history-maintenance')),
     },
     {
-      path: '/factory/:factoryId/history-maintenance/:mesinId',
-      component: lazy(() => import('@/pages/private/factory/history-maintenance/detail-mesin')),
+      path: '/factory/:factoryId/history-maintenance/:mesinNumber',
+      component: lazy(() => import('@/pages/private/factory/history-maintenance/list-maintenance')),
     },
     {
-      path: '/factory/:factoryId/history-maintenance/:mesinId/:maintenanceId',
-      component: lazy(() => import('@/pages/private/factory/history-maintenance/detail-maintenance')),
+      path: '/factory/:factoryId/history-maintenance/:mesinNumber/:maintenanceId',
+      component: lazy(() => import('@/pages/private/factory/history-maintenance/detail')),
     },
     {
       path: '/factory/:factoryId/logs-mesin',
       component: lazy(() => import('@/pages/private/factory/logs-mesin')),
     },
     {
-      path: '/factory/:factoryId/logs-mesin/:logsId',
+      path: '/factory/:factoryId/logs-mesin/:mesinNumber',
+      component: lazy(() => import('@/pages/private/factory/logs-mesin/list-log')),
+    },
+    {
+      path: '/factory/:factoryId/logs-mesin/:mesinNumber/:logDate',
       component: lazy(() => import('@/pages/private/factory/logs-mesin/detail')),
     },
     {

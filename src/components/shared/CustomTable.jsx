@@ -162,7 +162,7 @@ const CustomTable = ({
                               cell.column.columnDef.header?.props?.className?.includes(
                                 'end-column-content'
                               )
-                                ? 'flex justify-end w-full'
+                                ? 'flex items-center justify-end w-full h-full'
                                 : '',
                             ])}
                           >

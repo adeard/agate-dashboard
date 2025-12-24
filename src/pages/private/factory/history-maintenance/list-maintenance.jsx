@@ -18,22 +18,8 @@ import Checkbox from '@/components/shared/Checkbox';
 
 import dayjs from 'dayjs';
 
-const tempData = Array.from({ length: 15 }, (_, i) => {
-  const date = new Date();
-  date.setDate(date.getDate() + i);
-
-  const dayName = date.toLocaleDateString('id-ID', { weekday: 'long' });
-
-  return {
-    date,
-    cek_awal: true,
-    cek_akhir: true,
-    cek_mingguan: dayName === 'Minggu',
-  };
-});
-
-const DetailMesinPage = () => {
-  const { factoryId, mesinId } = useParams();
+const ListMaintenancePage = () => {
+  const { factoryId, mesinNumber } = useParams();
 
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
@@ -41,7 +27,11 @@ const DetailMesinPage = () => {
   const { data, loading, refetch, setQueryParams } =
     useGet('/v4/machine-check');
 
-  console.log(data);
+  const dataFilter = data?.filter(
+    (item) => item.machine === mesinNumber && item.factory?._id === factoryId
+  );
+
+  console.log(dataFilter);
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -105,7 +95,9 @@ const DetailMesinPage = () => {
       header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => (
-        <Link to={info.row.original._id}>
+        <Link
+          to={`${info.row.original.machine_check_id}?machine=${info.row.original.machine}&factory=${info.row.original.factory._id}&date=${info.row.original.date}`}
+        >
           <Button
             className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
             size='lg'
@@ -161,7 +153,7 @@ const DetailMesinPage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={data}
+            dataTable={dataFilter}
             columns={columns}
             showPagination={true}
             loading={loading}
@@ -180,4 +172,4 @@ const DetailMesinPage = () => {
   );
 };
 
-export default DetailMesinPage;
+export default ListMaintenancePage;

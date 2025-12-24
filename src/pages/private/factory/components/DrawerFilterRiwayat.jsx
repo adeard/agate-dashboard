@@ -1,17 +1,17 @@
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useForm } from '@tanstack/react-form';
 
 import { IoMdClose } from 'react-icons/io';
 
-import { useGet } from '@/services/use-services';
-import { getFilteredValues } from '@/utils/common';
+import { useGetWithoutObjectSearch } from '@/services/use-services';
+import { getFilteredValues, mappingOptions } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
 import CustomSelect from '@/components/shared/CustomSelect';
-
 
 const DrawerFilterRiwayat = ({
   idDrawer,
@@ -20,9 +20,11 @@ const DrawerFilterRiwayat = ({
   setQueryParams,
   refetch,
 }) => {
+  const { factoryId } = useParams();
   const [searchParams] = useSearchParams();
 
-  const { data: optionsVendor } = useGet('/v1/options/vendor');
+  const { data: optionsVendor, refetch: refetchOptionsVendor } =
+    useGetWithoutObjectSearch('/v2/vendor', {}, false, false);
 
   const form = useForm({
     defaultValues: {
@@ -41,7 +43,6 @@ const DrawerFilterRiwayat = ({
       const filteredValues = getFilteredValues(value);
 
       setQueryParams({ ...filteredValues });
-      refetch({ ...filteredValues });
 
       handleClose();
     },
@@ -49,7 +50,6 @@ const DrawerFilterRiwayat = ({
 
   const handleCancel = () => {
     setQueryParams({});
-    refetch({});
     handleClose();
   };
 
@@ -59,6 +59,18 @@ const DrawerFilterRiwayat = ({
     closeDrawer();
     form.reset();
   };
+
+  useEffect(() => {
+    if (factoryId) {
+      refetchOptionsVendor({ factory: factoryId });
+    }
+  }, [factoryId]);
+
+  const paramsString = useMemo(() => searchParams.toString(), [searchParams]);
+
+  useEffect(() => {
+    refetch();
+  }, [paramsString]);
 
   return (
     <Drawer idDrawer={idDrawer} isOpen={isDrawerOpen} closeDrawer={handleClose}>
@@ -182,7 +194,7 @@ const DrawerFilterRiwayat = ({
                       className='body-m-r'
                       name={field.name}
                       value={field.state.value}
-                      options={optionsVendor || []}
+                      options={mappingOptions(optionsVendor) || []}
                       onChange={(selectedOption) => {
                         const selectedValue = selectedOption
                           ? selectedOption.value

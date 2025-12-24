@@ -62,12 +62,12 @@ const ChecklistCard = ({ title, data, setData }) => {
 };
 
 const DetailMaintenancePage = () => {
-  const { factoryId, mesinId, maintenanceId } = useParams();
+  const { factoryId, mesinNumber, maintenanceId } = useParams();
 
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
-  const { data, loading } = useGet(`/v4/machine-check/${maintenanceId}`);
+  const { data, loading } = useGet(`/v4/machine-check/`);
   console.log(data);
 
   const [tasks, setTasks] = useState([
@@ -170,7 +170,7 @@ const DetailMaintenancePage = () => {
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <Link
-              to={`/factory/${factoryId}/history-maintenance/${mesinId}`}
+              to={`/factory/${factoryId}/history-maintenance/${mesinNumber}`}
               className='font-semibold text-2xl text-color-3'
             >
               {mesinName}

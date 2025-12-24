@@ -1,41 +1,33 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
-
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import {
-  MdOutlineFilterAlt,
-  MdKeyboardArrowRight,
-  MdOutlineTextSnippet,
-  MdAddChart,
-  MdOutlineVisibility,
-} from 'react-icons/md';
+import { MdKeyboardArrowRight, MdAddChart } from 'react-icons/md';
 
-import { useGet } from '@/services/use-services';
-import useDrawer from '@/hooks/useDrawer';
+import { HiOutlineRefresh } from 'react-icons/hi';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
 import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
-import exportExcel from '@/utils/xlsx';
-import { BASE_URL } from '@/utils/axios';
-import { getObjectSearch } from '@/utils/common';
 
-const tempData = new Array(10).fill().map(() => ({
-  date: new Date(),
-  status: 'info',
-  subject: 'sensor',
-  keterangan: 's2_normal',
-  kode: 'SNS02-04',
-  pesan: 'Sensor S2 berfungsi normal',
-}));
+import useDrawer from '@/hooks/useDrawer';
+
+import { useGet } from '@/services/use-services';
 
 const DetailLogsMesinPage = () => {
-  const { factoryId } = useParams();
-  const factoryName = sessionStorage.getItem('factoryName');
+  const { factoryId, mesinNumber, logDate } = useParams();
+  const [searchParams] = useSearchParams();
 
-  const { data, loading, refetch, setQueryParams } = useGet('');
+  const factoryName = sessionStorage.getItem('factoryName');
+  const mesinName = sessionStorage.getItem('mesinName');
+
+  const { data, loading, refetch, setQueryParams } = useGet(
+    `/v4/machine-logs/data`,
+    {
+      filename: searchParams.get('filename'),
+    }
+  );
 
   const {
     idDrawer: idDrawerFilter,
@@ -75,15 +67,15 @@ const DetailLogsMesinPage = () => {
       header: 'SUBJECT',
       cell: (info) => (info.getValue() ? info.getValue() : '-'),
     }),
-    columnHelper.accessor('keterangan', {
+    columnHelper.accessor('notes', {
       header: 'KETERANGAN',
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('kode', {
+    columnHelper.accessor('code', {
       header: 'KODE',
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('pesan', {
+    columnHelper.accessor('message', {
       header: 'PESAN',
       cell: (info) => info.getValue(),
     }),
@@ -105,29 +97,25 @@ const DetailLogsMesinPage = () => {
               Logs Mesin
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
-            <h2 className='headline-s'>Logs 18/11/2025</h2>
+            <Link
+              to={`/factory/${factoryId}/logs-mesin/${mesinNumber}`}
+              className='font-semibold text-2xl text-color-3'
+            >
+              {mesinName}
+            </Link>
+            <MdKeyboardArrowRight className='text-2xl text-color-3' />
+            <h2 className='headline-s'>
+              Logs {dayjs(logDate).format('DD/MM/YYYY')}
+            </h2>
           </div>
           <div className='flex gap-4'>
             <Button
               size='lg'
               className='flex items-center'
-              onClick={() => {
-                refetchDownloadExcel().then((res) => {
-                  exportExcel(res, 'Laporan Excel Grading All');
-                });
-              }}
+              onClick={() => refetch()}
             >
-              <MdAddChart className='text-xl mr-2' />
-              Download Excel
-            </Button>
-            <Button
-              variant='primary-outline'
-              size='lg'
-              className='flex items-center button-shadow'
-              onClick={toggleDrawerFilter}
-            >
-              <MdOutlineFilterAlt className='text-2xl mr-2' />
-              Filter
+              <HiOutlineRefresh className='text-xl mr-2' />
+              Muat Ulang
             </Button>
           </div>
         </div>
@@ -138,7 +126,7 @@ const DetailLogsMesinPage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={tempData || []}
+            dataTable={data}
             columns={columns}
             showPagination={true}
             loading={loading}
