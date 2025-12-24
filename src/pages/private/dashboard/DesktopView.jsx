@@ -204,100 +204,124 @@ const DesktopViewDashboardPage = () => {
             </div>
           ) : (
             <>
-              <section className='grid grid-cols-5 gap-4'>
-                <div
-                  className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
-                  onClick={toggleDrawerRiwayatPemeriksaan}
-                >
-                  <label>
-                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                      TOTAL TRUK
-                    </span>
-                  </label>
-                  <p>
-                    <span className='subheadline-s text-color-1'>
-                      {data?.monitoring.total_grading.toLocaleString()}
-                    </span>{' '}
-                    <span className='body-m-bold text-color-3 text-sm'>
-                      truk{' '}
-                      <IoMdArrowDropright className='inline text-lg text-primary-2' />
-                    </span>
-                  </p>
+              <section className='grid grid-cols-2 gap-4'>
+                <div className='grid grid-rows-2 gap-4'>
+                  <div
+                    className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
+                    onClick={toggleDrawerRiwayatPemeriksaan}
+                  >
+                    <label>
+                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                        TOTAL TRUK
+                      </span>
+                    </label>
+                    <p>
+                      <span className='subheadline-s text-color-1'>
+                        {data?.monitoring.total_grading.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-color-3 text-sm'>
+                        truk{' '}
+                        <IoMdArrowDropright className='inline text-lg text-primary-2' />
+                      </span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                        TOTAL JANJANG
+                      </span>
+                    </label>
+                    <p>
+                      <span className='subheadline-s text-color-1'>
+                        {data?.monitoring.total_tandan.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-color-3 text-sm'>
+                        Pcs
+                      </span>
+                    </p>
+                  </div>
                 </div>
-                <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-                  <label>
-                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                      TOTAL JANJANG
-                    </span>
-                  </label>
-                  <p>
-                    <span className='subheadline-s text-color-1'>
-                      {data?.monitoring.total_tandan.toLocaleString()}
-                    </span>{' '}
-                    <span className='body-m-bold text-color-3 text-sm'>
-                      Pcs
-                    </span>
-                  </p>
-                </div>
-                <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
-                  <label>
-                    <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
-                      DITERIMA
-                    </span>
-                  </label>
-                  <p className='text-[#006D33]'>
-                    <span className='subheadline-s'>
-                      {data?.monitoring.total_passed.toLocaleString()}
-                    </span>{' '}
-                    <span className='body-m-bold text-sm'>Pcs</span>
-                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                    <span className='body-m-r mr-1'>
-                      {formatPercentWithLeadingZeros(
-                        Number(data?.monitoring.percent_passed)
-                      )}
-                    </span>
-                    <span className='body-s-r text-sm'>%</span>
-                  </p>
-                </div>
-                <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
-                  <label>
-                    <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
-                      DITOLAK
-                    </span>
-                  </label>
-                  <p className='text-secondary-2'>
-                    <span className='subheadline-s'>
-                      {data?.monitoring.total_rejected.toLocaleString()}
-                    </span>{' '}
-                    <span className='body-m-bold text-sm'>Pcs</span>
-                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                    <span className='body-m-r mr-1'>
-                      {formatPercentWithLeadingZeros(
-                        Number(data?.monitoring.percent_rejected)
-                      )}
-                    </span>
-                    <span className='body-s-r text-sm'>%</span>
-                  </p>
-                </div>
-                <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
-                  <label>
-                    <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
-                      DIDENDA
-                    </span>
-                  </label>
-                  <p className='text-[#E07324]'>
-                    <span className='subheadline-s'>
-                      {data?.monitoring.total_fined.toLocaleString()}
-                    </span>{' '}
-                    <span className='body-m-bold text-sm'>Pcs</span>
-                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                    <span className='body-m-r mr-1'>
-                      {formatPercentWithLeadingZeros(
-                        Number(data?.monitoring.percent_fined)
-                      )}
-                    </span>
-                    <span className='body-s-r text-sm'>%</span>
-                  </p>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className=' bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-color-1 flex items-center gap-2'>
+                        MULTIPLE
+                      </span>
+                    </label>
+                    <p className='text-color-1'>
+                      <span className='subheadline-s'>
+                        {data?.monitoring.total_multiple.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-sm'>Pcs</span>
+                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                      <span className='body-m-r mr-1'>
+                        {formatPercentWithLeadingZeros(
+                          Number(data?.monitoring.percent_multiple)
+                        )}
+                      </span>
+                      <span className='body-s-r text-sm'>%</span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
+                        DITERIMA
+                      </span>
+                    </label>
+                    <p className='text-[#006D33]'>
+                      <span className='subheadline-s'>
+                        {data?.monitoring.total_passed.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-sm'>Pcs</span>
+                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                      <span className='body-m-r mr-1'>
+                        {formatPercentWithLeadingZeros(
+                          Number(data?.monitoring.percent_passed)
+                        )}
+                      </span>
+                      <span className='body-s-r text-sm'>%</span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
+                        DITOLAK
+                      </span>
+                    </label>
+                    <p className='text-secondary-2'>
+                      <span className='subheadline-s'>
+                        {data?.monitoring.total_rejected.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-sm'>Pcs</span>
+                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                      <span className='body-m-r mr-1'>
+                        {formatPercentWithLeadingZeros(
+                          Number(data?.monitoring.percent_rejected)
+                        )}
+                      </span>
+                      <span className='body-s-r text-sm'>%</span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
+                        DIDENDA
+                      </span>
+                    </label>
+                    <p className='text-[#E07324]'>
+                      <span className='subheadline-s'>
+                        {data?.monitoring.total_fined.toLocaleString()}
+                      </span>{' '}
+                      <span className='body-m-bold text-sm'>Pcs</span>
+                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                      <span className='body-m-r mr-1'>
+                        {formatPercentWithLeadingZeros(
+                          Number(data?.monitoring.percent_fined)
+                        )}
+                      </span>
+                      <span className='body-s-r text-sm'>%</span>
+                    </p>
+                  </div>
                 </div>
               </section>
               <section className='grid grid-cols-2 gap-4'>

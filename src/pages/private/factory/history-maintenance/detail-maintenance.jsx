@@ -67,6 +67,9 @@ const DetailMaintenancePage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
+  const { data, loading } = useGet(`/v4/machine-check/${maintenanceId}`);
+  console.log(data);
+
   const [tasks, setTasks] = useState([
     { label: 'Pemeriksaan harian awal', isChecked: false },
     {

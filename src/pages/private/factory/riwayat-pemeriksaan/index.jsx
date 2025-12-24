@@ -97,7 +97,11 @@ const RiwayatPemeriksaanPage = () => {
     }),
     columnHelper.accessor('grading_result.total_tandan', {
       header: 'TOTAL TANDAN',
-      cell: (info) => <div className=''>{info.getValue()}</div>,
+      cell: (info) => Number(info.getValue()).toLocaleString(),
+    }),
+    columnHelper.accessor('grading_result.total_multiple', {
+      header: 'TOTAL MULTIPLE',
+      cell: (info) => Number(info.getValue()).toLocaleString(),
     }),
     columnHelper.accessor('grading_result.total_rejected', {
       header: 'DITOLAK',

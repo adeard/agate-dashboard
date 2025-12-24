@@ -88,7 +88,7 @@ const renderPageButtons = (table) => {
 };
 
 const CustomTable = ({
-  dataTable,
+  dataTable = [],
   columns,
   footerData = null,
   showPagination = false,
@@ -104,10 +104,10 @@ const CustomTable = ({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: showPagination ? getPaginationRowModel() : undefined,
-    pageCount: showPagination ? Math.ceil(data.length / 10) : 1,
+    pageCount: showPagination ? Math.ceil(data?.length / 10) : 1,
     initialState: {
       pagination: {
-        pageSize: showPagination ? 10 : data.length,
+        pageSize: showPagination ? 10 : data?.length,
       },
     },
   });

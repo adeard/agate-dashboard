@@ -66,6 +66,26 @@ const MonitoringGrading = ({
               <span className='body-m-bold text-color-3 text-sm'>Pcs</span>
             </p>
           </div>
+          <div className='bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
+            <label>
+              <span className='label-text tag-m text-color-1 flex items-center gap-2'>
+                MULTIPLE
+              </span>
+            </label>
+            <p className='text-color-1'>
+              <span className='subheadline-s'>
+                {data?.monitoring.total_multiple.toLocaleString()}
+              </span>{' '}
+              <span className='body-m-bold text-sm'>Pcs</span>
+              <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+              <span className='body-m-r mr-1'>
+                {formatPercentWithLeadingZeros(
+                  Number(data?.monitoring.percent_multiple)
+                )}
+              </span>
+              <span className='body-s-r text-sm'>%</span>
+            </p>
+          </div>
           <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
             <label>
               <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>

@@ -9,16 +9,13 @@ import { useGet } from '@/services/use-services';
 import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
 
-const tempData = new Array(10).fill().map(() => ({
-  mesin: 'mesin a',
-  pabrik: 'pabrik a',
+const tempData = new Array(4).fill().map((_, index) => ({
+  mesin: `mesin ${index + 1}`,
 }));
 
 const HistoryMaintenancePage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
-
-  const { data, loading, refetch, setQueryParams } = useGet('/v4/machine-check');
 
   // table column
   const columnHelper = createColumnHelper();
@@ -39,16 +36,12 @@ const HistoryMaintenancePage = () => {
         </div>
       ),
     }),
-    columnHelper.accessor('pabrik', {
-      header: <div className='w-80'>JUMLAH VENDOR</div>,
-      cell: (info) => <div className='!body-m-r'>{info.getValue()}</div>,
-    }),
     columnHelper.display({
       header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => (
         <Link
-          to='1'
+          to='list-date'
           onClick={() =>
             sessionStorage.setItem('mesinName', info.row.original.mesin)
           }
@@ -84,10 +77,9 @@ const HistoryMaintenancePage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={tempData || []}
+            dataTable={tempData}
             columns={columns}
             showPagination={true}
-            loading={loading}
           />
         </div>
       </main>

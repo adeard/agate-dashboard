@@ -266,7 +266,10 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: dataDiterima?.reduce((acc, row) => acc + row.total, 0),
     normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
-    largeFruit: dataDiterima?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
+    largeFruit: dataDiterima?.reduce(
+      (acc, row) => acc + row.largeFruit || 0,
+      0
+    ),
     longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
     '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
     '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
@@ -423,7 +426,17 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_tandan}
+                    {Number(data?.grading_result.total_tandan).toLocaleString()}
+                  </p>
+                </div>
+                <div>
+                  <label className='label !pl-0'>
+                    <span className='label-text tag-m text-color-2'>
+                      TOTAL MULTIPLE
+                    </span>
+                  </label>
+                  <p className='body-m-b text-color-1'>
+                    {Number(data?.grading_result.total_multiple).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -433,7 +446,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_accepted}
+                    {Number(data?.grading_result.total_accepted).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -443,7 +456,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {data?.grading_result.total_rejected}
+                    {Number(data?.grading_result.total_rejected).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -453,7 +466,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)}{' '}
+                    {Number(dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)).toLocaleString()}{' '}
                     kg
                   </p>
                 </div>

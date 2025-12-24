@@ -10,6 +10,7 @@ const Checkbox = ({
   classNameLabel,
   disabled = false,
   onChange,
+  readOnly = false
 }) => {
   const checkboxRef = useRef(null);
 
@@ -35,6 +36,7 @@ const Checkbox = ({
           checked={isChecked}
           disabled={disabled}
           onChange={onChange}
+          readOnly={readOnly}
         />
         <span className={joinClassnames(['label-text', classNameLabel])}>
           {label}

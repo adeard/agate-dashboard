@@ -38,7 +38,10 @@ const DetailMesinPage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
-  const { data, loading, refetch, setQueryParams } = useGet('');
+  const { data, loading, refetch, setQueryParams } =
+    useGet('/v4/machine-check');
+
+  console.log(data);
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -78,7 +81,7 @@ const DetailMesinPage = () => {
       header: <div className='text-center'>PEMERIKSAAN HARIAN AWAL</div>,
       cell: (info) => (
         <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} />
+          <Checkbox isChecked={info.getValue()} readOnly />
         </div>
       ),
     }),
@@ -86,7 +89,7 @@ const DetailMesinPage = () => {
       header: <div className='text-center'>PEMERIKSAAN HARIAN AKHIR</div>,
       cell: (info) => (
         <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} />
+          <Checkbox isChecked={info.getValue()} readOnly />
         </div>
       ),
     }),
@@ -94,7 +97,7 @@ const DetailMesinPage = () => {
       header: <div className='text-center'>PEMERIKSAAN MINGGUAN</div>,
       cell: (info) => (
         <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} />
+          <Checkbox isChecked={info.getValue()} readOnly />
         </div>
       ),
     }),
@@ -102,7 +105,7 @@ const DetailMesinPage = () => {
       header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => (
-        <Link to='1'>
+        <Link to={info.row.original._id}>
           <Button
             className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
             size='lg'
@@ -158,7 +161,7 @@ const DetailMesinPage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={tempData || []}
+            dataTable={data}
             columns={columns}
             showPagination={true}
             loading={loading}
