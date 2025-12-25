@@ -1,7 +1,7 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { MdKeyboardArrowRight, MdAddChart } from 'react-icons/md';
+import { MdKeyboardArrowRight } from 'react-icons/md';
 
 import { HiOutlineRefresh } from 'react-icons/hi';
 
@@ -45,7 +45,7 @@ const DetailLogsMesinPage = () => {
     }),
     columnHelper.accessor('date', {
       header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('hh:mm DD/MM/YYYY'),
+      cell: (info) => dayjs(info.getValue()).format('hh:mm:ss DD/MM/YYYY'),
     }),
     columnHelper.accessor('status', {
       header: 'STATUS',

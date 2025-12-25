@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { MdKeyboardArrowRight, MdFileDownload } from 'react-icons/md';
@@ -9,8 +9,84 @@ import Button from '@/components/shared/Button';
 import Checkbox from '@/components/shared/Checkbox';
 
 import dayjs from 'dayjs';
+import 'dayjs/locale/id';
 
 import { BASE_URL } from '@/utils/axios';
+
+const typeConfig = {
+  daily_before: {
+    label: 'Pemeriksaan harian awal',
+  },
+  daily_after: {
+    label: 'Pemeriksaan harian akhir',
+  },
+  weekly: {
+    label: 'Pemeriksaan mingguan',
+  },
+};
+
+const itemsConfig = {
+  daily_before: [
+    { title: 'Area mesin bersih dari brondolan dan serabut' },
+    {
+      title: 'Conveyor brondolan bersih dari brondolan dan serabut',
+    },
+    {
+      title: 'Roller pemutar bersih dari brondolan dan serabut',
+    },
+    {
+      title: 'Hopper bersih dari brondolan dan serabut',
+    },
+    {
+      title:
+        'Setiap sisi rail sliding gate bersih dari brondolan, serabut, kerak dan pasir',
+    },
+    { title: 'Kondisi baut-baut sliding gate kencang' },
+    {
+      title:
+        'Test sliding gate dan pastikan setiap scraper sliding gate dapat buka tutup',
+    },
+    {
+      title:
+        'Interlock system berjalan dengan baik (Surat Jalan, Lampu Grading, Kamera dan Cylinder)',
+    },
+    {
+      title: 'Lampu akrilik keadaan bersih dan mata LED aktif semua',
+    },
+    {
+      title:
+        'Lensa kamera dan area capture kamera bersih tidak buram dan terhalang sarang serangga',
+    },
+  ],
+
+  daily_after: [
+    { title: 'Tutup semua aplikasi dan matikan komputer' },
+    {
+      title: 'Simpan handphone grading di dalam panel extension',
+    },
+    { title: 'Matikan UPS komputer dan UPS cylinder' },
+    { title: 'Turunkan MCB stabilizer' },
+    { title: 'MCB panel motor diturunkan' },
+    { title: 'MCCB tetap dalam kondisi aktif' },
+    { title: 'Panel ditutup rapat dan dikunci' },
+    { title: 'Screw kompresor dalam keadaan mati' },
+    { title: 'Screw kompresor dalam keadaan 0 BAR' },
+    { title: 'Manhole sensor tertutup' },
+    { title: 'Manhole grading box tertutup' },
+    { title: 'Manhole Chute brondolan tertutup' },
+  ],
+
+  weekly: [
+    { title: 'Screw baut cylinder terpasang dengan baik' },
+    { title: 'Tirai grading box masih layak' },
+    { title: 'Sensor grading box terpasang dengan baik' },
+    { title: 'Kondisi roda sliding gate' },
+    { title: 'Kondisi rantai conveyor' },
+    { title: 'Kondisi roller pemutar' },
+    { title: 'Kondisi bearing dan sprocket conveyor' },
+    { title: 'Kondisi gearbox dan motoran' },
+  ],
+};
 
 const ChecklistCard = ({ title, data, setData }) => {
   return (
@@ -22,33 +98,32 @@ const ChecklistCard = ({ title, data, setData }) => {
 
       <div className='bg-neutral-100 py-2 px-4 rounded-lg body-s-r mt-4'>
         {data.map((item, i) => {
-          if (item.label === 'Notes') {
+          if (item.title === 'Notes') {
             return (
               <div key={i} className='flex items-center justify-between mt-2'>
-                <p>{item.label}</p>
-                <p className='body-s-r'>lorem ipsum</p>
+                <p>{item.title}</p>
+                <p className='body-s-r break-words'>{item.notesValue}</p>
               </div>
             );
           }
 
           return (
             <div key={i} className='flex items-center justify-between'>
-              <p>{item.label}</p>
+              <div className='flex flex-col'>
+                <p>{item.title}</p>
+                {item.example && (
+                  <span className='text-neutral-500 text-xs italic'>
+                    {item.example}
+                  </span>
+                )}
+              </div>
 
               <Checkbox
                 isChecked={item.isChecked}
-                isIndeterminate={item.indeterminate}
-                disabled={item.indeterminate}
                 onChange={() => {
                   setData((prev) =>
                     prev.map((t, index) =>
-                      index === i
-                        ? {
-                            ...t,
-                            isChecked: !t.isChecked,
-                            indeterminate: false,
-                          }
-                        : t
+                      index === i ? { ...t, isChecked: !t.isChecked } : t
                     )
                   );
                 }}
@@ -62,96 +137,87 @@ const ChecklistCard = ({ title, data, setData }) => {
 };
 
 const DetailMaintenancePage = () => {
-  const { factoryId, mesinNumber, maintenanceId } = useParams();
+  const { factoryId, mesinNumber, maintenanceDate } = useParams();
 
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
   const { data, loading } = useGet(`/v4/machine-check/`);
-  console.log(data);
 
-  const [tasks, setTasks] = useState([
-    { label: 'Pemeriksaan harian awal', isChecked: false },
-    {
-      label: 'Pemeriksaan harian akhir',
-      isChecked: false,
-      indeterminate: true,
-    },
-    { label: 'Pemeriksaan mingguan', isChecked: false },
-  ]);
+  const dateParam = maintenanceDate;
+  const dateValue = dateParam || new Date();
 
-  const [cekAwal, setCekAwal] = useState([
-    { label: 'Area mesin bersih', isChecked: true },
-    { label: 'Screw conveyor bersih dari brondolan', isChecked: true },
-    {
-      label: 'Roller pemutar bersih dari brondolan',
-      isChecked: false,
-      indeterminate: true,
-    },
-    {
-      label: 'Hopper bersih dari brondolan',
-      isChecked: false,
-      indeterminate: true,
-    },
-    {
-      label: 'Rail sliding gate pemutar bersih dari brondolan',
-      isChecked: false,
-    },
-    { label: 'Kondisi baut-baut sliding gate kencang', isChecked: false },
-    { label: 'Kompresor angin diatas 6 BAR', isChecked: true },
-    { label: 'Sliding gate berfungsi secara normal', isChecked: false },
-    {
-      label: 'Lampu akrilik keadaan bersih dan mata LED aktif semua',
-      isChecked: false,
-    },
-    { label: 'Lensa kamera dan area capture kamera bersih', isChecked: false },
-    { label: 'Notes' },
-  ]);
+  const formattedDate = dayjs(dateValue)
+    .locale('id')
+    .format('dddd, DD MMMM YYYY');
 
-  const [cekAkhir, setCekAkhir] = useState([
-    { label: 'MBC panel motor diturunkan', isChecked: true },
-    { label: 'Screw kompresor dalam keadaan mari dan 0 BAR', isChecked: false },
-    {
-      label: 'MCCB tetap dalam keadaan aktif',
-      isChecked: false,
-      indeterminate: true,
-    },
-    {
-      label: 'Bersihkan area mesin dari sisa brondolan',
-      isChecked: false,
-      indeterminate: true,
-    },
-    { label: 'Panel ditutup rapat', isChecked: true },
-    { label: 'Manhole sensor tertutup', isChecked: true },
-    { label: 'Manhole grading box tertutup', isChecked: false },
-    { label: 'Manhole chute brondolan tertutup', isChecked: false },
-    { label: 'Notes' },
-  ]);
+  const isSunday = dayjs(dateValue).day() === 0;
 
-  const [cekMingguan, setCekMingguan] = useState([
-    { label: 'Kondisi screw dan baut cylinder', isChecked: true },
-    { label: 'Kondisi tirai grading box', isChecked: false },
-    {
-      label: 'Kondisi screw dan baut sensor grading box',
-      isChecked: false,
-      indeterminate: true,
-    },
-    {
-      label: 'Kondisi roda sliding gate',
-      isChecked: false,
-      indeterminate: true,
-    },
-    { label: 'Kondisi bearing roller', isChecked: true },
-    { label: 'Kondisi bearing conveyor', isChecked: false },
-    { label: 'Kompresor angin diatas 6 BAR', isChecked: true },
-    { label: 'Sliding gate berfungsi secara normal', isChecked: false },
-    {
-      label: 'Lampu akrilik keadaan bersih dan mata LED aktif semua',
-      isChecked: true,
-    },
-    { label: 'Lensa kamera dan area capture kamera bersih', isChecked: false },
-    { label: 'Notes' },
-  ]);
+  const typesToShow = [
+    'daily_before',
+    'daily_after',
+    ...(isSunday ? ['weekly'] : []),
+  ];
+
+  const getRecordByType = (type) =>
+    data?.filter((r) => r.type === type).at(-1) || null;
+
+  const getCheckboxStatus = (record) => {
+    if (!record || !record._id) {
+      return { checked: false, indeterminate: false };
+    }
+
+    const values = Object.values(record.questions || {});
+    const allTrue = values.length > 0 && values.every((v) => v === true);
+
+    return {
+      checked: allTrue,
+      indeterminate: !allTrue,
+    };
+  };
+
+  const mapChecklist = (apiItems) => {
+    const grouped = {
+      daily_before: [],
+      daily_after: [],
+      weekly: [],
+    };
+
+    apiItems.forEach((item) => {
+      const type = item.type;
+      const { questions, notes } = item;
+      const config = itemsConfig[type];
+
+      if (!config) return;
+
+      const mapped = config.map((cfg, idx) => ({
+        title: cfg.title,
+        example: cfg.example,
+        isChecked: questions[String(idx + 1)] ?? false,
+      }));
+
+      if (notes) {
+        mapped.push({ title: 'Notes', notesValue: notes });
+      }
+
+      grouped[type] = [...grouped[type], ...mapped];
+    });
+
+    return grouped;
+  };
+
+  const [checklists, setChecklists] = useState({
+    daily_before: [],
+    daily_after: [],
+    weekly: [],
+  });
+
+  useEffect(() => {
+    if (data) {
+      const result = mapChecklist(data);
+      setChecklists(result);
+    }
+  }, [data]);
 
   return (
     <div>
@@ -176,7 +242,7 @@ const DetailMaintenancePage = () => {
               {mesinName}
             </Link>
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
-            <h2 className='headline-s'>Minggu, 9 November 2025</h2>
+            <h2 className='headline-s'>{formattedDate}</h2>
           </div>
           <div className='flex gap-4'>
             <Button
@@ -214,7 +280,7 @@ const DetailMaintenancePage = () => {
                       NAMA MESIN
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>Mesin A</p>
+                  <p className='body-m-b text-color-1'>{mesinName}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -222,7 +288,7 @@ const DetailMaintenancePage = () => {
                       PABRIK
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>Pabrik A</p>
+                  <p className='body-m-b text-color-1'>{factoryName}</p>
                 </div>
                 <div>
                   <label className='label !pl-0'>
@@ -230,57 +296,55 @@ const DetailMaintenancePage = () => {
                       TANGGAL MAINTENANCE
                     </span>
                   </label>
-                  <p className='body-m-b text-color-1'>
-                    Minggu, 9 November 2025
-                  </p>
+                  <p className='body-m-b text-color-1'>{formattedDate}</p>
                 </div>
                 <div className='bg-neutral-100 py-2 px-4 rounded-lg body-s-r'>
-                  {tasks.map((item, i) => (
-                    <div key={i} className='flex items-center justify-between'>
-                      <p>{item.label}</p>
-                      <Checkbox
-                        isChecked={item.isChecked}
-                        isIndeterminate={item.indeterminate}
-                        onChange={() => {
-                          setTasks((prev) =>
-                            prev.map((t, index) =>
-                              index === i
-                                ? {
-                                    ...t,
-                                    isChecked: !t.isChecked,
-                                    indeterminate: false,
-                                  }
-                                : t
-                            )
-                          );
-                        }}
-                        disabled={item.indeterminate}
-                      />
-                    </div>
-                  ))}
+                  {typesToShow.map((type) => {
+                    const record = getRecordByType(type);
+                    const status = getCheckboxStatus(record);
+
+                    return (
+                      <span
+                        key={type}
+                        className='flex items-center justify-between gap-4'
+                      >
+                        <p>{typeConfig[type].label}</p>
+                        <Checkbox
+                          className='maintenance-checkbox'
+                          isChecked={status.checked}
+                          isIndeterminate={status.indeterminate}
+                          disabled={status.indeterminate}
+                          readOnly
+                        />
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </div>
 
           <div className='basis-2/3 space-y-6'>
-            <ChecklistCard
-              title='Pemeriksaan Harian Awal'
-              data={cekAwal}
-              setData={setCekAwal}
-            />
-
-            <ChecklistCard
-              title='Pemeriksaan Harian Akhir'
-              data={cekAkhir}
-              setData={setCekAkhir}
-            />
-
-            <ChecklistCard
-              title='Pemeriksaan Mingguan'
-              data={cekMingguan}
-              setData={setCekMingguan}
-            />
+            {loading || !data ? (
+              <div className='min-h-[80vh] bg-white rounded-2xl flex items-center justify-center'>
+                <span className='loading loading-spinner loading-lg'></span>
+              </div>
+            ) : (
+              <>
+                {Object.entries(checklists)
+                  .filter(([, data]) => Array.isArray(data) && data.length > 0)
+                  .map(([type, data]) => (
+                    <ChecklistCard
+                      key={type}
+                      title={typeConfig[type].label}
+                      data={data}
+                      setData={(newData) =>
+                        setChecklists((prev) => ({ ...prev, [type]: newData }))
+                      }
+                    />
+                  ))}
+              </>
+            )}
           </div>
         </div>
       </main>

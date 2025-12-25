@@ -2,11 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { createColumnHelper } from '@tanstack/react-table';
 
-import {
-  MdOutlineFilterAlt,
-  MdKeyboardArrowRight,
-  MdOutlineVisibility,
-} from 'react-icons/md';
+import { MdKeyboardArrowRight, MdOutlineVisibility } from 'react-icons/md';
 
 import { useGet } from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
@@ -18,7 +14,6 @@ import CustomTable from '@/components/shared/CustomTable';
 import dayjs from 'dayjs';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-
 dayjs.extend(customParseFormat);
 
 const ListLogPage = () => {
@@ -28,11 +23,9 @@ const ListLogPage = () => {
   const mesinName = sessionStorage.getItem('mesinName');
 
   const { data, loading, refetch, setQueryParams } = useGet(
-    '/v4/machine-logs/file'
-    // { factory: factoryId, machine: mesinNumber }
+    '/v4/machine-logs/file',
+    { factory: factoryId, machine: mesinNumber }
   );
-
-  const dataFilter = data?.filter((item) => item.machine === mesinNumber);
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -64,17 +57,11 @@ const ListLogPage = () => {
       header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => {
-        const rawDate = info.row.original.date;
+        const raw = info.row.original.date;
 
-        const parsedDate = dayjs(rawDate, 'DD/MM/YYYY', true);
+        const urlDate = dayjs(raw, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
-        if (!parsedDate.isValid()) {
-          console.error('Invalid date from backend:', rawDate);
-          return null;
-        }
-
-        const urlDate = parsedDate.format('YYYY-MM-DD');
-
+        console.log(raw, urlDate);
         return (
           <Link to={`${urlDate}?filename=${info.row.original.filename}`}>
             <Button
@@ -116,7 +103,7 @@ const ListLogPage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={dataFilter}
+            dataTable={data}
             columns={columns}
             showPagination={true}
             loading={loading}

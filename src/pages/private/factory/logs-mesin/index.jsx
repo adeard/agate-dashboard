@@ -8,7 +8,7 @@ import Button from '@/components/shared/Button';
 import CustomTable from '@/components/shared/CustomTable';
 
 const tempData = new Array(4).fill().map((_, index) => ({
-  mesin: `mesin ${index + 1}`,
+  mesin: `Mesin ${index + 1}`,
 }));
 
 const LogsMesinPage = () => {

@@ -63,7 +63,7 @@ const pageList = {
       component: lazy(() => import('@/pages/private/factory/history-maintenance/list-maintenance')),
     },
     {
-      path: '/factory/:factoryId/history-maintenance/:mesinNumber/:maintenanceId',
+      path: '/factory/:factoryId/history-maintenance/:mesinNumber/:maintenanceDate',
       component: lazy(() => import('@/pages/private/factory/history-maintenance/detail')),
     },
     {

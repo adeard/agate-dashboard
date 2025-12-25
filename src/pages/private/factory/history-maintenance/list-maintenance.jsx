@@ -24,14 +24,52 @@ const ListMaintenancePage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
-  const { data, loading, refetch, setQueryParams } =
-    useGet('/v4/machine-check');
-
-  const dataFilter = data?.filter(
-    (item) => item.machine === mesinNumber && item.factory?._id === factoryId
+  const { data, loading, refetch, setQueryParams } = useGet(
+    '/v4/machine-check',
+    { factory: factoryId, machine: mesinNumber }
   );
 
-  console.log(dataFilter);
+  const groupDataByDate = () => {
+    if (!Array.isArray(data) || data.length === 0) return [];
+
+    const grouped = data.reduce((acc, item) => {
+      if (!item) return acc;
+
+      const dateKey = item.date ? dayjs(item.date).format('YYYY-MM-DD') : null;
+
+      if (!dateKey) return acc;
+
+      if (!acc[dateKey]) acc[dateKey] = {};
+      if (item.type) acc[dateKey][item.type] = item;
+
+      return acc;
+    }, {});
+
+    return Object.entries(grouped).map(([date, types]) => ({
+      date,
+      ...types,
+    }));
+  };
+
+  const filteredData = groupDataByDate();
+
+  const getCheckboxStatus = (record) => {
+    if (!record || !record._id) {
+      return { checked: false, indeterminate: false };
+    }
+
+    const values = Object.values(record.questions || {});
+    const allTrue = values.length > 0 && values.every((v) => v === true);
+
+    return {
+      checked: allTrue,
+      indeterminate: !allTrue,
+    };
+  };
+
+  const getRecordAny = (row) => {
+    return row.daily_before || row.daily_after || row.weekly || null;
+  };
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -59,7 +97,7 @@ const ListMaintenancePage = () => {
 
         return (
           <div className='!body-m-r !text-color-1 !font-medium'>
-            <span className={isSunday && 'text-secondary-2'}>
+            <span className={isSunday ? 'text-secondary-2' : ''}>
               {date.format('dddd')}
             </span>
             , {date.format('DD MMMM YYYY')}
@@ -67,46 +105,90 @@ const ListMaintenancePage = () => {
         );
       },
     }),
-    columnHelper.accessor('cek_awal', {
+    columnHelper.accessor('daily_before', {
       header: <div className='text-center'>PEMERIKSAAN HARIAN AWAL</div>,
-      cell: (info) => (
-        <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} readOnly />
-        </div>
-      ),
+      cell: (info) => {
+        const record = info.row.original.daily_before;
+        const status = getCheckboxStatus(record);
+
+        return (
+          <span className='flex justify-center'>
+            <Checkbox
+              className='maintenance-checkbox'
+              isChecked={status.checked}
+              isIndeterminate={status.indeterminate}
+              disabled={status.indeterminate}
+              readOnly
+            />
+          </span>
+        );
+      },
     }),
-    columnHelper.accessor('cek_akhir', {
+    columnHelper.accessor('daily_after', {
       header: <div className='text-center'>PEMERIKSAAN HARIAN AKHIR</div>,
-      cell: (info) => (
-        <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} readOnly />
-        </div>
-      ),
+      cell: (info) => {
+        const record = info.row.original.daily_after;
+        const status = getCheckboxStatus(record);
+
+        return (
+          <span className='flex justify-center'>
+            <Checkbox
+              className='maintenance-checkbox'
+              isChecked={status.checked}
+              isIndeterminate={status.indeterminate}
+              disabled={status.indeterminate}
+              readOnly
+            />
+          </span>
+        );
+      },
     }),
-    columnHelper.accessor('cek_mingguan', {
+    columnHelper.accessor('weekly', {
       header: <div className='text-center'>PEMERIKSAAN MINGGUAN</div>,
-      cell: (info) => (
-        <div className='flex justify-center'>
-          <Checkbox isChecked={info.getValue()} readOnly />
-        </div>
-      ),
+      cell: (info) => {
+        const record = info.row.original.weekly;
+        const status = getCheckboxStatus(record);
+
+        return (
+          <span className='flex justify-center'>
+            <Checkbox
+              className='maintenance-checkbox'
+              isChecked={status.checked}
+              isIndeterminate={status.indeterminate}
+              disabled={status.indeterminate}
+              readOnly
+            />
+          </span>
+        );
+      },
     }),
     columnHelper.display({
       header: <div className='end-column-content'></div>,
       id: 'actions',
-      cell: (info) => (
-        <Link
-          to={`${info.row.original.machine_check_id}?machine=${info.row.original.machine}&factory=${info.row.original.factory._id}&date=${info.row.original.date}`}
-        >
-          <Button
-            className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-            size='lg'
+      cell: (info) => {
+        const row = info.row.original;
+        const record = row.daily_before || row.daily_after || row.weekly;
+
+        if (!record) return null;
+
+        const urlDate = row.date;
+        const factoryId = record.factory._id;
+        const machine = record.machine;
+
+        return (
+          <Link
+            to={`${urlDate}?machine=${machine}&factory=${factoryId}&date=${urlDate}`}
           >
-            <MdOutlineVisibility className='text-lg' />
-            Detail
-          </Button>
-        </Link>
-      ),
+            <Button
+              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
+              size='lg'
+            >
+              <MdOutlineVisibility className='text-lg' />
+              Detail
+            </Button>
+          </Link>
+        );
+      },
     }),
   ];
 
@@ -153,7 +235,7 @@ const ListMaintenancePage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={dataFilter}
+            dataTable={filteredData}
             columns={columns}
             showPagination={true}
             loading={loading}
