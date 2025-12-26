@@ -1,59 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { createColumnHelper } from '@tanstack/react-table';
+import { MdKeyboardArrowRight } from 'react-icons/md';
 
-import { MdKeyboardArrowRight, MdOutlineVisibility } from 'react-icons/md';
-
-import Button from '@/components/shared/Button';
-import CustomTable from '@/components/shared/CustomTable';
-
-const tempData = new Array(4).fill().map((_, index) => ({
+const listMesin = new Array(4).fill().map((_, index) => ({
   mesin: `Mesin ${index + 1}`,
 }));
 
 const HistoryMaintenancePage = () => {
-  const factoryName = sessionStorage.getItem('factoryName');
+  const navigate = useNavigate();
 
-  // table column
-  const columnHelper = createColumnHelper();
-  const columns = [
-    columnHelper.accessor('no', {
-      header: <div className='text-center'>NO</div>,
-      cell: (info) => (
-        <div className='text-center !body-m-r !text-color-1'>
-          {info.row.index + 1}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('mesin', {
-      header: <div className='w-20'>PABRIK</div>,
-      cell: (info) => (
-        <div className='!body-m-r !text-color-1 !font-medium'>
-          {info.getValue()}
-        </div>
-      ),
-    }),
-    columnHelper.display({
-      header: <div className='end-column-content'></div>,
-      id: 'actions',
-      cell: (info) => (
-        <Link
-          to={String(info.row.index + 1)}
-          onClick={() =>
-            sessionStorage.setItem('mesinName', info.row.original.mesin)
-          }
-        >
-          <Button
-            className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-            size='lg'
-          >
-            <MdOutlineVisibility className='text-lg' />
-            Detail Riwayat Maintenance
-          </Button>
-        </Link>
-      ),
-    }),
-  ];
+  const factoryName = sessionStorage.getItem('factoryName');
 
   return (
     <div>
@@ -68,17 +24,19 @@ const HistoryMaintenancePage = () => {
           </div>
         </div>
       </header>
-      <main>
-        <div
-          className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
-          style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
-        >
-          <CustomTable
-            dataTable={tempData}
-            columns={columns}
-            showPagination={true}
-          />
-        </div>
+      <main className='grid grid-cols-4 gap-4'>
+        {listMesin?.map((item, index) => (
+          <div
+            className='card w-full bg-white p-6 hover:cursor-pointer hover:!shadow-xl'
+            style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+            onClick={() => {
+              navigate(String(index + 1));
+              sessionStorage.setItem('mesinName', item.mesin);
+            }}
+          >
+            <h3 className='subheadline-s text-color-1'>{item.mesin}</h3>
+          </div>
+        ))}
       </main>
     </div>
   );

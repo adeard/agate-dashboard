@@ -71,51 +71,51 @@ const FactoryPage = () => {
       id: 'actions',
       cell: (info) => {
         const data = info.row.original;
+        const isSWK = data._id === '686a5645bf73aa13b489ad36';
+
         const handleStoreFactoryName = () =>
           sessionStorage.setItem('factoryName', data.name);
 
-        return (
-          <DropdownMenu
-            info={info}
-            options={[
-              <span
-                className='flex items-center gap-2'
-                onClick={() => {
-                  setSelectedData(data);
-                  toggleDrawerEdit();
-                }}
-              >
-                <MdEdit className='text-lg text-color-2' />
-                Edit
-              </span>,
+        const baseOptions = [
+          <span
+            className='flex items-center gap-2'
+            onClick={() => {
+              setSelectedData(data);
+              toggleDrawerEdit();
+            }}
+          >
+            <MdEdit className='text-lg text-color-2' />
+            Edit
+          </span>,
 
-              <Link
-                to={`${data._id}/riwayat-pemeriksaan`}
-                onClick={handleStoreFactoryName}
-              >
-                Riwayat Pemeriksaan
-              </Link>,
+          <Link
+            to={`${data._id}/riwayat-pemeriksaan`}
+            onClick={handleStoreFactoryName}
+          >
+            Riwayat Pemeriksaan
+          </Link>,
 
-              <Link to={`${data._id}/vendor`} onClick={handleStoreFactoryName}>
-                Daftar Vendor
-              </Link>,
+          <Link to={`${data._id}/vendor`} onClick={handleStoreFactoryName}>
+            Daftar Vendor
+          </Link>,
+        ];
 
-              <Link
-                to={`${data._id}/history-maintenance`}
-                onClick={handleStoreFactoryName}
-              >
-                History Maintenance
-              </Link>,
+        const extraOptions = [
+          <Link
+            to={`${data._id}/history-maintenance`}
+            onClick={handleStoreFactoryName}
+          >
+            History Maintenance
+          </Link>,
 
-              <Link
-                to={`${data._id}/logs-mesin`}
-                onClick={handleStoreFactoryName}
-              >
-                Logs Mesin
-              </Link>,
-            ]}
-          />
-        );
+          <Link to={`${data._id}/logs-mesin`} onClick={handleStoreFactoryName}>
+            Logs Mesin
+          </Link>,
+        ];
+
+        const options = isSWK ? baseOptions : [...baseOptions, ...extraOptions];
+
+        return <DropdownMenu info={info} options={options} />;
       },
     }),
   ];

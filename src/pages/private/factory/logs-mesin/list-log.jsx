@@ -1,15 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { createColumnHelper } from '@tanstack/react-table';
-
-import { MdKeyboardArrowRight, MdOutlineVisibility } from 'react-icons/md';
+import { MdKeyboardArrowRight, MdOutlineDoNotDisturbOn } from 'react-icons/md';
 
 import { useGet } from '@/services/use-services';
 import useDrawer from '@/hooks/useDrawer';
 
-import Button from '@/components/shared/Button';
 import DrawerFilterVendor from '../components/DrawerFilterVendor';
-import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
 
@@ -17,6 +13,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
 const ListLogPage = () => {
+  const navigate = useNavigate();
+
   const { factoryId, mesinNumber } = useParams();
 
   const factoryName = sessionStorage.getItem('factoryName');
@@ -33,49 +31,6 @@ const ListLogPage = () => {
     toggleDrawer: toggleDrawerFilter,
     closeDrawer: closeDrawerFilter,
   } = useDrawer('DrawerFilterVendor');
-
-  // table column
-  const columnHelper = createColumnHelper();
-  const columns = [
-    columnHelper.accessor('no', {
-      header: <div className='text-center'>NO</div>,
-      cell: (info) => (
-        <div className='text-center !body-m-r !text-color-1'>
-          {info.row.index + 1}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('date', {
-      header: <div className='w-20'>TANGGAL</div>,
-      cell: (info) => (
-        <div className='!body-m-r !text-color-1 !font-medium'>
-          {info.getValue()}
-        </div>
-      ),
-    }),
-    columnHelper.display({
-      header: <div className='end-column-content'></div>,
-      id: 'actions',
-      cell: (info) => {
-        const raw = info.row.original.date;
-
-        const urlDate = dayjs(raw, 'DD/MM/YYYY').format('YYYY-MM-DD');
-
-        console.log(raw, urlDate);
-        return (
-          <Link to={`${urlDate}?filename=${info.row.original.filename}`}>
-            <Button
-              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
-              size='lg'
-            >
-              <MdOutlineVisibility className='text-lg' />
-              Detail Logs
-            </Button>
-          </Link>
-        );
-      },
-    }),
-  ];
 
   return (
     <div>
@@ -97,27 +52,49 @@ const ListLogPage = () => {
           </div>
         </div>
       </header>
-      <main>
-        <div
-          className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
-          style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
-        >
-          <CustomTable
-            dataTable={data}
-            columns={columns}
-            showPagination={true}
-            loading={loading}
-          />
-        </div>
 
-        <DrawerFilterVendor
-          idDrawer={idDrawerFilterVendor}
-          isDrawerOpen={isDrawerFilterVendorOpen}
-          closeDrawer={closeDrawerFilter}
-          setQueryParams={setQueryParams}
-          refetch={refetch}
-        />
-      </main>
+      {loading || !data ? (
+        <div className='min-h-[80vh] bg-white rounded-2xl w-full flex items-center justify-center'>
+          <span className='loading loading-spinner loading-lg'></span>
+        </div>
+      ) : (
+        <main className='grid grid-cols-4 gap-4 min-h-[60vh]'>
+          {Array.isArray(data) && data.length > 0 ? (
+            data.map((item) => {
+              const urlDate = dayjs(item.date, 'DD/MM/YYYY').format(
+                'YYYY-MM-DD'
+              );
+
+              return (
+                <div
+                  key={item._id || item.filename}
+                  className='card w-full bg-white p-6 hover:cursor-pointer hover:!shadow-xl'
+                  style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
+                  onClick={() =>
+                    navigate(`${urlDate}?filename=${item.filename}`)
+                  }
+                >
+                  <h3 className='subheadline-s text-color-1'>
+                    Logs {item.date}
+                  </h3>
+                </div>
+              );
+            })
+          ) : (
+            <div className='w-full flex flex-col justify-center items-center gap-4 col-span-4'>
+              <MdOutlineDoNotDisturbOn className='text-5xl' />
+              <h3>No Data</h3>
+            </div>
+          )}
+        </main>
+      )}
+      <DrawerFilterVendor
+        idDrawer={idDrawerFilterVendor}
+        isDrawerOpen={isDrawerFilterVendorOpen}
+        closeDrawer={closeDrawerFilter}
+        setQueryParams={setQueryParams}
+        refetch={refetch}
+      />
     </div>
   );
 };

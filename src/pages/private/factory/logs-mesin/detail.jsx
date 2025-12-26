@@ -128,7 +128,7 @@ const DetailLogsMesinPage = () => {
           <CustomTable
             dataTable={data}
             columns={columns}
-            showPagination={true}
+            showPagination={false}
             loading={loading}
           />
         </div>
