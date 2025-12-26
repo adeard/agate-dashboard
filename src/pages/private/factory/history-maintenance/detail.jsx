@@ -88,7 +88,7 @@ const itemsConfig = {
   ],
 };
 
-const ChecklistCard = ({ title, data, setData }) => {
+const ChecklistCard = ({ title, data }) => {
   return (
     <div
       className='card w-full bg-white p-4 text-color-1'
@@ -100,9 +100,11 @@ const ChecklistCard = ({ title, data, setData }) => {
         {data.map((item, i) => {
           if (item.title === 'Notes') {
             return (
-              <div key={i} className='flex items-center justify-between mt-2'>
-                <p>{item.title}</p>
-                <p className='body-s-r break-words'>{item.notesValue}</p>
+              <div key={i} className='flex items-start justify-between mt-4'>
+                <p className='basis-1/4 '>{item.title}</p>
+                <p className='basis-3/4 body-s-r break-words !text-right'>
+                  {item.notesValue}
+                </p>
               </div>
             );
           }
@@ -118,16 +120,7 @@ const ChecklistCard = ({ title, data, setData }) => {
                 )}
               </div>
 
-              <Checkbox
-                isChecked={item.isChecked}
-                onChange={() => {
-                  setData((prev) =>
-                    prev.map((t, index) =>
-                      index === i ? { ...t, isChecked: !t.isChecked } : t
-                    )
-                  );
-                }}
-              />
+              <Checkbox isChecked={item.isChecked} readOnly />
             </div>
           );
         })}

@@ -1,11 +1,9 @@
+import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
-import { HiOutlineRefresh } from 'react-icons/hi';
-
-import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
 import CustomTable from '@/components/shared/CustomTable';
 
@@ -14,6 +12,7 @@ import dayjs from 'dayjs';
 import useDrawer from '@/hooks/useDrawer';
 
 import { useGet } from '@/services/use-services';
+import Input from '@/components/shared/Input';
 
 const DetailLogsMesinPage = () => {
   const { factoryId, mesinNumber, logDate } = useParams();
@@ -81,6 +80,18 @@ const DetailLogsMesinPage = () => {
     }),
   ];
 
+  const [filterNotes, setFilterNotes] = useState('');
+
+  // 2. filter data berdasarkan state
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+    if (!filterNotes.trim()) return data;
+
+    return data.filter((item) =>
+      item.notes?.toLowerCase().includes(filterNotes.toLowerCase())
+    );
+  }, [data, filterNotes]);
+
   return (
     <div>
       <header>
@@ -109,14 +120,12 @@ const DetailLogsMesinPage = () => {
             </h2>
           </div>
           <div className='flex gap-4'>
-            <Button
+            <Input
+              placeholder='Keterangan'
               size='lg'
-              className='flex items-center'
-              onClick={() => refetch()}
-            >
-              <HiOutlineRefresh className='text-xl mr-2' />
-              Muat Ulang
-            </Button>
+              onChange={(e) => setFilterNotes(e.target.value)}
+              full
+            />
           </div>
         </div>
       </header>
@@ -126,7 +135,7 @@ const DetailLogsMesinPage = () => {
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
           <CustomTable
-            dataTable={data}
+            dataTable={filteredData}
             columns={columns}
             showPagination={false}
             loading={loading}

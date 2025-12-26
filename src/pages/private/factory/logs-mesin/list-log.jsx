@@ -54,7 +54,7 @@ const ListLogPage = () => {
       </header>
 
       {loading || !data ? (
-        <div className='min-h-[80vh] bg-white rounded-2xl w-full flex items-center justify-center'>
+        <div className='min-h-[80vh] rounded-2xl w-full flex items-center justify-center'>
           <span className='loading loading-spinner loading-lg'></span>
         </div>
       ) : (

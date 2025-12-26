@@ -10,7 +10,7 @@ const Checkbox = ({
   classNameLabel,
   disabled = false,
   onChange,
-  readOnly = false
+  readOnly = false,
 }) => {
   const checkboxRef = useRef(null);
 
@@ -23,8 +23,12 @@ const Checkbox = ({
   return (
     <div className={classNameDiv}>
       <label
-        className={`label flex cursor-pointer items-start justify-start ${
-          disabled && 'hover:cursor-not-allowed'
+        className={`label flex items-start justify-start ${
+          disabled
+            ? 'cursor-not-allowed'
+            : readOnly
+            ? 'cursor-not-allowed pointer-events-none'
+            : 'cursor-pointer'
         }`}
       >
         <input
@@ -35,8 +39,8 @@ const Checkbox = ({
           className='checkbox h-5 w-5 rounded-sm border-primary-3'
           checked={isChecked}
           disabled={disabled}
-          onChange={onChange}
           readOnly={readOnly}
+          onChange={onChange}
         />
         <span className={joinClassnames(['label-text', classNameLabel])}>
           {label}

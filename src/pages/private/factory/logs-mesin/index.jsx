@@ -37,10 +37,6 @@ const LogsMesinPage = () => {
             <h3 className='subheadline-s text-color-1'>{item.mesin}</h3>
           </div>
         ))}
-        <div className='w-full min-h-[60vh] flex flex-col justify-center items-center gap-4'>
-          <MdOutlineDoNotDisturbOn className='text-5xl' />
-          <h3>No Data</h3>
-        </div>
       </main>
     </div>
   );
