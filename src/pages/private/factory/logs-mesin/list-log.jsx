@@ -58,7 +58,7 @@ const ListLogPage = () => {
           <span className='loading loading-spinner loading-lg'></span>
         </div>
       ) : (
-        <main className='grid grid-cols-4 gap-4 min-h-[60vh]'>
+        <main className='grid grid-cols-4 gap-4'>
           {Array.isArray(data) && data.length > 0 ? (
             data.map((item) => {
               const urlDate = dayjs(item.date, 'DD/MM/YYYY').format(
