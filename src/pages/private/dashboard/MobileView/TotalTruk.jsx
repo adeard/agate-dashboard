@@ -38,15 +38,23 @@ const TotalTruk = ({ data, goBack }) => {
             { label: 'SURAT JALAN', value: item.delivery_number },
             { label: 'VENDOR', value: item.vendor_name, bg: true },
             { label: 'PLAT KENDARAAN', value: item.vehicle_number },
-            { label: 'TBS TRUK', value: item.total_tandan, bg: true },
+            { label: 'TBS TRUK', value: item.total_tandan.toLocaleString(), bg: true },
+            { label: 'TBS DOUBLE', value: item.total_multiple.toLocaleString() },
             {
-              label: '%AVG DITERIMA',
+              label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
                   '00.00') + ' %',
+              bg: true,
             },
             {
-              label: '%AVG MM',
+              label: '% MULTIPLE',
+              value:
+                (formatPercentWithLeadingZeros(item.percent_multiple) ||
+                  '00.00') + ' %',
+            },
+            {
+              label: '% MM',
               value:
                 (formatPercentWithLeadingZeros(item.percent_matang) ||
                   '00.00') + ' %',
@@ -55,7 +63,7 @@ const TotalTruk = ({ data, goBack }) => {
               color: '#299300',
             },
             {
-              label: '%AVG LM',
+              label: '% LM',
               value:
                 (formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
                   '00.00') + '%',
@@ -63,7 +71,7 @@ const TotalTruk = ({ data, goBack }) => {
               color: '#299300',
             },
             {
-              label: '%AVG TP',
+              label: '% TP',
               value:
                 (formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
                   '00.00') + ' %',
@@ -72,7 +80,7 @@ const TotalTruk = ({ data, goBack }) => {
               color: '#E07324',
             },
             {
-              label: '%AVG M',
+              label: '% M',
               value:
                 (formatPercentWithLeadingZeros(item.percent_mentah) ||
                   '00.00') + ' %',
@@ -80,7 +88,7 @@ const TotalTruk = ({ data, goBack }) => {
               color: '#BD2828',
             },
             {
-              label: '%AVG JK',
+              label: '% JK',
               value:
                 (formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
                   '00.00') + ' %',
@@ -89,7 +97,7 @@ const TotalTruk = ({ data, goBack }) => {
               color: '#BD2828',
             },
             {
-              label: '%AVG BK',
+              label: '% BK',
               value:
                 (formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
                   '00.00') + ' %',

@@ -61,17 +61,31 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: (
-        <div>
-          TBS <br /> TRUK
+      header: <div>TBS TRUK</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {info.getValue().toLocaleString()}
         </div>
       ),
+    }),
+    columnHelper.accessor('total_multiple', {
+      header: <div>TBS DOUBLE</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-b !text-color-1'>
+          {info.getValue().toLocaleString()}
+        </div>
       ),
     }),
     columnHelper.accessor('percent_accepted', {
       header: <div>% DITERIMA</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+        </div>
+      ),
+    }),
+    columnHelper.accessor('percent_multiple', {
+      header: <div>% MULTIPLE</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
