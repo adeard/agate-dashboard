@@ -4,7 +4,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
-import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
 import CustomTable from '@/components/shared/CustomTable';
 
 import dayjs from 'dayjs';
@@ -21,19 +20,10 @@ const DetailLogsMesinPage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
-  const { data, loading, refetch, setQueryParams } = useGet(
-    `/v4/machine-logs/data`,
-    {
-      filename: searchParams.get('filename'),
-    }
-  );
-
-  const {
-    idDrawer: idDrawerFilter,
-    isDrawerOpen: isDrawerFilterOpen,
-    toggleDrawer: toggleDrawerFilter,
-    closeDrawer: closeDrawerFilter,
-  } = useDrawer('DrawerFilter');
+  const { data, loading } = useGet(`/v4/machine-logs/data`, {
+    filename: searchParams.get('filename'),
+    machine: mesinNumber
+  });
 
   // table column
   const columnHelper = createColumnHelper();
@@ -82,7 +72,6 @@ const DetailLogsMesinPage = () => {
 
   const [filterNotes, setFilterNotes] = useState('');
 
-  // 2. filter data berdasarkan state
   const filteredData = useMemo(() => {
     if (!data) return [];
     if (!filterNotes.trim()) return data;
@@ -141,14 +130,6 @@ const DetailLogsMesinPage = () => {
             loading={loading}
           />
         </div>
-
-        <DrawerFilterRiwayat
-          idDrawer={idDrawerFilter}
-          isDrawerOpen={isDrawerFilterOpen}
-          closeDrawer={closeDrawerFilter}
-          setQueryParams={setQueryParams}
-          refetch={refetch}
-        />
       </main>
     </div>
   );
