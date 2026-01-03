@@ -135,7 +135,7 @@ const DetailMaintenancePage = () => {
   const factoryName = sessionStorage.getItem('factoryName');
   const mesinName = sessionStorage.getItem('mesinName');
 
-  const { data, loading } = useGet(`/v4/machine-check/`);
+  const { data, loading } = useGet(`/v4/machine-check`);
 
   const dateParam = maintenanceDate;
   const dateValue = dateParam || new Date();

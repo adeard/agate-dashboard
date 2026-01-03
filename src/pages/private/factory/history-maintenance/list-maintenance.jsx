@@ -177,7 +177,7 @@ const ListMaintenancePage = () => {
 
         return (
           <Link
-            to={`${urlDate}?machine=${machine}&factory=${factoryId}&date=${urlDate}`}
+            to={`${urlDate}?machine=${machine}&factory=${factoryId}&group=${urlDate}`}
           >
             <Button
               className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
