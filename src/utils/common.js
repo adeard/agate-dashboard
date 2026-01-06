@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import { orderedKeysAvgGrading } from './optionsKey';
 
 export const joinClassnames = (classes) => {
   return classes.filter(Boolean).join(' ');
@@ -100,6 +101,8 @@ export const convertLabelUnderscore = (data) => {
     .join(' ');
 
   switch (label.toLowerCase()) {
+    case 'Buah Kecil 5 Diterima'.toLowerCase():
+      return 'Buah Kecil 5 kg diterima';
     case 'Buah Kecil 3'.toLowerCase():
       return 'Buah <3kg';
     case 'Buah Kecil 5'.toLowerCase():
@@ -134,6 +137,17 @@ export const formattedDataDashboard = (data) => {
     label: key,
     percent: parseFloat(value),
   }));
+};
+
+export const reorderDataAvgGrading = (data = {}) => {
+  if (!data || typeof data !== 'object') return {};
+
+  return orderedKeysAvgGrading.reduce((acc, key) => {
+    if (key in data) {
+      acc[key] = data[key];
+    }
+    return acc;
+  }, {});
 };
 
 export const chunkArray = (array, size) => {

@@ -20,6 +20,7 @@ import {
   formatPercentWithLeadingZeros,
   formattedDataDashboard,
   mappingOptions,
+  reorderDataAvgGrading,
 } from '@/utils/common';
 
 import Button from '@/components/shared/Button';
@@ -324,8 +325,8 @@ const DesktopViewDashboardPage = () => {
                   </div>
                 </div>
               </section>
-              <section className='grid grid-cols-2 gap-4'>
-                <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+              <section className='grid grid-cols-3 gap-4 h-[550px]'>
+                <div className='col-span-2 h-full bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
                   <label>
                     <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                       RATA-RATA PERSENTASE KRITERIA GRADING
@@ -334,8 +335,10 @@ const DesktopViewDashboardPage = () => {
 
                   <div className='grid grid-cols-2 gap-2'>
                     {chunkArray(
-                      formattedDataDashboard(data?.average_grading || {}),
-                      6
+                      formattedDataDashboard(
+                        reorderDataAvgGrading(data?.average_grading) || {}
+                      ),
+                      7
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table'>
@@ -345,7 +348,7 @@ const DesktopViewDashboardPage = () => {
                                 key={index}
                                 className='body-m-r group hover text-color-2 hover:cursor-pointer'
                               >
-                                <td className='!w-4 !p-0'>
+                                <td className='!w-4'>
                                   <div
                                     className={`w-3 h-3 rounded-full ${
                                       colorKriteriaGrading[item.label] ||
@@ -366,7 +369,7 @@ const DesktopViewDashboardPage = () => {
                                     <span className='body-s-r'>%</span>
                                   </p>
                                 </td>
-                                <td className='!p-0 flex items-center'>
+                                <td className='flex items-center justify-end'>
                                   <ButtonMore
                                     listMenu={[
                                       {
@@ -394,79 +397,66 @@ const DesktopViewDashboardPage = () => {
                     ))}
                   </div>
                 </div>
-                <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+                <div className='col-span-1 h-full bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto'>
                   <label>
                     <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                       RATA-RATA PERSENTASE DITERIMA VENDOR
                     </span>
                   </label>
 
-                  <div className='grid grid-cols-2 gap-4'>
-                    {chunkArray(
-                      formattedDataDashboard(
+                  <table className='table table-fixed w-full'>
+                    <tbody>
+                      {formattedDataDashboard(
                         data?.average_vendor_accepted || {}
-                      ),
-                      5
-                    ).map((chunk, colIndex) => (
-                      <div key={colIndex}>
-                        <table className='table table-fixed'>
-                          <tbody>
-                            {chunk.map((item, index) => (
-                              <tr
-                                key={index}
-                                className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                      ).map((item, index) => (
+                        <tr
+                          key={item.label}
+                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                        >
+                          <td className='!w-4'>{index + 1}.</td>
+
+                          <td className='text-color-1 w-[200px]'>
+                            <p className='truncate' title={item.label}>
+                              {item.label}
+                            </p>
+                          </td>
+
+                          <td className='flex gap-4 items-center justify-end'>
+                            <p className='inline-flex items-center'>
+                              <span
+                                className={`font-semibold ${
+                                  item.percent >= 80
+                                    ? 'text-[#006D33]'
+                                    : 'text-secondary-2'
+                                }`}
                               >
-                                <td className='!w-4 !p-0'>
-                                  {colIndex * 5 + index + 1}.
-                                </td>
-                                <td className='text-color-1 w-[225px]'>
-                                  <p className='truncate' title={item.label}>
-                                    {item.label}
-                                  </p>
-                                </td>
-                                <td className='text-right'>
-                                  <p className='inline-flex items-center'>
-                                    <span
-                                      className={`font-semibold ${
-                                        item.percent >= 80
-                                          ? 'text-[#006D33]'
-                                          : 'text-secondary-2'
-                                      }`}
-                                    >
-                                      {formatPercentWithLeadingZeros(
-                                        item.percent
-                                      )}
-                                    </span>
-                                    <span className='body-s-r ml-1'>%</span>
-                                  </p>
-                                </td>
-                                <td className='!p-0 flex items-center justify-center w-full'>
-                                  <ButtonMore
-                                    listMenu={[
-                                      {
-                                        label: 'Performa Harian Vendor',
-                                        onClick: () => {
-                                          setSelectedVendor(item.label);
-                                          toggleDrawerPerformaHarianVendor();
-                                        },
-                                      },
-                                      {
-                                        label: 'Riwayat Pemeriksaan Truk',
-                                        onClick: () => {
-                                          setSelectedVendor(item.label);
-                                          toggleDrawerRiwayatPemeriksaanTruk();
-                                        },
-                                      },
-                                    ]}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    ))}
-                  </div>
+                                {formatPercentWithLeadingZeros(item.percent)}
+                              </span>
+                              <span className='body-s-r ml-1'>%</span>
+                            </p>
+                            <ButtonMore
+                              listMenu={[
+                                {
+                                  label: 'Performa Harian Vendor',
+                                  onClick: () => {
+                                    setSelectedVendor(item.label);
+                                    toggleDrawerPerformaHarianVendor();
+                                  },
+                                },
+                                {
+                                  label: 'Riwayat Pemeriksaan Truk',
+                                  onClick: () => {
+                                    setSelectedVendor(item.label);
+                                    toggleDrawerRiwayatPemeriksaanTruk();
+                                  },
+                                },
+                              ]}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </section>
               <section className='grid grid-cols-4 gap-4'>

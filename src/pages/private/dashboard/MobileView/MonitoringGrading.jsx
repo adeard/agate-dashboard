@@ -6,6 +6,7 @@ import { IoMdArrowDropright } from 'react-icons/io';
 import {
   convertLabelUnderscore,
   formatPercentWithLeadingZeros,
+  reorderDataAvgGrading,
 } from '@/utils/common';
 
 import NavbarMobile from '@/components/shared/NavbarMobile';
@@ -203,7 +204,7 @@ const MonitoringGrading = ({
 
               <table className='table'>
                 <tbody>
-                  {Object.entries(data?.average_grading || {}).map(
+                  {Object.entries(reorderDataAvgGrading(data?.average_grading) || {}).map(
                     ([key, value], index) => (
                       <tr
                         key={index}

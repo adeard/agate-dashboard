@@ -76,6 +76,7 @@ export const colorKriteriaGrading = {
   matang_ditolak: 'bg-[#AC0F18]',
   lewat_matang_ditolak: 'bg-[#AC0F18]',
   tangkai_panjang: 'bg-[#F0CC00]',
+  rusak_dimakan_tikus: 'bg-[#F0CC00]',
 };
 
 const chartTypeDictionary = {
@@ -95,3 +96,19 @@ export const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
     value: key,
   })
 );
+
+export const orderedKeysAvgGrading = [
+  'matang',
+  'lewat_matang',
+  'mentah_diterima',
+  'janjang_kosong_diterima',
+  'buah_kecil_5_diterima',
+  'tangkai_panjang',
+  'rusak_dimakan_tikus',
+  'mentah',
+  'janjang_kosong',
+  'buah_kecil_3',
+  'buah_kecil_5',
+  'matang_ditolak',
+  'lewat_matang_ditolak',
+];
