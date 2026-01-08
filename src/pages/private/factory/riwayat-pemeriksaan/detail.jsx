@@ -12,242 +12,275 @@ import dayjs from 'dayjs';
 import { convertLabel } from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
 
-const columnHelper = createColumnHelper();
-
-const columnsDiterima = [
-  columnHelper.accessor('title', {
-    header: () => <div className='font-bold text-color-1'>Tandan Diterima</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>
-        {convertLabel(info.getValue())}
-      </div>
-    ),
-    size: 400,
-  }),
-  columnHelper.accessor('normal', {
-    header: () => <div className='text-center'>NORMAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('largeFruit', {
-    header: () => <div className='text-center'>BB</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('longStash', {
-    header: () => <div className='text-center'>TP</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('<3kg', {
-    header: () => <div className='text-center'>{`<3KG`}</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('3-5kg', {
-    header: () => <div className='text-center'>3-5KG</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-];
-
-const columnsDitolak = [
-  columnHelper.accessor('title', {
-    header: () => <div className='font-bold text-color-1'>Tandan Ditolak</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>
-        {convertLabel(info.getValue())}
-      </div>
-    ),
-    size: 400,
-  }),
-  columnHelper.accessor('normal', {
-    header: () => <div className='text-center'>NORMAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('pest', {
-    header: () => <div className='text-center'>PEST</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('largeFruit', {
-    header: () => <div className='text-center'>BB</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('longStash', {
-    header: () => <div className='text-center'>TP</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('<3kg', {
-    header: () => <div className='text-center'>{`<3KG`}</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('3-5kg', {
-    header: () => <div className='text-center'>3-5KG</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-      </div>
-    ),
-    size: 20,
-  }),
-];
-
-const columnsDidenda = [
-  columnHelper.accessor('title', {
-    header: () => <div className='font-bold text-color-1'>Tandan Didenda</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE]'>
-        {convertLabel(info.getValue())}
-      </div>
-    ),
-    size: 400,
-  }),
-  columnHelper.accessor('fined', {
-    header: () => <div className='text-center'>DENDA</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] !text-center'>
-        {info.getValue()?.toLocaleString() || 0}
-        <span className='!body-s-r text-color-2'>kg</span>
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('total', {
-    header: () => <div className='text-center'>TOTAL</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
-      </div>
-    ),
-    size: 20,
-  }),
-  columnHelper.accessor('total_kg', {
-    header: () => <div className='text-center'>TOTAL KG</div>,
-    cell: (info) => (
-      <div className='!body-m-r text-[#000000DE] text-center'>
-        {info.getValue()}
-      </div>
-    ),
-    size: 20,
-  }),
-];
-
 const DetailRiwayatPemeriksaanPage = () => {
   const { id, factoryId, historyId } = useParams();
   const location = useLocation();
 
   const factoryName = sessionStorage.getItem('factoryName');
 
+  const COMBINED_FACTORIES = [
+    '68fc9b419a7c87b51e2002b5',
+    '68fc9b419a7c87b51e2002b3',
+  ];
+
+  const isCombinedFactory = COMBINED_FACTORIES.includes(factoryId);
+
   const { data, loading, refetch } = useGet(
     `/v1/inspection-data/${historyId || id}`
   );
 
+  const columnHelper = createColumnHelper();
+
+  const weightColumns = isCombinedFactory
+    ? [
+        columnHelper.accessor('below5kg', {
+          header: () => <div className='text-center'>{'<5KG'}</div>,
+          cell: (info) => (
+            <div className='!body-m-r text-[#000000DE] text-center'>
+              {info.getValue()?.toLocaleString() || 0}
+            </div>
+          ),
+          size: 20,
+        }),
+      ]
+    : [
+        columnHelper.accessor('<3kg', {
+          header: () => <div className='text-center'>{'<3KG'}</div>,
+          cell: (info) => (
+            <div className='!body-m-r text-[#000000DE] text-center'>
+              {info.getValue()?.toLocaleString() || 0}
+            </div>
+          ),
+          size: 20,
+        }),
+        columnHelper.accessor('3-5kg', {
+          header: () => <div className='text-center'>3-5KG</div>,
+          cell: (info) => (
+            <div className='!body-m-r text-[#000000DE] text-center'>
+              {info.getValue()?.toLocaleString() || 0}
+            </div>
+          ),
+          size: 20,
+        }),
+      ];
+
+  const columnsDiterima = [
+    columnHelper.accessor('title', {
+      header: () => (
+        <div className='font-bold text-color-1'>Tandan Diterima</div>
+      ),
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE]'>
+          {convertLabel(info.getValue())}
+        </div>
+      ),
+      size: 400,
+    }),
+    columnHelper.accessor('normal', {
+      header: () => <div className='text-center'>NORMAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('pest', {
+      header: () => <div className='text-center'>PEST</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('largeFruit', {
+      header: () => <div className='text-center'>BB</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('longStash', {
+      header: () => <div className='text-center'>TP</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    ...weightColumns,
+    columnHelper.accessor('total', {
+      header: () => <div className='text-center'>TOTAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+  ];
+
+  const columnsDitolak = [
+    columnHelper.accessor('title', {
+      header: () => (
+        <div className='font-bold text-color-1'>Tandan Ditolak</div>
+      ),
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE]'>
+          {convertLabel(info.getValue())}
+        </div>
+      ),
+      size: 400,
+    }),
+    columnHelper.accessor('normal', {
+      header: () => <div className='text-center'>NORMAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('pest', {
+      header: () => <div className='text-center'>PEST</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('largeFruit', {
+      header: () => <div className='text-center'>BB</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('longStash', {
+      header: () => <div className='text-center'>TP</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+    ...weightColumns,
+    columnHelper.accessor('total', {
+      header: () => <div className='text-center'>TOTAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] !text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+        </div>
+      ),
+      size: 20,
+    }),
+  ];
+
+  const columnsDidenda = [
+    columnHelper.accessor('title', {
+      header: () => (
+        <div className='font-bold text-color-1'>Tandan Didenda</div>
+      ),
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE]'>
+          {convertLabel(info.getValue())}
+        </div>
+      ),
+      size: 400,
+    }),
+    columnHelper.accessor('fined', {
+      header: () => <div className='text-center'>DENDA</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] !text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+          <span className='!body-s-r text-color-2'>kg</span>
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('total', {
+      header: () => <div className='text-center'>TOTAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()}
+        </div>
+      ),
+      size: 20,
+    }),
+    columnHelper.accessor('total_kg', {
+      header: () => <div className='text-center'>TOTAL KG</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()}
+        </div>
+      ),
+      size: 20,
+    }),
+  ];
+
   const dataDiterima =
     data &&
-    Object.keys(data?.grading_result.accepted_summary)
+    Object.keys(data.grading_result.accepted_summary)
       .filter((key) => key !== 'MENTAH')
-      .map((key, index) => ({
-        id: index + 1,
-        title: key,
-        total: data?.grading_result.accepted_summary[key].TOTAL,
-        normal: data?.grading_result.accepted_summary[key].NORMAL,
-        pest: data?.grading_result.accepted_summary[key]['RUSAK DIMAKAN TIKUS'],
-        largeFruit: data?.grading_result.accepted_summary[key]['BUAH BESAR'],
-        longStash:
-          data?.grading_result.accepted_summary[key]['TANGKAI PANJANG'],
-        '<3kg':
-          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 3KG'],
-        '3-5kg':
-          data?.grading_result.accepted_summary[key]['BUAH KECIL DIBAWAH 5KG'],
-      }));
+      .map((key, index) => {
+        const summary = data.grading_result.accepted_summary[key];
+
+        return {
+          id: index + 1,
+          title: key,
+          total: summary.TOTAL,
+          normal: summary.NORMAL,
+          pest: summary['RUSAK DIMAKAN TIKUS'],
+          largeFruit: summary['BUAH BESAR'],
+          longStash: summary['TANGKAI PANJANG'],
+
+          ...(isCombinedFactory
+            ? {
+                below5kg:
+                  (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
+                  (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
+              }
+            : {
+                '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
+                '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
+              }),
+        };
+      });
 
   const dataDitolak =
     data &&
-    Object.keys(data?.grading_result.rejected_summary).map((key, index) => ({
-      id: index + 1,
-      title: key,
-      total: data?.grading_result.rejected_summary[key].TOTAL,
-      normal: data?.grading_result.rejected_summary[key].NORMAL,
-      pest: data?.grading_result.rejected_summary[key]['RUSAK DIMAKAN TIKUS'],
-      largeFruit: data?.grading_result.rejected_summary[key]['BUAH BESAR'],
-      longStash: data?.grading_result.rejected_summary[key]['TANGKAI PANJANG'],
-      '<3kg':
-        data?.grading_result.rejected_summary[key]['BUAH KECIL DIBAWAH 3KG'],
-      '3-5kg':
-        data?.grading_result.rejected_summary[key]['BUAH KECIL DIBAWAH 5KG'],
-    }));
+    Object.keys(data.grading_result.rejected_summary).map((key, index) => {
+      const summary = data.grading_result.rejected_summary[key];
+
+      return {
+        id: index + 1,
+        title: key,
+        total: summary.TOTAL,
+        normal: summary.NORMAL,
+        pest: summary['RUSAK DIMAKAN TIKUS'],
+        largeFruit: summary['BUAH BESAR'],
+        longStash: summary['TANGKAI PANJANG'],
+
+        ...(isCombinedFactory
+          ? {
+              below5kg:
+                (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
+                (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
+            }
+          : {
+              '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
+              '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
+            }),
+      };
+    });
 
   const dataDidenda =
     data &&
@@ -263,16 +296,18 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDiterima = {
     title: <div className='text-left'>Total</div>,
-    total: dataDiterima?.reduce((acc, row) => acc + row.total, 0),
-    normal: dataDiterima?.reduce((acc, row) => acc + row.normal, 0),
-    pest: dataDiterima?.reduce((acc, row) => acc + row.pest, 0),
-    largeFruit: dataDiterima?.reduce(
-      (acc, row) => acc + row.largeFruit || 0,
-      0
-    ),
-    longStash: dataDiterima?.reduce((acc, row) => acc + row.longStash, 0),
-    '<3kg': dataDiterima?.reduce((acc, row) => acc + row['<3kg'], 0),
-    '3-5kg': dataDiterima?.reduce((acc, row) => acc + row['3-5kg'], 0),
+    total: dataDiterima?.reduce((a, b) => a + b.total, 0),
+    normal: dataDiterima?.reduce((a, b) => a + b.normal, 0),
+    pest: dataDiterima?.reduce((a, b) => a + b.pest, 0),
+    largeFruit: dataDiterima?.reduce((a, b) => a + b.largeFruit, 0),
+    longStash: dataDiterima?.reduce((a, b) => a + b.longStash, 0),
+
+    ...(isCombinedFactory
+      ? { below5kg: dataDiterima?.reduce((a, b) => a + b.below5kg, 0) }
+      : {
+          '<3kg': dataDiterima?.reduce((a, b) => a + b['<3kg'], 0),
+          '3-5kg': dataDiterima?.reduce((a, b) => a + b['3-5kg'], 0),
+        }),
   };
 
   const totalRowDitolak = {
@@ -282,8 +317,14 @@ const DetailRiwayatPemeriksaanPage = () => {
     pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
     largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
     longStash: dataDitolak?.reduce((acc, row) => acc + row.longStash, 0),
-    '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
-    '3-5kg': dataDitolak?.reduce((acc, row) => acc + row['3-5kg'], 0),
+    ...(isCombinedFactory
+      ? {
+          below5kg: dataDitolak?.reduce((acc, row) => acc + row.below5kg, 0),
+        }
+      : {
+          '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
+          '3-5kg': dataDitolak?.reduce((acc, row) => acc + row['3-5kg'], 0),
+        }),
   };
 
   const totalRowDidenda = {
@@ -436,7 +477,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(data?.grading_result.total_multiple).toLocaleString()}
+                    {Number(
+                      data?.grading_result.total_multiple
+                    ).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -446,7 +489,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(data?.grading_result.total_accepted).toLocaleString()}
+                    {Number(
+                      data?.grading_result.total_accepted
+                    ).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -456,7 +501,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(data?.grading_result.total_rejected).toLocaleString()}
+                    {Number(
+                      data?.grading_result.total_rejected
+                    ).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -466,7 +513,9 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)).toLocaleString()}{' '}
+                    {Number(
+                      dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)
+                    ).toLocaleString()}{' '}
                     kg
                   </p>
                 </div>
