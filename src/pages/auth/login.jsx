@@ -104,11 +104,14 @@ const LoginPage = () => {
               <Input
                 id={fieldId}
                 placeholder='Enter email'
+                className='lowercase'
                 full
                 size='lg'
                 name={field.name}
                 value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={(e) =>
+                  field.handleChange(e.target.value.toLowerCase())
+                }
               />
             </div>
           );
