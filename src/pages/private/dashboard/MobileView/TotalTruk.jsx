@@ -4,7 +4,10 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 
 import Button from '@/components/shared/Button';
 
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import {
+  formatPercentWithLeadingZeros,
+  getDurationInMinutes,
+} from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
 
 import dayjs from 'dayjs';
@@ -21,6 +24,11 @@ const TotalTruk = ({ data, goBack }) => {
 
       <section className='w-full bg-[#F8F9FB] p-4 space-y-4'>
         {data?.map((item, index) => {
+          const duration = getDurationInMinutes(item.date, item.finish_date);
+
+          const avgTbsPerMinute =
+            duration > 0 ? Math.round(item.total_tandan / duration) : 0;
+
           const rows = [
             {
               label: 'TANGGAL',
@@ -38,27 +46,38 @@ const TotalTruk = ({ data, goBack }) => {
             { label: 'SURAT JALAN', value: item.delivery_number },
             { label: 'VENDOR', value: item.vendor_name, bg: true },
             { label: 'PLAT KENDARAAN', value: item.vehicle_number },
-            { label: 'TBS TRUK', value: item.total_tandan.toLocaleString(), bg: true },
-            { label: 'TBS DOUBLE', value: item.total_multiple.toLocaleString() },
+            {
+              label: 'TBS TRUK',
+              value: item.total_tandan.toLocaleString(),
+              bg: true,
+            },
+            {
+              label: 'TBS DOUBLE',
+              value: item.total_multiple.toLocaleString(),
+            },
+            {
+              label: 'AVG TBS/MENIT',
+              value: avgTbsPerMinute.toLocaleString(),
+              bg: true,
+            },
             {
               label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
                   '00.00') + ' %',
-              bg: true,
             },
             {
               label: '% MULTIPLE',
               value:
                 (formatPercentWithLeadingZeros(item.percent_multiple) ||
                   '00.00') + ' %',
+              bg: true,
             },
             {
               label: '% MM',
               value:
                 (formatPercentWithLeadingZeros(item.percent_matang) ||
                   '00.00') + ' %',
-              bg: true,
               bold: true,
               color: '#299300',
             },
@@ -67,6 +86,7 @@ const TotalTruk = ({ data, goBack }) => {
               value:
                 (formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
                   '00.00') + '%',
+              bg: true,
               bold: true,
               color: '#299300',
             },
@@ -75,7 +95,6 @@ const TotalTruk = ({ data, goBack }) => {
               value:
                 (formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
                   '00.00') + ' %',
-              bg: true,
               bold: true,
               color: '#E07324',
             },
@@ -84,6 +103,7 @@ const TotalTruk = ({ data, goBack }) => {
               value:
                 (formatPercentWithLeadingZeros(item.percent_mentah) ||
                   '00.00') + ' %',
+              bg: true,
               bold: true,
               color: '#BD2828',
             },
@@ -92,7 +112,6 @@ const TotalTruk = ({ data, goBack }) => {
               value:
                 (formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
                   '00.00') + ' %',
-              bg: true,
               bold: true,
               color: '#BD2828',
             },
@@ -101,6 +120,7 @@ const TotalTruk = ({ data, goBack }) => {
               value:
                 (formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
                   '00.00') + ' %',
+              bg: true,
               bold: true,
               color: '#BD2828',
             },
@@ -147,7 +167,7 @@ const TotalTruk = ({ data, goBack }) => {
                   onClick={() => {
                     window.open(
                       BASE_URL + '/v1/inspection-data/download-pdf/' + item._id,
-                      '_blank'
+                      '_blank',
                     );
                   }}
                 >

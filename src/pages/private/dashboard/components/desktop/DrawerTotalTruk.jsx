@@ -12,7 +12,10 @@ import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 
 import dayjs from 'dayjs';
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import {
+  formatPercentWithLeadingZeros,
+  getDurationInMinutes,
+} from '@/utils/common';
 
 const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
   const [searchParams] = useSearchParams();
@@ -75,6 +78,21 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
           {info.getValue().toLocaleString()}
         </div>
       ),
+    }),
+    columnHelper.accessor('avg_minutes', {
+      header: <div>AVG TBS/MENIT</div>,
+      cell: (info) => {
+        const duration = getDurationInMinutes(
+          info.row.original.date,
+          info.row.original.finish_date
+        );
+        const avgPerMinute =
+          duration > 0 ? info.row.original.total_tandan / duration : 0;
+
+        const roundedAvg = Math.round(avgPerMinute);
+
+        return <div className='!body-m-b !text-color-1'>{roundedAvg}</div>;
+      },
     }),
     columnHelper.accessor('percent_accepted', {
       header: <div>% DITERIMA</div>,

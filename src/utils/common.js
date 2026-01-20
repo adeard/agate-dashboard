@@ -188,3 +188,16 @@ export const mappingOptions = (listData, customKeys = []) => {
     }) ?? []
   );
 };
+
+export const getDurationInMinutes = (start, end) => {
+  if (!start || !end) return 0;
+
+  const startTime = new Date(start).getTime();
+  const endTime = new Date(end).getTime();
+
+  const diffMs = endTime - startTime;
+
+  if (diffMs <= 0) return 0;
+
+  return diffMs / (1000 * 60);
+};

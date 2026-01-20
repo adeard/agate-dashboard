@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useForm } from '@tanstack/react-form';
@@ -19,6 +19,7 @@ import {
   convertLabelUnderscore,
   formatPercentWithLeadingZeros,
   formattedDataDashboard,
+  getDurationInMinutes,
   mappingOptions,
   reorderDataAvgGrading,
 } from '@/utils/common';
@@ -154,6 +155,48 @@ const DesktopViewDashboardPage = () => {
   const [selectedCriteria, setSelectedCriteria] = useState('matang');
   const [selectedVendor, setSelectedVendor] = useState('');
 
+  const statsPerMinute = useMemo(() => {
+    if (!data?.inspections?.length) {
+      return {
+        avgGlobal: 0,
+        maxAvg: 0,
+        minAvg: 0,
+      };
+    }
+
+    const result = data.inspections.reduce(
+      (acc, item) => {
+        const duration = getDurationInMinutes(item.date, item.finish_date);
+
+        if (duration <= 0) return acc;
+
+        const avgPerMinute = item.total_tandan / duration;
+
+        acc.totalTandan += item.total_tandan;
+        acc.totalDuration += duration;
+
+        acc.maxAvg = Math.max(acc.maxAvg, avgPerMinute);
+        acc.minAvg = Math.min(acc.minAvg, avgPerMinute);
+
+        return acc;
+      },
+      {
+        totalTandan: 0,
+        totalDuration: 0,
+        maxAvg: 0,
+        minAvg: Infinity,
+      },
+    );
+
+    return {
+      avgGlobal: result.totalDuration
+        ? result.totalTandan / result.totalDuration
+        : 0,
+      maxAvg: result.maxAvg,
+      minAvg: result.minAvg === Infinity ? 0 : result.minAvg,
+    };
+  }, [data]);
+
   return (
     <div>
       <div className='min-h-screen flex flex-col items-center justify-center hidden-dashboard'>
@@ -183,11 +226,11 @@ const DesktopViewDashboardPage = () => {
                     BASE_URL +
                       '/v4/dashboard/download-report' +
                       `?targetDate=${searchParams.get(
-                        'date_from'
+                        'date_from',
                       )}&targetEnd=${searchParams.get('date_to')}&company=${
                         userData?.company
                       }&factory=${searchParams.get('factory')}`,
-                    '_blank'
+                    '_blank',
                   );
                 }}
               >
@@ -257,7 +300,7 @@ const DesktopViewDashboardPage = () => {
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
                       <span className='body-m-r mr-1'>
                         {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_multiple)
+                          Number(data?.monitoring.percent_multiple),
                         )}
                       </span>
                       <span className='body-s-r text-sm'>%</span>
@@ -277,7 +320,7 @@ const DesktopViewDashboardPage = () => {
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
                       <span className='body-m-r mr-1'>
                         {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_passed)
+                          Number(data?.monitoring.percent_passed),
                         )}
                       </span>
                       <span className='body-s-r text-sm'>%</span>
@@ -297,7 +340,7 @@ const DesktopViewDashboardPage = () => {
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
                       <span className='body-m-r mr-1'>
                         {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_rejected)
+                          Number(data?.monitoring.percent_rejected),
                         )}
                       </span>
                       <span className='body-s-r text-sm'>%</span>
@@ -317,10 +360,64 @@ const DesktopViewDashboardPage = () => {
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
                       <span className='body-m-r mr-1'>
                         {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_fined)
+                          Number(data?.monitoring.percent_fined),
                         )}
                       </span>
                       <span className='body-s-r text-sm'>%</span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+              <section className='bg-white border border-primary-4 rounded-xl p-4'>
+                <label>
+                  <span className='label-text tag-l text-color-3'>
+                    KECEPATAN BONGKAT PER TRUK
+                  </span>
+                </label>
+                <div className='grid grid-cols-3 gap-4 mt-4'>
+                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                        TERTINGGI
+                      </span>
+                    </label>
+                    <p>
+                      <span className='subheadline-s text-color-1'>
+                        {Math.round(statsPerMinute.maxAvg)}
+                      </span>{' '}
+                      <span className='body-m-bold text-color-3 text-sm'>
+                        TBS/menit
+                      </span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                        RATA-RATA
+                      </span>
+                    </label>
+                    <p>
+                      <span className='subheadline-s text-color-1'>
+                        {Math.round(statsPerMinute.avgGlobal)}
+                      </span>{' '}
+                      <span className='body-m-bold text-color-3 text-sm'>
+                        TBS/menit
+                      </span>
+                    </p>
+                  </div>
+                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                    <label>
+                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                        TERENDAH
+                      </span>
+                    </label>
+                    <p>
+                      <span className='subheadline-s text-color-1'>
+                        {Math.round(statsPerMinute.minAvg)}
+                      </span>{' '}
+                      <span className='body-m-bold text-color-3 text-sm'>
+                        TBS/menit
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -336,9 +433,9 @@ const DesktopViewDashboardPage = () => {
                   <div className='grid grid-cols-2 gap-2'>
                     {chunkArray(
                       formattedDataDashboard(
-                        reorderDataAvgGrading(data?.average_grading) || {}
+                        reorderDataAvgGrading(data?.average_grading) || {},
                       ),
-                      7
+                      7,
                     ).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className='table'>
@@ -363,7 +460,7 @@ const DesktopViewDashboardPage = () => {
                                   <p className='inline-flex'>
                                     <span className='text-color-1'>
                                       {formatPercentWithLeadingZeros(
-                                        item.percent
+                                        item.percent,
                                       )}
                                     </span>{' '}
                                     <span className='body-s-r'>%</span>
@@ -407,7 +504,7 @@ const DesktopViewDashboardPage = () => {
                   <table className='table table-fixed w-full'>
                     <tbody>
                       {formattedDataDashboard(
-                        data?.average_vendor_accepted || {}
+                        data?.average_vendor_accepted || {},
                       ).map((item, index) => (
                         <tr
                           key={item.label}
