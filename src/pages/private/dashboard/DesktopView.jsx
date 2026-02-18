@@ -371,7 +371,7 @@ const DesktopViewDashboardPage = () => {
               <section className='bg-white border border-primary-4 rounded-xl p-4'>
                 <label>
                   <span className='label-text tag-l text-color-3'>
-                    KECEPATAN BONGKAT PER TRUK
+                    KECEPATAN BONGKAR PER TRUK
                   </span>
                 </label>
                 <div className='grid grid-cols-3 gap-4 mt-4'>

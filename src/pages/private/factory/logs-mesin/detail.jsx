@@ -21,8 +21,9 @@ const DetailLogsMesinPage = () => {
   const mesinName = sessionStorage.getItem('mesinName');
 
   const { data, loading } = useGet(`/v4/machine-logs/data`, {
+    factory: factoryId,
     filename: searchParams.get('filename'),
-    machine: mesinNumber
+    machine: mesinNumber,
   });
 
   // table column
@@ -45,9 +46,17 @@ const DetailLogsMesinPage = () => {
               INFO
             </div>
           ) : (
-            <div className='badge bg-[#FEECEA] text-[#C93532] rounded-md'>
-              ERROR
-            </div>
+            <>
+              {info.getValue() === 'error' ? (
+                <div className='badge bg-[#FEECEA] text-[#C93532] rounded-md'>
+                  ERROR
+                </div>
+              ) : (
+                <div className='badge bg-[#C93532] text-white rounded-md'>
+                  CRITICAL
+                </div>
+              )}
+            </>
           )}
         </>
       ),
@@ -77,7 +86,7 @@ const DetailLogsMesinPage = () => {
     if (!filterNotes.trim()) return data;
 
     return data.filter((item) =>
-      item.notes?.toLowerCase().includes(filterNotes.toLowerCase())
+      item.notes?.toLowerCase().includes(filterNotes.toLowerCase()),
     );
   }, [data, filterNotes]);
 

@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { MdKeyboardArrowRight, MdOutlineDoNotDisturbOn } from 'react-icons/md';
@@ -7,10 +8,9 @@ import useDrawer from '@/hooks/useDrawer';
 
 import DrawerFilterVendor from '../components/DrawerFilterVendor';
 
-import dayjs from 'dayjs';
+import Input from '@/components/shared/Input';
 
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-dayjs.extend(customParseFormat);
+import dayjs from 'dayjs';
 
 const ListLogPage = () => {
   const navigate = useNavigate();
@@ -22,8 +22,13 @@ const ListLogPage = () => {
 
   const { data, loading, refetch, setQueryParams } = useGet(
     '/v4/machine-logs/file',
-    { factory: factoryId, machine: mesinNumber }
+    {
+      factory: factoryId,
+      machine: mesinNumber,
+    },
   );
+
+  const [month, setMonth] = useState(dayjs().format('YYYY-MM'));
 
   const {
     idDrawer: idDrawerFilterVendor,
@@ -31,6 +36,15 @@ const ListLogPage = () => {
     toggleDrawer: toggleDrawerFilter,
     closeDrawer: closeDrawerFilter,
   } = useDrawer('DrawerFilterVendor');
+
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+
+    return data.filter((item) => {
+      const logDate = dayjs(item.date, 'DD/MM/YYYY');
+      return logDate.format('YYYY-MM') === month;
+    });
+  }, [data, month]);
 
   return (
     <div>
@@ -50,6 +64,13 @@ const ListLogPage = () => {
             <MdKeyboardArrowRight className='text-2xl text-color-3' />
             <h2 className='headline-s'>{mesinName}</h2>
           </div>
+          <div>
+            <Input
+              type='month'
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+          </div>
         </div>
       </header>
 
@@ -59,10 +80,10 @@ const ListLogPage = () => {
         </div>
       ) : (
         <main className='grid grid-cols-4 gap-4'>
-          {Array.isArray(data) && data.length > 0 ? (
-            data.map((item) => {
+          {Array.isArray(filteredData) && filteredData.length > 0 ? (
+            filteredData.map((item) => {
               const urlDate = dayjs(item.date, 'DD/MM/YYYY').format(
-                'YYYY-MM-DD'
+                'YYYY-MM-DD',
               );
 
               return (
@@ -81,7 +102,7 @@ const ListLogPage = () => {
               );
             })
           ) : (
-            <div className='w-full flex flex-col justify-center items-center gap-4 col-span-4'>
+            <div className='w-full min-h-[80vh] flex flex-col justify-center items-center gap-4 col-span-4'>
               <MdOutlineDoNotDisturbOn className='text-5xl' />
               <h3>No Data</h3>
             </div>

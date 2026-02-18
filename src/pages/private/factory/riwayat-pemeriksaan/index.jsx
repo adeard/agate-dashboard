@@ -28,17 +28,32 @@ const countPercentage = (value = 0, divider = 0, fixed = null) => {
   return divider === 0 ? 0 : fixed ? percent.toFixed(fixed) : percent;
 };
 
+const factoryEksternalVendor =
+  factoryId === '68fc9b419a7c87b51e2002b5' ||
+  factoryId === '68fc9b419a7c87b51e2002b3';
+
+const vendorMapping = factoryEksternalVendor
+  ? {
+      1: 'Inti',
+      3: 'Plasma',
+      2: 'Eksternal',
+    }
+  : {
+      1: 'Inti',
+      2: 'Plasma',
+    };
+
 const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
   const factoryName = sessionStorage.getItem('factoryName');
 
   const { data, loading, meta, refetch, setQueryParams, objectSearch } = useGet(
-    '/v1/inspection-data/by-factory/' + factoryId
+    '/v1/inspection-data/by-factory/' + factoryId,
   );
   const { data: dataExcel, refetch: refetchDownloadExcel } = useGet(
     '/v1/inspection-data/download-excel/' + factoryId,
     null,
-    false
+    false,
   );
 
   const {
@@ -63,7 +78,7 @@ const RiwayatPemeriksaanPage = () => {
       header: 'WAKTU',
       cell: (info) =>
         `${dayjs(info.row.original.date).format('HH:mm')} - ${dayjs(
-          info.getValue()
+          info.getValue(),
         ).format('HH:mm')}`,
     }),
     columnHelper.accessor('machine', {
@@ -77,14 +92,8 @@ const RiwayatPemeriksaanPage = () => {
     columnHelper.accessor('vendor_type', {
       header: 'TIPE VENDOR',
       cell: (info) => {
-        const type = info.getValue();
-        const engine = info.row.original.engine_type;
-
-        if (Number(type) === 2) {
-          return `Plasma ${engine === 'V6' ? 'Normal' : '(KM)'}`;
-        } else {
-          return 'Inti';
-        }
+        const type = Number(info.getValue());
+        return vendorMapping[type] || '-';
       },
     }),
     columnHelper.accessor('delivery_number', {
@@ -155,7 +164,7 @@ const RiwayatPemeriksaanPage = () => {
           onClick={() =>
             window.open(
               `riwayat-pemeriksaan/${info.row.original._id}`,
-              '_blank'
+              '_blank',
             )
           }
         >
@@ -186,7 +195,7 @@ const RiwayatPemeriksaanPage = () => {
 
                 window.open(
                   `${BASE_URL}/v1/inspection-data/download-pdf/${factoryId}/summary?${query}`,
-                  '_blank'
+                  '_blank',
                 );
               }}
             >
@@ -226,7 +235,7 @@ const RiwayatPemeriksaanPage = () => {
               {countPercentage(
                 meta?.total_rejected || 0,
                 meta?.total_tandan,
-                2
+                2,
               )}
               % )
             </p>
@@ -238,7 +247,7 @@ const RiwayatPemeriksaanPage = () => {
               {countPercentage(
                 meta?.total_accepted || 0,
                 meta?.total_tandan,
-                2
+                2,
               )}
               % )
             </p>
