@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
@@ -27,7 +28,7 @@ const renderPageButtons = (table) => {
       onClick={() => table.setPageIndex(0)}
     >
       1
-    </button>
+    </button>,
   );
 
   // Show '...' if current page is far from the first page
@@ -35,7 +36,7 @@ const renderPageButtons = (table) => {
     pageButtons.push(
       <span key='start-ellipsis' className='px-2 mx-1'>
         ...
-      </span>
+      </span>,
     );
   }
 
@@ -56,7 +57,7 @@ const renderPageButtons = (table) => {
         onClick={() => table.setPageIndex(i)}
       >
         {i + 1}
-      </button>
+      </button>,
     );
   }
 
@@ -65,7 +66,7 @@ const renderPageButtons = (table) => {
     pageButtons.push(
       <span key='end-ellipsis' className='px-2 mx-1'>
         ...
-      </span>
+      </span>,
     );
   }
 
@@ -81,13 +82,13 @@ const renderPageButtons = (table) => {
       onClick={() => table.setPageIndex(pageCount - 1)}
     >
       {pageCount}
-    </button>
+    </button>,
   );
 
   return pageButtons;
 };
 
-const CustomTable = ({
+const Table = ({
   dataTable = [],
   columns,
   footerData = null,
@@ -97,12 +98,18 @@ const CustomTable = ({
   minHeight = '75vh',
   loading,
 }) => {
-  const [data] = useMemo(() => [dataTable]);
+  const data = useMemo(() => dataTable, [dataTable]);
+  const [sorting, setSorting] = useState([]);
 
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: showPagination ? getPaginationRowModel() : undefined,
     pageCount: showPagination ? Math.ceil(data?.length / 10) : 1,
     initialState: {
@@ -135,12 +142,34 @@ const CustomTable = ({
                       <tr key={headerGroup.id} className='text-color-3'>
                         {headerGroup.headers.map((header) => (
                           <th key={header.id} className='tag-l'>
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
+                            <span
+                              className={
+                                header.column.columnDef.enableSorting
+                                  ? 'cursor-pointer flex items-center gap-1'
+                                  : ''
+                              }
+                              onClick={
+                                header.column.columnDef.enableSorting
+                                  ? header.column.getToggleSortingHandler()
+                                  : undefined
+                              }
+                            >
+                              {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                  )}
+
+                              {header.column.columnDef.enableSorting && (
+                                <span>
+                                  {{
+                                    asc: '▲',
+                                    desc: '▼',
+                                  }[header.column.getIsSorted()] ?? ''}
+                                </span>
+                              )}
+                            </span>
                           </th>
                         ))}
                       </tr>
@@ -160,7 +189,7 @@ const CustomTable = ({
                               typeof cell.column.columnDef.header ===
                                 'object' &&
                               cell.column.columnDef.header?.props?.className?.includes(
-                                'end-column-content'
+                                'end-column-content',
                               )
                                 ? 'flex items-center justify-end w-full h-full'
                                 : '',
@@ -168,7 +197,7 @@ const CustomTable = ({
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext()
+                              cell.getContext(),
                             )}
                           </td>
                         ))}
@@ -228,4 +257,4 @@ const CustomTable = ({
   );
 };
 
-export default CustomTable;
+export default Table;

@@ -5,7 +5,7 @@ import { useGet } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Select from '@/components/shared/Select';
 
 const ModalFilter = ({ modalRef }) => {
   const { data: optionsFactory } = useGet('/v1/options/factory');
@@ -64,7 +64,7 @@ const ModalFilter = ({ modalRef }) => {
               <form.Field
                 name='factory'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Pabrik'
                     className='body-m-r'
                     name={field.name}

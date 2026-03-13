@@ -1,6 +1,6 @@
 import  { useEffect, useMemo, useState } from 'react';
 import { MdOutlineVisibility } from 'react-icons/md';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import DrawerDemografiChart from './DrawerDemografiChart';
 import { convertLabel } from '@/utils/common';

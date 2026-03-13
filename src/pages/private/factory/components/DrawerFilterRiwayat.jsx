@@ -11,7 +11,7 @@ import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Select from '@/components/shared/Select';
 
 const DrawerFilterRiwayat = ({
   idDrawer,
@@ -189,7 +189,7 @@ const DrawerFilterRiwayat = ({
                 <form.Field
                   name='vendor_id'
                   children={(field) => (
-                    <CustomSelect
+                    <Select
                       placeholder='Vendor'
                       className='body-m-r'
                       name={field.name}

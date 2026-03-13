@@ -26,7 +26,7 @@ import {
 
 import Button from '@/components/shared/Button';
 import Dropdown from '@/components/shared/Dropdown';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Select from '@/components/shared/Select';
 import ButtonMore from '@/components/shared/ButtonMore';
 import LineCharts from './components/desktop/LIneCharts';
 import DrawerFilterDashboard from './components/desktop/DrawerFilterDashboard';
@@ -611,7 +611,7 @@ const DesktopViewDashboardPage = () => {
                               roc={data?.rocs?.[selectedRangeChartsPlasma]}
                             />
                             {chartType?.value === 'truck_gaps' ? (
-                              <CustomSelect
+                              <Select
                                 placeholder='Pilih Mesin'
                                 className='body-m-r'
                                 options={listOptionsMachine}

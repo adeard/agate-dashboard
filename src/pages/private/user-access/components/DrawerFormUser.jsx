@@ -9,7 +9,7 @@ import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Checkbox from '@/components/shared/Checkbox';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Select from '@/components/shared/Select';
 import ModalResponseSave from './ModalResponseSave';
 import InputWithIcon from '@/components/shared/InputWithIcon';
 
@@ -173,7 +173,7 @@ const DrawerFormUser = ({
               <form.Field
                 name='access_factory'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Pabrik'
                     className='body-m-r !h-full'
                     name={field.name}
@@ -201,7 +201,7 @@ const DrawerFormUser = ({
               <form.Field
                 name='status'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Status'
                     className='body-m-r'
                     name={field.name}

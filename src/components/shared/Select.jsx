@@ -1,4 +1,4 @@
-import Select from 'react-select';
+import { default as ReactSelect } from 'react-select';
 
 import { joinClassnames } from '@/utils/common';
 
@@ -43,7 +43,7 @@ const customStyles = {
   }),
 };
 
-const CustomSelect = ({
+const Select = ({
   name,
   value,
   options,
@@ -61,7 +61,7 @@ const CustomSelect = ({
     : options.filter((option) => option?.value === value) || null;
 
   return (
-    <Select
+    <ReactSelect
       id={name}
       name={name}
       value={selectedValues}
@@ -86,4 +86,4 @@ const CustomSelect = ({
   );
 };
 
-export default CustomSelect;
+export default Select;

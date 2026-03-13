@@ -13,7 +13,7 @@ import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterVendor from '../components/DrawerFilterVendor';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Checkbox from '@/components/shared/Checkbox';
 
 import dayjs from 'dayjs';
@@ -234,7 +234,7 @@ const ListMaintenancePage = () => {
           className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
-          <CustomTable
+          <Table
             dataTable={filteredData}
             columns={columns}
             showPagination={true}

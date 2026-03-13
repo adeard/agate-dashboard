@@ -12,7 +12,7 @@ import useDrawer from '@/hooks/useDrawer';
 import Button from '@/components/shared/Button';
 import DrawerFilterUser from './components/DrawerFilterUser';
 import DrawerFormUser from './components/DrawerFormUser';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import ModalFactoryAccess from './components/ModalFactoryAccess';
 
 const UserAccessPage = () => {
@@ -139,7 +139,7 @@ const UserAccessPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 h-full'>
-          <CustomTable
+          <Table
             dataTable={data || []}
             columns={columns}
             loading={loading}

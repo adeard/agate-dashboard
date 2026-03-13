@@ -15,7 +15,7 @@ import useDrawer from '@/hooks/useDrawer';
 
 import Button from '@/components/shared/Button';
 import DrawerFilterRiwayat from '../components/DrawerFilterRiwayat';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 
 import dayjs from 'dayjs';
 import exportExcel from '@/utils/xlsx';
@@ -27,21 +27,6 @@ const countPercentage = (value = 0, divider = 0, fixed = null) => {
 
   return divider === 0 ? 0 : fixed ? percent.toFixed(fixed) : percent;
 };
-
-const factoryEksternalVendor =
-  factoryId === '68fc9b419a7c87b51e2002b5' ||
-  factoryId === '68fc9b419a7c87b51e2002b3';
-
-const vendorMapping = factoryEksternalVendor
-  ? {
-      1: 'Inti',
-      3: 'Plasma',
-      2: 'Eksternal',
-    }
-  : {
-      1: 'Inti',
-      2: 'Plasma',
-    };
 
 const RiwayatPemeriksaanPage = () => {
   const { factoryId } = useParams();
@@ -55,6 +40,21 @@ const RiwayatPemeriksaanPage = () => {
     null,
     false,
   );
+
+  const factoryEksternalVendor =
+    factoryId === '68fc9b419a7c87b51e2002b5' ||
+    factoryId === '68fc9b419a7c87b51e2002b3';
+
+  const vendorMapping = factoryEksternalVendor
+    ? {
+        1: 'Inti',
+        3: 'Plasma',
+        2: 'Eksternal',
+      }
+    : {
+        1: 'Inti',
+        2: 'Plasma',
+      };
 
   const {
     idDrawer: idDrawerFilter,
@@ -265,7 +265,7 @@ const RiwayatPemeriksaanPage = () => {
           className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
-          <CustomTable
+          <Table
             dataTable={data || []}
             columns={columns}
             showPagination={true}

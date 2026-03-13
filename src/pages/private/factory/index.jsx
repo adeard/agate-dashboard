@@ -13,7 +13,7 @@ import useDrawer from '@/hooks/useDrawer';
 import Button from '@/components/shared/Button';
 import DrawerFormFactory from './components/DrawerFormFactory';
 import DrawerFilterFactory from './components/DrawerFilterFactory';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import DropdownMenu from '@/components/shared/DropdownMenu';
 
 const FactoryPage = () => {
@@ -148,7 +148,7 @@ const FactoryPage = () => {
       </header>
       <main>
         <div className='bg-white rounded-2xl p-4 h-[calc(100vh-218px)]'>
-          <CustomTable
+          <Table
             dataTable={data || []}
             loading={loading}
             columns={columns}

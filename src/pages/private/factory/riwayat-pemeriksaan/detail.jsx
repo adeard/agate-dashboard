@@ -7,7 +7,7 @@ import { MdKeyboardArrowRight, MdFileDownload } from 'react-icons/md';
 import { useGet } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import dayjs from 'dayjs';
 import { convertLabel } from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
@@ -528,7 +528,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
-              <CustomTable
+              <Table
                 dataTable={dataDiterima || []}
                 columns={columnsDiterima}
                 footerData={totalRowDiterima}
@@ -541,7 +541,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
-              <CustomTable
+              <Table
                 dataTable={dataDitolak || []}
                 columns={columnsDitolak}
                 footerData={totalRowDitolak}
@@ -554,7 +554,7 @@ const DetailRiwayatPemeriksaanPage = () => {
               className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
             >
-              <CustomTable
+              <Table
                 dataTable={dataDidenda || []}
                 columns={columnsDidenda}
                 footerData={totalRowDidenda}

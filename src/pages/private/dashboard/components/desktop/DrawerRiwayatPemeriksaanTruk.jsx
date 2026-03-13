@@ -3,7 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { IoMdClose } from 'react-icons/io';
 import { MdOutlineVisibility } from 'react-icons/md';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
@@ -202,7 +202,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable
+          <Table
             dataTable={data || []}
             columns={columns}
             showPagination={true}

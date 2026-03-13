@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import Button from '@/components/shared/Button';
 import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
-import CustomSelect from '@/components/shared/CustomSelect';
+import Select from '@/components/shared/Select';
 
 import { vendorTypeOptions, vendorKJGMTypeOptions } from '@/utils/optionsKey';
 
@@ -93,7 +93,7 @@ const DrawerFilterDashboard = ({
               <form.Field
                 name='factory'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Pabrik'
                     className='body-m-r !h-full'
                     name={field.name}
@@ -125,7 +125,7 @@ const DrawerFilterDashboard = ({
               <form.Field
                 name='vendor_type'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Vendor Type'
                     className='body-m-r !h-full'
                     name={field.name}
@@ -151,7 +151,7 @@ const DrawerFilterDashboard = ({
               <form.Field
                 name='ids'
                 children={(field) => (
-                  <CustomSelect
+                  <Select
                     placeholder='Vendor'
                     className='body-m-r !h-full'
                     name={field.name}

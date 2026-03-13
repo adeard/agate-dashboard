@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { FaArrowUp, FaArrowDown, FaMinus } from 'react-icons/fa';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import {
@@ -53,7 +53,7 @@ const TrenKriteria = ({ data, criteria, goBack }) => {
 
       <section className='w-full bg-[#F8F9FB] p-4'>
         <div className='bg-white border border-[#E7E7E7] button-shadow rounded-xl py-4'>
-          <CustomTable dataTable={data || []} columns={columns} />
+          <Table dataTable={data || []} columns={columns} />
         </div>
       </section>
     </>

@@ -7,7 +7,7 @@ import { IoMdClose } from 'react-icons/io';
 import { useGet, usePut } from '@/services/use-services';
 
 import Button from '@/components/shared/Button';
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Checkbox from '@/components/shared/Checkbox';
 
 const ModalFactoryAccess = ({ modalRef, data }) => {
@@ -120,7 +120,7 @@ const ModalFactoryAccess = ({ modalRef, data }) => {
           className='card w-full bg-white max-h-[340px] overflow-y-auto'
           style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
         >
-          {data && <CustomTable dataTable={listFactory} columns={columns} />}
+          {data && <Table dataTable={listFactory} columns={columns} />}
         </div>
         <div className='modal-action'>
           <form method='dialog'>

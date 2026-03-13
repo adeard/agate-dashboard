@@ -4,7 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdKeyboardArrowRight } from 'react-icons/md';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 
 import dayjs from 'dayjs';
 
@@ -132,7 +132,7 @@ const DetailLogsMesinPage = () => {
           className='bg-white rounded-2xl overflow-x-auto min-h-[calc(100vh-218px)] h-full'
           style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
         >
-          <CustomTable
+          <Table
             dataTable={filteredData}
             columns={columns}
             showPagination={false}

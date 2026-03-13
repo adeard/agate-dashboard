@@ -2,7 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 
 import { IoMdClose } from 'react-icons/io';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import { convertLabel } from '@/utils/common';
@@ -59,7 +59,7 @@ const DrawerSenderVendor = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
         style={{ boxShadow: '0px 0px 4px -1px #E0D6D6' }}
       >
         <div className='p-2 pb-8'>
-          <CustomTable dataTable={data?.demography || []} columns={columns} />
+          <Table dataTable={data?.demography || []} columns={columns} />
         </div>
       </div>
     </Drawer>

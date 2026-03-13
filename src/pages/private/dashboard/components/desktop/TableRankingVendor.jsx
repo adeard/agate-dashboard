@@ -4,7 +4,7 @@ import { MdOutlineVisibility } from 'react-icons/md';
 import { FaStar } from 'react-icons/fa';
 import { FaCircle } from 'react-icons/fa6';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
 import { formatPercentWithLeadingZeros } from '@/utils/common';
@@ -52,10 +52,19 @@ const getIcon = (rank) => {
 
 const TableRankingVendor = ({ data }) => {
   const columnHelper = createColumnHelper();
+
   const columns = [
-    columnHelper.accessor('no', {
+    columnHelper.display({
+      id: 'no',
       header: <div className='text-center'>NO</div>,
-      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+      enableSorting: false,
+      cell: (info) => {
+        const rowIndex = info.table
+          .getRowModel()
+          .rows.findIndex((row) => row.id === info.row.id);
+
+        return <div className='text-center'>{rowIndex + 1}</div>;
+      },
     }),
     columnHelper.accessor('date', {
       header: <div className='w-32'>TANGGAL</div>,
@@ -77,76 +86,102 @@ const TableRankingVendor = ({ data }) => {
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    columnHelper.accessor('total_tandan', {
-      header: <div>TBS <br /> TRUK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+    columnHelper.accessor((row) => row.total_tandan ?? 0, {
+      id: 'total_tandan',
+      enableSorting: true,
+      header: (
+        <div>
+          TBS <br /> TRUK
+        </div>
       ),
-    }),
-    columnHelper.accessor('percent_accepted', {
-      header: <div>% <br /> DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
+          {info.getValue().toLocaleString()}
+        </div>
+      ),
+    }),
+    columnHelper.accessor((row) => row.percent_accepted ?? 0, {
+      id: 'percent_accepted',
+      enableSorting: true,
+      header: (
+        <div>
+          % <br /> DITERIMA
+        </div>
+      ),
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {formatPercentWithLeadingZeros(info.getValue())} %
+        </div>
+      ),
+    }),
+    columnHelper.accessor((row) => row.percent_matang?.percent ?? 0, {
+      id: 'percent_matang',
+      enableSorting: true,
+      header: <div className='w-24'>% MM</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-    }),
-    columnHelper.accessor('percent_matang', {
-      header: <div>% MM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+          {getIcon(info.row.original.percent_matang?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_lewat_matang', {
-      header: <div>% LM</div>,
+    columnHelper.accessor((row) => row.percent_lewat_matang?.percent ?? 0, {
+      id: 'percent_lewat_matang',
+      enableSorting: true,
+      header: <div className='w-24'>% LM</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_lewat_matang?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_tangkai_panjang', {
-      header: <div>% TP</div>,
+    columnHelper.accessor((row) => row.percent_tangkai_panjang?.percent ?? 0, {
+      id: 'percent_tangkai_panjang',
+      enableSorting: true,
+      header: <div className='w-24'>% TP</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_tangkai_panjang?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },
     }),
-    columnHelper.accessor('percent_mentah', {
-      header: <div>% M</div>,
+    columnHelper.accessor((row) => row.percent_mentah?.percent ?? 0, {
+      id: 'percent_mentah',
+      enableSorting: true,
+      header: <div className='w-24'>% M</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_mentah?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_janjang_kosong', {
-      header: <div>% JK</div>,
+    columnHelper.accessor((row) => row.percent_janjang_kosong?.percent ?? 0, {
+      id: 'percent_janjang_kosong',
+      enableSorting: true,
+      header: <div className='w-24'>% JK</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_janjang_kosong?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_buah_kecil', {
-      header: <div>% BK</div>,
+    columnHelper.accessor((row) => row.percent_buah_kecil?.percent ?? 0, {
+      id: 'percent_buah_kecil',
+      enableSorting: true,
+      header: <div className='w-24'>% BK</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center gap-2'>
-          {formatPercentWithLeadingZeros(info.getValue()?.percent) || '00.00'} %
-          {getIcon(info.getValue()?.rank)}
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
+          {getIcon(info.row.original.percent_buah_kecil?.rank)}
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
@@ -162,7 +197,7 @@ const TableRankingVendor = ({ data }) => {
               onClick={() =>
                 window.open(
                   `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
-                  '_blank'
+                  '_blank',
                 )
               }
             >
@@ -177,7 +212,7 @@ const TableRankingVendor = ({ data }) => {
   ];
 
   return (
-    <CustomTable
+    <Table
       dataTable={data || []}
       columns={columns}
       showPagination={true}

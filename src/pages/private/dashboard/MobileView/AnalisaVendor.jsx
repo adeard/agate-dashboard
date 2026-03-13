@@ -1,6 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import {
   convertLabelUnderscore,
   formatPercentWithLeadingZeros,
@@ -97,7 +97,7 @@ const AnalisaVendor = ({ data, criteria, goBack }) => {
 
       <section className='w-full bg-[#F8F9FB] p-4'>
         <div className='bg-white border border-[#E7E7E7] button-shadow rounded-xl py-4'>
-          <CustomTable dataTable={data || []} columns={columns} />
+          <Table dataTable={data || []} columns={columns} />
         </div>
       </section>
     </>

@@ -7,7 +7,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { IoMdClose } from 'react-icons/io';
 import { MdOutlineVisibility } from 'react-icons/md';
 
-import CustomTable from '@/components/shared/CustomTable';
+import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 
@@ -126,7 +126,7 @@ const DrawerRiwayatPemeriksaan = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
       >
         <div className='p-2 pb-8'>
           {data && (
-            <CustomTable
+            <Table
               dataTable={data}
               columns={columns}
               showPagination={true}
