@@ -296,7 +296,7 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDiterima = {
     title: <div className='text-left'>Total</div>,
-    total: dataDiterima?.reduce((a, b) => a + b.total, 0),
+    total: dataDiterima?.reduce((a, b) => a + b.total, 0)?.toLocaleString(),
     normal: dataDiterima?.reduce((a, b) => a + b.normal, 0),
     pest: dataDiterima?.reduce((a, b) => a + b.pest, 0),
     largeFruit: dataDiterima?.reduce((a, b) => a + b.largeFruit, 0),
@@ -312,7 +312,7 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDitolak = {
     title: <div className='text-left'>Total</div>,
-    total: dataDitolak?.reduce((acc, row) => acc + row.total, 0),
+    total: dataDitolak?.reduce((acc, row) => acc + row.total, 0)?.toLocaleString(),
     normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
     pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
     largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
@@ -330,7 +330,7 @@ const DetailRiwayatPemeriksaanPage = () => {
   const totalRowDidenda = {
     title: <div className='text-left'>Total</div>,
     // fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
-    total: dataDidenda?.reduce((acc, row) => acc + row.total, 0),
+    total: dataDidenda?.reduce((acc, row) => acc + row.total, 0)?.toLocaleString(),
     total_kg: dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0),
   };
 

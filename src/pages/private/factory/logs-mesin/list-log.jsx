@@ -41,7 +41,8 @@ const ListLogPage = () => {
     if (!data) return [];
 
     return data.filter((item) => {
-      const logDate = dayjs(item.date, 'DD/MM/YYYY');
+      const logDate = dayjs(item.updatedAt);
+
       return logDate.format('YYYY-MM') === month;
     });
   }, [data, month]);
