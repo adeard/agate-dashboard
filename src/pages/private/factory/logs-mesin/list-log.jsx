@@ -83,9 +83,7 @@ const ListLogPage = () => {
         <main className='grid grid-cols-4 gap-4'>
           {Array.isArray(filteredData) && filteredData.length > 0 ? (
             filteredData.map((item) => {
-              const urlDate = dayjs(item.date, 'DD/MM/YYYY').format(
-                'YYYY-MM-DD',
-              );
+              const urlDate = dayjs(item.updatedAt).format('YYYY-MM-DD');
 
               return (
                 <div
