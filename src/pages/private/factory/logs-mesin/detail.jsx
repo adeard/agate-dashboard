@@ -33,9 +33,9 @@ const DetailLogsMesinPage = () => {
       header: <div className='text-center'>NO</div>,
       cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
     }),
-    columnHelper.accessor('date', {
+    columnHelper.accessor('date_string', {
       header: 'WAKTU',
-      cell: (info) => dayjs(info.getValue()).format('hh:mm:ss DD/MM/YYYY'),
+      cell: (info) => info.getValue(),
     }),
     columnHelper.accessor('status', {
       header: 'STATUS',
