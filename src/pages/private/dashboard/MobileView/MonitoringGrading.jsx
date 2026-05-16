@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { MdOutlineFilterAlt } from 'react-icons/md';
 import { IoMdArrowDropright } from 'react-icons/io';
 
 import {
   convertLabelUnderscore,
+  formatCurrency,
   formatPercentWithLeadingZeros,
   getDurationInMinutes,
   reorderDataAvgGrading,
@@ -22,6 +24,7 @@ const MonitoringGrading = ({
   toggleMobileDrawerDiterimaVendor,
   goToPage,
 }) => {
+  const [searchParams] = useSearchParams();
   const [currentAvgCard, setCurrentAvgCard] = useState('Kriteria Grading');
 
   const statsPerMinute = useMemo(() => {
@@ -92,7 +95,7 @@ const MonitoringGrading = ({
             </label>
             <p>
               <span className='subheadline-s text-color-1'>
-                {data?.monitoring.total_grading.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_grading)}
               </span>{' '}
               <span className='body-m-bold text-color-3 text-sm'>truk </span>
             </p>
@@ -105,7 +108,7 @@ const MonitoringGrading = ({
             </label>
             <p>
               <span className='subheadline-s text-color-1'>
-                {data?.monitoring.total_tandan.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_tandan)}
               </span>{' '}
               <span className='body-m-bold text-color-3 text-sm'>Pcs</span>
             </p>
@@ -118,7 +121,7 @@ const MonitoringGrading = ({
             </label>
             <p className='text-color-1'>
               <span className='subheadline-s'>
-                {data?.monitoring.total_multiple.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_multiple)}
               </span>{' '}
               <span className='body-m-bold text-sm'>Pcs</span>
               <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -138,7 +141,7 @@ const MonitoringGrading = ({
             </label>
             <p className='text-[#006D33]'>
               <span className='subheadline-s'>
-                {data?.monitoring.total_passed.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_passed)}
               </span>{' '}
               <span className='body-m-bold text-sm'>Pcs</span>
               <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -158,7 +161,7 @@ const MonitoringGrading = ({
             </label>
             <p className='text-secondary-2'>
               <span className='subheadline-s'>
-                {data?.monitoring.total_rejected.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_rejected)}
               </span>{' '}
               <span className='body-m-bold text-sm'>Pcs</span>
               <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -178,7 +181,7 @@ const MonitoringGrading = ({
             </label>
             <p className='text-[#E07324]'>
               <span className='subheadline-s'>
-                {data?.monitoring.total_fined.toLocaleString()}
+                {formatCurrency(data?.monitoring.total_fined)}
               </span>{' '}
               <span className='body-m-bold text-sm'>Pcs</span>
               <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -302,7 +305,7 @@ const MonitoringGrading = ({
               <table className='table'>
                 <tbody>
                   {Object.entries(
-                    reorderDataAvgGrading(data?.average_grading) || {},
+                    reorderDataAvgGrading(data?.average_grading, searchParams.get('factory')) || {},
                   ).map(([key, value], index) => (
                     <tr
                       key={index}

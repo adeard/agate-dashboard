@@ -9,7 +9,7 @@ import { useGet } from '@/services/use-services';
 import Button from '@/components/shared/Button';
 import Table from '@/components/shared/Table';
 import dayjs from 'dayjs';
-import { convertLabel } from '@/utils/common';
+import { convertLabel, formatCurrency } from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
 
 const DetailRiwayatPemeriksaanPage = () => {
@@ -26,7 +26,7 @@ const DetailRiwayatPemeriksaanPage = () => {
   const isCombinedFactory = COMBINED_FACTORIES.includes(factoryId);
 
   const { data, loading, refetch } = useGet(
-    `/v1/inspection-data/${historyId || id}`
+    `/v1/inspection-data/${historyId || id}`,
   );
 
   const columnHelper = createColumnHelper();
@@ -37,18 +37,31 @@ const DetailRiwayatPemeriksaanPage = () => {
           header: () => <div className='text-center'>{'<5KG'}</div>,
           cell: (info) => (
             <div className='!body-m-r text-[#000000DE] text-center'>
-              {info.getValue()?.toLocaleString() || 0}
+              {formatCurrency(info.getValue())}
             </div>
           ),
           size: 20,
         }),
       ]
     : [
+        ...(factoryId === '66c3114ba342ddbf9eae83c1'
+          ? [
+              columnHelper.accessor('<2kg', {
+                header: () => <div className='text-center'>{'<2KG'}</div>,
+                cell: (info) => (
+                  <div className='!body-m-r text-[#000000DE] text-center'>
+                    {formatCurrency(info.getValue())}
+                  </div>
+                ),
+                size: 20,
+              }),
+            ]
+          : []),
         columnHelper.accessor('<3kg', {
           header: () => <div className='text-center'>{'<3KG'}</div>,
           cell: (info) => (
             <div className='!body-m-r text-[#000000DE] text-center'>
-              {info.getValue()?.toLocaleString() || 0}
+              {formatCurrency(info.getValue())}
             </div>
           ),
           size: 20,
@@ -57,7 +70,7 @@ const DetailRiwayatPemeriksaanPage = () => {
           header: () => <div className='text-center'>3-5KG</div>,
           cell: (info) => (
             <div className='!body-m-r text-[#000000DE] text-center'>
-              {info.getValue()?.toLocaleString() || 0}
+              {formatCurrency(info.getValue())}
             </div>
           ),
           size: 20,
@@ -80,7 +93,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>NORMAL</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -89,7 +102,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>PEST</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -98,7 +111,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>BB</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -107,7 +120,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>TP</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -117,7 +130,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>TOTAL</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -140,7 +153,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>NORMAL</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -149,7 +162,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>PEST</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -158,7 +171,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>BB</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -167,7 +180,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>TP</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -177,7 +190,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>TOTAL</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] !text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
       size: 20,
@@ -200,7 +213,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>DENDA</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] !text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
           <span className='!body-s-r text-color-2'>kg</span>
         </div>
       ),
@@ -245,10 +258,12 @@ const DetailRiwayatPemeriksaanPage = () => {
           ...(isCombinedFactory
             ? {
                 below5kg:
+                  (summary['BUAH KECIL DIBAWAH 2KG'] || 0) +
                   (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
                   (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
               }
             : {
+                '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
                 '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
                 '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
               }),
@@ -272,10 +287,12 @@ const DetailRiwayatPemeriksaanPage = () => {
         ...(isCombinedFactory
           ? {
               below5kg:
+                (summary['BUAH KECIL DIBAWAH 2KG'] || 0) +
                 (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
                 (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
             }
           : {
+              '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
               '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
               '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
             }),
@@ -296,42 +313,63 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDiterima = {
     title: <div className='text-left'>Total</div>,
-    total: dataDiterima?.reduce((a, b) => a + b.total, 0)?.toLocaleString(),
-    normal: dataDiterima?.reduce((a, b) => a + b.normal, 0),
-    pest: dataDiterima?.reduce((a, b) => a + b.pest, 0),
-    largeFruit: dataDiterima?.reduce((a, b) => a + b.largeFruit, 0),
-    longStash: dataDiterima?.reduce((a, b) => a + b.longStash, 0),
+    total: (
+      dataDiterima?.reduce((a, b) => a + (b.total || 0), 0) || 0
+    ).toLocaleString(),
+    normal: dataDiterima?.reduce((a, b) => a + (b.normal || 0), 0) || 0,
+    pest: dataDiterima?.reduce((a, b) => a + (b.pest || 0), 0) || 0,
+    largeFruit: dataDiterima?.reduce((a, b) => a + (b.largeFruit || 0), 0) || 0,
+    longStash: dataDiterima?.reduce((a, b) => a + (b.longStash || 0), 0) || 0,
 
     ...(isCombinedFactory
-      ? { below5kg: dataDiterima?.reduce((a, b) => a + b.below5kg, 0) }
+      ? {
+          below5kg:
+            dataDiterima?.reduce((a, b) => a + (b.below5kg || 0), 0) || 0,
+        }
       : {
-          '<3kg': dataDiterima?.reduce((a, b) => a + b['<3kg'], 0),
-          '3-5kg': dataDiterima?.reduce((a, b) => a + b['3-5kg'], 0),
+          '<2kg': dataDiterima?.reduce((a, b) => a + (b['<2kg'] || 0), 0) || 0,
+          '<3kg': dataDiterima?.reduce((a, b) => a + (b['<3kg'] || 0), 0) || 0,
+          '3-5kg':
+            dataDiterima?.reduce((a, b) => a + (b['3-5kg'] || 0), 0) || 0,
         }),
   };
 
   const totalRowDitolak = {
     title: <div className='text-left'>Total</div>,
-    total: dataDitolak?.reduce((acc, row) => acc + row.total, 0)?.toLocaleString(),
-    normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
-    pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
-    largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
-    longStash: dataDitolak?.reduce((acc, row) => acc + row.longStash, 0),
+    total: (
+      dataDitolak?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
+    ).toLocaleString(),
+    normal: dataDitolak?.reduce((acc, row) => acc + (row.normal || 0), 0) || 0,
+    pest: dataDitolak?.reduce((acc, row) => acc + (row.pest || 0), 0) || 0,
+    largeFruit:
+      dataDitolak?.reduce((acc, row) => acc + (row.largeFruit || 0), 0) || 0,
+    longStash:
+      dataDitolak?.reduce((acc, row) => acc + (row.longStash || 0), 0) || 0,
     ...(isCombinedFactory
       ? {
-          below5kg: dataDitolak?.reduce((acc, row) => acc + row.below5kg, 0),
+          below5kg:
+            dataDitolak?.reduce((acc, row) => acc + (row.below5kg || 0), 0) ||
+            0,
         }
       : {
-          '<3kg': dataDitolak?.reduce((acc, row) => acc + row['<3kg'], 0),
-          '3-5kg': dataDitolak?.reduce((acc, row) => acc + row['3-5kg'], 0),
+          '<2kg':
+            dataDitolak?.reduce((acc, row) => acc + (row['<2kg'] || 0), 0) || 0,
+          '<3kg':
+            dataDitolak?.reduce((acc, row) => acc + (row['<3kg'] || 0), 0) || 0,
+          '3-5kg':
+            dataDitolak?.reduce((acc, row) => acc + (row['3-5kg'] || 0), 0) ||
+            0,
         }),
   };
 
   const totalRowDidenda = {
     title: <div className='text-left'>Total</div>,
-    // fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
-    total: dataDidenda?.reduce((acc, row) => acc + row.total, 0)?.toLocaleString(),
-    total_kg: dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0),
+    // fined: dataDidenda?.reduce((acc, row) => acc + (row.fined || 0), 0) || 0,
+    total: (
+      dataDidenda?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
+    ).toLocaleString(),
+    total_kg:
+      dataDidenda?.reduce((acc, row) => acc + (row.total_kg || 0), 0) || 0,
   };
 
   return (
@@ -385,7 +423,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                   BASE_URL +
                     '/v1/inspection-data/download-pdf/' +
                     (historyId ? historyId : id),
-                  '_blank'
+                  '_blank',
                 );
               }}
             >
@@ -397,7 +435,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       </header>
       <main>
         <div className='flex gap-8 w-full max-w-[1280px] min-h-[calc(100vh-64px)] m-auto'>
-          <div className='basis-1/3 pl-16 space-y-6'>
+          <div className='basis-1/4 pl-16 space-y-6'>
             <div
               className='card w-full bg-white p-6'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}
@@ -467,7 +505,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(data?.grading_result.total_tandan).toLocaleString()}
+                    {formatCurrency(data?.grading_result.total_tandan)}
                   </p>
                 </div>
                 <div>
@@ -477,9 +515,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(
-                      data?.grading_result.total_multiple
-                    ).toLocaleString()}
+                    {formatCurrency(data?.grading_result.total_multiple)}
                   </p>
                 </div>
                 <div>
@@ -489,9 +525,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(
-                      data?.grading_result.total_accepted
-                    ).toLocaleString()}
+                    {formatCurrency(data?.grading_result.total_accepted)}
                   </p>
                 </div>
                 <div>
@@ -501,9 +535,7 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(
-                      data?.grading_result.total_rejected
-                    ).toLocaleString()}
+                    {formatCurrency(data?.grading_result.total_rejected)}
                   </p>
                 </div>
                 <div>
@@ -514,7 +546,10 @@ const DetailRiwayatPemeriksaanPage = () => {
                   </label>
                   <p className='body-m-b text-color-1'>
                     {Number(
-                      dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0)
+                      dataDidenda?.reduce(
+                        (acc, row) => acc + (row.total_kg || 0),
+                        0,
+                      ) || 0,
                     ).toLocaleString()}{' '}
                     kg
                   </p>
@@ -523,7 +558,7 @@ const DetailRiwayatPemeriksaanPage = () => {
             </div>
           </div>
 
-          <div className='basis-2/3 space-y-6'>
+          <div className='basis-3/4 space-y-6'>
             <div
               className='card w-full bg-white p-4'
               style={{ boxShadow: '0px 0px 4px -1px #aca4a4' }}

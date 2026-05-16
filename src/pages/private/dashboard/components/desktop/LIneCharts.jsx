@@ -3,6 +3,7 @@ import { Column, G2, Line } from '@ant-design/plots';
 import {
   convertLabel,
   countPercentage,
+  formatCurrency,
   formatNumberWithK,
   formatPercentWithLeadingZeros,
 } from '@/utils/common';
@@ -360,7 +361,7 @@ const LineCharts = ({
                                   </div>
                                   <span className='font-semibold'>
                                     {typeof item.value === 'number'
-                                      ? Number(item.value).toLocaleString()
+                                      ? formatCurrency(item.value)
                                       : item.value}
                                     <span className='text-xs font-thin'>
                                       {' '}

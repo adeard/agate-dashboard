@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { IoMdClose } from 'react-icons/io';
@@ -6,7 +6,7 @@ import { MdOutlineVisibility } from 'react-icons/md';
 
 import useDrawer from '@/hooks/useDrawer';
 
-import { convertLabel } from '@/utils/common';
+import { convertLabel, formatCurrency } from '@/utils/common';
 
 import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
@@ -43,7 +43,7 @@ const DrawerDemografiChart = ({
       header: <div className='text-color-2'>TOTAL</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
     }),

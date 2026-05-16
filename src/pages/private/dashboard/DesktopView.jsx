@@ -17,6 +17,7 @@ import {
   chunkArray,
   convertLabel,
   convertLabelUnderscore,
+  formatCurrency,
   formatPercentWithLeadingZeros,
   formattedDataDashboard,
   getDurationInMinutes,
@@ -261,7 +262,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p>
                       <span className='subheadline-s text-color-1'>
-                        {data?.monitoring.total_grading.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_grading)}
                       </span>{' '}
                       <span className='body-m-bold text-color-3 text-sm'>
                         truk{' '}
@@ -277,7 +278,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p>
                       <span className='subheadline-s text-color-1'>
-                        {data?.monitoring.total_tandan.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_tandan)}
                       </span>{' '}
                       <span className='body-m-bold text-color-3 text-sm'>
                         Pcs
@@ -294,7 +295,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p className='text-color-1'>
                       <span className='subheadline-s'>
-                        {data?.monitoring.total_multiple.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_multiple)}
                       </span>{' '}
                       <span className='body-m-bold text-sm'>Pcs</span>
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -314,7 +315,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p className='text-[#006D33]'>
                       <span className='subheadline-s'>
-                        {data?.monitoring.total_passed.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_passed)}
                       </span>{' '}
                       <span className='body-m-bold text-sm'>Pcs</span>
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -334,7 +335,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p className='text-secondary-2'>
                       <span className='subheadline-s'>
-                        {data?.monitoring.total_rejected.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_rejected)}
                       </span>{' '}
                       <span className='body-m-bold text-sm'>Pcs</span>
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -354,7 +355,7 @@ const DesktopViewDashboardPage = () => {
                     </label>
                     <p className='text-[#E07324]'>
                       <span className='subheadline-s'>
-                        {data?.monitoring.total_fined.toLocaleString()}
+                        {formatCurrency(data?.monitoring.total_fined)}
                       </span>{' '}
                       <span className='body-m-bold text-sm'>Pcs</span>
                       <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
@@ -433,7 +434,7 @@ const DesktopViewDashboardPage = () => {
                   <div className='grid grid-cols-2 gap-2'>
                     {chunkArray(
                       formattedDataDashboard(
-                        reorderDataAvgGrading(data?.average_grading) || {},
+                        reorderDataAvgGrading(data?.average_grading, searchParams.get('factory')) || {},
                       ),
                       7,
                     ).map((chunk, colIndex) => (

@@ -8,7 +8,7 @@ import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
 import ButtonMore from '@/components/shared/ButtonMore';
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import { formatCurrency, formatPercentWithLeadingZeros } from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -118,7 +118,7 @@ const TableAnalisaVendor = ({
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatCurrency(info.getValue())}
         </div>
       ),
     }),

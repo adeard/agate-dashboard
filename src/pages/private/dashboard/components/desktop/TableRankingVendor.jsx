@@ -7,7 +7,7 @@ import { FaCircle } from 'react-icons/fa6';
 import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import { formatCurrency, formatPercentWithLeadingZeros } from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -96,7 +96,7 @@ const TableRankingVendor = ({ data }) => {
       ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue().toLocaleString()}
+          {formatCurrency(info.getValue())}
         </div>
       ),
     }),
@@ -196,7 +196,7 @@ const TableRankingVendor = ({ data }) => {
               size='lg'
               onClick={() =>
                 window.open(
-                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
+                  `/dashboard/${searchParams.get('factory')}/riwayat-pemeriksaan/${info.row.original._id}`,
                   '_blank',
                 )
               }

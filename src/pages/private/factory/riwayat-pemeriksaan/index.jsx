@@ -20,7 +20,7 @@ import Table from '@/components/shared/Table';
 import dayjs from 'dayjs';
 import exportExcel from '@/utils/xlsx';
 import { BASE_URL } from '@/utils/axios';
-import { getObjectSearch } from '@/utils/common';
+import { formatCurrency, getObjectSearch } from '@/utils/common';
 
 const countPercentage = (value = 0, divider = 0, fixed = null) => {
   let percent = (value / divider || 1) * 100;
@@ -106,11 +106,11 @@ const RiwayatPemeriksaanPage = () => {
     }),
     columnHelper.accessor('grading_result.total_tandan', {
       header: 'TOTAL TANDAN',
-      cell: (info) => Number(info.getValue()).toLocaleString(),
+      cell: (info) => formatCurrency(info.getValue()),
     }),
     columnHelper.accessor('grading_result.total_multiple', {
       header: 'TOTAL MULTIPLE',
-      cell: (info) => Number(info.getValue()).toLocaleString(),
+      cell: (info) => formatCurrency(info.getValue()),
     }),
     columnHelper.accessor('grading_result.total_rejected', {
       header: 'DITOLAK',
@@ -231,7 +231,7 @@ const RiwayatPemeriksaanPage = () => {
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DITOLAK</label>
             <p className='text-xl text-color-1'>
-              {(meta?.total_rejected || 0).toLocaleString()} (
+              {formatCurrency(meta?.total_rejected)} (
               {countPercentage(
                 meta?.total_rejected || 0,
                 meta?.total_tandan,
@@ -243,7 +243,7 @@ const RiwayatPemeriksaanPage = () => {
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DITERIMA</label>
             <p className='text-xl text-color-1'>
-              {(meta?.total_accepted || 0).toLocaleString()} (
+              {formatCurrency(meta?.total_accepted)} (
               {countPercentage(
                 meta?.total_accepted || 0,
                 meta?.total_tandan,
@@ -255,7 +255,7 @@ const RiwayatPemeriksaanPage = () => {
           <div className='card rounded-xl bg-white font-semibold py-4 px-8 border border-[#EEEEEE]'>
             <label className='text-color-3'>TOTAL DIDENDA</label>
             <p className='text-xl text-color-1'>
-              {(meta?.total_fined || 0).toLocaleString()} (
+              {formatCurrency(meta?.total_fined)} (
               {countPercentage(meta?.total_fined || 0, meta?.total_tandan, 2)}%
               )
             </p>

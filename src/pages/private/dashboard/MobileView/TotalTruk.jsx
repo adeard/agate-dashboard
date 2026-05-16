@@ -5,6 +5,7 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import Button from '@/components/shared/Button';
 
 import {
+  formatCurrency,
   formatPercentWithLeadingZeros,
   getDurationInMinutes,
 } from '@/utils/common';
@@ -48,16 +49,16 @@ const TotalTruk = ({ data, goBack }) => {
             { label: 'PLAT KENDARAAN', value: item.vehicle_number },
             {
               label: 'TBS TRUK',
-              value: item.total_tandan.toLocaleString(),
+              value: formatCurrency(item.total_tandan),
               bg: true,
             },
             {
               label: 'TBS DOUBLE',
-              value: item.total_multiple.toLocaleString(),
+              value: formatCurrency(item.total_multiple),
             },
             {
               label: 'AVG TBS/MENIT',
-              value: avgTbsPerMinute.toLocaleString(),
+              value: formatCurrency(avgTbsPerMinute),
               bg: true,
             },
             {

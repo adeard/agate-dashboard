@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useGet } from '@/services/use-services';
-
 import { createColumnHelper } from '@tanstack/react-table';
+
 import { IoMdClose } from 'react-icons/io';
 import { MdOutlineVisibility } from 'react-icons/md';
 
@@ -13,6 +11,7 @@ import Button from '@/components/shared/Button';
 
 import dayjs from 'dayjs';
 import {
+  formatCurrency,
   formatPercentWithLeadingZeros,
   getDurationInMinutes,
 } from '@/utils/common';
@@ -67,7 +66,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       header: <div>TBS TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue().toLocaleString()}
+          {formatCurrency(info.getValue())}
         </div>
       ),
     }),
@@ -75,7 +74,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       header: <div>TBS DOUBLE</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {info.getValue().toLocaleString()}
+          {formatCurrency(info.getValue())}
         </div>
       ),
     }),
@@ -84,7 +83,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       cell: (info) => {
         const duration = getDurationInMinutes(
           info.row.original.date,
-          info.row.original.finish_date
+          info.row.original.finish_date,
         );
         const avgPerMinute =
           duration > 0 ? info.row.original.total_tandan / duration : 0;
@@ -165,8 +164,8 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
               size='lg'
               onClick={() =>
                 window.open(
-                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
-                  '_blank'
+                  `/dashboard/${searchParams.get('factory')}/riwayat-pemeriksaan/${info.row.original._id}`,
+                  '_blank',
                 )
               }
             >

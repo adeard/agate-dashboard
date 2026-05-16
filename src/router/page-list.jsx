@@ -29,7 +29,7 @@ const pageList = {
     //   ),
     // },
     {
-      path: '/dashboard/riwayat-pemeriksaan/:id',
+      path: '/dashboard/:factoryId/riwayat-pemeriksaan/:id',
       component: lazy(() =>
         import('@/pages/private/factory/riwayat-pemeriksaan/detail')
       ),

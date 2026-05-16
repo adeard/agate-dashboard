@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { orderedKeysAvgGrading } from './optionsKey';
 
@@ -49,7 +48,7 @@ export const paginationConfig = (
   objSearch,
   total,
   refetch,
-  setQueryParams
+  setQueryParams,
 ) => ({
   total: total,
   onChange: (curr, limit) => {
@@ -103,6 +102,8 @@ export const convertLabelUnderscore = (data) => {
   switch (label.toLowerCase()) {
     case 'Buah Kecil 5 Diterima'.toLowerCase():
       return 'Buah Kecil 5 kg diterima';
+    case 'Buah Kecil 2'.toLowerCase():
+      return 'Buah <2kg';
     case 'Buah Kecil 3'.toLowerCase():
       return 'Buah <3kg';
     case 'Buah Kecil 5'.toLowerCase():
@@ -127,8 +128,8 @@ export const getFilteredValues = (values) => {
   return Object.fromEntries(
     Object.entries(values).filter(
       ([key, val]) =>
-        !key.toLowerCase().includes('checkbox') && val !== null && val !== ''
-    )
+        !key.toLowerCase().includes('checkbox') && val !== null && val !== '',
+    ),
   );
 };
 
@@ -139,10 +140,13 @@ export const formattedDataDashboard = (data) => {
   }));
 };
 
-export const reorderDataAvgGrading = (data = {}) => {
+export const reorderDataAvgGrading = (data = {}, factoryId = null) => {
   if (!data || typeof data !== 'object') return {};
 
   return orderedKeysAvgGrading.reduce((acc, key) => {
+    if (key === 'buah_kecil_2' && factoryId !== '66c3114ba342ddbf9eae83c1') {
+      return acc;
+    }
     if (key in data) {
       acc[key] = data[key];
     }
@@ -200,4 +204,18 @@ export const getDurationInMinutes = (start, end) => {
   if (diffMs <= 0) return 0;
 
   return diffMs / (1000 * 60);
+};
+
+export const formatCurrency = (value = 0) => {
+  if (value === undefined || value === null) return '';
+
+  const rawValue = String(value).replace(/[^\d.]/g, '');
+
+  const [integerPart, decimalPart] = rawValue.split('.');
+
+  const formattedInt = parseInt(integerPart || '0', 10).toLocaleString();
+
+  return decimalPart !== undefined
+    ? `${formattedInt}.${decimalPart}`
+    : formattedInt;
 };

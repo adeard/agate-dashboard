@@ -78,7 +78,7 @@ const DrawerRiwayatPemeriksaan = ({ idDrawer, isDrawerOpen, closeDrawer }) => {
               size='lg'
               onClick={() =>
                 window.open(
-                  `/dashboard/riwayat-pemeriksaan/${info.row.original._id}`,
+                  `/dashboard/${searchParams.get('factory')}/riwayat-pemeriksaan/${info.row.original._id}`,
                   '_blank'
                 )
               }
