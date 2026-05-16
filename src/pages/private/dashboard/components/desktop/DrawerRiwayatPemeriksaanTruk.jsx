@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { IoMdClose } from 'react-icons/io';
@@ -30,6 +31,8 @@ const DrawerRiwayatPemeriksaanTruk = ({
   data,
   vendor,
 }) => {
+  const [searchParams] = useSearchParams();
+
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('date', {
@@ -158,7 +161,7 @@ const DrawerRiwayatPemeriksaanTruk = ({
               onClick={() =>
                 window.open(
                   `/dashboard/${searchParams.get('factory')}/riwayat-pemeriksaan/${info.row.original._id}`,
-                  '_blank'
+                  '_blank',
                 )
               }
             >

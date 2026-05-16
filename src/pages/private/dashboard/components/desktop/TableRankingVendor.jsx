@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { MdOutlineVisibility } from 'react-icons/md';
@@ -51,6 +52,8 @@ const getIcon = (rank) => {
 };
 
 const TableRankingVendor = ({ data }) => {
+  const [searchParams] = useSearchParams();
+
   const columnHelper = createColumnHelper();
 
   const columns = [
