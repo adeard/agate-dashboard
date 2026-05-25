@@ -21,6 +21,7 @@ import dayjs from 'dayjs';
 import exportExcel from '@/utils/xlsx';
 import { BASE_URL } from '@/utils/axios';
 import { formatCurrency, getObjectSearch } from '@/utils/common';
+import { useState } from 'react';
 
 const countPercentage = (value = 0, divider = 0, fixed = null) => {
   let percent = (value / divider || 1) * 100;
@@ -40,6 +41,7 @@ const RiwayatPemeriksaanPage = () => {
     null,
     false,
   );
+  const [loadingDownloadExcel, setLoadingDownloadExcel] = useState(false);
 
   const factoryEksternalVendor =
     factoryId === '68fc9b419a7c87b51e2002b5' ||
@@ -205,11 +207,20 @@ const RiwayatPemeriksaanPage = () => {
             <Button
               size='lg'
               className='flex items-center'
-              onClick={() => {
-                refetchDownloadExcel().then((res) => {
+              onClick={async () => {
+                try {
+                  setLoadingDownloadExcel(true);
+
+                  const res = await refetchDownloadExcel();
+
                   exportExcel(res, 'Laporan Excel Grading All');
-                });
+                } catch (error) {
+                  console.error('Failed download excel:', error);
+                } finally {
+                  setLoadingDownloadExcel(false);
+                }
               }}
+              loading={loadingDownloadExcel}
             >
               <MdAddChart className='text-xl mr-2' />
               Download Excel
