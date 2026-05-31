@@ -214,7 +214,6 @@ const DetailRiwayatPemeriksaanPage = () => {
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] !text-center'>
           {formatCurrency(info.getValue())}
-          <span className='!body-s-r text-color-2'>kg</span>
         </div>
       ),
       size: 20,
