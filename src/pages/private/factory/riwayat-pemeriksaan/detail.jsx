@@ -209,32 +209,45 @@ const DetailRiwayatPemeriksaanPage = () => {
       ),
       size: 400,
     }),
-    columnHelper.accessor('fined', {
-      header: () => <div className='text-center'>DENDA</div>,
+    columnHelper.accessor('total', {
+      header: () => <div className='text-center'>TOTAL</div>,
       cell: (info) => (
+<<<<<<< Updated upstream
         <div className='!body-m-r text-[#000000DE] !text-center'>
           {formatCurrency(info.getValue())}
           <span className='!body-s-r text-color-2'>kg</span>
+=======
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+>>>>>>> Stashed changes
         </div>
       ),
       size: 20,
     }),
-    columnHelper.accessor('total', {
-      header: () => <div className='text-center'>TOTAL</div>,
+    columnHelper.accessor('fined', {
+      header: () => <div className='text-center'>DENDA</div>,
       cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()}
+        <div className='!body-m-r text-[#000000DE] !text-center'>
+          {info.getValue()?.toLocaleString() || 0}
+          <span className='!body-s-r ml-1'>
+            {info.row.original.hasBjr ? `% x ${info.row.original.bjr} kg` : 'kg'}
+          </span>
         </div>
       ),
       size: 20,
     }),
     columnHelper.accessor('total_kg', {
       header: () => <div className='text-center'>TOTAL KG</div>,
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {info.getValue()}
-        </div>
-      ),
+      cell: (info) => {
+        const val = info.getValue() || 0;
+        return (
+          <div className='!body-m-r text-[#000000DE] text-center'>
+            {typeof val === 'number'
+              ? parseFloat(val.toFixed(2)).toLocaleString()
+              : val}
+          </div>
+        );
+      },
       size: 20,
     }),
   ];
@@ -301,15 +314,28 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const dataDidenda =
     data &&
-    Object.keys(data?.grading_result.fined_summary).map((key, index) => ({
-      id: index + 1,
-      title: key,
-      fined: data?.grading_result.fined_summary[key].DENDA,
-      total: data?.grading_result.fined_summary[key].TOTAL,
-      total_kg:
-        (data?.grading_result.fined_summary[key].TOTAL || 0) *
-        (data?.grading_result.fined_summary[key].DENDA || 0),
-    }));
+    Object.keys(data?.grading_result.fined_summary).map((key, index) => {
+      const fined = data?.grading_result.fined_summary[key].DENDA || 0;
+      const total = data?.grading_result.fined_summary[key].TOTAL || 0;
+      const bjr = data?.bjr ? parseFloat(data.bjr) : null;
+
+      let total_kg = 0;
+      if (bjr && !isNaN(bjr)) {
+        total_kg = total * (fined / 100) * bjr;
+      } else {
+        total_kg = total * fined;
+      }
+
+      return {
+        id: index + 1,
+        title: key,
+        fined,
+        total,
+        total_kg,
+        hasBjr: !!(bjr && !isNaN(bjr)),
+        bjr,
+      };
+    });
 
   const totalRowDiterima = {
     title: <div className='text-left'>Total</div>,
@@ -336,6 +362,7 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDitolak = {
     title: <div className='text-left'>Total</div>,
+<<<<<<< Updated upstream
     total: (
       dataDitolak?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
     ).toLocaleString(),
@@ -345,6 +372,15 @@ const DetailRiwayatPemeriksaanPage = () => {
       dataDitolak?.reduce((acc, row) => acc + (row.largeFruit || 0), 0) || 0,
     longStash:
       dataDitolak?.reduce((acc, row) => acc + (row.longStash || 0), 0) || 0,
+=======
+    total: dataDitolak
+      ?.reduce((acc, row) => acc + row.total, 0)
+      ?.toLocaleString(),
+    normal: dataDitolak?.reduce((acc, row) => acc + row.normal, 0),
+    pest: dataDitolak?.reduce((acc, row) => acc + row.pest, 0),
+    largeFruit: dataDitolak?.reduce((acc, row) => acc + row.largeFruit || 0, 0),
+    longStash: dataDitolak?.reduce((acc, row) => acc + row.longStash, 0),
+>>>>>>> Stashed changes
     ...(isCombinedFactory
       ? {
           below5kg:
@@ -364,12 +400,24 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDidenda = {
     title: <div className='text-left'>Total</div>,
+<<<<<<< Updated upstream
     // fined: dataDidenda?.reduce((acc, row) => acc + (row.fined || 0), 0) || 0,
     total: (
       dataDidenda?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
     ).toLocaleString(),
     total_kg:
       dataDidenda?.reduce((acc, row) => acc + (row.total_kg || 0), 0) || 0,
+=======
+    // fined: dataDidenda?.reduce((acc, row) => acc + row.fined, 0),
+    total: dataDidenda
+      ?.reduce((acc, row) => acc + row.total, 0)
+      ?.toLocaleString(),
+    total_kg: parseFloat(
+      (dataDidenda?.reduce((acc, row) => acc + row.total_kg, 0) || 0).toFixed(
+        2,
+      ),
+    ).toLocaleString(),
+>>>>>>> Stashed changes
   };
 
   return (
@@ -515,7 +563,13 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
+<<<<<<< Updated upstream
                     {formatCurrency(data?.grading_result.total_multiple)}
+=======
+                    {Number(
+                      data?.grading_result.total_multiple,
+                    ).toLocaleString()}
+>>>>>>> Stashed changes
                   </p>
                 </div>
                 <div>
@@ -525,7 +579,13 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
+<<<<<<< Updated upstream
                     {formatCurrency(data?.grading_result.total_accepted)}
+=======
+                    {Number(
+                      data?.grading_result.total_accepted,
+                    ).toLocaleString()}
+>>>>>>> Stashed changes
                   </p>
                 </div>
                 <div>
@@ -535,7 +595,13 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
+<<<<<<< Updated upstream
                     {formatCurrency(data?.grading_result.total_rejected)}
+=======
+                    {Number(
+                      data?.grading_result.total_rejected,
+                    ).toLocaleString()}
+>>>>>>> Stashed changes
                   </p>
                 </div>
                 <div>
@@ -545,11 +611,21 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
+<<<<<<< Updated upstream
                     {Number(
                       dataDidenda?.reduce(
                         (acc, row) => acc + (row.total_kg || 0),
                         0,
                       ) || 0,
+=======
+                    {parseFloat(
+                      (
+                        dataDidenda?.reduce(
+                          (acc, row) => acc + row.total_kg,
+                          0,
+                        ) || 0
+                      ).toFixed(2),
+>>>>>>> Stashed changes
                     ).toLocaleString()}{' '}
                     kg
                   </p>
