@@ -230,7 +230,9 @@ const DesktopViewDashboardPage = () => {
                         "date_from",
                       )}&targetEnd=${searchParams.get("date_to")}&company=${
                         userData?.company
-                      }&factory=${searchParams.get("factory")}`,
+                      }&factory=${searchParams.get("factory")}&vendor_type=${
+                        searchParams.get("vendor_type") || "all"
+                      }`,
                     "_blank",
                   );
                 }}
@@ -249,7 +251,8 @@ const DesktopViewDashboardPage = () => {
                         params: {
                           date_from: searchParams.get("date_from"),
                           date_to: searchParams.get("date_to"),
-                          factory: searchParams.get("factory")
+                          factory: searchParams.get("factory"),
+                          vendor_type: searchParams.get("vendor_type") || "all"
                         },
                         responseType: "blob",
                       }
