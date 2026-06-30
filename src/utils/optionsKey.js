@@ -64,6 +64,10 @@ export const vendorLNGMTypeOptions = [
     label: 'STKA',
     value: 'STKA',
   },
+  {
+    label: 'Buah Luar',
+    value: 'LUAR',
+  },
 ];
 
 export const listOptionsMachine = [
