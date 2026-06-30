@@ -48,7 +48,7 @@ import {
   colorKriteriaGrading,
   listOptionsMachine,
 } from "@/utils/optionsKey";
-import { BASE_URL } from "@/utils/axios";
+import axiosInstance, { BASE_URL } from "@/utils/axios";
 
 const DesktopViewDashboardPage = () => {
   const { state } = useAuthStore();
@@ -241,15 +241,29 @@ const DesktopViewDashboardPage = () => {
               <Button
                 size="lg"
                 className="flex items-center"
-                onClick={() => {
-                  window.open(
-                    BASE_URL +
-                      "/v4/dashboard/download-performance" +
-                      `?date_from=${searchParams.get(
-                        "date_from",
-                      )}&date_to=${searchParams.get("date_to")}&factory=${searchParams.get("factory")}`,
-                    "_blank",
-                  );
+                onClick={async () => {
+                  try {
+                    const response = await axiosInstance.get(
+                      "/v4/dashboard/download-performance",
+                      {
+                        params: {
+                          date_from: searchParams.get("date_from"),
+                          date_to: searchParams.get("date_to"),
+                          factory: searchParams.get("factory")
+                        },
+                        responseType: "blob",
+                      }
+                    );
+                    const url = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", `Performance-Durasi-Operasional-${searchParams.get("date_to") || "report"}.xlsx`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                  } catch (error) {
+                    console.error("Error downloading performance report:", error);
+                  }
                 }}
               >
                 <MdFileDownload className="text-xl mr-2" />
