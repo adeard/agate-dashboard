@@ -6,7 +6,7 @@ import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Select from '@/components/shared/Select';
 
-import { vendorTypeOptions, vendorKJGMTypeOptions } from '@/utils/optionsKey';
+import { vendorTypeOptions, vendorKJGMTypeOptions, vendorLNGMTypeOptions } from '@/utils/optionsKey';
 
 const DrawerFilterDashboard = ({
   idDrawer,
@@ -106,6 +106,12 @@ const DrawerFilterDashboard = ({
                       field.handleChange(selectedValue);
                       if (selectedValue === '68fc9b419a7c87b51e2002b5') {
                         setVendorTypeOptionList(vendorKJGMTypeOptions);
+                      } else if (
+                        selectedOption &&
+                        selectedOption.label &&
+                        selectedOption.label.toUpperCase().includes('LNGM')
+                      ) {
+                        setVendorTypeOptionList(vendorLNGMTypeOptions);
                       } else {
                         setVendorTypeOptionList(vendorTypeOptions);
                       }

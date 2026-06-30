@@ -43,6 +43,29 @@ export const vendorKJGMTypeOptions = [
   },
 ];
 
+export const vendorLNGMTypeOptions = [
+  {
+    label: 'Semua',
+    value: 'all',
+  },
+  {
+    label: 'Inti',
+    value: '1',
+  },
+  {
+    label: 'Plasma',
+    value: '2',
+  },
+  {
+    label: 'GAPOKTAN',
+    value: 'GAPOKTAN',
+  },
+  {
+    label: 'STKA',
+    value: 'STKA',
+  },
+];
+
 export const listOptionsMachine = [
   { label: 'Semua Mesin', value: 'All' },
   {
