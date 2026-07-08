@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
 import Button from '@/components/shared/Button';
@@ -18,6 +18,35 @@ const DrawerFilterDashboard = ({
 }) => {
   const [vendorTypeOptionList, setVendorTypeOptionList] =
     useState(vendorTypeOptions);
+
+  const sortedOptionsFactory = useMemo(() => {
+    if (!optionsFactory) return [];
+    return [...optionsFactory].sort((a, b) => {
+      if (a.label && a.label.toUpperCase().includes('LNGM')) return -1;
+      if (b.label && b.label.toUpperCase().includes('LNGM')) return 1;
+      return 0;
+    });
+  }, [optionsFactory]);
+
+  useEffect(() => {
+    const currentFactoryValue = form.state.values?.factory;
+    if (currentFactoryValue && optionsFactory) {
+      const selectedOption = optionsFactory.find(
+        (opt) => opt.value === currentFactoryValue
+      );
+      if (currentFactoryValue === '68fc9b419a7c87b51e2002b5') {
+        setVendorTypeOptionList(vendorKJGMTypeOptions);
+      } else if (
+        selectedOption &&
+        selectedOption.label &&
+        selectedOption.label.toUpperCase().includes('LNGM')
+      ) {
+        setVendorTypeOptionList(vendorLNGMTypeOptions);
+      } else {
+        setVendorTypeOptionList(vendorTypeOptions);
+      }
+    }
+  }, [form.state.values?.factory, optionsFactory]);
 
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
@@ -98,7 +127,7 @@ const DrawerFilterDashboard = ({
                     className='body-m-r !h-full'
                     name={field.name}
                     value={field.state.value}
-                    options={optionsFactory || []}
+                    options={sortedOptionsFactory}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value
