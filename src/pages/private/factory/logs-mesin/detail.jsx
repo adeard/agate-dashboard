@@ -12,6 +12,7 @@ import useDrawer from '@/hooks/useDrawer';
 
 import { useGet } from '@/services/use-services';
 import Input from '@/components/shared/Input';
+import { formatCurrency } from '@/utils/common';
 
 const DetailLogsMesinPage = () => {
   const { factoryId, mesinNumber, logDate } = useParams();
@@ -31,7 +32,7 @@ const DetailLogsMesinPage = () => {
   const columns = [
     columnHelper.accessor('no', {
       header: <div className='text-center'>NO</div>,
-      cell: (info) => <div className='text-center'>{info.row.index + 1}</div>,
+      cell: (info) => <div className='text-center'>{formatCurrency(info.row.index + 1)}</div>,
     }),
     columnHelper.accessor('date_string', {
       header: 'WAKTU',

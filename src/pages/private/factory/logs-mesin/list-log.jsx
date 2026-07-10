@@ -11,6 +11,9 @@ import DrawerFilterVendor from '../components/DrawerFilterVendor';
 import Input from '@/components/shared/Input';
 
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 const ListLogPage = () => {
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ const ListLogPage = () => {
     if (!data) return [];
 
     return data.filter((item) => {
-      const logDate = dayjs(item.updatedAt);
+      const logDate = dayjs(item.date, 'DD/MM/YYYY');
 
       return logDate.format('YYYY-MM') === month;
     });
@@ -83,7 +86,7 @@ const ListLogPage = () => {
         <main className='grid grid-cols-4 gap-4'>
           {Array.isArray(filteredData) && filteredData.length > 0 ? (
             filteredData.map((item) => {
-              const urlDate = dayjs(item.updatedAt).format('YYYY-MM-DD');
+              const urlDate = dayjs(item.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
               return (
                 <div
