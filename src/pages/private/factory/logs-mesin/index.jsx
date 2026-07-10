@@ -1,15 +1,29 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { MdKeyboardArrowRight, MdOutlineDoNotDisturbOn } from 'react-icons/md';
 
-const listMesin = new Array(4).fill().map((_, index) => ({
-  mesin: `Mesin ${index + 1}`,
-}));
+const factory = {
+  '699be68839fb2f1e96d62a01': 2,
+  '66c3114ba342ddbf9eae83c1': 4,
+  '686a5645bf73aa13b489ad36': 1,
+  '68fc9b419a7c87b51e2002b3': 4,
+  '68fc9b419a7c87b51e2002b5': 4,
+  '6959fd4584e3955ce63dac95': 2,
+  '6a058067eead79aa42c659bd': 1,
+  '6a449b3997ad166780382f0b': 2,
+};
 
 const LogsMesinPage = () => {
   const navigate = useNavigate();
+  const { factoryId } = useParams();
 
   const factoryName = sessionStorage.getItem('factoryName');
+
+  const totalMesin = factory[factoryId] ?? 0;
+
+  const listMesin = Array.from({ length: totalMesin }, (_, index) => ({
+    mesin: `Mesin ${index + 1}`,
+  }));
 
   return (
     <div>
