@@ -5,7 +5,12 @@ import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import Select from '@/components/shared/Select';
 
-import { vendorTypeOptions, vendorKJGMTypeOptions, vendorLNGMTypeOptions } from '@/utils/optionsKey';
+import {
+  vendorTypeOptions,
+  vendorKJGMTypeOptions,
+  vendorLNGMTypeOptions,
+  vendorBYLMTypeOptions,
+} from '@/utils/optionsKey';
 
 const MobileDrawerFilter = ({
   idDrawer,
@@ -31,10 +36,12 @@ const MobileDrawerFilter = ({
     const currentFactoryValue = form.state.values?.factory;
     if (currentFactoryValue && optionsFactory) {
       const selectedOption = optionsFactory.find(
-        (opt) => opt.value === currentFactoryValue
+        (opt) => opt.value === currentFactoryValue,
       );
       if (currentFactoryValue === '68fc9b419a7c87b51e2002b5') {
         setVendorTypeOptionList(vendorKJGMTypeOptions);
+      } else if (currentFactoryValue === '699be68839fb2f1e96d62a01') {
+        setVendorTypeOptionList(vendorBYLMTypeOptions);
       } else if (
         selectedOption &&
         selectedOption.label &&
