@@ -76,8 +76,6 @@ const DetailRiwayatPemeriksaanPage = () => {
         }),
       ];
 
-  // Extra columns shown only for the detailed factory (699be68839fb2f1e96d62a01),
-  // mirroring the additional classification fields present in grading_result.
   const detailedColumns = [
     columnHelper.accessor('below3kg', {
       header: () => <div className='text-center'>&lt; 3kg</div>,
@@ -578,7 +576,6 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const totalRowDidenda = {
     title: <div className='text-left'>Total</div>,
-    // fined: dataDidenda?.reduce((acc, row) => acc + (row.fined || 0), 0) || 0,
     total: (
       dataDidenda?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
     ).toLocaleString(),
