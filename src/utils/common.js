@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { orderedKeysAvgGrading } from './optionsKey';
+import { orderedKeysAvgGrading, orderedKeysAvgGradingSpecial } from './optionsKey';
 
 export const joinClassnames = (classes) => {
   return classes.filter(Boolean).join(' ');
@@ -143,8 +143,12 @@ export const formattedDataDashboard = (data) => {
 export const reorderDataAvgGrading = (data = {}, factoryId = null) => {
   if (!data || typeof data !== 'object') return {};
 
-  return orderedKeysAvgGrading.reduce((acc, key) => {
-    if (key === 'buah_kecil_2' && factoryId !== '66c3114ba342ddbf9eae83c1') {
+  const keysToUse = factoryId === '6a56f2542d426cfdaeda44fc' 
+    ? orderedKeysAvgGradingSpecial 
+    : orderedKeysAvgGrading;
+
+  return keysToUse.reduce((acc, key) => {
+    if (key === 'buah_kecil_2' && factoryId !== '66c3114ba342ddbf9eae83c1' && factoryId !== '6a56f2542d426cfdaeda44fc') {
       return acc;
     }
     if (key in data) {

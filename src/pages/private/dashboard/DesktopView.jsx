@@ -466,15 +466,15 @@ const DesktopViewDashboardPage = () => {
                   </label>
 
                   <div className="grid grid-cols-2 gap-2">
-                    {chunkArray(
-                      formattedDataDashboard(
+                    {(() => {
+                      const gradingData = formattedDataDashboard(
                         reorderDataAvgGrading(
                           data?.average_grading,
-                          searchParams.get("factory"),
-                        ) || {},
-                      ),
-                      7,
-                    ).map((chunk, colIndex) => (
+                          searchParams.get("factory")
+                        ) || {}
+                      );
+                      const chunkSize = Math.ceil(gradingData.length / 2) || 7;
+                      return chunkArray(gradingData, chunkSize).map((chunk, colIndex) => (
                       <div key={colIndex}>
                         <table className="table">
                           <tbody>
@@ -529,7 +529,7 @@ const DesktopViewDashboardPage = () => {
                           </tbody>
                         </table>
                       </div>
-                    ))}
+                    ))})()}
                   </div>
                 </div>
                 <div className="col-span-1 h-full bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto">

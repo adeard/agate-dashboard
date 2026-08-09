@@ -116,6 +116,10 @@ export const colorKriteriaGrading = {
   lewat_matang_ditolak: 'bg-[#AC0F18]',
   tangkai_panjang: 'bg-[#F0CC00]',
   rusak_dimakan_tikus: 'bg-[#F0CC00]',
+  tangkai_panjang_didenda: 'bg-[#F0CC00]',
+  tangkai_panjang_ditolak: 'bg-[#AC0F18]',
+  rusak_dimakan_tikus_didenda: 'bg-[#F0CC00]',
+  rusak_dimakan_tikus_ditolak: 'bg-[#AC0F18]',
 };
 
 const chartTypeDictionary = {
@@ -151,4 +155,23 @@ export const orderedKeysAvgGrading = [
   'buah_kecil_5',
   'matang_ditolak',
   'lewat_matang_ditolak',
+];
+
+export const orderedKeysAvgGradingSpecial = [
+  'matang',
+  'lewat_matang',
+  'mentah_diterima',
+  'janjang_kosong_diterima',
+  'buah_kecil_5_diterima',
+  'tangkai_panjang_didenda',
+  'rusak_dimakan_tikus_didenda',
+  'mentah',
+  'janjang_kosong',
+  'buah_kecil_2',
+  'buah_kecil_3',
+  'buah_kecil_5',
+  'matang_ditolak',
+  'lewat_matang_ditolak',
+  'tangkai_panjang_ditolak',
+  'rusak_dimakan_tikus_ditolak',
 ];
