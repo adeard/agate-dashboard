@@ -305,7 +305,7 @@ const MonitoringGrading = ({
               <table className='table'>
                 <tbody>
                   {Object.entries(
-                    reorderDataAvgGrading(data?.average_grading, searchParams.get('factory')) || {},
+                    reorderDataAvgGrading(data?.average_grading) || {},
                   ).map(([key, value], index) => (
                     <tr
                       key={index}
@@ -318,7 +318,7 @@ const MonitoringGrading = ({
                       <td className='!w-4 !p-0'>
                         <div
                           className={`w-3 h-3 rounded-full ${
-                            colorKriteriaGrading[key] || 'bg-gray-300'
+                            colorKriteriaGrading[key] || colorKriteriaGrading[key.replace('_diterima', '').replace('_ditolak', '')] || 'bg-gray-300'
                           }`}
                         ></div>
                       </td>

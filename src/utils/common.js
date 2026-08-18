@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { orderedKeysAvgGrading, orderedKeysAvgGradingSpecial } from './optionsKey';
+import { categorizedKeysAvgGrading } from './optionsKey';
 
 export const joinClassnames = (classes) => {
   return classes.filter(Boolean).join(' ');
@@ -91,22 +91,31 @@ export const convertLabel = (data) => {
   }
 };
 
-export const convertLabelUnderscore = (data) => {
-  const label = data
-    ?.replace(/_/g, ' ') // ganti underscore dengan spasi
-    .toLowerCase()
-    .split(' ')
+export const convertLabelUnderscore = (data, removeSuffix = false) => {
+  let processedData = data?.replace(/_/g, ' ').toLowerCase();
+
+  if (removeSuffix && processedData) {
+    processedData = processedData
+      .replace(/diterima/g, '')
+      .replace(/ditolak/g, '')
+      .replace(/didenda/g, '')
+      .trim();
+  }
+
+  const label = processedData
+    ?.split(' ')
+    .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  switch (label.toLowerCase()) {
-    case 'Buah Kecil 5 Diterima'.toLowerCase():
+  switch (label?.toLowerCase()) {
+    case 'buah kecil 5 diterima':
       return 'Buah Kecil 5 kg diterima';
-    case 'Buah Kecil 2'.toLowerCase():
+    case 'buah kecil 2':
       return 'Buah <2kg';
-    case 'Buah Kecil 3'.toLowerCase():
+    case 'buah kecil 3':
       return 'Buah <3kg';
-    case 'Buah Kecil 5'.toLowerCase():
+    case 'buah kecil 5':
       return 'Buah 3-5kg';
     default:
       return label;
@@ -140,22 +149,46 @@ export const formattedDataDashboard = (data) => {
   }));
 };
 
-export const reorderDataAvgGrading = (data = {}, factoryId = null) => {
+export const reorderDataAvgGrading = (data = {}) => {
   if (!data || typeof data !== 'object') return {};
 
-  const keysToUse = factoryId === '6a56f2542d426cfdaeda44fc' 
-    ? orderedKeysAvgGradingSpecial 
-    : orderedKeysAvgGrading;
+  const keysToUse = [
+    ...categorizedKeysAvgGrading.diterima.main,
+    ...categorizedKeysAvgGrading.diterima.sub,
+    ...categorizedKeysAvgGrading.ditolak.main,
+    ...categorizedKeysAvgGrading.ditolak.sub,
+  ];
 
   return keysToUse.reduce((acc, key) => {
-    if (key === 'buah_kecil_2' && factoryId !== '66c3114ba342ddbf9eae83c1' && factoryId !== '6a56f2542d426cfdaeda44fc') {
-      return acc;
-    }
     if (key in data) {
       acc[key] = data[key];
     }
     return acc;
   }, {});
+};
+
+export const getCategorizedGradingData = (data = {}) => {
+  if (!data || typeof data !== 'object')
+    return { diterima: { main: [], sub: [] }, ditolak: { main: [], sub: [] } };
+
+  const buildItems = (keys) =>
+    keys
+      .filter((key) => key in data)
+      .map((key) => ({
+        label: key,
+        percent: parseFloat(data[key]),
+      }));
+
+  return {
+    diterima: {
+      main: buildItems(categorizedKeysAvgGrading.diterima.main),
+      sub: buildItems(categorizedKeysAvgGrading.diterima.sub),
+    },
+    ditolak: {
+      main: buildItems(categorizedKeysAvgGrading.ditolak.main),
+      sub: buildItems(categorizedKeysAvgGrading.ditolak.sub),
+    },
+  };
 };
 
 export const chunkArray = (array, size) => {

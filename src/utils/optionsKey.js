@@ -140,38 +140,13 @@ export const chartTypeListOptions = Object.entries(chartTypeDictionary).map(
   }),
 );
 
-export const orderedKeysAvgGrading = [
-  'matang',
-  'lewat_matang',
-  'mentah_diterima',
-  'janjang_kosong_diterima',
-  'buah_kecil_5_diterima',
-  'tangkai_panjang',
-  'rusak_dimakan_tikus',
-  'mentah',
-  'janjang_kosong',
-  'buah_kecil_2',
-  'buah_kecil_3',
-  'buah_kecil_5',
-  'matang_ditolak',
-  'lewat_matang_ditolak',
-];
-
-export const orderedKeysAvgGradingSpecial = [
-  'matang',
-  'lewat_matang',
-  'mentah_diterima',
-  'janjang_kosong_diterima',
-  'buah_kecil_5_diterima',
-  'tangkai_panjang_didenda',
-  'rusak_dimakan_tikus_didenda',
-  'mentah',
-  'janjang_kosong',
-  'buah_kecil_2',
-  'buah_kecil_3',
-  'buah_kecil_5',
-  'matang_ditolak',
-  'lewat_matang_ditolak',
-  'tangkai_panjang_ditolak',
-  'rusak_dimakan_tikus_ditolak',
-];
+export const categorizedKeysAvgGrading = {
+  diterima: {
+    main: ['matang_diterima', 'lewat_matang_diterima', 'mentah_diterima', 'janjang_kosong_diterima'],
+    sub: ['buah_kecil_5_diterima', 'buah_kecil_3_diterima', 'buah_kecil_2_diterima', 'tangkai_panjang_diterima', 'rusak_dimakan_tikus_diterima', 'partenokarpi_diterima'],
+  },
+  ditolak: {
+    main: ['mentah_ditolak', 'janjang_kosong_ditolak', 'lewat_matang_ditolak', 'matang_ditolak'],
+    sub: ['buah_kecil_5_ditolak', 'buah_kecil_3_ditolak', 'buah_kecil_2_ditolak', 'tangkai_panjang_ditolak', 'rusak_dimakan_tikus_ditolak', 'partenokarpi_ditolak'],
+  },
+};
