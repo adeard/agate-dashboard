@@ -112,10 +112,13 @@ export const convertLabelUnderscore = (data, removeSuffix = false) => {
     case 'buah kecil 5 diterima':
       return 'Buah Kecil 5 kg diterima';
     case 'buah kecil 2':
+    case 'buah kecil dibawah 2kg':
       return 'Buah <2kg';
     case 'buah kecil 3':
+    case 'buah kecil dibawah 3kg':
       return 'Buah <3kg';
     case 'buah kecil 5':
+    case 'buah kecil dibawah 5kg':
       return 'Buah 3-5kg';
     default:
       return label;
@@ -152,6 +155,33 @@ export const formattedDataDashboard = (data) => {
 export const reorderDataAvgGrading = (data = {}) => {
   if (!data || typeof data !== 'object') return {};
 
+  let targetData = data;
+
+  if (data.diterima || data.ditolak) {
+    const flatData = {};
+    const process = (obj, suffix) => {
+      if (!obj) return;
+      Object.entries(obj).forEach(([key, val]) => {
+        let formattedKey = key.toLowerCase().replace(/ /g, '_');
+        if (formattedKey === 'buah_kecil_dibawah_2kg') formattedKey = 'buah_kecil_2';
+        if (formattedKey === 'buah_kecil_dibawah_3kg') formattedKey = 'buah_kecil_3';
+        if (formattedKey === 'buah_kecil_dibawah_5kg') formattedKey = 'buah_kecil_5';
+        
+        flatData[`${formattedKey}_${suffix}`] = val;
+      });
+    };
+    
+    if (data.diterima) {
+      process(data.diterima.main, 'diterima');
+      process(data.diterima.sub, 'diterima');
+    }
+    if (data.ditolak) {
+      process(data.ditolak.main, 'ditolak');
+      process(data.ditolak.sub, 'ditolak');
+    }
+    targetData = flatData;
+  }
+
   const keysToUse = [
     ...categorizedKeysAvgGrading.diterima.main,
     ...categorizedKeysAvgGrading.diterima.sub,
@@ -160,8 +190,8 @@ export const reorderDataAvgGrading = (data = {}) => {
   ];
 
   return keysToUse.reduce((acc, key) => {
-    if (key in data) {
-      acc[key] = data[key];
+    if (key in targetData) {
+      acc[key] = targetData[key];
     }
     return acc;
   }, {});
@@ -171,11 +201,41 @@ export const getCategorizedGradingData = (data = {}) => {
   if (!data || typeof data !== 'object')
     return { diterima: { main: [], sub: [] }, ditolak: { main: [], sub: [] } };
 
+  if (data.diterima || data.ditolak) {
+    const buildItems = (obj, suffix) => {
+      if (!obj) return [];
+      return Object.entries(obj).map(([label, percent]) => {
+        let formattedKey = label.toLowerCase().replace(/ /g, '_');
+        if (formattedKey === 'buah_kecil_dibawah_2kg') formattedKey = 'buah_kecil_2';
+        if (formattedKey === 'buah_kecil_dibawah_3kg') formattedKey = 'buah_kecil_3';
+        if (formattedKey === 'buah_kecil_dibawah_5kg') formattedKey = 'buah_kecil_5';
+        
+        return {
+          label,
+          key: `${formattedKey}_${suffix}`,
+          percent: parseFloat(percent) || 0,
+        };
+      });
+    };
+
+    return {
+      diterima: {
+        main: buildItems(data.diterima?.main, 'diterima'),
+        sub: buildItems(data.diterima?.sub, 'diterima'),
+      },
+      ditolak: {
+        main: buildItems(data.ditolak?.main, 'ditolak'),
+        sub: buildItems(data.ditolak?.sub, 'ditolak'),
+      },
+    };
+  }
+
   const buildItems = (keys) =>
     keys
       .filter((key) => key in data)
       .map((key) => ({
         label: key,
+        key: key,
         percent: parseFloat(data[key]),
       }));
 

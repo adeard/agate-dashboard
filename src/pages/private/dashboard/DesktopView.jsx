@@ -477,11 +477,14 @@ const DesktopViewDashboardPage = () => {
                   <div className='grid grid-cols-2 gap-4'>
                     {(() => {
                       const categorized = getCategorizedGradingData(
-                        data?.average_grading
+                        data?.average_grading,
                       );
 
                       const sumPercent = (items) =>
-                        items.reduce((acc, item) => acc + (item.percent || 0), 0);
+                        items.reduce(
+                          (acc, item) => acc + (item.percent || 0),
+                          0,
+                        );
 
                       const renderGradingTable = (items) => (
                         <table className='table'>
@@ -491,47 +494,39 @@ const DesktopViewDashboardPage = () => {
                                 key={index}
                                 className='body-m-r group hover text-color-2'
                               >
-                                <td className='!w-4'>
-                                  <div
-                                    className={`w-3 h-3 rounded-full ${
-                                      colorKriteriaGrading[item.label] ||
-                                      colorKriteriaGrading[item.label.replace('_diterima', '').replace('_ditolak', '')] ||
-                                      'bg-gray-300'
-                                    }`}
-                                  ></div>
-                                </td>
-                                <td className='text-color-1 !pl-1'>
+                                <td className='text-color-1 !pl-1 whitespace-nowrap'>
                                   {convertLabelUnderscore(item.label, true)}
                                 </td>
-                                <td className='text-right'>
-                                  <p className='inline-flex'>
-                                    <span className='text-color-1'>
-                                      {formatPercentWithLeadingZeros(
-                                        item.percent,
-                                      )}
-                                    </span>{' '}
-                                    <span className='body-s-r'>%</span>
-                                  </p>
-                                </td>
-                                <td className='flex items-center justify-end'>
-                                  <ButtonMore
-                                    listMenu={[
-                                      {
-                                        label: 'Tren Kriteria',
-                                        onClick: () => {
-                                          setSelectedCriteria(item.label);
-                                          toggleDrawerTrenKriteria();
+                                <td className='whitespace-nowrap'>
+                                  <div className='flex items-center justify-end gap-2'>
+                                    <p className='inline-flex'>
+                                      <span className='text-color-1'>
+                                        {formatPercentWithLeadingZeros(
+                                          item.percent,
+                                        )}
+                                      </span>
+                                      <span className='body-s-r'>%</span>
+                                    </p>
+
+                                    <ButtonMore
+                                      listMenu={[
+                                        {
+                                          label: 'Tren Kriteria',
+                                          onClick: () => {
+                                            setSelectedCriteria(item.key || item.label);
+                                            toggleDrawerTrenKriteria();
+                                          },
                                         },
-                                      },
-                                      {
-                                        label: 'Analisa Vendor',
-                                        onClick: () => {
-                                          setSelectedCriteria(item.label);
-                                          toggleDrawerAnalisaVendor();
+                                        {
+                                          label: 'Analisa Vendor',
+                                          onClick: () => {
+                                            setSelectedCriteria(item.key || item.label);
+                                            toggleDrawerAnalisaVendor();
+                                          },
                                         },
-                                      },
-                                    ]}
-                                  />
+                                      ]}
+                                    />
+                                  </div>
                                 </td>
                               </tr>
                             ))}
@@ -551,7 +546,12 @@ const DesktopViewDashboardPage = () => {
                             {renderGradingTable(categorized.diterima.main)}
                             <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
                               <span>Total</span>
-                              <span>{formatPercentWithLeadingZeros(sumPercent(categorized.diterima.main))} %</span>
+                              <span>
+                                {formatPercentWithLeadingZeros(
+                                  sumPercent(categorized.diterima.main),
+                                )}{' '}
+                                %
+                              </span>
                             </p>
                             {categorized.diterima.sub.length > 0 && (
                               <>
@@ -562,7 +562,7 @@ const DesktopViewDashboardPage = () => {
                                 {renderGradingTable(categorized.diterima.sub)}
                               </>
                             )}
-                            </div>
+                          </div>
 
                           <div className='border border-red-200 rounded-lg p-3 overflow-auto bg-red-50/30'>
                             <p className='tag-l text-red-700 mb-2'>DITOLAK</p>
@@ -572,7 +572,12 @@ const DesktopViewDashboardPage = () => {
                             {renderGradingTable(categorized.ditolak.main)}
                             <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
                               <span>Total</span>
-                              <span>{formatPercentWithLeadingZeros(sumPercent(categorized.ditolak.main))} %</span>
+                              <span>
+                                {formatPercentWithLeadingZeros(
+                                  sumPercent(categorized.ditolak.main),
+                                )}{' '}
+                                %
+                              </span>
                             </p>
                             {categorized.ditolak.sub.length > 0 && (
                               <>

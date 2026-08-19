@@ -318,13 +318,13 @@ const LineCharts = ({
                   range === 'weekly'
                     ? `Week ${getTitleFirstIndex}`
                     : range === 'monthly'
-                    ? getTitleFirstIndex
-                    : dayjs(reformatStringDate(getTitleFirstIndex)).format(
-                        'DD MMMM YYYY'
-                      );
+                      ? getTitleFirstIndex
+                      : dayjs(reformatStringDate(getTitleFirstIndex)).format(
+                          'DD MMMM YYYY',
+                        );
 
                 const originalData = filteredData.find(
-                  (d) => d.xField === rawDate && d.type === type
+                  (d) => d.xField === rawDate && d.type === type,
                 );
                 const machines = originalData?.data?.machines ?? [];
 
@@ -338,7 +338,7 @@ const LineCharts = ({
                         {v.items
                           .filter(
                             (item) =>
-                              item.name !== 'xField' && item.name !== 'yField'
+                              item.name !== 'xField' && item.name !== 'yField',
                           )
                           .map((item, index) => {
                             return (
@@ -361,7 +361,9 @@ const LineCharts = ({
                                   </div>
                                   <span className='font-semibold'>
                                     {typeof item.value === 'number'
-                                      ? formatCurrency(item.value)
+                                      ? formatCurrency(
+                                          Number(item.value.toFixed(2)),
+                                        )
                                       : item.value}
                                     <span className='text-xs font-thin'>
                                       {' '}

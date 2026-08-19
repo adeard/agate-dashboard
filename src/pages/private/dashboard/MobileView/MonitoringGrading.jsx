@@ -10,6 +10,7 @@ import {
   formatPercentWithLeadingZeros,
   getDurationInMinutes,
   reorderDataAvgGrading,
+  getCategorizedGradingData,
 } from '@/utils/common';
 
 import NavbarMobile from '@/components/shared/NavbarMobile';
@@ -302,45 +303,100 @@ const MonitoringGrading = ({
                 </span>
               </label>
 
-              <table className='table'>
-                <tbody>
-                  {Object.entries(
-                    reorderDataAvgGrading(data?.average_grading) || {},
-                  ).map(([key, value], index) => (
-                    <tr
-                      key={index}
-                      className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                      onClick={() => {
-                        setSelectedCriteriaGrading(key);
-                        toggleMobileDrawerAvgGrading();
-                      }}
-                    >
-                      <td className='!w-4 !p-0'>
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            colorKriteriaGrading[key] || colorKriteriaGrading[key.replace('_diterima', '').replace('_ditolak', '')] || 'bg-gray-300'
-                          }`}
-                        ></div>
-                      </td>
-                      <td className='text-color-1 !pl-1'>
-                        {convertLabelUnderscore(key)}
-                      </td>
-                      <td className='text-right !pr-2'>
-                        <p className='inline-flex'>
-                          <span className='text-color-1'>
-                            {formatPercentWithLeadingZeros(value)}
-                          </span>{' '}
-                          <span className='body-s-r'>%</span>
+              <div className='grid gap-4'>
+                {(() => {
+                  const categorized = getCategorizedGradingData(
+                    data?.average_grading,
+                  );
+
+                  const sumPercent = (items) =>
+                    items.reduce(
+                      (acc, item) => acc + (item.percent || 0),
+                      0,
+                    );
+
+                  const renderGradingTableMobile = (items) => (
+                    <table className='table'>
+                      <tbody>
+                        {items.map((item, index) => (
+                          <tr
+                            key={index}
+                            className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                            onClick={() => {
+                              setSelectedCriteriaGrading(item.key || item.label);
+                              toggleMobileDrawerAvgGrading();
+                            }}
+                          >
+                            <td className='text-color-1 !pl-1 whitespace-nowrap'>
+                              {convertLabelUnderscore(item.label, true)}
+                            </td>
+                            <td className='text-right !pr-2'>
+                              <p className='inline-flex'>
+                                <span className='text-color-1'>
+                                  {formatPercentWithLeadingZeros(item.percent)}
+                                </span>{' '}
+                                <span className='body-s-r'>%</span>
+                              </p>
+                            </td>
+                            <td className='!p-0'>
+                              <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                              <IoMdArrowDropright className='inline text-lg text-primary-2' />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  );
+
+                  return (
+                    <>
+                      <div className='border border-green-200 rounded-lg p-3 overflow-auto bg-green-50/30'>
+                        <p className='tag-l text-green-700 mb-2'>DITERIMA</p>
+                        <p className='tag-s text-color-3 mb-1'>MAIN CLASS</p>
+                        {renderGradingTableMobile(categorized.diterima.main)}
+                        <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
+                          <span>Total</span>
+                          <span>
+                            {formatPercentWithLeadingZeros(
+                              sumPercent(categorized.diterima.main),
+                            )}{' '}
+                            %
+                          </span>
                         </p>
-                      </td>
-                      <td className='!p-0'>
-                        <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                        <IoMdArrowDropright className='inline text-lg text-primary-2' />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        {categorized.diterima.sub.length > 0 && (
+                          <>
+                            <div className='border-t border-green-200 my-2'></div>
+                            <p className='tag-s text-color-3 mb-1'>SUB CLASS</p>
+                            {renderGradingTableMobile(categorized.diterima.sub)}
+                          </>
+                        )}
+                      </div>
+
+                      <div className='border border-red-200 rounded-lg p-3 overflow-auto bg-red-50/30'>
+                        <p className='tag-l text-red-700 mb-2'>DITOLAK</p>
+                        <p className='tag-s text-color-3 mb-1'>MAIN CLASS</p>
+                        {renderGradingTableMobile(categorized.ditolak.main)}
+                        <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
+                          <span>Total</span>
+                          <span>
+                            {formatPercentWithLeadingZeros(
+                              sumPercent(categorized.ditolak.main),
+                            )}{' '}
+                            %
+                          </span>
+                        </p>
+                        {categorized.ditolak.sub.length > 0 && (
+                          <>
+                            <div className='border-t border-red-200 my-2'></div>
+                            <p className='tag-s text-color-3 mb-1'>SUB CLASS</p>
+                            {renderGradingTableMobile(categorized.ditolak.sub)}
+                          </>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
             </div>
           ) : (
             <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
