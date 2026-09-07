@@ -86,70 +86,26 @@ const AnalisaKinerjaVendor = ({
             },
             { label: 'AVG TBS TRUK', value: item.avg_tandan.percent, bg: true },
             {
-              label: '%AVG DITERIMA',
+              label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.avg_accepted.percent) ||
                   '00.00') + ' %',
               icon: getIcon(item.avg_accepted.rank),
-            },
-            {
-              label: '%AVG MM',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_matang.percent) ||
-                  '00.00') + ' %',
-              icon: getIcon(item.avg_matang.rank),
-              bg: true,
-              bold: true,
               color: '#299300',
-            },
-            {
-              label: '%AVG LM',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_lewat_matang.percent) ||
-                  '00.00') + ' %',
-              icon: getIcon(item.avg_lewat_matang.rank),
               bold: true,
-              color: '#299300',
             },
             {
-              label: '%AVG TP',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.avg_tangkai_panjang.percent
-                ) || '00.00') + ' %',
-              icon: getIcon(item.avg_tangkai_panjang.rank),
+              label: '% DITOLAK',
+              value: '-',
+              color: '#BD2828',
+              bold: true,
               bg: true,
-              bold: true,
+            },
+            {
+              label: '% DIDENDA',
+              value: '-',
               color: '#E07324',
-            },
-            {
-              label: '%AVG M',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_mentah.percent) ||
-                  '00.00') + ' %',
               bold: true,
-              icon: getIcon(item.avg_mentah.rank),
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG JK',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.avg_janjang_kosong.percent
-                ) || '00.00') + '%',
-              icon: getIcon(item.avg_janjang_kosong.rank),
-              bg: true,
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG BK',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_buah_kecil.percent) ||
-                  '00.00') + ' %',
-              icon: getIcon(item.avg_buah_kecil.rank),
-              bold: true,
-              color: '#BD2828',
             },
           ];
 
@@ -178,14 +134,15 @@ const AnalisaKinerjaVendor = ({
                       </p>
                       {row.label === 'VENDOR' ? (
                         <p
-                          className={`body-s-r flex justify-between items-center ${classNames}`}
+                          className={`body-s-r flex justify-between items-center gap-2 ${classNames}`}
                           style={style}
                           onClick={() => {
                             setSelectedDiterimaVendor(row.value);
                             toggleMobileDrawerDiterimaVendor();
                           }}
                         >
-                          {row.value} <IoMdArrowDropright className='text-xl' />
+                          <span className='truncate min-w-0'>{row.value}</span>
+                          <IoMdArrowDropright className='text-xl flex-shrink-0' />
                         </p>
                       ) : (
                         <p

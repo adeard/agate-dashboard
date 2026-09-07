@@ -27,67 +27,31 @@ const RiwayatPemeriksaanTruk = ({ data, vendor, goBack }) => {
               value: dayjs(item.date).format('DD/MM/YYYY, HH:mm:ss'),
               bold: true,
             },
-            { label: 'NOMOR MESIN', value: item.mesin, bg: true },
-            { label: 'SURAT JALAN', value: item.delivery_number },
-            { label: 'PLAT KENDARAAN', value: item.vehicle_number, bg: true },
-            { label: 'TBS TRUK', value: item.total_tandan },
+            { label: 'DURASI BONGKAR', value: '-', bg: true },
+            { label: 'NOMOR MESIN', value: item.mesin },
+            { label: 'SURAT JALAN', value: item.delivery_number, bg: true },
+            { label: 'PLAT NOMOR', value: item.vehicle_number },
+            { label: 'TOTAL TBS', value: item.total_tandan, bg: true },
             {
-              label: '%AVG DITERIMA',
+              label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
                   '00.00') + ' %',
+              color: '#299300',
+              bold: true,
+            },
+            {
+              label: '% DITOLAK',
+              value: '-',
+              color: '#BD2828',
+              bold: true,
               bg: true,
             },
             {
-              label: '%AVG MM',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_matang) ||
-                  '00.00') + ' %',
-              bold: true,
-              color: '#299300',
-            },
-            {
-              label: '%AVG LM',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
-                  '00.00') + ' %',
-              bg: true,
-              bold: true,
-              color: '#299300',
-            },
-            {
-              label: '%AVG TP',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
-                  '00.00') + ' %',
-              bold: true,
+              label: '% DIDENDA',
+              value: '-',
               color: '#E07324',
-            },
-            {
-              label: '%AVG M',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_mentah) ||
-                  '00.00') + ' %',
-              bg: true,
               bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG JK',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
-                  '00.00') + ' %',
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG BK',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
-                  '00.00') + ' %',
-              bg: true,
-              bold: true,
-              color: '#BD2828',
             },
           ];
 

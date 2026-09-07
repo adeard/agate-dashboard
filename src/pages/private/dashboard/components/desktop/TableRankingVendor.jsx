@@ -77,6 +77,10 @@ const TableRankingVendor = ({ data }) => {
         </div>
       ),
     }),
+    columnHelper.accessor('date', {
+      header: <div>DURASI BONGKAR</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>- </div>,
+    }),
     columnHelper.accessor('vehicle_number', {
       header: <div>PLAT TRUK</div>,
       cell: (info) => (
@@ -92,11 +96,7 @@ const TableRankingVendor = ({ data }) => {
     columnHelper.accessor((row) => row.total_tandan ?? 0, {
       id: 'total_tandan',
       enableSorting: true,
-      header: (
-        <div>
-          TBS <br /> TRUK
-        </div>
-      ),
+      header: <div>TBS TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatCurrency(info.getValue())}
@@ -106,88 +106,23 @@ const TableRankingVendor = ({ data }) => {
     columnHelper.accessor((row) => row.percent_accepted ?? 0, {
       id: 'percent_accepted',
       enableSorting: true,
-      header: (
-        <div>
-          % <br /> DITERIMA
-        </div>
-      ),
+      header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue())} %
         </div>
       ),
-    }),
-    columnHelper.accessor((row) => row.percent_matang?.percent ?? 0, {
-      id: 'percent_matang',
-      enableSorting: true,
-      header: <div className='w-24'>% MM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_matang?.rank)}
-        </div>
-      ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor((row) => row.percent_lewat_matang?.percent ?? 0, {
-      id: 'percent_lewat_matang',
-      enableSorting: true,
-      header: <div className='w-24'>% LM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_lewat_matang?.rank)}
-        </div>
-      ),
-      meta: { className: 'bg-[#E8F8E4]' },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DITOLAK</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor((row) => row.percent_tangkai_panjang?.percent ?? 0, {
-      id: 'percent_tangkai_panjang',
-      enableSorting: true,
-      header: <div className='w-24'>% TP</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_tangkai_panjang?.rank)}
-        </div>
-      ),
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DIDENDA</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
       meta: { className: 'bg-[#F8EDCB]' },
-    }),
-    columnHelper.accessor((row) => row.percent_mentah?.percent ?? 0, {
-      id: 'percent_mentah',
-      enableSorting: true,
-      header: <div className='w-24'>% M</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_mentah?.rank)}
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor((row) => row.percent_janjang_kosong?.percent ?? 0, {
-      id: 'percent_janjang_kosong',
-      enableSorting: true,
-      header: <div className='w-24'>% JK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_janjang_kosong?.rank)}
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor((row) => row.percent_buah_kecil?.percent ?? 0, {
-      id: 'percent_buah_kecil',
-      enableSorting: true,
-      header: <div className='w-24'>% BK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-          {getIcon(info.row.original.percent_buah_kecil?.rank)}
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.display({
       id: 'actions',
@@ -195,7 +130,7 @@ const TableRankingVendor = ({ data }) => {
         return (
           <div className='flex justify-end gap-4'>
             <Button
-              className='bg-transparent text-transparent border border-transparent group-hover:bg-white group-hover:shadow group-hover:text-color-1 flex items-center gap-2'
+              className='bg-transparent text-transparent group-hover:bg-primary-1 group-hover:text-color-4 flex items-center gap-2'
               size='lg'
               onClick={() =>
                 window.open(

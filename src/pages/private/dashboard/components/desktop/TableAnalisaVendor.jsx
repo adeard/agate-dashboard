@@ -81,11 +81,7 @@ const TableAnalisaVendor = ({
     columnHelper.accessor((row) => row.count?.percent ?? 0, {
       id: 'count',
       enableSorting: true,
-      header: (
-        <div>
-          TOTAL <br /> TRUK
-        </div>
-      ),
+      header: <div>TOTAL TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
@@ -93,11 +89,7 @@ const TableAnalisaVendor = ({
     columnHelper.accessor((row) => row.percent_supply?.percent ?? 0, {
       id: 'percent_supply',
       enableSorting: true,
-      header: (
-        <div className='w-24'>
-          % SUPPLY <br /> TRUK
-        </div>
-      ),
+      header: <div>% SUPPLY TRUK</div>,
       cell: (info) => {
         const data = info.row.original.percent_supply;
         return (
@@ -111,11 +103,7 @@ const TableAnalisaVendor = ({
     columnHelper.accessor((row) => row.avg_tandan?.percent ?? 0, {
       id: 'avg_tandan',
       enableSorting: true,
-      header: (
-        <div>
-          AVG TBS <br /> PER TRUK
-        </div>
-      ),
+      header: <div>AVG TBS PER TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatCurrency(info.getValue())}
@@ -125,11 +113,7 @@ const TableAnalisaVendor = ({
     columnHelper.accessor((row) => row.avg_accepted?.percent ?? 0, {
       id: 'avg_accepted',
       enableSorting: true,
-      header: (
-        <div className='w-24'>
-          % AVG <br /> DITERIMA
-        </div>
-      ),
+      header: <div className='w-24'>% DITERIMA</div>,
       cell: (info) => {
         const data = info.row.original.avg_accepted;
         return (
@@ -139,96 +123,25 @@ const TableAnalisaVendor = ({
           </div>
         );
       },
-    }),
-    columnHelper.accessor((row) => row.avg_matang?.percent ?? 0, {
-      id: 'avg_matang',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG MM</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_matang;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor((row) => row.avg_lewat_matang?.percent ?? 0, {
-      id: 'avg_lewat_matang',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG LM</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_lewat_matang;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
-      meta: { className: 'bg-[#E8F8E4]' },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DITOLAK</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          -
+        </div>
+      ),
+      meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor((row) => row.avg_tangkai_panjang?.percent ?? 0, {
-      id: 'avg_tangkai_panjang',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG TP</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_tangkai_panjang;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DIDENDA</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+          -
+        </div>
+      ),
       meta: { className: 'bg-[#F8EDCB]' },
-    }),
-    columnHelper.accessor((row) => row.avg_mentah?.percent ?? 0, {
-      id: 'avg_mentah',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG M</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_mentah;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor((row) => row.avg_janjang_kosong?.percent ?? 0, {
-      id: 'avg_janjang_kosong',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG JK</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_janjang_kosong;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor((row) => row.avg_buah_kecil?.percent ?? 0, {
-      id: 'avg_buah_kecil',
-      enableSorting: true,
-      header: <div className='w-24'>% AVG BK</div>,
-      cell: (info) => {
-        const data = info.row.original.avg_buah_kecil;
-        return (
-          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
-            {getIcon(data?.rank)}
-          </div>
-        );
-      },
-      meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.display({
       id: 'actions',

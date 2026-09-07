@@ -44,11 +44,7 @@ import RocComponent from './components/desktop/RocComponent';
 import dayjs from 'dayjs';
 import { useAuthStore } from '@/store/auth.context';
 
-import {
-  chartTypeListOptions,
-  colorKriteriaGrading,
-  listOptionsMachine,
-} from '@/utils/optionsKey';
+import { chartTypeListOptions, listOptionsMachine } from '@/utils/optionsKey';
 import axiosInstance, { BASE_URL } from '@/utils/axios';
 
 const DesktopViewDashboardPage = () => {
@@ -241,46 +237,6 @@ const DesktopViewDashboardPage = () => {
                 <MdFileDownload className='text-xl mr-2' />
                 Download Report
               </Button>
-              <Button
-                size='lg'
-                className='flex items-center'
-                onClick={async () => {
-                  try {
-                    const response = await axiosInstance.get(
-                      '/v4/dashboard/download-performance',
-                      {
-                        params: {
-                          date_from: searchParams.get('date_from'),
-                          date_to: searchParams.get('date_to'),
-                          factory: searchParams.get('factory'),
-                          vendor_type: searchParams.get('vendor_type') || 'all',
-                        },
-                        responseType: 'blob',
-                      },
-                    );
-                    const url = window.URL.createObjectURL(
-                      new Blob([response]),
-                    );
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute(
-                      'download',
-                      `Performance-Durasi-Operasional-${searchParams.get('date_to') || 'report'}.xlsx`,
-                    );
-                    document.body.appendChild(link);
-                    link.click();
-                    link.parentNode.removeChild(link);
-                  } catch (error) {
-                    console.error(
-                      'Error downloading performance report:',
-                      error,
-                    );
-                  }
-                }}
-              >
-                <MdFileDownload className='text-xl mr-2' />
-                Download Performance Report
-              </Button>
             </div>
           </div>
         </header>
@@ -292,368 +248,150 @@ const DesktopViewDashboardPage = () => {
             </div>
           ) : (
             <>
-              <section className='grid grid-cols-2 gap-4'>
-                <div className='grid grid-rows-2 gap-4'>
-                  <div
-                    className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
-                    onClick={toggleDrawerRiwayatPemeriksaan}
-                  >
-                    <label>
-                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                        TOTAL TRUK
-                      </span>
-                    </label>
-                    <p>
-                      <span className='subheadline-s text-color-1'>
-                        {formatCurrency(data?.monitoring.total_grading)}
-                      </span>{' '}
-                      <span className='body-m-bold text-color-3 text-sm'>
-                        truk{' '}
-                        <IoMdArrowDropright className='inline text-lg text-primary-2' />
-                      </span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                        TOTAL JANJANG
-                      </span>
-                    </label>
-                    <p>
-                      <span className='subheadline-s text-color-1'>
-                        {formatCurrency(data?.monitoring.total_tandan)}
-                      </span>{' '}
-                      <span className='body-m-bold text-color-3 text-sm'>
-                        Pcs
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <div className='grid grid-cols-2 gap-4'>
-                  <div className=' bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-color-1 flex items-center gap-2'>
-                        MULTIPLE
-                      </span>
-                    </label>
-                    <p className='text-color-1'>
-                      <span className='subheadline-s'>
-                        {formatCurrency(data?.monitoring.total_multiple)}
-                      </span>{' '}
-                      <span className='body-m-bold text-sm'>Pcs</span>
-                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                      <span className='body-m-r mr-1'>
-                        {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_multiple),
-                        )}
-                      </span>
-                      <span className='body-s-r text-sm'>%</span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
-                        DITERIMA
-                      </span>
-                    </label>
-                    <p className='text-[#006D33]'>
-                      <span className='subheadline-s'>
-                        {formatCurrency(data?.monitoring.total_passed)}
-                      </span>{' '}
-                      <span className='body-m-bold text-sm'>Pcs</span>
-                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                      <span className='body-m-r mr-1'>
-                        {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_passed),
-                        )}
-                      </span>
-                      <span className='body-s-r text-sm'>%</span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
-                        DITOLAK
-                      </span>
-                    </label>
-                    <p className='text-secondary-2'>
-                      <span className='subheadline-s'>
-                        {formatCurrency(data?.monitoring.total_rejected)}
-                      </span>{' '}
-                      <span className='body-m-bold text-sm'>Pcs</span>
-                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                      <span className='body-m-r mr-1'>
-                        {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_rejected),
-                        )}
-                      </span>
-                      <span className='body-s-r text-sm'>%</span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
-                        DIDENDA
-                      </span>
-                    </label>
-                    <p className='text-[#E07324]'>
-                      <span className='subheadline-s'>
-                        {formatCurrency(data?.monitoring.total_fined)}
-                      </span>{' '}
-                      <span className='body-m-bold text-sm'>Pcs</span>
-                      <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-                      <span className='body-m-r mr-1'>
-                        {formatPercentWithLeadingZeros(
-                          Number(data?.monitoring.percent_fined),
-                        )}
-                      </span>
-                      <span className='body-s-r text-sm'>%</span>
-                    </p>
-                  </div>
-                </div>
-              </section>
-              <section className='bg-white border border-primary-4 rounded-xl p-4'>
-                <label>
-                  <span className='label-text tag-l text-color-3'>
-                    KECEPATAN BONGKAR PER TRUK
-                  </span>
-                </label>
-                <div className='grid grid-cols-3 gap-4 mt-4'>
-                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                        TERTINGGI
-                      </span>
-                    </label>
-                    <p>
-                      <span className='subheadline-s text-color-1'>
-                        {Math.round(statsPerMinute.maxAvg)}
-                      </span>{' '}
-                      <span className='body-m-bold text-color-3 text-sm'>
-                        TBS/menit
-                      </span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                        RATA-RATA
-                      </span>
-                    </label>
-                    <p>
-                      <span className='subheadline-s text-color-1'>
-                        {Math.round(statsPerMinute.avgGlobal)}
-                      </span>{' '}
-                      <span className='body-m-bold text-color-3 text-sm'>
-                        TBS/menit
-                      </span>
-                    </p>
-                  </div>
-                  <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-                    <label>
-                      <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                        TERENDAH
-                      </span>
-                    </label>
-                    <p>
-                      <span className='subheadline-s text-color-1'>
-                        {Math.round(statsPerMinute.minAvg)}
-                      </span>{' '}
-                      <span className='body-m-bold text-color-3 text-sm'>
-                        TBS/menit
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </section>
-              <section className='grid grid-cols-3 gap-4'>
-                <div className='col-span-2 h-full bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+              <section className='grid grid-cols-4 gap-4'>
+                <div
+                  className='bg-white border border-primary-4 rounded-2xl p-4 inline-flex items-center justify-between hover:cursor-pointer hover:bg-primary-5'
+                  onClick={toggleDrawerRiwayatPemeriksaan}
+                >
                   <label>
-                    <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                      RATA-RATA PERSENTASE KRITERIA GRADING
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      TOTAL TRUK
                     </span>
                   </label>
-
-                  <div className='grid grid-cols-2 gap-4'>
-                    {(() => {
-                      const categorized = getCategorizedGradingData(
-                        data?.average_grading,
-                      );
-
-                      const sumPercent = (items) =>
-                        items.reduce(
-                          (acc, item) => acc + (item.percent || 0),
-                          0,
-                        );
-
-                      const renderGradingTable = (items) => (
-                        <table className='table'>
-                          <tbody>
-                            {items.map((item, index) => (
-                              <tr
-                                key={index}
-                                className='body-m-r group hover text-color-2'
-                              >
-                                <td className='text-color-1 !pl-1 whitespace-nowrap'>
-                                  {convertLabelUnderscore(item.label, true)}
-                                </td>
-                                <td className='whitespace-nowrap'>
-                                  <div className='flex items-center justify-end gap-2'>
-                                    <p className='inline-flex'>
-                                      <span className='text-color-1'>
-                                        {formatPercentWithLeadingZeros(
-                                          item.percent,
-                                        )}
-                                      </span>
-                                      <span className='body-s-r'>%</span>
-                                    </p>
-
-                                    <ButtonMore
-                                      listMenu={[
-                                        {
-                                          label: 'Tren Kriteria',
-                                          onClick: () => {
-                                            setSelectedCriteria(item.key || item.label);
-                                            toggleDrawerTrenKriteria();
-                                          },
-                                        },
-                                        {
-                                          label: 'Analisa Vendor',
-                                          onClick: () => {
-                                            setSelectedCriteria(item.key || item.label);
-                                            toggleDrawerAnalisaVendor();
-                                          },
-                                        },
-                                      ]}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      );
-
-                      return (
-                        <>
-                          <div className='border border-green-200 rounded-lg p-3 overflow-auto bg-green-50/30'>
-                            <p className='tag-l text-green-700 mb-2'>
-                              DITERIMA
-                            </p>
-                            <p className='tag-s text-color-3 mb-1'>
-                              MAIN CLASS
-                            </p>
-                            {renderGradingTable(categorized.diterima.main)}
-                            <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
-                              <span>Total</span>
-                              <span>
-                                {formatPercentWithLeadingZeros(
-                                  sumPercent(categorized.diterima.main),
-                                )}{' '}
-                                %
-                              </span>
-                            </p>
-                            {categorized.diterima.sub.length > 0 && (
-                              <>
-                                <div className='border-t border-green-200 my-2'></div>
-                                <p className='tag-s text-color-3 mb-1'>
-                                  SUB CLASS
-                                </p>
-                                {renderGradingTable(categorized.diterima.sub)}
-                              </>
-                            )}
-                          </div>
-
-                          <div className='border border-red-200 rounded-lg p-3 overflow-auto bg-red-50/30'>
-                            <p className='tag-l text-red-700 mb-2'>DITOLAK</p>
-                            <p className='tag-s text-color-3 mb-1'>
-                              MAIN CLASS
-                            </p>
-                            {renderGradingTable(categorized.ditolak.main)}
-                            <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
-                              <span>Total</span>
-                              <span>
-                                {formatPercentWithLeadingZeros(
-                                  sumPercent(categorized.ditolak.main),
-                                )}{' '}
-                                %
-                              </span>
-                            </p>
-                            {categorized.ditolak.sub.length > 0 && (
-                              <>
-                                <div className='border-t border-red-200 my-2'></div>
-                                <p className='tag-s text-color-3 mb-1'>
-                                  SUB CLASS
-                                </p>
-                                {renderGradingTable(categorized.ditolak.sub)}
-                              </>
-                            )}
-                          </div>
-                        </>
-                      );
-                    })()}
-                  </div>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {formatCurrency(data?.monitoring.total_grading)}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      truk{' '}
+                      <IoMdArrowDropright className='inline text-lg text-primary-2' />
+                    </span>
+                  </p>
                 </div>
-                <div className='col-span-1 h-full bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto'>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
                   <label>
-                    <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                      RATA-RATA PERSENTASE DITERIMA VENDOR
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      TOTAL JANJANG
                     </span>
                   </label>
-
-                  <table className='table table-fixed w-full'>
-                    <tbody>
-                      {formattedDataDashboard(
-                        data?.average_vendor_accepted || {},
-                      ).map((item, index) => (
-                        <tr
-                          key={item.label}
-                          className='body-m-r group hover text-color-2 hover:cursor-pointer'
-                        >
-                          <td className='!w-4'>{index + 1}.</td>
-
-                          <td className='text-color-1 w-[200px]'>
-                            <p className='truncate' title={item.label}>
-                              {item.label}
-                            </p>
-                          </td>
-
-                          <td className='flex gap-4 items-center justify-end'>
-                            <p className='inline-flex items-center'>
-                              <span
-                                className={`font-semibold ${
-                                  item.percent >= 80
-                                    ? 'text-[#006D33]'
-                                    : 'text-secondary-2'
-                                }`}
-                              >
-                                {formatPercentWithLeadingZeros(item.percent)}
-                              </span>
-                              <span className='body-s-r ml-1'>%</span>
-                            </p>
-                            <ButtonMore
-                              listMenu={[
-                                {
-                                  label: 'Performa Harian Vendor',
-                                  onClick: () => {
-                                    setSelectedVendor(item.label);
-                                    toggleDrawerPerformaHarianVendor();
-                                  },
-                                },
-                                {
-                                  label: 'Riwayat Pemeriksaan Truk',
-                                  onClick: () => {
-                                    setSelectedVendor(item.label);
-                                    toggleDrawerRiwayatPemeriksaanTruk();
-                                  },
-                                },
-                              ]}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {formatCurrency(data?.monitoring.total_tandan)}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      Pcs
+                    </span>
+                  </p>
+                </div>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      KECEPATAN TERTINGGI
+                    </span>
+                  </label>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {Math.round(statsPerMinute.maxAvg)}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      TBS/menit
+                    </span>
+                  </p>
+                </div>
+                <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                      KECEPATAN RATA-RATA
+                    </span>
+                  </label>
+                  <p>
+                    <span className='subheadline-s text-color-1'>
+                      {Math.round(statsPerMinute.avgGlobal)}
+                    </span>{' '}
+                    <span className='body-m-bold text-color-3 text-sm'>
+                      TBS/menit
+                    </span>
+                  </p>
+                </div>
+                <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-[#006D33] flex items-center gap-2'>
+                      DITERIMA
+                    </span>
+                  </label>
+                  <p className='text-[#006D33]'>
+                    <span className='subheadline-s'>
+                      {formatCurrency(data?.monitoring.total_passed)}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_passed),
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+                <div className='bg-white border border-secondary-2 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-secondary-2 flex items-center gap-2'>
+                      DITOLAK
+                    </span>
+                  </label>
+                  <p className='text-secondary-2'>
+                    <span className='subheadline-s'>
+                      {formatCurrency(data?.monitoring.total_rejected)}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_rejected),
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+                <div className='bg-white border border-[#E07324] rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-[#E07324] flex items-center gap-2'>
+                      DIDENDA
+                    </span>
+                  </label>
+                  <p className='text-[#E07324]'>
+                    <span className='subheadline-s'>
+                      {formatCurrency(data?.monitoring.total_fined)}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_fined),
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
+                </div>
+                <div className=' bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
+                  <label>
+                    <span className='label-text tag-m text-color-1 flex items-center gap-2'>
+                      MULTIPLE
+                    </span>
+                  </label>
+                  <p className='text-color-1'>
+                    <span className='subheadline-s'>
+                      {formatCurrency(data?.monitoring.total_multiple)}
+                    </span>{' '}
+                    <span className='body-m-bold text-sm'>Pcs</span>
+                    <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+                    <span className='body-m-r mr-1'>
+                      {formatPercentWithLeadingZeros(
+                        Number(data?.monitoring.percent_multiple),
+                      )}
+                    </span>
+                    <span className='body-s-r text-sm'>%</span>
+                  </p>
                 </div>
               </section>
               <section className='grid grid-cols-4 gap-4'>
@@ -661,7 +399,7 @@ const DesktopViewDashboardPage = () => {
                   <div className='col-span-2 bg-white border border-primary-4 rounded-xl p-4'>
                     <div className='flex items-center justify-between mb-4 w-full'>
                       <div className='flex items-center gap-4'>
-                        <span className='text-color-1 flex items-center gap-2 text-lg w-52'>
+                        <span className='text-color-1 flex items-center gap-2 text-lg'>
                           {chartType?.label}
                         </span>
                         <Dropdown
@@ -674,7 +412,8 @@ const DesktopViewDashboardPage = () => {
                         />
                         {chartType.label !== '10 Truk Terbaik' &&
                           chartType.label !== '10 Truk Terburuk' &&
-                          chartType.label !== 'Analisa Kinerja Vendor' && (
+                          chartType.label !== 'Analisa Kinerja Vendor' &&
+                          chartType.label !== 'Monitoring Grading' && (
                             <ul className='exchange-menu body-m-b menu menu-horizontal px-0 font-medium'>
                               {listRangeCharts.map((item, index) => (
                                 <li
@@ -738,6 +477,225 @@ const DesktopViewDashboardPage = () => {
                             toggleDrawerRiwayatPemeriksaanTruk
                           }
                         />
+                      ) : chartType?.label === 'Monitoring Grading' ? (
+                        <section className='grid grid-cols-3 gap-4'>
+                          <div className='col-span-2 h-[917px] bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+                            <label>
+                              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                                RATA-RATA PERSENTASE KRITERIA GRADING
+                              </span>
+                            </label>
+
+                            <div className='grid grid-cols-2 gap-4'>
+                              {(() => {
+                                const categorized = getCategorizedGradingData(
+                                  data?.average_grading,
+                                );
+
+                                const sumPercent = (items) =>
+                                  items.reduce(
+                                    (acc, item) => acc + (item.percent || 0),
+                                    0,
+                                  );
+
+                                const renderGradingTable = (items) => (
+                                  <table className='table'>
+                                    <tbody>
+                                      {items.map((item, index) => (
+                                        <tr
+                                          key={index}
+                                          className='body-m-r group hover text-color-2'
+                                        >
+                                          <td className='text-color-1 !pl-1 whitespace-nowrap'>
+                                            {convertLabelUnderscore(
+                                              item.label,
+                                              true,
+                                            )}
+                                          </td>
+                                          <td className='whitespace-nowrap'>
+                                            <div className='flex items-center justify-end gap-2'>
+                                              <p className='inline-flex'>
+                                                <span className='text-color-1'>
+                                                  {formatPercentWithLeadingZeros(
+                                                    item.percent,
+                                                  )}
+                                                </span>
+                                                <span className='body-s-r'>
+                                                  %
+                                                </span>
+                                              </p>
+
+                                              <ButtonMore
+                                                listMenu={[
+                                                  {
+                                                    label: 'Tren Kriteria',
+                                                    onClick: () => {
+                                                      setSelectedCriteria(
+                                                        item.key || item.label,
+                                                      );
+                                                      toggleDrawerTrenKriteria();
+                                                    },
+                                                  },
+                                                  {
+                                                    label: 'Analisa Vendor',
+                                                    onClick: () => {
+                                                      setSelectedCriteria(
+                                                        item.key || item.label,
+                                                      );
+                                                      toggleDrawerAnalisaVendor();
+                                                    },
+                                                  },
+                                                ]}
+                                              />
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                );
+
+                                return (
+                                  <>
+                                    <div className='border border-green-200 rounded-lg p-3 overflow-auto bg-green-50/30'>
+                                      <p className='tag-l text-green-700 mb-2'>
+                                        DITERIMA
+                                      </p>
+                                      <p className='tag-s text-color-3 mb-1'>
+                                        MAIN CLASS
+                                      </p>
+                                      {renderGradingTable(
+                                        categorized.diterima.main,
+                                      )}
+                                      <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
+                                        <span>Total</span>
+                                        <span>
+                                          {formatPercentWithLeadingZeros(
+                                            sumPercent(
+                                              categorized.diterima.main,
+                                            ),
+                                          )}{' '}
+                                          %
+                                        </span>
+                                      </p>
+                                      {categorized.diterima.sub.length > 0 && (
+                                        <>
+                                          <div className='border-t border-green-200 my-2'></div>
+                                          <p className='tag-s text-color-3 mb-1'>
+                                            SUB CLASS
+                                          </p>
+                                          {renderGradingTable(
+                                            categorized.diterima.sub,
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+
+                                    <div className='border border-red-200 rounded-lg p-3 overflow-auto bg-red-50/30'>
+                                      <p className='tag-l text-red-700 mb-2'>
+                                        DITOLAK
+                                      </p>
+                                      <p className='tag-s text-color-3 mb-1'>
+                                        MAIN CLASS
+                                      </p>
+                                      {renderGradingTable(
+                                        categorized.ditolak.main,
+                                      )}
+                                      <p className='my-4 w-4/5 tag-s text-color-1 mb-1 flex justify-between items-center'>
+                                        <span>Total</span>
+                                        <span>
+                                          {formatPercentWithLeadingZeros(
+                                            sumPercent(
+                                              categorized.ditolak.main,
+                                            ),
+                                          )}{' '}
+                                          %
+                                        </span>
+                                      </p>
+                                      {categorized.ditolak.sub.length > 0 && (
+                                        <>
+                                          <div className='border-t border-red-200 my-2'></div>
+                                          <p className='tag-s text-color-3 mb-1'>
+                                            SUB CLASS
+                                          </p>
+                                          {renderGradingTable(
+                                            categorized.ditolak.sub,
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                          <div className='col-span-1 h-[917px] bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto'>
+                            <label>
+                              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
+                                RATA-RATA PERSENTASE DITERIMA VENDOR
+                              </span>
+                            </label>
+
+                            <table className='table table-fixed w-full'>
+                              <tbody>
+                                {formattedDataDashboard(
+                                  data?.average_vendor_accepted || {},
+                                ).map((item, index) => (
+                                  <tr
+                                    key={item.label}
+                                    className='body-m-r group hover text-color-2 hover:cursor-pointer'
+                                  >
+                                    <td className='!w-4'>{index + 1}.</td>
+
+                                    <td className='text-color-1 w-[200px]'>
+                                      <p
+                                        className='truncate'
+                                        title={item.label}
+                                      >
+                                        {item.label}
+                                      </p>
+                                    </td>
+
+                                    <td className='flex gap-4 items-center justify-end'>
+                                      <p className='inline-flex items-center'>
+                                        <span
+                                          className={`font-semibold ${
+                                            item.percent >= 80
+                                              ? 'text-[#006D33]'
+                                              : 'text-secondary-2'
+                                          }`}
+                                        >
+                                          {formatPercentWithLeadingZeros(
+                                            item.percent,
+                                          )}
+                                        </span>
+                                        <span className='body-s-r ml-1'>%</span>
+                                      </p>
+                                      <ButtonMore
+                                        listMenu={[
+                                          {
+                                            label: 'Performa Harian Vendor',
+                                            onClick: () => {
+                                              setSelectedVendor(item.label);
+                                              toggleDrawerPerformaHarianVendor();
+                                            },
+                                          },
+                                          {
+                                            label: 'Riwayat Pemeriksaan Truk',
+                                            onClick: () => {
+                                              setSelectedVendor(item.label);
+                                              toggleDrawerRiwayatPemeriksaanTruk();
+                                            },
+                                          },
+                                        ]}
+                                      />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </section>
                       ) : chartType?.label === '10 Truk Terbaik' ? (
                         <TableRankingVendor
                           data={data?.charts_data?.highest_vendor}

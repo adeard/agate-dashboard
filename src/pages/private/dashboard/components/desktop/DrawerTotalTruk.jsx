@@ -24,19 +24,30 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
     columnHelper.accessor('date', {
       header: <div>TANGGAL</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {dayjs(info.getValue()).format('DD/MM/YYYY')}
+        <div className='w-24 !body-m-b !text-color-1'>
+          {dayjs(info.getValue()).format('DD/MM/YYYY')} <br />
+          {dayjs(info.getValue()).format('HH:mm')} -{' '}
+          {dayjs(info.row.original.finish_date).format('HH:mm')}
         </div>
       ),
     }),
     columnHelper.accessor('finish_date', {
-      header: <div className='w-24'>WAKTU</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {dayjs(info.row.original.date).format('HH:mm')} -{' '}
-          {dayjs(info.getValue()).format('HH:mm')}
+      header: (
+        <div className='w-24'>
+          DURASI <br />
+          BONGKAR
         </div>
       ),
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+    }),
+    columnHelper.accessor('finish_date', {
+      header: (
+        <div className='w-24'>
+          WAKTU <br />
+          MENUNGGU
+        </div>
+      ),
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
     }),
     columnHelper.accessor('vendor_name', {
       header: <div>VENDOR</div>,
@@ -50,12 +61,6 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    // columnHelper.accessor('delivery_number', {
-    //   header: <div>SURAT JALAN</div>,
-    //   cell: (info) => (
-    //     <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
-    //   ),
-    // }),
     columnHelper.accessor('vehicle_number', {
       header: <div>PLAT NOMOR</div>,
       cell: (info) => (
@@ -63,7 +68,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: <div>TBS TRUK</div>,
+      header: <div>TOTAL TBS</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatCurrency(info.getValue())}
@@ -71,27 +76,16 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       ),
     }),
     columnHelper.accessor('total_multiple', {
-      header: <div>TBS DOUBLE</div>,
+      header: (
+        <div>
+          TBS <br /> MULTIPLE
+        </div>
+      ),
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatCurrency(info.getValue())}
         </div>
       ),
-    }),
-    columnHelper.accessor('avg_minutes', {
-      header: <div>AVG TBS/MENIT</div>,
-      cell: (info) => {
-        const duration = getDurationInMinutes(
-          info.row.original.date,
-          info.row.original.finish_date,
-        );
-        const avgPerMinute =
-          duration > 0 ? info.row.original.total_tandan / duration : 0;
-
-        const roundedAvg = Math.round(avgPerMinute);
-
-        return <div className='!body-m-b !text-color-1'>{roundedAvg}</div>;
-      },
     }),
     columnHelper.accessor('percent_accepted', {
       header: <div>% DITERIMA</div>,
@@ -100,59 +94,17 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
-    }),
-    columnHelper.accessor('percent_multiple', {
-      header: <div>% MULTIPLE</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-    }),
-    columnHelper.accessor('percent_matang', {
-      header: <div className='w-16'>% MM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_lewat_matang', {
-      header: <div className='w-16'>% LM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#E8F8E4]' },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DITOLAK</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_tangkai_panjang', {
-      header: <div className='w-16'>% TP</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DIDENDA</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
       meta: { className: 'bg-[#F8EDCB]' },
-    }),
-    columnHelper.accessor('percent_mentah', {
-      header: <div className='w-16'>% M</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('percent_buah_kecil', {
-      header: <div className='w-16'>% BK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.display({
       id: 'actions',
@@ -192,12 +144,7 @@ const DrawerTotalTruk = ({ idDrawer, isDrawerOpen, closeDrawer, data }) => {
       widthDrawer='95vw'
     >
       <div className='flex items-center justify-between'>
-        <h3 className='subheadline-m text-color-1'>
-          {/* Riwayat Pemeriksaan Truk Tanggal{' '}
-          {dayjs(searchParams.get('date_from')).format('DD/MM/YYYY')} -{' '}
-          {dayjs(searchParams.get('date_to')).format('DD/MM/YYYY')} */}
-          Riwayat Truk
-        </h3>
+        <h3 className='subheadline-m text-color-1'>Riwayat Truk</h3>
         <Button
           variant='primary-outline'
           className='border-none'

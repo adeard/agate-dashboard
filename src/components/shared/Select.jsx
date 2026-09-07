@@ -1,4 +1,5 @@
 import { default as ReactSelect } from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 import { joinClassnames } from '@/utils/common';
 
@@ -6,6 +7,7 @@ const selectSizes = {
   md: 'body-s-r h-8',
   lg: 'body-m-r h-10',
 };
+const animatedComponents = makeAnimated();
 
 const customStyles = {
   control: (provided, state) => ({
@@ -76,6 +78,8 @@ const Select = ({
       styles={customStyles}
       onChange={onChange}
       isMulti={multiple}
+      closeMenuOnSelect={multiple ? false : true}
+      components={multiple ? animatedComponents : undefined}
       isDisabled={disabled}
       isSearchable={isSearchable}
       menuPortalTarget={document.body}

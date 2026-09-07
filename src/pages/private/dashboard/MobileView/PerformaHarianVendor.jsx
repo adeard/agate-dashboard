@@ -33,62 +33,23 @@ const PerformaHarianVendor = ({ data, vendor, goBack }) => {
             { label: 'TOTAL TRUK', value: item.trucks, bg: true },
             { label: 'AVG TBS TRUK', value: Math.round(item.avg_tandan) },
             {
-              label: '%AVG DITERIMA',
+              label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.avg_accepted) || '00.00') +
                 ' %',
               bg: true,
-            },
-            {
-              label: '%AVG MM',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_matang) || '00.00') +
-                ' %',
-              bold: true,
               color: '#299300',
             },
             {
-              label: '%AVG LM',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_lewat_matang) ||
-                  '00.00') + ' %',
+              label: '% DITOLAK',
+              value: '-',
+              color: '#BD2828',
+            },
+            {
+              label: '% DIDENDA',
+              value: '-',
               bg: true,
-              bold: true,
-              color: '#299300',
-            },
-            {
-              label: '%AVG TP',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_tangkai_panjang) ||
-                  '00.00') + ' %',
-              bold: true,
               color: '#E07324',
-            },
-            {
-              label: '%AVG M',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_mentah) || '00.00') +
-                ' %',
-              bg: true,
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG JK',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_janjang_kosong) ||
-                  '00.00') + ' %',
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%AVG BK',
-              value:
-                (formatPercentWithLeadingZeros(item.avg_buah_kecil) ||
-                  '00.00') + ' %',
-              bg: true,
-              bold: true,
-              color: '#BD2828',
             },
           ];
 

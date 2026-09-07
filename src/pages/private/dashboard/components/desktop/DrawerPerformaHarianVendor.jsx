@@ -23,21 +23,13 @@ const DrawerPerformaHarianVendor = ({
       ),
     }),
     columnHelper.accessor('trucks', {
-      header: (
-        <div>
-          TOTAL <br /> TRUK
-        </div>
-      ),
+      header: <div>TOTAL TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('avg_tandan', {
-      header: (
-        <div>
-          AVG <br /> TBS TRUK
-        </div>
-      ),
+      header: <div>AVG TBS TRUK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {Math.round(info.getValue())}
@@ -45,23 +37,7 @@ const DrawerPerformaHarianVendor = ({
       ),
     }),
     columnHelper.accessor('avg_accepted', {
-      header: (
-        <div>
-          % AVG <br /> DITERIMA
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-    }),
-    columnHelper.accessor('avg_matang', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> MM
-        </div>
-      ),
+      header: <div>% DITERIMA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
@@ -69,70 +45,15 @@ const DrawerPerformaHarianVendor = ({
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('avg_lewat_matang', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> LM
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#E8F8E4]' },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DITOLAK</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('avg_tangkai_panjang', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> TP
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DIDENDA</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
       meta: { className: 'bg-[#F8EDCB]' },
-    }),
-    columnHelper.accessor('avg_mentah', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> M
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('avg_janjang_kosong', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> JK
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('avg_buah_kecil', {
-      header: (
-        <div className='w-16'>
-          % AVG <br /> BK
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
     }),
   ];
 

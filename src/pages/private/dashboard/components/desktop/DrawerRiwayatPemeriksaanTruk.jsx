@@ -8,7 +8,7 @@ import Table from '@/components/shared/Table';
 import Drawer from '@/components/shared/Drawer';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import { formatCurrency, formatPercentWithLeadingZeros } from '@/utils/common';
 
 // const tempData = new Array(10).fill().map(() => ({
 //   tanggal: '01/01/2025, 19:10:10',
@@ -38,54 +38,43 @@ const DrawerRiwayatPemeriksaanTruk = ({
     columnHelper.accessor('date', {
       header: <div>TANGGAL</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {dayjs(info.getValue()).format('DD/MM/YYYY')}
+        <div className='w-24 !body-m-b !text-color-1'>
+          {dayjs(info.getValue()).format('DD/MM/YYYY')} <br />
+          {dayjs(info.getValue()).format('HH:mm')} -{' '}
+          {dayjs(info.row.original.finish_date).format('HH:mm')}
         </div>
       ),
     }),
     columnHelper.accessor('finish_date', {
-      header: <div className='w-24'>WAKTU</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {dayjs(info.row.original.date).format('HH:mm')} -{' '}
-          {dayjs(info.getValue()).format('HH:mm')}
-        </div>
-      ),
+      header: <div className='w-24'>DURASI BONGKAR</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
     }),
     columnHelper.accessor('mesin', {
-      header: (
-        <div>
-          NOMOR <br /> MESIN
-        </div>
-      ),
+      header: <div>NOMOR MESIN</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
-    // columnHelper.accessor('delivery_number', {
-    //   header: <div>SURAT JALAN</div>,
-    //   cell: (info) => (
-    //     <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
-    //   ),
-    // }),
     columnHelper.accessor('vehicle_number', {
-      header: (
-        <div>
-          PLAT <br /> KENDARAAN
-        </div>
-      ),
+      header: <div>PLAT NOMOR</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('total_tandan', {
-      header: (
-        <div>
-          TBS <br /> TRUK
+      header: <div>TOTAL TBS</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {formatCurrency(info.getValue())}
         </div>
       ),
+    }),
+    columnHelper.accessor('total_multiple', {
+      header: <div>TBS MULTIPLE</div>,
       cell: (info) => (
-        <div className='!body-m-b !text-color-1'>{info.getValue()}</div>
+        <div className='!body-m-b !text-color-1'>
+          {formatCurrency(info.getValue())}
+        </div>
       ),
     }),
     columnHelper.accessor('percent_accepted', {
@@ -95,60 +84,17 @@ const DrawerRiwayatPemeriksaanTruk = ({
           {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
-    }),
-    columnHelper.accessor('percent_matang', {
-      header: <div className='w-16'>% MM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_lewat_matang', {
-      header: <div className='w-16'>% LM</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#E8F8E4]' },
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DITOLAK</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_tangkai_panjang', {
-      header: <div className='w-16'>% TP</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
+    columnHelper.accessor('percent_accepted', {
+      header: <div>% DIDENDA</div>,
+      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
       meta: { className: 'bg-[#F8EDCB]' },
-    }),
-    columnHelper.accessor('percent_mentah', {
-      header: <div className='w-16'>% M</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('percent_janjang_kosong', {
-      header: <div className='w-16'>% JK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
-    }),
-    columnHelper.accessor('percent_buah_kecil', {
-      header: <div className='w-16'>% BK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1'>
-          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
-        </div>
-      ),
-      meta: { className: 'bg-[#F6D8D6]' },
     }),
     columnHelper.display({
       id: 'actions',

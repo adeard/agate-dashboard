@@ -306,13 +306,12 @@ export const getDurationInMinutes = (start, end) => {
 export const formatCurrency = (value = 0) => {
   if (value === undefined || value === null) return '';
 
-  const rawValue = String(value).replace(/[^\d.]/g, '');
+  const rawValue = String(value).replace(/[^\d.-]/g, '');
+  const num = parseFloat(rawValue);
 
-  const [integerPart, decimalPart] = rawValue.split('.');
+  if (isNaN(num)) return '';
 
-  const formattedInt = parseInt(integerPart || '0', 10).toLocaleString();
+  const rounded = parseFloat(num.toFixed(2));
 
-  return decimalPart !== undefined
-    ? `${formattedInt}.${decimalPart}`
-    : formattedInt;
+  return rounded.toLocaleString();
 };

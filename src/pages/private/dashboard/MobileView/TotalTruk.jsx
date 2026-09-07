@@ -43,87 +43,42 @@ const TotalTruk = ({ data, goBack }) => {
               ),
               bold: true,
             },
-            { label: 'NOMOR MESIN', value: item.mesin, bg: true },
-            { label: 'SURAT JALAN', value: item.delivery_number },
+            { label: 'DURASI BONGKAR', value: '-', bg: true },
+            { label: 'WAKTU MENUNGGU', value: '-' },
             { label: 'VENDOR', value: item.vendor_name, bg: true },
-            { label: 'PLAT KENDARAAN', value: item.vehicle_number },
+            { label: 'MESIN', value: item.mesin },
+            { label: 'SURAT JALAN', value: item.delivery_number, bg: true },
+            { label: 'PLAT NOMOR', value: item.vehicle_number },
             {
-              label: 'TBS TRUK',
+              label: 'TOTAL TBS',
               value: formatCurrency(item.total_tandan),
               bg: true,
             },
             {
-              label: 'TBS DOUBLE',
+              label: 'TBS MULTIPLE',
               value: formatCurrency(item.total_multiple),
-            },
-            {
-              label: 'AVG TBS/MENIT',
-              value: formatCurrency(avgTbsPerMinute),
-              bg: true,
             },
             {
               label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
                   '00.00') + ' %',
-            },
-            {
-              label: '% MULTIPLE',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_multiple) ||
-                  '00.00') + ' %',
+              color: '#299300',
+              bold: true,
               bg: true,
             },
             {
-              label: '% MM',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_matang) ||
-                  '00.00') + ' %',
+              label: '% DITOLAK',
+              value: '-',
+              color: '#BD2828',
               bold: true,
-              color: '#299300',
             },
             {
-              label: '% LM',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_lewat_matang) ||
-                  '00.00') + '%',
-              bg: true,
-              bold: true,
-              color: '#299300',
-            },
-            {
-              label: '% TP',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_tangkai_panjang) ||
-                  '00.00') + ' %',
-              bold: true,
+              label: '% DIDENDA',
+              value: '-',
               color: '#E07324',
-            },
-            {
-              label: '% M',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_mentah) ||
-                  '00.00') + ' %',
+              bold: true,
               bg: true,
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '% JK',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_janjang_kosong) ||
-                  '00.00') + ' %',
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '% BK',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_buah_kecil) ||
-                  '00.00') + ' %',
-              bg: true,
-              bold: true,
-              color: '#BD2828',
             },
           ];
 

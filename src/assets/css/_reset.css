@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   font-optical-sizing: auto;
@@ -7,6 +11,11 @@ body {
   font-style: normal;
   font-variation-settings: 'slnt' 0;
   color: #281d1d;
+}
+
+html:has(.drawer-toggle:checked) {
+  overflow: hidden !important;
+  scrollbar-gutter: auto !important;
 }
 
 main {

@@ -9,9 +9,6 @@ const listTypeDashboard = [
   'Summary Performance',
   'Grading Truk',
   'Analisa Kinerja Vendor',
-  'Tren Buah Diterima',
-  'Tren Buah Didenda',
-  'Tren Buah Ditolak',
   '10 Truk Terbaik',
   '10 Truk Terburuk',
 ];

@@ -9,8 +9,9 @@ const Drawer = ({ idDrawer, isOpen, closeDrawer, children, widthDrawer }) => {
           onClick={closeDrawer}
         ></label>
         <div
-          className={`my-auto h-[calc(100vh-30px)] overflow-auto rounded-xl bg-primary-6 p-8 text-base-content
-            ${isOpen && 'mr-8'} `}
+          className={
+            'my-auto min-h-dvh rounded-l-xl bg-neutrals-2 p-8 text-base-content'
+          }
           style={{ width: widthDrawer || '685px' }}
         >
           {children}

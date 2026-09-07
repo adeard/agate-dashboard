@@ -114,24 +114,34 @@ const MonitoringGrading = ({
               <span className='body-m-bold text-color-3 text-sm'>Pcs</span>
             </p>
           </div>
-          <div className='bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
+          <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
             <label>
-              <span className='label-text tag-m text-color-1 flex items-center gap-2'>
-                MULTIPLE
+              <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                KECEPATAN TERTINGGI
               </span>
             </label>
-            <p className='text-color-1'>
-              <span className='subheadline-s'>
-                {formatCurrency(data?.monitoring.total_multiple)}
+            <p>
+              <span className='subheadline-s text-color-1'>
+                {Math.round(statsPerMinute.maxAvg)}
               </span>{' '}
-              <span className='body-m-bold text-sm'>Pcs</span>
-              <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
-              <span className='body-m-r mr-1'>
-                {formatPercentWithLeadingZeros(
-                  Number(data?.monitoring.percent_multiple),
-                )}
+              <span className='body-m-bold text-color-3 text-sm'>
+                TBS/menit
               </span>
-              <span className='body-s-r text-sm'>%</span>
+            </p>
+          </div>
+          <div className='bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
+            <label>
+              <span className='label-text tag-m text-color-3 flex items-center gap-2'>
+                KECEPATAN RATA-RATA
+              </span>
+            </label>
+            <p>
+              <span className='subheadline-s text-color-1'>
+                {Math.round(statsPerMinute.avgGlobal)}
+              </span>{' '}
+              <span className='body-m-bold text-color-3 text-sm'>
+                TBS/menit
+              </span>
             </p>
           </div>
           <div className='bg-white border border-[#006D33] rounded-xl p-4 inline-flex items-center justify-between'>
@@ -194,59 +204,26 @@ const MonitoringGrading = ({
               <span className='body-s-r text-sm'>%</span>
             </p>
           </div>
-        </section>
-        <section className='mt-4'>
-          <div className='bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+
+          <div className='bg-white border border-color-1 rounded-xl p-4 inline-flex items-center justify-between'>
             <label>
-              <span className='label-text tag-l text-color-3 flex items-center gap-2'>
-                KECEPATAN BONGKAR PER TRUK
+              <span className='label-text tag-m text-color-1 flex items-center gap-2'>
+                MULTIPLE
               </span>
             </label>
-            <div className='w-full bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                  TERTINGGI
-                </span>
-              </label>
-              <p>
-                <span className='subheadline-s text-color-1'>
-                  {Math.round(statsPerMinute.maxAvg)}
-                </span>{' '}
-                <span className='body-m-bold text-color-3 text-sm'>
-                  TBS/menit
-                </span>
-              </p>
-            </div>
-            <div className='w-full bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                  RATA-RATA
-                </span>
-              </label>
-              <p>
-                <span className='subheadline-s text-color-1'>
-                  {Math.round(statsPerMinute.avgGlobal)}
-                </span>{' '}
-                <span className='body-m-bold text-color-3 text-sm'>
-                  TBS/menit
-                </span>
-              </p>
-            </div>
-            <div className='w-full bg-white border border-primary-4 rounded-xl p-4 inline-flex items-center justify-between'>
-              <label>
-                <span className='label-text tag-m text-color-3 flex items-center gap-2'>
-                  TERENDAH
-                </span>
-              </label>
-              <p>
-                <span className='subheadline-s text-color-1'>
-                  {Math.round(statsPerMinute.minAvg)}
-                </span>{' '}
-                <span className='body-m-bold text-color-3 text-sm'>
-                  TBS/menit
-                </span>
-              </p>
-            </div>
+            <p className='text-color-1'>
+              <span className='subheadline-s'>
+                {formatCurrency(data?.monitoring.total_multiple)}
+              </span>{' '}
+              <span className='body-m-bold text-sm'>Pcs</span>
+              <span className='h-full w-2 border border-[#F2F2F2] mx-1'></span>
+              <span className='body-m-r mr-1'>
+                {formatPercentWithLeadingZeros(
+                  Number(data?.monitoring.percent_multiple),
+                )}
+              </span>
+              <span className='body-s-r text-sm'>%</span>
+            </p>
           </div>
         </section>
         <section className='mt-4'>
@@ -310,10 +287,7 @@ const MonitoringGrading = ({
                   );
 
                   const sumPercent = (items) =>
-                    items.reduce(
-                      (acc, item) => acc + (item.percent || 0),
-                      0,
-                    );
+                    items.reduce((acc, item) => acc + (item.percent || 0), 0);
 
                   const renderGradingTableMobile = (items) => (
                     <table className='table'>
@@ -323,7 +297,9 @@ const MonitoringGrading = ({
                             key={index}
                             className='body-m-r group hover text-color-2 hover:cursor-pointer'
                             onClick={() => {
-                              setSelectedCriteriaGrading(item.key || item.label);
+                              setSelectedCriteriaGrading(
+                                item.key || item.label,
+                              );
                               toggleMobileDrawerAvgGrading();
                             }}
                           >

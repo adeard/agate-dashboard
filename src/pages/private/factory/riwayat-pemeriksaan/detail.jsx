@@ -12,6 +12,11 @@ import dayjs from 'dayjs';
 import { convertLabel, formatCurrency } from '@/utils/common';
 import { BASE_URL } from '@/utils/axios';
 
+const formatDecimal = (value, maxDecimals = 2) => {
+  const num = Number(value) || 0;
+  return num.toLocaleString('id-ID', { maximumFractionDigits: maxDecimals });
+};
+
 const DetailRiwayatPemeriksaanPage = () => {
   const { id, factoryId, historyId } = useParams();
   const location = useLocation();
@@ -333,7 +338,7 @@ const DetailRiwayatPemeriksaanPage = () => {
       header: () => <div className='text-center'>DENDA</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] !text-center'>
-          {info.getValue()?.toLocaleString() || 0}
+          {formatDecimal(info.getValue())}
           <span className='!body-s-r ml-1'>
             {info.row.original.hasBjr
               ? `% x ${info.row.original.bjr} kg`
@@ -344,16 +349,11 @@ const DetailRiwayatPemeriksaanPage = () => {
     }),
     columnHelper.accessor('total_kg', {
       header: () => <div className='text-center'>TOTAL KG</div>,
-      cell: (info) => {
-        const val = info.getValue() || 0;
-        return (
-          <div className='!body-m-r text-[#000000DE] text-center'>
-            {typeof val === 'number'
-              ? parseFloat(val.toFixed(2)).toLocaleString()
-              : val}
-          </div>
-        );
-      },
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatDecimal(info.getValue())}
+        </div>
+      ),
     }),
   ];
 
@@ -579,8 +579,9 @@ const DetailRiwayatPemeriksaanPage = () => {
     total: (
       dataDidenda?.reduce((acc, row) => acc + (row.total || 0), 0) || 0
     ).toLocaleString(),
-    total_kg:
+    total_kg: formatDecimal(
       dataDidenda?.reduce((acc, row) => acc + (row.total_kg || 0), 0) || 0,
+    ),
   };
 
   return (
@@ -756,12 +757,12 @@ const DetailRiwayatPemeriksaanPage = () => {
                     </span>
                   </label>
                   <p className='body-m-b text-color-1'>
-                    {Number(
+                    {formatDecimal(
                       dataDidenda?.reduce(
                         (acc, row) => acc + (row.total_kg || 0),
                         0,
                       ) || 0,
-                    ).toLocaleString()}{' '}
+                    )}{' '}
                     kg
                   </p>
                 </div>

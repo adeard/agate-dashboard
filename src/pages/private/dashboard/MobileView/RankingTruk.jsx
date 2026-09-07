@@ -79,76 +79,41 @@ const RankingTruk = ({
               bold: true,
             },
             {
+              label: 'DURASI BONGKAR',
+              value: '-',
+              bg: true,
+            },
+            {
               label: 'PLAT TRUK',
               value: item.vehicle_number,
-              bg: true,
-              bold: true,
             },
             {
               label: 'VENDOR',
               value: item.vendor_name,
+              bg: true,
             },
-            { label: 'TBS TRUK', value: item.total_tandan, bg: true },
+            { label: 'TBS TRUK', value: item.total_tandan },
             {
-              label: '%DITERIMA',
+              label: '% DITERIMA',
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
                   '00.00') + ' %',
-            },
-            {
-              label: '%MM',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_matang.percent) ||
-                  '00.00') + ' %',
-              bg: true,
               bold: true,
               color: '#299300',
-            },
-            {
-              label: '%LM',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.percent_lewat_matang.percent
-                ) || '00.00') + ' %',
-              bold: true,
-              color: '#299300',
-            },
-            {
-              label: '%TP',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.percent_tangkai_panjang.percent
-                ) || '00.00') + ' %',
               bg: true,
+            },
+            {
+              label: '% DITOLAK',
+              value: '-',
+              bold: true,
+              color: '#BD2828',
+            },
+            {
+              label: '% DIDENDA',
+              value: '-',
               bold: true,
               color: '#E07324',
-            },
-            {
-              label: '%M',
-              value:
-                (formatPercentWithLeadingZeros(item.percent_mentah.percent) ||
-                  '00.00') + ' %',
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%JK',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.percent_janjang_kosong.percent
-                ) || '00.00') + ' %',
               bg: true,
-              bold: true,
-              color: '#BD2828',
-            },
-            {
-              label: '%BK',
-              value:
-                (formatPercentWithLeadingZeros(
-                  item.percent_buah_kecil.percent
-                ) || '00.00') + ' %',
-              bold: true,
-              color: '#BD2828',
             },
           ];
 
@@ -178,23 +143,8 @@ const RankingTruk = ({
                       >
                         {row.label}
                       </p>
-                      {/* {row.label === 'TANGGAL' ? (
-                        <p
-                          className={`col-span-3 body-s-r flex justify-between items-center ${classNames}`}
-                          style={style}
-                          // onClick={() =>
-                          //   window.open(
-                          //     `/dashboard/riwayat-pemeriksaan/${item._id}`,
-                          //     '_blank'
-                          //   )
-                          // }
-                        >
-                          {row.value} 
-                          <IoMdArrowDropright className='text-xl' />
-                        </p>
-                      ) : ( */}
                       <p
-                        className={`col-span-3 body-s-r ${classNames}`}
+                        className={`truncate min-w-0 col-span-3 body-s-r ${classNames}`}
                         style={style}
                       >
                         {row.value} {row.icon}

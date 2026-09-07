@@ -123,12 +123,10 @@ export const colorKriteriaGrading = {
 };
 
 const chartTypeDictionary = {
+  monitoring_grading: 'Monitoring Grading',
   summary_performance: 'Summary Performance',
   grading_trucks: 'Grading Truk',
   kinerja_vendor: 'Analisa Kinerja Vendor',
-  fruit_accepted: 'Tren Buah Diterima',
-  fruit_tangkai_panjang: 'Tren Tangkai Panjang',
-  fruit_rejected: 'Tren Buah Ditolak',
   highest_vendor: '10 Truk Terbaik',
   lowest_vendor: '10 Truk Terburuk',
 };
