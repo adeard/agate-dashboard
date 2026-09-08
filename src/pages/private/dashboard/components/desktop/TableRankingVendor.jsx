@@ -8,7 +8,7 @@ import { FaCircle } from 'react-icons/fa6';
 import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
-import { formatCurrency, formatPercentWithLeadingZeros } from '@/utils/common';
+import { formatCurrency, formatDuration, formatPercentWithLeadingZeros } from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -77,9 +77,13 @@ const TableRankingVendor = ({ data }) => {
         </div>
       ),
     }),
-    columnHelper.accessor('date', {
+    columnHelper.accessor('duration', {
       header: <div>DURASI BONGKAR</div>,
-      cell: (info) => <div className='!body-m-b !text-color-1'>- </div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {formatDuration(info.row.original.duration)}
+        </div>
+      ),
     }),
     columnHelper.accessor('vehicle_number', {
       header: <div>PLAT TRUK</div>,
@@ -114,14 +118,24 @@ const TableRankingVendor = ({ data }) => {
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_accepted', {
+    columnHelper.accessor('percent_rejected', {
       header: <div>% DITOLAK</div>,
-      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {(formatPercentWithLeadingZeros(info.row.original.percent_rejected) ||
+            '00.00') + ' %'}
+        </div>
+      ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_accepted', {
+    columnHelper.accessor('percent_fined', {
       header: <div>% DIDENDA</div>,
-      cell: (info) => <div className='!body-m-b !text-color-1'>-</div>,
+      cell: (info) => (
+        <div className='!body-m-b !text-color-1'>
+          {(formatPercentWithLeadingZeros(info.row.original.percent_fined) ||
+            '00.00') + ' %'}
+        </div>
+      ),
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.display({

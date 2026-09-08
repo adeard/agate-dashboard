@@ -4,7 +4,7 @@ import { MdArrowBackIosNew, MdOutlineFilterAlt } from 'react-icons/md';
 import { FaStar } from 'react-icons/fa';
 import { FaCircle } from 'react-icons/fa6';
 
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import { formatDuration, formatPercentWithLeadingZeros } from '@/utils/common';
 
 import dayjs from 'dayjs';
 

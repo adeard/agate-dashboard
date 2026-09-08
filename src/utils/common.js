@@ -290,6 +290,21 @@ export const mappingOptions = (listData, customKeys = []) => {
   );
 };
 
+export const formatDuration = (minutes) => {
+  const totalMinutes = Math.round(Number(minutes) || 0);
+  if (!totalMinutes || totalMinutes <= 0) return '0 mins';
+
+  if (totalMinutes > 120) {
+    const hours = Math.floor(totalMinutes / 60);
+    const remainingMins = totalMinutes % 60;
+    return remainingMins > 0
+      ? `${hours} hour ${remainingMins} mins`
+      : `${hours} hour`;
+  }
+
+  return `${totalMinutes} mins`;
+};
+
 export const getDurationInMinutes = (start, end) => {
   if (!start || !end) return 0;
 

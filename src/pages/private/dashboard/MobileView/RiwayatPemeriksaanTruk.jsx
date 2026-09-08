@@ -2,55 +2,86 @@ import React from 'react';
 
 import { MdArrowBackIosNew } from 'react-icons/md';
 
-import { formatPercentWithLeadingZeros } from '@/utils/common';
+import {
+  formatCurrency,
+  formatDuration,
+  formatPercentWithLeadingZeros,
+} from "@/utils/common";
 
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const RiwayatPemeriksaanTruk = ({ data, vendor, goBack }) => {
   return (
     <>
-      <section className='sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white'>
-        <div className='flex-none'>
-          <MdArrowBackIosNew className='text-xl' onClick={goBack} />
+      <section className="sticky top-0 z-50 flex items-center justify-between max-h-16 p-4 bg-white">
+        <div className="flex-none">
+          <MdArrowBackIosNew className="text-xl" onClick={goBack} />
         </div>
-        <h2 className='flex-1 !text-center mr-4 subheadline-s'>
+        <h2 className="flex-1 !text-center mr-4 subheadline-s">
           Riwayat Pemeriksaan Truk
         </h2>
       </section>
 
-      <section className='w-full bg-[#F8F9FB] p-4 space-y-4'>
-        <p className='ml-2'>{vendor}</p>
+      <section className="w-full bg-[#F8F9FB] p-4 space-y-4">
+        <p className="ml-2">{vendor}</p>
         {data?.map((item, index) => {
           const rows = [
             {
-              label: 'TANGGAL',
-              value: dayjs(item.date).format('DD/MM/YYYY, HH:mm:ss'),
+              label: "TANGGAL",
+              value: (
+                <>
+                  {dayjs(item.date).format("DD/MM/YYYY")}
+                  <br />
+                  {dayjs(item.date).format("HH:mm")} -{" "}
+                  {dayjs(item.finish_date).format("HH:mm")}
+                </>
+              ),
               bold: true,
             },
-            { label: 'DURASI BONGKAR', value: '-', bg: true },
-            { label: 'NOMOR MESIN', value: item.mesin },
-            { label: 'SURAT JALAN', value: item.delivery_number, bg: true },
-            { label: 'PLAT NOMOR', value: item.vehicle_number },
-            { label: 'TOTAL TBS', value: item.total_tandan, bg: true },
             {
-              label: '% DITERIMA',
+              label: "DURASI BONGKAR",
+              value: formatDuration(item.duration),
+              bg: true,
+            },
+            {
+              label: "WAKTU MENUNGGU",
+              value: formatDuration(item.duration_gap),
+            },
+            { label: "NOMOR MESIN", value: item.mesin, bg: true },
+            { label: "SURAT JALAN", value: item.delivery_number },
+            { label: "PLAT NOMOR", value: item.vehicle_number, bg: true },
+            {
+              label: "TOTAL TBS",
+              value: formatCurrency(item.total_tandan),
+            },
+            {
+              label: "TBS MULTIPLE",
+              value: formatCurrency(item.total_multiple),
+              bg: true,
+            },
+            {
+              label: "% DITERIMA",
               value:
                 (formatPercentWithLeadingZeros(item.percent_accepted) ||
-                  '00.00') + ' %',
-              color: '#299300',
+                  "00.00") + " %",
+              color: "#299300",
               bold: true,
             },
             {
-              label: '% DITOLAK',
-              value: '-',
-              color: '#BD2828',
+              label: "% DITOLAK",
+              value:
+                (formatPercentWithLeadingZeros(item.percent_rejected) ||
+                  "00.00") + " %",
+              color: "#BD2828",
               bold: true,
               bg: true,
             },
             {
-              label: '% DIDENDA',
-              value: '-',
-              color: '#E07324',
+              label: "% DIDENDA",
+              value:
+                (formatPercentWithLeadingZeros(item.percent_fined) || "00.00") +
+                " %",
+              color: "#E07324",
               bold: true,
             },
           ];

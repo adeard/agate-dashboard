@@ -96,14 +96,20 @@ const AnalisaKinerjaVendor = ({
             },
             {
               label: '% DITOLAK',
-              value: '-',
+              value:
+                (formatPercentWithLeadingZeros(item.percent_rejected?.percent) ||
+                  '00.00') + ' %',
+              icon: getIcon(item.percent_rejected?.rank),
               color: '#BD2828',
               bold: true,
               bg: true,
             },
             {
               label: '% DIDENDA',
-              value: '-',
+              value:
+                (formatPercentWithLeadingZeros(item.percent_fined?.percent) ||
+                  '00.00') + ' %',
+              icon: getIcon(item.percent_fined?.rank),
               color: '#E07324',
               bold: true,
             },

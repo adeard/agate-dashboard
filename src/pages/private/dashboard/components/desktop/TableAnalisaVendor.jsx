@@ -125,22 +125,34 @@ const TableAnalisaVendor = ({
       },
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_accepted', {
-      header: <div>% DITOLAK</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          -
-        </div>
-      ),
+    columnHelper.accessor((row) => row.percent_rejected?.percent ?? 0, {
+      id: 'percent_rejected',
+      enableSorting: true,
+      header: <div className='w-24'>% DITOLAK</div>,
+      cell: (info) => {
+        const data = info.row.original.percent_rejected;
+        return (
+          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
+            {getIcon(data?.rank)}
+          </div>
+        );
+      },
       meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_accepted', {
-      header: <div>% DIDENDA</div>,
-      cell: (info) => (
-        <div className='!body-m-b !text-color-1 flex items-center justify-between'>
-          -
-        </div>
-      ),
+    columnHelper.accessor((row) => row.percent_fined?.percent ?? 0, {
+      id: 'percent_fined',
+      enableSorting: true,
+      header: <div className='w-24'>% DIDENDA</div>,
+      cell: (info) => {
+        const data = info.row.original.percent_fined;
+        return (
+          <div className='!body-m-b !text-color-1 flex items-center justify-between'>
+            {formatPercentWithLeadingZeros(data?.percent) || '00.00'} %
+            {getIcon(data?.rank)}
+          </div>
+        );
+      },
       meta: { className: 'bg-[#F8EDCB]' },
     }),
     columnHelper.display({
