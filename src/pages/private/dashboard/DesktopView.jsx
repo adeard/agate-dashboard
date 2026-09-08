@@ -479,7 +479,7 @@ const DesktopViewDashboardPage = () => {
                         />
                       ) : chartType?.label === 'Monitoring Grading' ? (
                         <section className='grid grid-cols-3 gap-4'>
-                          <div className='col-span-2 h-[917px] bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
+                          <div className='col-span-2 h-full max-h-[924px] bg-white border border-primary-4 rounded-xl p-4 space-y-4'>
                             <label>
                               <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                                 RATA-RATA PERSENTASE KRITERIA GRADING
@@ -629,7 +629,7 @@ const DesktopViewDashboardPage = () => {
                               })()}
                             </div>
                           </div>
-                          <div className='col-span-1 h-[917px] bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto'>
+                          <div className='col-span-1 h-full max-h-[924px] bg-white border border-primary-4 rounded-xl p-4 space-y-4 overflow-auto'>
                             <label>
                               <span className='label-text tag-l text-color-3 flex items-center gap-2'>
                                 RATA-RATA PERSENTASE DITERIMA VENDOR

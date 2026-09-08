@@ -104,13 +104,17 @@ const RankingTruk = ({
             },
             {
               label: '% DITOLAK',
-              value: '-',
+              value:
+                (formatPercentWithLeadingZeros(item.percent_rejected) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#BD2828',
             },
             {
               label: '% DIDENDA',
-              value: '-',
+              value:
+                (formatPercentWithLeadingZeros(item.percent_fined) ||
+                  '00.00') + ' %',
               bold: true,
               color: '#E07324',
               bg: true,
