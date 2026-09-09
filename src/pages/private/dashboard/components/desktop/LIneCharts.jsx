@@ -17,6 +17,7 @@ const classificationColor = {
   'JANJANG KOSONG': '#78909C',
 };
 const classificationColorFruit = {
+  'BUAH KECIL DIBAWAH 2KG': '#EAB308',
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
   'BUAH KECIL DIBAWAH 5KG': '#78C52A',
 };
@@ -49,6 +50,7 @@ const statisticsColorFruitRejected = {
   'Janjang Kosong': '#A1E3F9',
   'Buah <3kg': '#AC0F18',
   'Buah 3-5kg': '#E07324',
+  'Buah <2kg': '#991B1B',
 };
 
 const dictionaryLegendColorDemography = {
@@ -92,6 +94,8 @@ const colorCodes = {
   'Janjang Kosong': '#A1E3F9',
 
   // Fruit size classifications
+  'BUAH KECIL DIBAWAH 2KG': '#EAB308',
+  'Buah <2kg': '#991B1B',
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
   'Buah <3kg': '#AC0F18',
   'BUAH KECIL DIBAWAH 5KG': '#78C52A',

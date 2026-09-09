@@ -12,6 +12,7 @@ const classificationColor = {
   MATANG: '#4BA92A',
   'LEWAT MATANG': '#617E46',
   'JANJANG KOSONG': '#436840',
+  'BUAH KECIL DIBAWAH 2KG': '#EAB308',
   'BUAH KECIL DIBAWAH 3KG': '#CDE441',
   'BUAH KECIL DIBAWAH 5KG': '#78C52A',
   'TANGKAI PANJANG': '#CDE441',
@@ -58,6 +59,7 @@ const Charts = ({
       }
     } else if (type === 'size') {
       setLegendStatus({
+        'BUAH KECIL DIBAWAH 2KG': true,
         'BUAH KECIL DIBAWAH 3KG': true,
         'BUAH KECIL DIBAWAH 5KG': true,
       });

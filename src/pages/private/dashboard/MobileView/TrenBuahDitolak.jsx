@@ -118,11 +118,20 @@ const TrenBuahDitolak = ({ data, toggleMobileDrawerFilter, goBack }) => {
                 iconKey: 'janjang kosong',
               },
               {
+                label: 'BUAH <2KG',
+                value:
+                  (formatPercentWithLeadingZeros(dataMap['buah <2kg']) ||
+                    '00.00') + ' %',
+                bg: true,
+                bold: true,
+                color: '#BD2828',
+                iconKey: 'buah <2kg',
+              },
+              {
                 label: 'BUAH <3KG',
                 value:
                   (formatPercentWithLeadingZeros(dataMap['buah <3kg']) ||
                     '00.00') + ' %',
-                bg: true,
                 bold: true,
                 color: '#BD2828',
                 iconKey: 'buah <3kg',
@@ -132,6 +141,7 @@ const TrenBuahDitolak = ({ data, toggleMobileDrawerFilter, goBack }) => {
                 value:
                   (formatPercentWithLeadingZeros(dataMap['buah 3-5kg']) ||
                     '00.00') + ' %',
+                bg: true,
                 bold: true,
                 color: '#BD2828',
                 iconKey: 'buah 3-5kg',

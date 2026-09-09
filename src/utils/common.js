@@ -82,6 +82,9 @@ export const convertLabel = (data) => {
     .join(' ');
 
   switch (label?.toLowerCase()) {
+    case 'buah kecil 2':
+    case 'buah kecil dibawah 2kg':
+      return 'Buah <2kg';
     case 'buah kecil dibawah 3kg':
       return 'Buah <3kg';
     case 'buah kecil dibawah 5kg':
