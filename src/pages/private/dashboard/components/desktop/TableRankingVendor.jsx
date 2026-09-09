@@ -8,7 +8,11 @@ import { FaCircle } from 'react-icons/fa6';
 import Table from '@/components/shared/Table';
 import Button from '@/components/shared/Button';
 import dayjs from 'dayjs';
-import { formatCurrency, formatDuration, formatPercentWithLeadingZeros } from '@/utils/common';
+import {
+  formatCurrency,
+  formatDuration,
+  formatPercentWithLeadingZeros,
+} from '@/utils/common';
 
 const getStarColor = (rank) => {
   if (rank === 1) return '#FFD700';
@@ -118,22 +122,24 @@ const TableRankingVendor = ({ data }) => {
       ),
       meta: { className: 'bg-[#E8F8E4]' },
     }),
-    columnHelper.accessor('percent_rejected', {
+    columnHelper.accessor((row) => row.percent_rejected ?? 0, {
+      id: 'percent_rejected',
+      enableSorting: true,
       header: <div>% DITOLAK</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {(formatPercentWithLeadingZeros(info.row.original.percent_rejected) ||
-            '00.00') + ' %'}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F6D8D6]' },
     }),
-    columnHelper.accessor('percent_fined', {
+    columnHelper.accessor((row) => row.percent_fined ?? 0, {
+      id: 'percent_fined',
+      enableSorting: true,
       header: <div>% DIDENDA</div>,
       cell: (info) => (
         <div className='!body-m-b !text-color-1'>
-          {(formatPercentWithLeadingZeros(info.row.original.percent_fined) ||
-            '00.00') + ' %'}
+          {formatPercentWithLeadingZeros(info.getValue()) || '00.00'} %
         </div>
       ),
       meta: { className: 'bg-[#F8EDCB]' },

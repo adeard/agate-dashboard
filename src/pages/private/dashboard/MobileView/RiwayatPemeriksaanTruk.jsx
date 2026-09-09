@@ -43,10 +43,6 @@ const RiwayatPemeriksaanTruk = ({ data, vendor, goBack }) => {
               value: formatDuration(item.duration),
               bg: true,
             },
-            {
-              label: "WAKTU MENUNGGU",
-              value: formatDuration(item.duration_gap),
-            },
             { label: "NOMOR MESIN", value: item.mesin, bg: true },
             { label: "SURAT JALAN", value: item.delivery_number },
             { label: "PLAT NOMOR", value: item.vehicle_number, bg: true },
