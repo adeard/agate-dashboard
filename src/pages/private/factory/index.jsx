@@ -70,13 +70,10 @@ const FactoryPage = () => {
       header: <div className='end-column-content'></div>,
       id: 'actions',
       cell: (info) => {
-        const data = info.row.original;
-        const isSWK = data._id === '686a5645bf73aa13b489ad36';
-
         const handleStoreFactoryName = () =>
           sessionStorage.setItem('factoryName', data.name);
 
-        const baseOptions = [
+        const options = [
           <span
             className='flex items-center gap-2'
             onClick={() => {
@@ -98,9 +95,7 @@ const FactoryPage = () => {
           <Link to={`${data._id}/vendor`} onClick={handleStoreFactoryName}>
             Daftar Vendor
           </Link>,
-        ];
 
-        const extraOptions = [
           <Link
             to={`${data._id}/history-maintenance`}
             onClick={handleStoreFactoryName}
@@ -112,8 +107,6 @@ const FactoryPage = () => {
             Logs Mesin
           </Link>,
         ];
-
-        const options = isSWK ? baseOptions : [...baseOptions, ...extraOptions];
 
         return <DropdownMenu info={info} options={options} />;
       },

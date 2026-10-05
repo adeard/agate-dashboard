@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
 import Button from '@/components/shared/Button';
@@ -6,12 +6,7 @@ import Drawer from '@/components/shared/Drawer';
 import Input from '@/components/shared/Input';
 import Select from '@/components/shared/Select';
 
-import {
-  vendorTypeOptions,
-  vendorKJGMTypeOptions,
-  vendorLNGMTypeOptions,
-  vendorBYLMTypeOptions,
-} from '@/utils/optionsKey';
+import { vendorTypeOptions } from '@/utils/optionsKey';
 
 const DrawerFilterDashboard = ({
   idDrawer,
@@ -21,39 +16,12 @@ const DrawerFilterDashboard = ({
   optionsFactory,
   optionsVendor,
 }) => {
-  const [vendorTypeOptionList, setVendorTypeOptionList] =
-    useState(vendorTypeOptions);
-
   const sortedOptionsFactory = useMemo(() => {
     if (!optionsFactory) return [];
-    return [...optionsFactory].sort((a, b) => {
-      if (a.label && a.label.toUpperCase().includes('LNGM')) return -1;
-      if (b.label && b.label.toUpperCase().includes('LNGM')) return 1;
-      return 0;
-    });
+    return [...optionsFactory].sort((a, b) =>
+      (a.label || '').localeCompare(b.label || ''),
+    );
   }, [optionsFactory]);
-
-  useEffect(() => {
-    const currentFactoryValue = form.state.values?.factory;
-    if (currentFactoryValue && optionsFactory) {
-      const selectedOption = optionsFactory.find(
-        (opt) => opt.value === currentFactoryValue,
-      );
-      if (currentFactoryValue === '68fc9b419a7c87b51e2002b5') {
-        setVendorTypeOptionList(vendorKJGMTypeOptions);
-      } else if (currentFactoryValue === '699be68839fb2f1e96d62a01') {
-        setVendorTypeOptionList(vendorBYLMTypeOptions);
-      } else if (
-        selectedOption &&
-        selectedOption.label &&
-        selectedOption.label.toUpperCase().includes('LNGM')
-      ) {
-        setVendorTypeOptionList(vendorLNGMTypeOptions);
-      } else {
-        setVendorTypeOptionList(vendorTypeOptions);
-      }
-    }
-  }, [form.state.values?.factory, optionsFactory]);
 
   const handleClose = () => {
     const drawerElement = document.getElementById(idDrawer);
@@ -140,17 +108,6 @@ const DrawerFilterDashboard = ({
                         ? selectedOption.value
                         : null;
                       field.handleChange(selectedValue);
-                      if (selectedValue === '68fc9b419a7c87b51e2002b5') {
-                        setVendorTypeOptionList(vendorKJGMTypeOptions);
-                      } else if (
-                        selectedOption &&
-                        selectedOption.label &&
-                        selectedOption.label.toUpperCase().includes('LNGM')
-                      ) {
-                        setVendorTypeOptionList(vendorLNGMTypeOptions);
-                      } else {
-                        setVendorTypeOptionList(vendorTypeOptions);
-                      }
                     }}
                     size='lg'
                   />
@@ -172,7 +129,7 @@ const DrawerFilterDashboard = ({
                     className='body-m-r !h-full'
                     name={field.name}
                     value={field.state.value}
-                    options={vendorTypeOptionList || []}
+                    options={vendorTypeOptions || []}
                     onChange={(selectedOption) => {
                       const selectedValue = selectedOption
                         ? selectedOption.value

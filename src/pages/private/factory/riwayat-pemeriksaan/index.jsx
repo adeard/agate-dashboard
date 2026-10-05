@@ -43,27 +43,10 @@ const RiwayatPemeriksaanPage = () => {
   );
   const [loadingDownloadExcel, setLoadingDownloadExcel] = useState(false);
 
-  const isBYLMMFactory = factoryId === '699be68839fb2f1e96d62a01';
-
-  const factoryEksternalVendor =
-    factoryId === '68fc9b419a7c87b51e2002b5' ||
-    factoryId === '68fc9b419a7c87b51e2002b3';
-
-  const vendorMapping = isBYLMMFactory
-    ? {
-        1: 'KUB',
-        2: 'Eksternal',
-      }
-    : factoryEksternalVendor
-      ? {
-          1: 'Inti',
-          3: 'Plasma',
-          2: 'Eksternal',
-        }
-      : {
-          1: 'Inti',
-          2: 'Plasma',
-        };
+  const vendorMapping = {
+    1: 'Inti',
+    2: 'Plasma',
+  };
 
   const {
     idDrawer: idDrawerFilter,

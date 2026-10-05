@@ -23,83 +23,61 @@ const DetailRiwayatPemeriksaanPage = () => {
 
   const factoryName = sessionStorage.getItem('factoryName');
 
-  const COMBINED_FACTORIES = [
-    '68fc9b419a7c87b51e2002b5',
-    '68fc9b419a7c87b51e2002b3',
-  ];
-
-  const isCombinedFactory = COMBINED_FACTORIES.includes(factoryId);
-
-  const BYMLFactory = '699be68839fb2f1e96d62a01';
-  const isBYLMFactory = factoryId === BYMLFactory;
-
   const { data, loading, refetch } = useGet(
     `/v1/inspection-data/${historyId || id}`,
   );
 
   const columnHelper = createColumnHelper();
 
-  const weightColumns = isCombinedFactory
-    ? [
-        columnHelper.accessor('below5kg', {
-          header: () => <div className='text-center'>{'<5KG'}</div>,
-          cell: (info) => (
-            <div className='!body-m-r text-[#000000DE] text-center'>
-              {formatCurrency(info.getValue())}
-            </div>
-          ),
-        }),
-      ]
-    : [
-        ...(factoryId === '66c3114ba342ddbf9eae83c1'
-          ? [
-              columnHelper.accessor('<2kg', {
-                header: () => <div className='text-center'>{'<2KG'}</div>,
-                cell: (info) => (
-                  <div className='!body-m-r text-[#000000DE] text-center'>
-                    {formatCurrency(info.getValue())}
-                  </div>
-                ),
-              }),
-            ]
-          : []),
-        columnHelper.accessor('<3kg', {
-          header: () => <div className='text-center'>{'<3KG'}</div>,
-          cell: (info) => (
-            <div className='!body-m-r text-[#000000DE] text-center'>
-              {formatCurrency(info.getValue())}
-            </div>
-          ),
-        }),
-        columnHelper.accessor('3-5kg', {
-          header: () => <div className='text-center'>3-5KG</div>,
-          cell: (info) => (
-            <div className='!body-m-r text-[#000000DE] text-center'>
-              {formatCurrency(info.getValue())}
-            </div>
-          ),
-        }),
-      ];
+  const weightColumns = [
+    columnHelper.accessor('<2kg', {
+      header: () => <div className='text-center'>{'<2KG'}</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('<3kg', {
+      header: () => <div className='text-center'>{'<3KG'}</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('3-5kg', {
+      header: () => <div className='text-center'>3-5KG</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+  ];
 
-  const detailedColumns = [
-    columnHelper.accessor('below3kg', {
-      header: () => <div className='text-center'>&lt; 3kg</div>,
+  const columnsDiterima = [
+    columnHelper.accessor('title', {
+      header: () => (
+        <div className='font-bold text-color-1'>Tandan Diterima</div>
+      ),
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE]'>
+          {convertLabel(info.getValue())}
+        </div>
+      ),
+      size: 400,
+    }),
+    columnHelper.accessor('normal', {
+      header: () => <div className='text-center'>NORMAL</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
           {formatCurrency(info.getValue())}
         </div>
       ),
     }),
-    columnHelper.accessor('between3And5kg', {
-      header: () => <div className='text-center'>3-5kg</div>,
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('above5kg', {
-      header: () => <div className='text-center'>&gt; 5kg</div>,
+    columnHelper.accessor('pest', {
+      header: () => <div className='text-center'>PEST</div>,
       cell: (info) => (
         <div className='!body-m-r text-[#000000DE] text-center'>
           {formatCurrency(info.getValue())}
@@ -122,129 +100,7 @@ const DetailRiwayatPemeriksaanPage = () => {
         </div>
       ),
     }),
-    columnHelper.accessor('longStashExtreme', {
-      header: () => (
-        <div className='text-center'>
-          TP <br /> Extreme
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('longStashMax', {
-      header: () => (
-        <div className='text-center'>
-          TP <br /> Max
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('notLongStash', {
-      header: () => (
-        <div className='text-center'>
-          Not <br /> TP
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('pest', {
-      header: () => (
-        <div className='text-center'>
-          Pest <br /> &lt; 50%
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('pestExtreme', {
-      header: () => (
-        <div className='text-center'>
-          Pest <br /> &gt; 50%
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-    columnHelper.accessor('notPest', {
-      header: () => (
-        <div className='text-center'>
-          Not <br /> Pest
-        </div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE] text-center'>
-          {formatCurrency(info.getValue())}
-        </div>
-      ),
-    }),
-  ];
-
-  const columnsDiterima = [
-    columnHelper.accessor('title', {
-      header: () => (
-        <div className='font-bold text-color-1'>Tandan Diterima</div>
-      ),
-      cell: (info) => (
-        <div className='!body-m-r text-[#000000DE]'>
-          {convertLabel(info.getValue())}
-        </div>
-      ),
-      size: 400,
-    }),
-    ...(isBYLMFactory
-      ? detailedColumns
-      : [
-          columnHelper.accessor('normal', {
-            header: () => <div className='text-center'>NORMAL</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('pest', {
-            header: () => <div className='text-center'>PEST</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('largeFruit', {
-            header: () => <div className='text-center'>BB</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('longStash', {
-            header: () => <div className='text-center'>TP</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          ...weightColumns,
-        ]),
+    ...weightColumns,
     columnHelper.accessor('total', {
       header: () => <div className='text-center'>TOTAL</div>,
       cell: (info) => (
@@ -267,43 +123,39 @@ const DetailRiwayatPemeriksaanPage = () => {
       ),
       size: 400,
     }),
-    ...(isBYLMFactory
-      ? detailedColumns
-      : [
-          columnHelper.accessor('normal', {
-            header: () => <div className='text-center'>NORMAL</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('pest', {
-            header: () => <div className='text-center'>PEST</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('largeFruit', {
-            header: () => <div className='text-center'>BB</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          columnHelper.accessor('longStash', {
-            header: () => <div className='text-center'>TP</div>,
-            cell: (info) => (
-              <div className='!body-m-r text-[#000000DE] text-center'>
-                {formatCurrency(info.getValue())}
-              </div>
-            ),
-          }),
-          ...weightColumns,
-        ]),
+    columnHelper.accessor('normal', {
+      header: () => <div className='text-center'>NORMAL</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('pest', {
+      header: () => <div className='text-center'>PEST</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('largeFruit', {
+      header: () => <div className='text-center'>BB</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('longStash', {
+      header: () => <div className='text-center'>TP</div>,
+      cell: (info) => (
+        <div className='!body-m-r text-[#000000DE] text-center'>
+          {formatCurrency(info.getValue())}
+        </div>
+      ),
+    }),
+    ...weightColumns,
     columnHelper.accessor('total', {
       header: () => <div className='text-center'>TOTAL</div>,
       cell: (info) => (
@@ -372,30 +224,9 @@ const DetailRiwayatPemeriksaanPage = () => {
           pest: summary['RUSAK DIMAKAN TIKUS'],
           largeFruit: summary['BUAH BESAR'],
           longStash: summary['TANGKAI PANJANG'],
-
-          ...(isBYLMFactory
-            ? {
-                below3kg: summary['BUAH KECIL DIBAWAH 3KG'],
-                between3And5kg: summary['BUAH KECIL DIBAWAH 5KG'],
-                above5kg: summary['BUAH UKURAN NORMAL'],
-                longStashExtreme: summary['TANGKAI PANJANG EKSTRIM'],
-                longStashMax: summary['TANGKAI PANJANG MAX'],
-                notLongStash: summary['TANGKAI NORMAL'],
-                pestExtreme: summary['RUSAK DIMAKAN TIKUS EKSTRIM'],
-                notPest: summary['TIDAK RUSAK DIMAKAN TIKUS'],
-              }
-            : isCombinedFactory
-              ? {
-                  below5kg:
-                    (summary['BUAH KECIL DIBAWAH 2KG'] || 0) +
-                    (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
-                    (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
-                }
-              : {
-                  '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
-                  '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
-                  '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
-                }),
+          '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
+          '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
+          '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
         };
       });
 
@@ -412,30 +243,9 @@ const DetailRiwayatPemeriksaanPage = () => {
         pest: summary['RUSAK DIMAKAN TIKUS'],
         largeFruit: summary['BUAH BESAR'],
         longStash: summary['TANGKAI PANJANG'],
-
-        ...(isBYLMFactory
-          ? {
-              below3kg: summary['BUAH KECIL DIBAWAH 3KG'],
-              between3And5kg: summary['BUAH KECIL DIBAWAH 5KG'],
-              above5kg: summary['BUAH UKURAN NORMAL'],
-              longStashExtreme: summary['TANGKAI PANJANG EKSTRIM'],
-              longStashMax: summary['TANGKAI PANJANG MAX'],
-              notLongStash: summary['TANGKAI NORMAL'],
-              pestExtreme: summary['RUSAK DIMAKAN TIKUS EKSTRIM'],
-              notPest: summary['TIDAK RUSAK DIMAKAN TIKUS'],
-            }
-          : isCombinedFactory
-            ? {
-                below5kg:
-                  (summary['BUAH KECIL DIBAWAH 2KG'] || 0) +
-                  (summary['BUAH KECIL DIBAWAH 3KG'] || 0) +
-                  (summary['BUAH KECIL DIBAWAH 5KG'] || 0),
-              }
-            : {
-                '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
-                '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
-                '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
-              }),
+        '<2kg': summary['BUAH KECIL DIBAWAH 2KG'],
+        '<3kg': summary['BUAH KECIL DIBAWAH 3KG'],
+        '3-5kg': summary['BUAH KECIL DIBAWAH 5KG'],
       };
     });
 
@@ -473,39 +283,9 @@ const DetailRiwayatPemeriksaanPage = () => {
     pest: dataDiterima?.reduce((a, b) => a + (b.pest || 0), 0) || 0,
     largeFruit: dataDiterima?.reduce((a, b) => a + (b.largeFruit || 0), 0) || 0,
     longStash: dataDiterima?.reduce((a, b) => a + (b.longStash || 0), 0) || 0,
-
-    ...(isBYLMFactory
-      ? {
-          below3kg:
-            dataDiterima?.reduce((a, b) => a + (b.below3kg || 0), 0) || 0,
-          between3And5kg:
-            dataDiterima?.reduce((a, b) => a + (b.between3And5kg || 0), 0) || 0,
-          above5kg:
-            dataDiterima?.reduce((a, b) => a + (b.above5kg || 0), 0) || 0,
-          longStashExtreme:
-            dataDiterima?.reduce((a, b) => a + (b.longStashExtreme || 0), 0) ||
-            0,
-          longStashMax:
-            dataDiterima?.reduce((a, b) => a + (b.longStashMax || 0), 0) || 0,
-          notLongStash:
-            dataDiterima?.reduce((a, b) => a + (b.notLongStash || 0), 0) || 0,
-          pestExtreme:
-            dataDiterima?.reduce((a, b) => a + (b.pestExtreme || 0), 0) || 0,
-          notPest: dataDiterima?.reduce((a, b) => a + (b.notPest || 0), 0) || 0,
-        }
-      : isCombinedFactory
-        ? {
-            below5kg:
-              dataDiterima?.reduce((a, b) => a + (b.below5kg || 0), 0) || 0,
-          }
-        : {
-            '<2kg':
-              dataDiterima?.reduce((a, b) => a + (b['<2kg'] || 0), 0) || 0,
-            '<3kg':
-              dataDiterima?.reduce((a, b) => a + (b['<3kg'] || 0), 0) || 0,
-            '3-5kg':
-              dataDiterima?.reduce((a, b) => a + (b['3-5kg'] || 0), 0) || 0,
-          }),
+    '<2kg': dataDiterima?.reduce((a, b) => a + (b['<2kg'] || 0), 0) || 0,
+    '<3kg': dataDiterima?.reduce((a, b) => a + (b['<3kg'] || 0), 0) || 0,
+    '3-5kg': dataDiterima?.reduce((a, b) => a + (b['3-5kg'] || 0), 0) || 0,
   };
 
   const totalRowDitolak = {
@@ -519,59 +299,9 @@ const DetailRiwayatPemeriksaanPage = () => {
       dataDitolak?.reduce((acc, row) => acc + (row.largeFruit || 0), 0) || 0,
     longStash:
       dataDitolak?.reduce((acc, row) => acc + (row.longStash || 0), 0) || 0,
-    ...(isBYLMFactory
-      ? {
-          below3kg:
-            dataDitolak?.reduce((acc, row) => acc + (row.below3kg || 0), 0) ||
-            0,
-          between3And5kg:
-            dataDitolak?.reduce(
-              (acc, row) => acc + (row.between3And5kg || 0),
-              0,
-            ) || 0,
-          above5kg:
-            dataDitolak?.reduce((acc, row) => acc + (row.above5kg || 0), 0) ||
-            0,
-          longStashExtreme:
-            dataDitolak?.reduce(
-              (acc, row) => acc + (row.longStashExtreme || 0),
-              0,
-            ) || 0,
-          longStashMax:
-            dataDitolak?.reduce(
-              (acc, row) => acc + (row.longStashMax || 0),
-              0,
-            ) || 0,
-          notLongStash:
-            dataDitolak?.reduce(
-              (acc, row) => acc + (row.notLongStash || 0),
-              0,
-            ) || 0,
-          pestExtreme:
-            dataDitolak?.reduce(
-              (acc, row) => acc + (row.pestExtreme || 0),
-              0,
-            ) || 0,
-          notPest:
-            dataDitolak?.reduce((acc, row) => acc + (row.notPest || 0), 0) || 0,
-        }
-      : isCombinedFactory
-        ? {
-            below5kg:
-              dataDitolak?.reduce((acc, row) => acc + (row.below5kg || 0), 0) ||
-              0,
-          }
-        : {
-            '<2kg':
-              dataDitolak?.reduce((acc, row) => acc + (row['<2kg'] || 0), 0) ||
-              0,
-            '<3kg':
-              dataDitolak?.reduce((acc, row) => acc + (row['<3kg'] || 0), 0) ||
-              0,
-            '3-5kg':
-              dataDitolak?.reduce((acc, row) => acc + (row['3-5kg'] || 0), 0) ||
-              0,
-          }),
+    '<2kg': dataDitolak?.reduce((acc, row) => acc + (row['<2kg'] || 0), 0) || 0,
+    '<3kg': dataDitolak?.reduce((acc, row) => acc + (row['<3kg'] || 0), 0) || 0,
+    '3-5kg': dataDitolak?.reduce((acc, row) => acc + (row['3-5kg'] || 0), 0) || 0,
   };
 
   const totalRowDidenda = {

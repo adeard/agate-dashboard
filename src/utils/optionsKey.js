@@ -24,62 +24,6 @@ export const vendorTypeOptions = [
   },
 ];
 
-export const vendorKJGMTypeOptions = [
-  {
-    label: 'Semua',
-    value: 'all',
-  },
-  {
-    label: 'Inti',
-    value: '1',
-  },
-  {
-    label: 'Plasma',
-    value: '3',
-  },
-  {
-    label: 'Eksternal',
-    value: '2',
-  },
-];
-
-export const vendorLNGMTypeOptions = [
-  {
-    label: 'Semua',
-    value: 'all',
-  },
-  {
-    label: 'Inti',
-    value: '1',
-  },
-  {
-    label: 'Plasma',
-    value: '2',
-  },
-  {
-    label: 'GAPOKTAN',
-    value: 'GAPOKTAN',
-  },
-  {
-    label: 'STKA',
-    value: 'STKA',
-  },
-];
-
-export const vendorBYLMTypeOptions = [
-  {
-    label: 'Semua',
-    value: 'all',
-  },
-  {
-    label: 'KUB',
-    value: '1',
-  },
-  {
-    label: 'Eksternal',
-    value: '2',
-  },
-];
 
 export const listOptionsMachine = [
   { label: 'Semua Mesin', value: 'All' },

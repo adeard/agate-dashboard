@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '@/assets/images/logo.png';
 import Account from '@/assets/images/account.png';
 
 import {
@@ -45,9 +44,6 @@ const Navbar = () => {
     <section>
       <div className='navbar hidden display-navbar max-h-16 p-4'>
         <div className='flex-1'>
-          {/* <div className='mr-4'>
-            <img src={Logo} alt='Sinarmas Logo' width={130} height={33} />
-          </div> */}
           <ul className='navbar-custom body-m-b menu menu-horizontal ml-1 px-1'>
             {navbarItems.map((item) => (
               <li
